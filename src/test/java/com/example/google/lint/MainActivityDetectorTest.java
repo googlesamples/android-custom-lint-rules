@@ -31,6 +31,10 @@ import java.util.Set;
 
 import static com.android.SdkConstants.FN_ANDROID_MANIFEST_XML;
 
+/**
+ * <b>NOTE: This is not a final API; if you rely on this be prepared
+ * to adjust your code for the next tools release.</b>
+ */
 public class MainActivityDetectorTest extends LintDetectorTest {
     /**
      * The set of enabled issues for a given test.

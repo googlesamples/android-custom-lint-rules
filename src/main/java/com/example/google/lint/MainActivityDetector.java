@@ -47,6 +47,9 @@ import static com.android.xml.AndroidManifest.NODE_CATEGORY;
 
 /**
  * Checks for a main activity in <code>AndroidManifest.xml</code>.
+ * <p/>
+ * <b>NOTE: This is not a final API; if you rely on this be prepared
+ * to adjust your code for the next tools release.</b>
  */
 public class MainActivityDetector extends ResourceXmlDetector implements Detector.XmlScanner {
     public static final Issue ISSUE = Issue.create(

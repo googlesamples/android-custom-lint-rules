@@ -7,8 +7,8 @@ The [Android `lint` tool](http://developer.android.com/tools/help/lint.html) is 
  internationalization. Lint comes with over 100 checks, however it can be extended with additional
  custom rules.
 
-The Custom Lint Rules API is **not stable** and is subject to change in the future. Be ready to change
- your custom lint rule implementation when the API changes.
+**NOTE: The lint API is not a final API; if you rely on this be prepared
+ to adjust your code for the next tools release.**
 
 Introduction
 ------------
