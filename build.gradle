@@ -18,6 +18,10 @@ apply plugin: 'java'
 
 repositories {
     jcenter()
+    // Workaround the issue that testutils is not in jcenter
+    maven {
+        url 'https://dl.bintray.com/android/android-tools'
+    }
     flatDir {
         dirs 'libs'
     }
@@ -27,18 +31,17 @@ repositories {
 // See http://tools.android.com/build/studio.
 sourceCompatibility = 1.6
 dependencies {
-    compile 'com.android.tools.lint:lint-api:24.3.0-beta3'
-    compile 'com.android.tools.lint:lint-checks:24.3.0-beta3'
+    compile 'com.android.tools.lint:lint-api:24.3.0'
+    compile 'com.android.tools.lint:lint-checks:24.3.0'
     testCompile 'junit:junit:4.11'
-    // TODO(nageshs): Ask AS team why this is not in maven
-    testCompile(name: 'testutils-24.3.0-beta3', ext: 'jar')
-    testCompile(name: 'lint-tests', ext: 'jar')
-    testCompile 'com.android.tools.lint:lint:24.3.0-beta3'
+    testCompile 'com.android.tools.lint:lint:24.3.0'
+    testCompile 'com.android.tools.lint:lint-tests:24.3.0'
+    testCompile 'com.android.tools:testutils:24.3.0'
 }
 
 jar {
     manifest {
-        attributes("Lint-Registry": "MyIssueRegistry")
+        attributes("Lint-Registry": "com.example.google.lint.MyIssueRegistry")
     }
 }
 
