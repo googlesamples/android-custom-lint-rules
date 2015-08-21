@@ -22,6 +22,7 @@ import com.android.tools.lint.detector.api.Context;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
 import com.android.tools.lint.detector.api.Issue;
+import com.android.tools.lint.detector.api.LintUtils;
 import com.android.tools.lint.detector.api.Location;
 import com.android.tools.lint.detector.api.ResourceXmlDetector;
 import com.android.tools.lint.detector.api.Scope;
@@ -30,10 +31,10 @@ import com.android.tools.lint.detector.api.XmlContext;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import java.util.Arrays;
+import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 
 import static com.android.SdkConstants.ANDROID_MANIFEST_XML;
@@ -44,9 +45,11 @@ import static com.android.SdkConstants.TAG_APPLICATION;
 import static com.android.SdkConstants.TAG_INTENT_FILTER;
 import static com.android.xml.AndroidManifest.NODE_ACTION;
 import static com.android.xml.AndroidManifest.NODE_CATEGORY;
+import static com.example.google.lint.ManifestConstants.ACTION_NAME_MAIN;
+import static com.example.google.lint.ManifestConstants.CATEGORY_NAME_LAUNCHER;
 
 /**
- * Checks for a main activity in <code>AndroidManifest.xml</code>.
+ * Checks for an activity with a launcher intent in <code>AndroidManifest.xml</code>.
  * <p/>
  * <b>NOTE: This is not a final API; if you rely on this be prepared
  * to adjust your code for the next tools release.</b>
@@ -54,8 +57,8 @@ import static com.android.xml.AndroidManifest.NODE_CATEGORY;
 public class MainActivityDetector extends ResourceXmlDetector implements Detector.XmlScanner {
     public static final Issue ISSUE = Issue.create(
             "MainActivityDetector",
-            "Checks for a main activity",
-            "This app should have a main launcher activity.",
+            "Missing Launcher Activities",
+            "This app should have an activity with a launcher intent.",
             Category.CORRECTNESS,
             8,
             Severity.ERROR,
@@ -64,76 +67,84 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
                     EnumSet.of(Scope.MANIFEST)));
 
     /**
-     * Will be <code>true</code> if the current file we're checking has at least one activity.
+     * This will be <code>true</code> if the current file we're checking has at least one activity.
      */
     private boolean mHasActivity;
     /**
-     * Will be <code>true</code> if the file has a main activity.
+     * This will be <code>true</code> if the file has an activity with a launcher intent.
      */
-    private boolean mHasMainActivity;
+    private boolean mHasLauncherActivity;
+    /**
+     * The manifest file location for the main project, <code>null</code> if there is no manifest.
+     */
+    private Location mManifestLocation;
 
-    @Override
-    public Collection<String> getApplicableElements() {
-        return Arrays.asList(
-                TAG_ACTIVITY
-        );
+    /**
+     * No-args constructor used by the lint framework to instantiate the detector.
+     */
+    public MainActivityDetector() {
     }
 
     @Override
-    public void beforeCheckFile(@NonNull Context context) {
+    public Collection<String> getApplicableElements() {
+        return Collections.singleton(TAG_ACTIVITY);
+    }
+
+    @Override
+    public void beforeCheckProject(@NonNull Context context) {
         mHasActivity = false;
-        mHasMainActivity = false;
+        mHasLauncherActivity = false;
+        mManifestLocation = null;
+    }
+
+    @Override
+    public void afterCheckProject(@NonNull Context context) {
+        // Don't report issues on libraries that may not have a launcher activity
+        if (context.getProject() == context.getMainProject()
+                && !context.getMainProject().isLibrary()
+                && mManifestLocation != null) {
+            if (!mHasActivity) {
+                context.report(ISSUE, mManifestLocation,
+                        "Expecting " + ANDROID_MANIFEST_XML + " to have an <" + TAG_APPLICATION +
+                                "> tag.");
+            } else if (!mHasLauncherActivity) {
+                // Report the issue if the manifest file has no activity with a launcher intent.
+                context.report(ISSUE, mManifestLocation,
+                        "Expecting " + ANDROID_MANIFEST_XML +
+                                " to have an activity with a launcher intent.");
+            }
+        }
     }
 
     @Override
     public void afterCheckFile(@NonNull Context context) {
-        // Report an error if there are no <application> tags to check.
-        // We assume the application tag is in the right place (i.e. have correct parent elements).
-        Location location = Location.create(context.file);
-        if (!mHasActivity) {
-            context.report(ISSUE, location,
-                    "Expecting " + ANDROID_MANIFEST_XML + " to have an <" + TAG_APPLICATION +
-                            "> tag.");
-        } else if (!mHasMainActivity) {
-            // Report the issue if the manifest file has no main activity.
-            context.report(ISSUE, location,
-                    "Expecting " + ANDROID_MANIFEST_XML + " to have a main activity.");
+        // Store a reference to the manifest file in case we need to report it's location.
+        if (context.getProject() == context.getMainProject()) {
+            mManifestLocation = Location.create(context.file);
         }
     }
 
     @Override
     public void visitElement(XmlContext context, Element activityElement) {
-        // Checks every activity under the <application> element and reports an error if there is
-        // no main activity.
+        // Checks every activity and reports an error if there is no activity with a launcher
+        // intent.
         mHasActivity = true;
         if (isMainActivity(activityElement)) {
-            mHasMainActivity = true;
+            mHasLauncherActivity = true;
         }
     }
 
     /**
-     * Returns true if the XML node is a main activity.
-     * <p/>
-     * A main activity is an <code>&lt;activity&gt;</code> node with an <code>&lt;
-     * intent-filter&gt;</code> that contains the following tags:
-     * <p/>
-     * <pre>
-     *   <category android:name="android.intent.category.LAUNCHER" />
-     *   <action android:name="android.intent.action.MAIN" />
-     * </pre>
+     * Returns true if the XML node is an activity with a launcher intent.
      *
      * @param activityNode The node to check.
-     * @return <code>true</code> if the node is a main activity.
+     * @return <code>true</code> if the node is an activity with a launcher intent.
      */
     private boolean isMainActivity(Node activityNode) {
         if (TAG_ACTIVITY.equals(activityNode.getNodeName())) {
             // Loop through all <intent-filter> tags
-            NodeList activityChildren = activityNode.getChildNodes();
-            for (int i = 0; i < activityChildren.getLength(); ++i) {
-                Node activityChild = activityChildren.item(i);
+            for (Element activityChild : LintUtils.getChildren(activityNode)) {
                 if (TAG_INTENT_FILTER.equals(activityChild.getNodeName())) {
-                    NodeList intentFilterChildren = activityChild.getChildNodes();
-
                     // Check for these children nodes:
                     //
                     // <category android:name="android.intent.category.LAUNCHER" />
@@ -141,25 +152,18 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
                     boolean hasLauncherCategory = false;
                     boolean hasMainAction = false;
 
-                    for (int j = 0; j < intentFilterChildren.getLength(); ++j) {
-                        Node intentFilterChild = intentFilterChildren.item(j);
-                        // Check for category tag
-                        if (NODE_CATEGORY.equals(intentFilterChild.getNodeName())) {
-                            Node categoryName = intentFilterChild.getAttributes()
-                                    .getNamedItemNS(ANDROID_URI, ATTR_NAME);
-                            if (categoryName != null && categoryName.getNodeValue().equals(
-                                    ManifestConstants.CATEGORY_NAME_LAUNCHER)) {
-                                hasLauncherCategory = true;
-                            }
+                    for (Element intentFilterChild : LintUtils.getChildren(activityChild)) {
+                        // Check for category tag)
+                        if (NODE_CATEGORY.equals(intentFilterChild.getNodeName())
+                                && CATEGORY_NAME_LAUNCHER.equals(
+                                intentFilterChild.getAttributeNS(ANDROID_URI, ATTR_NAME))) {
+                            hasLauncherCategory = true;
                         }
                         // Check for action tag
-                        if (NODE_ACTION.equals(intentFilterChild.getNodeName())) {
-                            Node actionName = intentFilterChild.getAttributes()
-                                    .getNamedItemNS(ANDROID_URI, ATTR_NAME);
-                            if (actionName != null && actionName.getNodeValue().equals(
-                                    ManifestConstants.ACTION_NAME_MAIN)) {
-                                hasMainAction = true;
-                            }
+                        if (NODE_ACTION.equals(intentFilterChild.getNodeName())
+                                && ACTION_NAME_MAIN.equals(
+                                intentFilterChild.getAttributeNS(ANDROID_URI, ATTR_NAME))) {
+                            hasMainAction = true;
                         }
                     }
 

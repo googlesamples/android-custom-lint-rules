@@ -23,7 +23,6 @@ import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.Project;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -48,9 +47,7 @@ public class MainActivityDetectorTest extends LintDetectorTest {
 
     @Override
     protected List<Issue> getIssues() {
-        return Arrays.asList(
-                MainActivityDetector.ISSUE
-        );
+        return Collections.singletonList(MainActivityDetector.ISSUE);
     }
 
     /**
@@ -68,7 +65,7 @@ public class MainActivityDetectorTest extends LintDetectorTest {
     }
 
     /**
-     * Test that a manifest with a main activity has no warnings.
+     * Test that a manifest with an activity with a launcher intent has no warnings.
      */
     public void testHasMainActivity() throws Exception {
         mEnabled = Collections.singleton(MainActivityDetector.ISSUE);
@@ -95,12 +92,12 @@ public class MainActivityDetectorTest extends LintDetectorTest {
     }
 
     /**
-     * Test that a manifest <em>without</em> a main activity reports an error.
+     * Test that a manifest <em>without</em> an activity with a launcher intent reports an error.
      */
     public void testMissingMainActivity() throws Exception {
         mEnabled = Collections.singleton(MainActivityDetector.ISSUE);
-        String expected = "AndroidManifest.xml: Error: Expecting AndroidManifest.xml to have a " +
-                "main activity. [MainActivityDetector]\n" +
+        String expected = "AndroidManifest.xml: Error: Expecting AndroidManifest.xml to have an " +
+                "activity with a launcher intent. [MainActivityDetector]\n" +
                 "1 errors, 0 warnings\n";
         String result = lintProject(xml(FN_ANDROID_MANIFEST_XML, "" +
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +

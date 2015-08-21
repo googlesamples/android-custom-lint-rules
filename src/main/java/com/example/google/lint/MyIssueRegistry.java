@@ -29,8 +29,6 @@ import java.util.List;
 public class MyIssueRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
-        return Collections.singletonList(
-                MainActivityDetector.ISSUE
-        );
+        return Collections.singletonList(MainActivityDetector.ISSUE);
     }
 }

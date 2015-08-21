@@ -4,7 +4,7 @@ Custom Lint Rules
 The [Android `lint` tool](http://developer.android.com/tools/help/lint.html) is a static code
  analysis tool that checks your Android project source files for potential bugs and optimization
  improvements for correctness, security, performance, usability, accessibility, and
- internationalization. Lint comes with over 100 checks, however it can be extended with additional
+ internationalization. Lint comes with over 200 checks, however it can be extended with additional
  custom rules.
 
 **NOTE: The lint API is not a final API; if you rely on this be prepared
@@ -42,7 +42,7 @@ Getting Started
 
 ##### Run lint
 
-`lint`
+`./gradlew lint`
 
 > Note: If you can't run `lint` directly, you may want to include android tools `PATH` in your
  `~/.bash_profile`.
