@@ -26,7 +26,10 @@ Getting Started
 
 ##### Fetch code
 
-`git clone https://github.com/googlesamples/custom-lint-rules.git`
+```
+git clone https://github.com/googlesamples/android-custom-lint-rules.git
+cd android-custom-lint-rules
+```
 
 ##### Build the validator
 
@@ -34,7 +37,7 @@ Getting Started
 
 ##### Copy to the lint directory
 
-`cp ./build/libs/custom-lint-rules.jar ~/.android/lint/`
+`cp ./build/libs/android-custom-lint-rules.jar ~/.android/lint/`
 
 ##### Verify whether the issues are registered with lint
 
@@ -57,7 +60,7 @@ Support
 - Stack Overflow: http://stackoverflow.com/questions/tagged/android
 
 If you've found an error in this sample, please file an issue:
-https://github.com/googlesamples/custom-lint-rules/issues
+https://github.com/googlesamples/android-custom-lint-rules/issues
 
 Patches are encouraged, and may be submitted by forking this project and
 submitting a pull request through GitHub.
