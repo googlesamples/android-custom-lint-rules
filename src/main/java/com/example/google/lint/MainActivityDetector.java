@@ -32,7 +32,6 @@ import com.android.tools.lint.detector.api.XmlContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
