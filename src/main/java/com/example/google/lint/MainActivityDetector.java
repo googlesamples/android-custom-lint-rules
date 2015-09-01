@@ -63,7 +63,7 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
             Severity.ERROR,
             new Implementation(
                     MainActivityDetector.class,
-                    EnumSet.of(Scope.MANIFEST)));
+                    Scope.MANIFEST_SCOPE));
 
     /**
      * This will be <code>true</code> if the current file we're checking has at least one activity.
@@ -104,7 +104,7 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
                 && mManifestLocation != null) {
             if (!mHasActivity) {
                 context.report(ISSUE, mManifestLocation,
-                        "Expecting " + ANDROID_MANIFEST_XML + " to have an <" + TAG_APPLICATION +
+                        "Expecting " + ANDROID_MANIFEST_XML + " to have an <" + TAG_ACTIVITY +
                                 "> tag.");
             } else if (!mHasLauncherActivity) {
                 // Report the issue if the manifest file has no activity with a launcher intent.
