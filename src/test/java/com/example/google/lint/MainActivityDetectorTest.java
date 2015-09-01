@@ -140,7 +140,7 @@ public class MainActivityDetectorTest extends LintDetectorTest {
     public void testMissingApplication() throws Exception {
         mEnabled = Collections.singleton(MainActivityDetector.ISSUE);
         String expected = "AndroidManifest.xml: Error: Expecting AndroidManifest.xml to have an " +
-                "<application> tag. [MainActivityDetector]\n" +
+                "<activity> tag. [MainActivityDetector]\n" +
                 "1 errors, 0 warnings\n";
         String result = lintProject(xml(FN_ANDROID_MANIFEST_XML, "" +
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
