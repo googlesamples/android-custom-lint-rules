@@ -28,16 +28,19 @@ import com.android.tools.lint.detector.api.ResourceXmlDetector;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 import com.android.tools.lint.detector.api.XmlContext;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 
 import static com.android.SdkConstants.ANDROID_MANIFEST_XML;
 import static com.android.SdkConstants.ANDROID_URI;
 import static com.android.SdkConstants.ATTR_NAME;
 import static com.android.SdkConstants.TAG_ACTIVITY;
+import static com.android.SdkConstants.TAG_APPLICATION;
 import static com.android.SdkConstants.TAG_INTENT_FILTER;
 import static com.android.xml.AndroidManifest.NODE_ACTION;
 import static com.android.xml.AndroidManifest.NODE_CATEGORY;
@@ -83,7 +86,10 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
 
     @Override
     public Collection<String> getApplicableElements() {
-        return Collections.singleton(TAG_ACTIVITY);
+	java.util.List<String> s = new java.util.ArrayList<String>(2);
+	s.add(TAG_ACTIVITY);
+	s.add("manifest");
+        return s;
     }
 
     @Override
@@ -115,7 +121,8 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
     @Override
     public void afterCheckFile(@NonNull Context context) {
         // Store a reference to the manifest file in case we need to report it's location.
-        if (context.getProject() == context.getMainProject()) {
+        if (context.getProject() == context.getMainProject() 
+	    && mManifestLocation == null) {
             mManifestLocation = Location.create(context.file);
         }
     }
@@ -125,6 +132,10 @@ public class MainActivityDetector extends ResourceXmlDetector implements Detecto
         // Checks every activity and reports an error if there is no activity with a launcher
         // intent.
         mHasActivity = true;
+	if (activityElement.getNodeName().equals("manifest")) {
+	    System.out.println("setting manifest");
+	    mManifestLocation = context.getLocation(activityElement);
+	}
         if (isMainActivity(activityElement)) {
             mHasLauncherActivity = true;
         }
