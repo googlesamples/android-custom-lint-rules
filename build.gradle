@@ -24,12 +24,12 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.tools.lint:lint-api:25.2.3'
-    compile 'com.android.tools.lint:lint-checks:25.2.3'
+    compile 'com.android.tools.lint:lint-api:25.3.0'
+    compile 'com.android.tools.lint:lint-checks:25.3.0'
     testCompile 'junit:junit:4.11'
-    testCompile 'com.android.tools.lint:lint:25.2.3'
-    testCompile 'com.android.tools.lint:lint-tests:25.2.3'
-    testCompile 'com.android.tools:testutils:25.2.3'
+    testCompile 'com.android.tools.lint:lint:25.3.0'
+    testCompile 'com.android.tools.lint:lint-tests:25.3.0'
+    testCompile 'com.android.tools:testutils:25.3.0'
 }
 
 jar {
