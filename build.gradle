@@ -17,24 +17,26 @@
 apply plugin: 'java'
 
 repositories {
+    google()
     jcenter()
-    maven {
-        url  "http://dl.bintray.com/android/android-tools"
-    }
+}
+
+ext {
+    lintVersion = '26.0.0-beta2'
 }
 
 dependencies {
-    compile 'com.android.tools.lint:lint-api:25.3.0'
-    compile 'com.android.tools.lint:lint-checks:25.3.0'
-    testCompile 'junit:junit:4.11'
-    testCompile 'com.android.tools.lint:lint:25.3.0'
-    testCompile 'com.android.tools.lint:lint-tests:25.3.0'
-    testCompile 'com.android.tools:testutils:25.3.0'
+    compile "com.android.tools.lint:lint-api:$lintVersion"
+    compile "com.android.tools.lint:lint-checks:$lintVersion"
+    testCompile "junit:junit:4.11"
+    testCompile "com.android.tools.lint:lint:$lintVersion"
+    testCompile "com.android.tools.lint:lint-tests:$lintVersion"
+    testCompile "com.android.tools:testutils:$lintVersion"
 }
 
 jar {
     manifest {
-        attributes("Lint-Registry": "com.example.google.lint.MyIssueRegistry")
+        attributes("Lint-Registry-v2": "com.example.google.lint.MyIssueRegistry")
     }
 }
 
