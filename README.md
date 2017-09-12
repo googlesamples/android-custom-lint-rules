@@ -1,5 +1,5 @@
 Custom Lint Rules
-============
+=================
 
 The [Android `lint` tool](http://developer.android.com/tools/help/lint.html) is a static code
  analysis tool that checks your Android project source files for potential bugs and optimization
@@ -31,31 +31,15 @@ git clone https://github.com/googlesamples/android-custom-lint-rules.git
 cd android-custom-lint-rules
 ```
 
-##### Build the validator
+##### Build the code
 
-`./gradlew build`
-
-##### Copy to the lint directory
-
-`cp ./build/libs/android-custom-lint-rules.jar ~/.android/lint/`
-
-##### Verify whether the issues are registered with lint
-
-`lint --show MainActivityDetector`
-
-##### Run lint
-
-`./gradlew lint`
-
-> Note: If you can't run `lint` directly, you may want to include android tools `PATH` in your
- `~/.bash_profile`.
-> (i.e. `PATH=$PATH:~/Library/Android/sdk/tools`)
->
-> Then run `source ~/.bash_profile`.
+For Android Studio 3.x and above, use the sample in `android-studio-3`.
+If you are targeting Android Studio 2.x and older, use the sample in `android-studio-2`.
 
 Support
 -------
 
+- The "lint-dev" Google group: https://groups.google.com/forum/#!forum/lint-dev
 - Google+ Community: https://plus.google.com/communities/105153134372062985968
 - Stack Overflow: http://stackoverflow.com/questions/tagged/android
 
