@@ -67,7 +67,7 @@ public class SampleCodeDetector extends Detector implements UastScanner {
 
     @Override
     public UElementHandler createUastHandler(JavaContext context) {
-        // Not: Visiting UAST nodes is a pretty general purpose mechanism;
+        // Note: Visiting UAST nodes is a pretty general purpose mechanism;
         // Lint has specialized support to do common things like "visit every class
         // that extends a given super class or implements a given interface", and
         // "visit every call site that calls a method by a given name" etc.
