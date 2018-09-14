@@ -16,6 +16,7 @@
 package com.example.lint.checks;
 
 import com.android.tools.lint.client.api.IssueRegistry;
+import com.android.tools.lint.detector.api.ApiKt;
 import com.android.tools.lint.detector.api.Issue;
 
 import java.util.Collections;
@@ -28,6 +29,11 @@ public class SampleIssueRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
         return Collections.singletonList(SampleCodeDetector.ISSUE);
+    }
+
+    @Override
+    public int getApi() {
+        return ApiKt.CURRENT_API;
     }
 }
 
