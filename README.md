@@ -36,6 +36,32 @@ cd android-custom-lint-rules
 For Android Studio 3.x and above, use the sample in `android-studio-3`.
 If you are targeting Android Studio 2.x and older, use the sample in `android-studio-2`.
 
+##### Lint Dependencies
+
+When building your own rules, you will likely want to know which dependencies you should bring into your own project. 
+The below descriptions of the dependencies included within this project serve to help you make that decision:
+
+Source Dependencies
+
+- **com.android.tools.lint:lint-api**: The most important one; it contains things like `LintClient`, the `Detector` 
+base class, the `Issue` class, and everything else that Lint checks rely on in the Lint framework.
+- **com.android.tools.lint:lint-checks**: Contains the built-in checks that are developed internally. Also contains 
+utilities that are sometimes useful for other lint checks, such as the `VersionChecks` class (which figures out whether 
+a given UAST element is known to only be called at a given API level, either by surrounding `if >= SDK-version` checks or 
+`if < SDK-version` early returns in the method).
+
+Test Dependencies
+
+- **com.android.tools.lint:lint-tests**: Contains useful utilities for writing unit tests for Lint checks, 
+including the `LintDetectorTest` base class.
+- **com.android.tools:testutils**: It's unlikely that you need to depend on this directly. The test infrastructure 
+depends on it indirectly though (the methods we use there were mostly for the older lint test infrastructure, 
+not the newer one).  
+- **com.android.tools.lint:lint**: Lint checks don't need to depend on this. It's a separate artifact used by tools 
+that want to integrate lint with the command line, such as the Gradle integration of lint. This is where things like 
+terminal output, HTML reporting, command line parsing etc is handled.
+
+
 Support
 -------
 
