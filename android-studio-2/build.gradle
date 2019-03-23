@@ -26,6 +26,7 @@ ext {
 }
 
 dependencies {
+    // For a description of the below dependencies, see the main project README
     compile "com.android.tools.lint:lint-api:$lintVersion"
     compile "com.android.tools.lint:lint-checks:$lintVersion"
     testCompile "junit:junit:4.11"
