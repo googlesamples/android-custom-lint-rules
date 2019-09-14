@@ -25,6 +25,7 @@ import java.util.List;
 /*
  * The list of issues that will be checked when running <code>lint</code>.
  */
+@SuppressWarnings("unused")
 public class SampleIssueRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
