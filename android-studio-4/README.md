@@ -33,7 +33,7 @@ automatically be using the lint checks.
 
 Note that you don't have to go through the extra "library indirection"
 if you have a lint check that you only want to apply to one or more
-app modules. You can simply include the `lintChecks` dependency as shown
+app modules. You can simply include the `lintPublish` dependency as shown
 above there as well, and then lint will include these rules when analyzing
 the project.
 
