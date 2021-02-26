@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.example">
+
+    <!-- Not a real app, just a skeleton to show code depending
+	 on library with lint checks producing errors in the report -->
+
+</manifest>

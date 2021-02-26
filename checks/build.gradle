@@ -1,0 +1,38 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'com.android.lint'
+
+lintOptions {
+    htmlReport true
+    htmlOutput file("lint-report.html")
+    textReport true
+    absolutePaths false
+    ignoreTestSources true
+}
+
+dependencies {
+    // For a description of the below dependencies, see the main project README
+    compileOnly "com.android.tools.lint:lint-api:$lintVersion"
+    compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+    // TEMPORARY WORKAROUND
+    // Due to https://issuetracker.google.com/180889192, for some builds
+    // of 7.0 you may need to add one or more of the following dependencies,
+    // depending on which APIs your lint checks depend on. These were accidentally
+    // not exported by the lint-api artifact as api dependencies. This will
+    // be fixed by AGP 7.0.0-alpha10.
+    compileOnly "com.android.tools.lint:lint-api:$lintVersion"
+    compileOnly "com.android.tools.layoutlib:layoutlib-api:$lintVersion"
+    compileOnly "com.android.tools:common:$lintVersion"
+    compileOnly "com.android.tools.external.com-intellij:kotlin-compiler:$lintVersion"
+    compileOnly "org.ow2.asm:asm:7.0"
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "com.android.tools.lint:lint:$lintVersion"
+    testImplementation "com.android.tools.lint:lint-tests:$lintVersion"
+    testImplementation "com.android.tools:testutils:$lintVersion"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
