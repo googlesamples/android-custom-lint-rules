@@ -7,8 +7,8 @@ buildscript {
         //lintVersion = '27.2.0-beta05'
 
         // Upcoming lint target: Arctic Fox / AGP 7
-        gradlePluginVersion = '7.0.0-alpha08'
-        lintVersion = '30.0.0-alpha08' // if gradle plugin was 4.1.2, you'd use 27.1.2 here
+        gradlePluginVersion = '7.0.0-alpha10'
+        lintVersion = '30.0.0-alpha10' // if gradle plugin was 4.1.2, you'd use 27.1.2 here
     }
 
     repositories {
