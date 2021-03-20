@@ -5,8 +5,8 @@ The lint source code contains a lot of documentation on how to write
 custom checks; this git repository contains a snapshot of this
 documentation which you can read here:
 
-* [Full API Guide](https://tnorbye.github.io/android-custom-lint-rules/book.html)
-* [Other docs](https://tnorbye.github.io/android-custom-lint-rules/index.html)
+* [Full API Guide](https://googlesamples.github.io/android-custom-lint-rules/book.html)
+* [Other docs](https://googlesamples.github.io/android-custom-lint-rules/index.html)
 
 Lint
 ----
