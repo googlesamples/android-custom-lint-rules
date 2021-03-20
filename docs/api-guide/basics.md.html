@@ -1,0 +1,1070 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Writing a Lint Check: Basics
+
+## Preliminaries
+
+(If you already know a lot of the basics but you're here because you've
+run into a problem and you're consulting the docs, take a look at the
+frequently asked questions chapter.)
+
+### “Lint?”
+
+The `lint` tool shipped with the C compiler and provided additional
+static analysis of C code beyond what the compiler checked.
+
+Android Lint was named in honor of this tool, and with the Android
+prefix to make it really clear that this is a static analysis tool
+intended for analysis of Android code, provided by the Android Open
+Source Project -- and to disambiguate it from the many other tools with
+"lint“ in their names.
+
+However, since then, Android Lint has broadened its support and is no
+longer intended only for Android code. In fact, within Google, it is
+used to analyze all Java and Kotlin code. One of the reasons for this
+is that it can easily analyze both Java and Kotlin code without having
+to implement the checks twice. Additional features are described in the
+[features](../features.html.md) chapter.
+
+We're planning to rename lint to reflect this new role, so we are
+looking for good name suggestions.
+
+### API Stability
+
+Lint's APIs are still marked as @Beta, and we have made it very clear
+all along that this is not a stable API, so custom lint checks may need
+to be updated periodically to keep working.
+
+However, ”some APIs are more stable than others“. In particular, the
+detector API (described below) is much less likely to change than the
+client API (which is not intended for lint check authors but for tools
+integrating lint to run within, such as IDEs and build systems).
+
+However, this doesn't mean the detector API won't change. A large part
+of the API surface is external to lint; it's the AST libraries (PSI and
+UAST) for Java and Kotlin from JetBrains; it's the bytecode library
+(asm.ow2.io), it's the XML DOM library (org.w3c.dom), and so on. Lint
+intentionally stays up to date with these, so any API or behavior
+changes in these can affect your lint checks.
+
+Lint's own APIs may also change. The current API has grown organically
+over the last 10 years (the first version of lint was released in 2011)
+and there are a number of things we'd clean up and do differently if
+starting over. Not to mention rename and clean up inconsistencies.
+
+However, lint has been pretty widely adopted, so at this point creating
+a nicer API would probably cause more harm than good, so we're limiting
+recent changes to just the necessary ones. An example of this is the
+new [partial analysis](partial-analysis.md.html) architecture in 7.0
+which is there to allow much better CI and incremental analysis
+performance.
+
+### Kotlin
+
+We recommend that you implement your checks in Kotlin. Part of
+the reason for that is that the lint API uses a number of Kotlin
+features:
+
+* **Named and default parameters**: Rather than using builders, some
+  construction methods, like `Issue.create()` have a lot of parameters
+  with default parameters. The API is cleaner to use if you just
+  specify what you need and rely on defaults for everything else.
+
+* **Compatibility**: We may add additional parameters over time. It
+  isn't practical to add @JvmOverloads on everything.
+
+* **Package-level functions**: Lint's API includes a number of package
+  level utility functions (in previous versions of the API these are all
+  thrown together in a `LintUtils` class).
+
+* **Deprecations**: Kotlin has support for simple API migrations. For
+  example, in the below example, the new `@Deprecated` annotation on
+  lines 1 through 7 will be added in an upcoming release, to ease
+  migration to a new API. IntelliJ can automatically quickfix these
+  deprecation replacements.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+@Deprecated(
+    "Use the new report(Incident) method instead, which is more future proof",
+    ReplaceWith(
+        "report(Incident(issue, message, location, null, quickfixData))",
+        "com.android.tools.lint.detector.api.Incident"
+    )
+)
+@JvmOverloads
+open fun report(
+    issue: Issue,
+    location: Location,
+    message: String,
+    quickfixData: LintFix? = null
+) {
+    // ...
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As of 7.0, there is more Kotlin code in lint than remaining Java
+code:
+
+Language     | files |   blank | comment |  code
+-------------|------:|--------:|--------:|------:
+Kotlin       |  420  |  14243  |  23239  | 130250
+Java         |  289  |   8683  |  15205  | 101549
+                  [`$ cloc lint/`]
+
+And that's for all of lint, including many old lint detectors which
+haven't been touched in years. In the Lint API library,
+`lint/libs/lint-api`, the code is 78% Kotlin and 22% Java.
+
+## Concepts
+
+Lint will search your source code for problems. There are many types of
+problems, and each one is called an `Issue`, which has associated
+metadata like a unique id, a category, an explanation, and so on.
+
+Each instance that it finds is called an ”incident“.
+
+The actual responsibility of searching for and reporting incidents is
+handled by detectors -- subclasses of `Detector`. Your lint check will
+extend `Detector`, and when it has found a problem, it will ”report“
+the incident to lint.
+
+A `Detector` can analyze more than one `Issue`. For example, the
+built-in `StringFormatDetector` analyzes formatting strings passed to
+`String.format()` calls, and in the process of doing that discovers
+multiple unrelated issues -- invalid formatting strings, formatting
+strings which should probably use the plurals API instead, mismatched
+types, and so on. The detector could simply have a single issue called
+"StringFormatProblems” and report everything as a StringFormatProblem,
+but that's not a good idea. Each of these individual types of String
+format problems should have their own explanation, their own category,
+their own severity, and most importantly should be individually
+configurable by the user such that they can disable or promote one of
+these issues separately from the others.
+
+A `Detector` can indicate which sets of files it cares about. These are
+called “scopes”, and the way this works is that when you register your
+`Issue`, you tell that issue which `Detector` class is responsible for
+analyzing it, as well as which scopes the detector cares about.
+
+If for example a lint check wants to analyze Kotlin files, it can
+include the `Scope.JAVA_FILE` scope, and now that detector will be
+included when lint processes Java or Kotin files.
+
+!!! Tip
+   The name `Scope.JAVA_FILE` may make it sound like there should also
+   be a `Scope.KOTLIN_FILE`. However, `JAVA_FILE` here really refers to
+   both Java and Kotlin files since the analysis and APIs are identical
+   for both (using “UAST”, a universal abstract syntax tree). However,
+   at this point we don't want to rename it since it would break a lot
+   of existing checks. We might introduce an alias and deprecate this
+   one in the future.
+
+When detectors implement various callbacks, they can analyze the
+code, and if they find a problematic pattern, they can “report”
+the incident. This means computing an error message, as well as
+a “location”. A “location” for an incident is really an error
+range -- a file, and a starting offset and an ending offset. Locations
+can also be linked together, so for example for a “duplicate
+declaration” error, you can and should include both locations.
+
+Many detector methods will pass in a `Context`, or a more specific
+subclass of `Context` such as `JavaContext` or `XmlContext`. This
+allows lint to provide access to the detectors information they may
+need, without passing in a lot of parameters (and allowing lint to add
+additional data over time without breaking signatures).
+
+The `Context` classes also provide many convenience APIs. For example,
+for `XmlContext` there are methods for creating locations for XML tags,
+XML attributes, just the name part of an XML attribute and just the
+value part of an XML attribute. For a `JavaContext` there are also
+methods for creating locations, such as for a method call, including
+whether to include the receiver and/or the argument list.
+
+When you report an `Incident` you can also provide a `LintFix`; this is
+a quickfix which the IDE can use to offer actions to take on the
+warning. In some cases, you can offer a complete and correct fix (such
+as removing an unused element). In other cases the fix may be less
+clear; for example, the `AccessibilityDetector` asks you to set a
+description for images; the quickfix will set the content attribute,
+but will leave the text value as TODO and will select the string such
+that the user can just type to replace it.
+
+!!! Tip
+   When reporting incidents, make sure that the error messages are not
+   generic; try to be explicit and include specifics for the current
+   scenario. For example, instead of just “Duplicate declaration”, use
+   “`$name` has already been declared”. This isn't just for cosmetics;
+   it also makes lint's [baseline
+   mechanism](../usage/baselines.md.html) work better since it
+   currently matches by id + file + message, not by line numbers which
+   typically drift over time.
+
+## Client API versus Detector API
+
+Lint's API has two halves:
+
+- The **Client API**: “Integrate (and run) lint from within a tool”.
+  For example, both the IDE and the build system uses this API to embed
+  and invoke lint to analyze the code in the project or editor.
+
+- The **Detector API**: “Implement a new lint check”. This is the API
+  which lets checkers analyze code and report problems that they find.
+
+The class in the Client API which represents lint running in a tool is
+called `LintClient`. This class is responsible for, among other things:
+
+* Reporting incidents found by detectors. For example, in the IDE, it
+  will place error markers into the source editor, and in a build
+  system, it may write warnings to the console or generate a report or
+  even fail the build.
+
+* Handling I/O. Detectors should never read files from disk directly.
+  This allows lint checks to work smoothly in for example the IDE. When
+  lint runs on the fly, and a lint check asks for the source file
+  contents (or other supporting files), the `LintClient` in the IDE
+  will implement the `readFile` method to first look in the open source
+  editors and if the requested file is being edited, it will return the
+  current (often unsaved!) contents.
+
+* Handling network traffic. Lint checks should never open
+  URLConnections themselves. By going through the lint API to request
+  data for a URL, not only can the LintClient for example use any
+  configured IDE proxy settings which is done in the IntelliJ
+  integration of lint, but even the lint check's own unit tests can
+  easily be tested because the special unit test implementation of a
+  `LintClient` provides a simple way to provide exact responses for
+  specific URLs:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lint()
+  .files(...)
+  // Set up exactly the expected maven.google.com network output to
+  // ensure stable version suggestions in the tests
+  .networkData("https://maven.google.com/master-index.xml", ""
+       + "<?xml version='1.0' encoding='UTF-8'?>\n"
+       + "<metadata>\n"
+       + "  <com.android.tools.build/>"
+       + "</metadata>")
+  .networkData("https://maven.google.com/com/android/tools/build/group-index.xml", ""
+       + "<?xml version='1.0' encoding='UTF-8'?>\n"
+       + "<com.android.tools.build>\n"
+       + "  <gradle versions=\"2.3.3,3.0.0-alpha1\"/>\n"
+       + "</com.android.tools.build>")
+.run()
+.expect(...)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+And much, much, more. **However, most of the implementation of
+`LintClient` is intended for integration of lint itself, and as a check
+author you don't need to worry about it.** It's the detector API that
+matters, and is also less likely to change than the client API.
+
+!!! Tip
+   The division between the two halves is not perfect; some classes
+   do not fit neatly in between the two or historically were put in
+   the wrong place, so this is a high level design to be aware of but
+   which is not absolute.
+
+Also,
+
+!!! Warning
+   Because of the division between two separate packages, which in
+   retrospect was a mistake, a number of APIs that are only intended
+   for internal lint usage have been made `public` such that lint's
+   code in one package can access it from the other. There's normally a
+   comment explaining that this is for internal use only, but be aware
+   that just because something is `public` or not `final` it's a good
+   idea to call or override it.
+
+## Creating an Issue
+
+For information on how to set up the project and to actually publish
+your lint checks, see the [sample](example.md.html) and
+[publishing](publishing.md.html) chapters.
+
+`Issue` is a final class, so unlike `Detector`, you don't subclass
+it, you instantiate it via `Issue.create`.
+
+By convention, issues are registered inside the companion object of the
+corresponding detector, but that is not required.
+
+Here's an example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+class SdCardDetector : Detector(), SourceCodeScanner {
+    companion object Issues {
+        @JvmField
+        val ISSUE = Issue.create(
+            id = "SdCardPath",
+            briefDescription = "Hardcoded reference to `/sdcard`",
+            explanation = """
+                Your code should not reference the `/sdcard` path directly; \
+                instead use `Environment.getExternalStorageDirectory().getPath()`.
+
+                Similarly, do not reference the `/data/data/` path directly; it \
+                can vary in multi-user scenarios. Instead, use \
+                `Context.getFilesDir().getPath()`.
+                """,
+            moreInfo = "https://developer.android.com/training/data-storage#filesExternal",
+            category = Category.CORRECTNESS,
+            severity = Severity.WARNING,
+            androidSpecific = true,
+            implementation = Implementation(
+                SdCardDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+        )
+    }
+    ...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are a number of things to note here.
+
+On line 4, we have the `Issue.create()` call. We store the issue into a
+property such that we can reference this issue both from the
+`IssueRegistry`, where we provide the `Issue` to lint, and also in the
+`Detector` code where we report incidents of the issue.
+
+Note that `Issue.create` is a method with a lot of parameters (and we
+will probably add more parameters in the future). Therefore, it's a
+good practice to explicitly include the argument names (and therefore
+to implement your code in Kotlin).
+
+The `Issue` provides metadata about a type of problem.
+
+The **`id`** is a short, unique identifier for this issue. By
+convention it is a combination of words, capitalized camel case (though
+you can also add your own package prefix as in Java packages). Note
+that the id is “user visible”; it is included in text output when lint
+runs in the build system, such as this:
+
+```shell
+src/main/kotlin/test/pkg/MyTest.kt:4: Warning: Do not hardcode "/sdcard/";
+      use Environment.getExternalStorageDirectory().getPath() instead [SdCardPath]
+    val s: String = "/sdcard/mydir"
+                     ~~~~~~~~~~~~~
+0 errors, 1 warnings
+```
+
+(Notice the `[SdCardPath]` suffix at the end of the error message.)
+
+The reason the id is made known to the user is that the ID is how
+they'll configure and/or suppress issues. For example, to suppress the
+warning in the current method, use
+
+```
+@Suppress("SdCardPath")
+```
+
+(or in Java, @SuppressWarnings). Note that there is an IDE quickfix to
+suppress an incident which will automatically add these annotations, so
+you don't need to know the ID in order to be able to suppress an
+incident, but the ID will be visible in the annotation that it
+generates, so it should be reasonably specific.
+
+Also, since the namespace is global, try to avoid picking generic names
+that could clash with others, or seem to cover a larger set of issues
+than intended. For example, “InvalidDeclaration” would be a poor id
+since that can cover a lot of potential problems with declarations
+across a number of languages and technologies.
+
+Next, we have the **`briefDescription`**. You can think of this as a
+"category report header“; this is a static description for all
+incidents of this type, so it cannot include any specifics. This string
+is used for example as a header in HTML reports for all incidents of
+this type, and in the IDE, if you open the Inspections UI, the various
+issues are listed there using the brief descriptions.
+
+The **`explanation`** is a multi line, ideally multi-paragraph
+explanation of what the problem is. In some cases, the problem is self
+evident, as in the case of ”Unused declaration“, but in many cases, the
+issue is more subtle and might require additional explanation,
+particularly for what the developer should **do** to address the
+problem. The explanation is included both in HTML reports and in the
+IDE inspection results window.
+
+Note that even though we're using a raw string, and even though the
+string is indented to be flush with the rest of the issue registration
+for better readability, we don't need to call `trimIndent()` on
+the raw string. Lint does that automatically.
+
+However, we do need to add line continuations -- those are the trailing
+\'s at the end of the lines.
+
+Note also that we have a Markdown-like simple syntax, described in the
+"TextFormat” section below. You can use asterisks for italics or double
+asterisks for bold, you can use apostrophes for code font, and so on.
+In terminal output this doesn't make a difference, but the IDE,
+explanations, incident error messages, etc, are all formatted using
+these styles.
+
+The **`category`** isn't super important; the main use is that category
+names can be treated as id's when it comes to issue configuration; for
+example, a user can turn off all internationalization issues, or run
+lint against only the security related issues. The category is also
+used for locating related issues in HTML reports. If none of the
+built-in categories are appropriate you can also create your own.
+
+The **`severity`** property is very important. An issue can be either a
+warning or an error. These are treated differently in the IDE (where
+errors are red underlines and warnings are yellow highlights), and in
+the build system (where errors can optionally break the build and
+warnings do not). There are some other severities too; ”fatal“ is like
+error except these checks are designated important enough (and have
+very few false positives) such that we run them during release builds,
+even if the user hasn't explicitly run a lint target. There's also
+"informational” severity, which is only used in one or two places, and
+finally the “ignore” severity. This is never the severity you register
+for an issue, but it's part of the severities a developer can configure
+for a particular issue, thereby turning off that particular check.
+
+You can also specify a **`moreInfo`** URL which will be included in the
+issue explanation as a “More Info” link to open to read more details
+about this issue or underlying problem.
+
+## TextFormat
+
+All error messages and issue metadata strings in lint are interpreted
+using simple Markdown-like syntax:
+
+Raw text format              | Renders To
+-----------------------------|--------------------------
+This is a \`code symbol\`    | This is a `code symbol`
+This is `*italics*`          | This is *italics*
+This is `**bold**`           | This is **bold**
+http://, https://            | [](http://), [](https://)
+`\*not italics*`             | `\*not italics*`
+\`\`\`language\n text\n\`\`\`| (preformatted text block)
+ [Supported markup in lint's markdown-like raw text format]
+
+This is useful when error messages and issue explanations are shown in
+HTML reports generated by Lint, or in the IDE, where for example the
+error message tooltips will use formatting.
+
+In the API, there is a `TextFormat` enum which encapsulates the
+different text formats, and the above syntax is referred to as
+`TextFormat.RAW`; it can be converted to `.TEXT` or `.HTML` for
+example, which lint does when writing text reports to the console or
+HTML reports to files respectively. As a lint check author you don't
+need to know this (though you can for example with the unit testing
+support decide which format you want to compare against in your
+expected output), but the main point here is that your issue's brief
+description, issue explanation, incident report messages etc, should
+use the above “raw” syntax. Especially the first conversion; error
+messages often refer to class names and method names, and these should
+be surrounded by apostrophes.
+
+## Issue Implementation
+
+The last issue registration property is the **`implementation`**. This
+is where we glue our metadata to our specific implementation of an
+analyzer which can find instances of this issue.
+
+Normally, the `Implementation` provides two things:
+
+* The `.class` for our `Detector` which should be instantiated. In the
+  code sample above it was `SdCardDetector`.
+
+* The `Scope` that this issue's detector applies to. In the above
+  example it was `Scope.JAVA_FILE`, which means it will apply to Java
+  and Kotlin files.
+
+## Scopes
+
+The `Implementation` actually takes a **set** of scopes; we still refer
+to this as a “scope”. Some lint checks want to analyze multiple types
+of files. For example, the `StringFormatDetector` will analyze both the
+resource files declaring the formatting strings across various locales,
+as well as the Java and Kotlin files containing `String.format` calls
+referencing the formatting strings.
+
+There are a number of pre-defined sets of scopes in the `Scope`
+class. `Scope.JAVA_FILE_SCOPE` is the most common, which is a
+singleton set containing exactly `Scope.JAVA_FILE`, but you
+can always create your own, such as for example
+```
+    EnumSet.of(Scope.CLASS_FILE, Scope.JAVA_LIBRARIES)
+```
+
+When a lint issue requires multiple scopes, that means lint will
+**only** run this detector if **all** the scopes are available in the
+running tool. When lint runs a full batch run (such as a Gradle lint
+target or a full “Inspect Code“ in the IDE), all scopes are available.
+
+However, when lint runs on the fly in the editor, it only has access to
+the current file; it won't re-analyze *all* files in the project for
+every few keystrokes. So in this case, the scope in the lint driver
+only includes the current source file's type, and only lint checks
+which specify a scope that is a subset would run.
+
+This is a common mistake for new lint check authors: the lint check
+works just fine as a unit test, but they don't see working in the IDE
+because the issue implementation requests multiple scopes, and **all**
+have to be available.
+
+Often, a lint check looks at multiple source file types to work
+correctly in all cases, but it can still identify *some* problems given
+individual source files. In this case, the `Implementation` constructor
+(which takes a vararg of scope sets) can be handed additional sets of
+scopes, called ”analysis scopes“. If the current lint client's scope
+matches or is a subset of any of the analysis scopes, then the check
+will run after all.
+
+## Registering the Issue
+
+Once you've created your issue, you need to provide it from
+an `IssueRegistry`.
+
+Here's an example `IssueRegistry`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example.lint.checks
+
+import com.android.tools.lint.client.api.IssueRegistry
+import com.android.tools.lint.client.api.Vendor
+import com.android.tools.lint.detector.api.CURRENT_API
+
+class SampleIssueRegistry : IssueRegistry() {
+    override val issues = listOf(SdCardDetector.ISSUE)
+
+    override val api: Int
+        get() = CURRENT_API
+
+    // works with Studio 4.1 or later; see
+    // com.android.tools.lint.detector.api.Api / ApiKt
+    override val minApi: Int
+        get() = 8
+
+    // Requires lint API 30.0+; if you're still building for something
+    // older, just remove this property.
+    override val vendor: Vendor = Vendor(
+        vendorName = "Android Open Source Project",
+        feedbackUrl = "https://com.example.lint.blah.blah",
+        contact = "author@com.example.lint"
+    )
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On line 8, we're returning our issue. It's a list, so an
+`IssueRegistry` can provide multiple issues.
+
+The **`api`** property should be written exactly like the way it
+appears above in your own issue registry as well; this will record
+which version of the lint API this issue registry was compiled against
+(because this references a static final constant which will be copied
+into the jar file instead of looked up dynamically when the jar is
+loaded).
+
+The **`minApi`** property records the oldest lint API level this check
+has been tested with.
+
+Both of these are used at issue loading time to make sure lint checks
+are compatible, but in recent versions of lint (7.0) lint will more
+aggressively try to load older detectors even if they have been
+compiled against older APIs since there's a high likelihood that they
+will work (it checks all the lint APIs in the bytecode and uses
+reflection to verify that they're still there).
+
+The **`vendor`** property is new as of 7.0, and gives lint authors a
+way to indicate where the lint check came from. When users use lint,
+they're running hundreds and hundreds of checks, and sometimes it's not
+clear who to contact with requests or bug reports. When a vendor has
+been specified, lint will include this information in error output and
+reports.
+
+The last step towards making the lint check available is to make
+the `IssueRegistry` known via the service loader mechanism.
+
+Create a file named exactly
+```
+src/main/resources/META-INF/services/com.android.tools.lint.client.api.IssueRegistry
+```
+
+with the following contents (but where you substitute in your own
+fully qualified class name for your issue registry):
+
+```
+com.example.lint.checks.SampleIssueRegistry
+```
+
+If you're not building your lint check using Gradle, you may not want
+the `src/main/resources` prefix; the point is that your packaging of
+the jar file should contain `META-INF/services/` at the root of the jar
+file.
+
+## Implementing a Detector: Scanners
+
+We've finally come to the main task with writing a lint check:
+implementing the **`Detector`**.
+
+Here's a trivial one:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+class MyDetector : Detector() {
+   override fun run(context: Context) {
+       context.report(ISSUE, Location.create(context.file),
+           "I complain a lot")
+   }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This will just complain in every single file. Obviously, no real lint
+detector does this; we want to do some analysis and **conditionally**
+report incidents.
+
+In order to make it simpler to perform analysis, Lint has dedicated
+support for analyzing various file types. The way this works is that
+you register interest, and then various callbacks will be invoked.
+
+For example:
+
+* When implementing **`XmlScanner`**, in an XML element you can be
+  called back
+  - when any of a set of given tags are declared  (`visitElement`)
+  - when any of a set of named attributes are declared
+    (`visitAttribute`)
+  - and you can perform your own document traversal via `visitDocument`
+
+* When implementing **`SourceCodeScanner`**, in Kotlin and Java files
+  you can be called back
+  - When a method of a given name is invoked (`getApplicableMethodNames`
+    and `visitMethodCall`)
+  - When a class of the given type is instantiated
+    (`getApplicableConstructorTypes` and `visitConstructor`)
+  - When a new class is declared which extends (possibly indirectly)
+    a given class or interface (`applicableSuperClasses` and
+    `visitClass`)
+  - When annotated elements are referenced or combined
+    (`applicableAnnotations` and `visitAnnotationUsage`)
+  - When any AST nodes of given types appear (`getApplicableUastTypes`
+    and `createUastHandler`)
+
+* When implementing a **`ClassScanner`**, in `.class` and `.jar` files
+  you can be called back
+  - when a method is invoked for a particular owner
+    (`getApplicableCallOwners` and `checkCall`
+  - when a given bytecode instruction occurs
+    (`getApplicableAsmNodeTypes` and `checkInstruction`)
+  - like with XmlScanner's `visitDocument`, you can perform your own
+    ASM bytecode iteration via `checkClass`.
+
+* There are various other scanners too, for example `GradleScanner`
+  which lets you visit `build.gradle` and `build.gradle.kts` DSL
+  closures, `BinaryFileScanner` which visits resource files such as
+  webp and png files, and `OtherFileScanner` which lets you visit
+  unknown files.
+
+!!! Note
+   Note that `Detector` already implements empty stub methods for all
+   of these interfaces, so if you for example implement
+   `SourceFileScanner` in your detector, you don't need to go and add
+   empty implementations for all the methods you aren't using.
+
+!!! Tip
+   None of Lint's APIs require you to call `super` when you override
+   methods; methods meant to be overridden are always empty so the
+   super-call is superfluous.
+
+## Detector Lifecycle
+
+Detector registration is done by detector class, not by detector
+instance. Lint will instantiate detectors on your behalf. It will
+instantiate the detector once per analysis, so you can stash state on
+the detector in fields and accumulate information for analysis at the
+end.
+
+There are some callbacks both before each individual file is analyzed
+(`beforeCheckFile` and `afterCheckFile`), as well as before and after
+analysis of all the modules (`beforeCheckRootProject` and
+`afterCheckRootProject`).
+
+This is for example how the ”unused resources“ check works: we store
+all the resource declarations and resource references we find in the
+project as we process each file, and then in the
+`afterCheckRootProject` method we analyze the resource graph and
+compute any resource declarations that are not reachable in the
+reference graph, and then we report each of these as unused.
+
+## Scanner Order
+
+Some lint checks involve multiple scanners. This is pretty common in
+Android, where we want to cross check consistency between data in
+resource files with the code usages. For example, the `String.format`
+check makes sure that the arguments passed to `String.format` match the
+formatting strings specified in all the translation XML files.
+
+Lint defines an exact order in which it processes scanners, and within
+scanners, data. This makes it possible to write some detectors more
+easily because you know that you'll encounter one type of data before
+the other; you don't have to handle the opposite order. For example, in
+our `String.format` example, we know that we'll always see the
+formatting strings before we see the code with `String.format` calls,
+so we can stash the formatting strings in a map, and when we process
+the formatting calls in code, we can immediately issue reports; we
+don't have to worry about encountering a formatting call for a
+formatting string we haven't processed yet.
+
+Here's lint's defined order:
+
+1. Android Manifest
+2. Android resources XML files (alphabetical by folder type, so for
+   example layouts are processed before value files like translations)
+3. Kotlin and Java files
+4. Bytecode (local `.class` files and library `.jar` files)
+5. Gradle files
+6. Other files
+7. ProGuard files
+8. Property Files
+
+Similarly, lint will always process libraries before the modules
+that depend on them.
+
+!!! Tip
+   If you need to access something from later in the iteration order,
+   and it's not practical to store all the current data and instead
+   handle it when the later data is encountered, note that lint has
+   support for ”multi-pass analysis“: it can run multiple times over
+   the data. The way you invoke this is via
+   `context.driver.requestRepeat(this, …)`. This is actually how the
+   unused resource analysis works. Note however that this repeat is
+   only valid within the current module; you can't re-run the analysis
+   through the whole dependency graph.
+
+## Implementing a Detector: Services
+
+In addition to the scanners, lint provides a number of services
+to make implementation simpler. These include
+
+* **`ConstantEvaluator`**: Performs evaluation of AST expressions, so
+  for example if we have the statements `x = 5; y = 2 * x`, the
+  constant evaluator can tell you that y is 10. This constant evaluator
+  can also be more permissive than a compiler's strict constant
+  evaluator; e.g. it can return concatenated strings where not all
+  parts are known, or it can use non-final initial values of fields.
+  This can help you find *possible* bugs instead of *certain* bugs.
+
+* **`TypeEvaluator`**: Attempts to provide the concrete type of an
+  expression. For example, for the Java statements `Object s = new
+  StringBuilder(); Object o = s`, the type evaluator can tell you that
+  the type of `o` at this point is really `StringBuilder`.
+
+* **`JavaEvaluator`**: Despite the unfortunate older name, this service
+  applies to both Kotlin and Java, and can for example provide
+  information about inheritance hierarchies, class lookup from fully
+  qualified names, etc.
+
+* **`DataFlowAnalyzer`**: Data flow analysis within a method.
+
+* For Android analysis, there are several other important services,
+  like the `ResourceRepository` and the `ResourceEvaluator`.
+
+* Finally, there are a number of utility methods; for example there is
+  an `editDistance` method used to find likely typos used by a number
+  of checks.
+
+## Scanner Example
+
+Let's create a `Detector` using one of the above scanners,
+`XmlScanner`, which will look at all the XML files in the project and
+if it encounters a `<bitmap>` tag it will report that `<vector>` should
+be used instead:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Detector.XmlScanner
+import com.android.tools.lint.detector.api.Location
+import com.android.tools.lint.detector.api.XmlContext
+import org.w3c.dom.Element
+
+class MyDetector : Detector(), XmlScanner {
+    override fun getApplicableElements() = listOf("bitmap")
+
+    override fun visitElement(context: XmlContext, element: Element) {
+        val incident = Incident(context, ISSUE)
+            .message( "Use `<vector>` instead of `<bitmap>`")
+            .at(element)
+        context.report(incident))
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The above is using the new `Incident` API from Lint 7.0 and on; in
+older versions you can use the following API, which still works in 7.0:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+class MyDetector : Detector(), XmlScanner {
+    override fun getApplicableElements() = listOf("bitmap")
+
+    override fun visitElement(context: XmlContext, element: Element) {
+        context.report(ISSUE, context.getLocation(element),
+            "Use `<vector>` instead of `<bitmap>`")
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second, older form, may seem simpler, but the new API allows a lot
+more metadata to be attached to the report, such as an override
+severity. You don't have to convert to the builder syntax to do this;
+you could also have written the second form as
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+context.report(Incident(ISSUE, context.getLocation(element),
+    "Use `<vector>` instead of `<bitmap>`"))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Analyzing Kotlin and Java Code
+
+### UAST
+
+To analyze Kotlin and Java code, lint offers an abstract syntax tree,
+or ”AST“, for the code.
+
+This AST is called ”UAST“, for ”Universal Abstract Syntax Tree“, which
+represents multiple languages in the same way, hiding the language
+specific details like whether there is a semicolon at the end of the
+statements or whether the way an annotation class is declared is as
+`@interface` or `annotation class`, and so on.
+
+This makes it possible to write a single analyzer which works
+(”universally“) across all languages supported by UAST. And this is
+very useful; most lint checks are doing something API or data-flow
+specific, not something language specific. If however you do need to
+implement something very language specific, see the next section,
+"PSI”.
+
+In UAST, each element is called a **`UElement`**, and there are a
+number of subclasses -- `UFile` for the compilation unit, `UClass` for
+a class, `UMethod` for a method, `UExpression` for an expression,
+`UIfExpression` for an `if`-expression, and so on.
+
+Here's a visualization of an AST in UAST for two equivalent programs
+written in Kotlin and Java. These programs both result in the same
+AST, shown on the right: a `UFile` compilation unit, containing
+a `UClass` named `MyTest`, containing `UField` named s which has
+an initializer setting the initial value to `hello`.
+
+************************************************************************
+*
+* MyTest.kt:                              UAST:
+* +---------------------------+         .-------.
+* | package test.pkg          |        |  UFile  |
+* | class MyTest {            |         '---+---'
+* |   private val s = “hello” |             |
+* | }                         |      .------+------.
+* +---------------------------+     | UClass MyTest |
+*                                    '------+------'
+* MyTest.java:                              |
+* +------------------------+            .---+----.
+* | package test.pkg;      |           | UField s |
+* | public class MyTest {  |            '+------+'
+* |    private String s =  |            /        \
+* |        “hello”;        |           /          \
+* | }                      |          /            \
+* +------------------------+         /              \
+*                       .-----------+.      .--------+---------------.
+*                      |UIdentifier s |    | ULiteralExpression hello |
+*                       '------------'      '------------------------'
+*
+************************************************************************
+
+!!! Tip
+   The name “UAST” is a bit misleading; it is not some sort of superset
+   of all possible syntax trees; instead, think of this as the “Java
+   view” of all code. So, for example, there isn’t a `UProperty` node
+   which represents Kotlin properties. Instead, the AST will look the
+   same as if the property had been implemented in Java: it will
+   contain a private field and a public getter and a public setter
+   (unless of course the Kotlin property specifies a private setter).
+   If you’ve written code in Kotlin and have tried to access that
+   Kotlin code from a Java file you will see the same thing -- the
+   “Java view” of Kotlin. The next section, “PSI“, will discuss how to
+   do more language specific analysis.
+
+### UAST Example
+
+Here's an example (from the built-in `AlarmDetector` for Android) which
+shows all of the above in practice; this is a lint check which makes
+sure that if anyone calls `AlarmManager.setRepeating`, the second
+argument is at least 5,000 and the third argument is at least 60,000.
+
+Line 1 says we want to have line 3 called whenever lint comes across a
+method to `setRepeating`.
+
+On lines 8-4 we make sure we're talking about the correct method on the
+correct class with the correct signature. This uses the `JavaEvaluator`
+to check that the called method is a member of the named class. This is
+necessary because the callback would also be invoked if lint came
+across a method call like `Unrelated.setRepeating`; the
+`visitMethodCall` callback only matches by name, not receiver.
+
+On line 36 we use the `ConstantEvaluator` to compute the value of each
+argument passed in. This will let this lint check not only handle cases
+where you're specifying a specific value directly in the argument list,
+but also for example referencing a constant from elsewhere.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+override fun getApplicableMethodNames(): List<String> = listOf("setRepeating")
+
+override fun visitMethodCall(
+    context: JavaContext,
+    node: UCallExpression,
+    method: PsiMethod
+) {
+    val evaluator = context.evaluator
+    if (evaluator.isMemberInClass(method, "android.app.AlarmManager") &&
+        evaluator.getParameterCount(method) == 4
+    ) {
+        ensureAtLeast(context, node, 1, 5000L)
+        ensureAtLeast(context, node, 2, 60000L)
+    }
+}
+
+private fun ensureAtLeast(
+    context: JavaContext,
+    node: UCallExpression,
+    parameter: Int,
+    min: Long
+) {
+    val argument = node.valueArguments[parameter]
+    val value = getLongValue(context, argument)
+    if (value < min) {
+        val message = "Value will be forced up to $min as of Android 5.1; " +
+            "don't rely on this to be exact"
+        context.report(ISSUE, argument, context.getLocation(argument), message)
+    }
+}
+
+private fun getLongValue(
+    context: JavaContext,
+    argument: UExpression
+): Long {
+    val value = ConstantEvaluator.evaluate(context, argument)
+    if (value is Number) {
+        return value.toLong()
+    }
+
+    return java.lang.Long.MAX_VALUE
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Looking up UAST
+
+To write your detector's analysis, you need to know what the AST for
+your code of interest looks like. Instead of trying to figure it out by
+examining the elements under a debugger, a simple way to find out is to
+”pretty print“ it, using the `UElement` extension method
+**`asRecursiveLogString`**.
+
+For example, given the following unit test:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lint().files(
+       kotlin(""
+               + "package test.pkg\n"
+               + "\n"
+               + "class MyTest {\n"
+               + "    val s: String = \"hello\"\n"
+               + "}\n"), ...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you evaluate `context.uastFile?.asRecursiveLogString()` from
+one of the callbacks, it will print this:
+
+```text
+UFile (package = test.pkg)
+    UClass (name = MyTest)
+        UField (name = s)
+            UAnnotation (fqName = org.jetbrains.annotations.NotNull)
+            ULiteralExpression (value = "hello")
+        UAnnotationMethod (name = getS)
+        UAnnotationMethod (name = MyTest)
+```
+
+(This also illustrates the earlier point about UAST representing the
+Java view of the code; here the read-only public Kotlin property ”s“ is
+represented by both a private field `s` and a public getter method,
+`getS()`.)
+
+### Resolving
+
+When you have a method call, or a field reference, you may want to take
+a look at the called method or field. This is called ”resolving“, and
+UAST supports it directly; on a `UCallExpression` for example, call
+`.resolve()`, which returns a `PsiMethod`, which is like a `UMethod`,
+but may not represent a method we have source for (which for example
+would be the case if you resolve a reference to the JDK or to a library
+we do not have sources for). You can call `.toUElement()` on the
+PSI element to try to convert it to UAST if source is available.
+
+!!! Warning
+   Resolving only works if lint has a correct classpath such that the
+   referenced method, field or class are actually present. If it is
+   not, resolve will return null, and various lint callbacks will not
+   be invoked. This is a common source of questions for lint checks
+   ”not working“; it frequently comes up in lint unit tests where a
+   test file will reference some API that isn't actually included in
+   the class path. The recommended approach for this is to declare
+   local stubs. See the [unit testing](unit-testing.md.html) chapter
+   for more details about this.
+
+### PSI
+
+PSI is short for ”Program Structure Interface“, and is IntelliJ's AST
+abstraction used for all language modeling in the IDE.
+
+Note that there is a **different** PSI representation for each
+language. Java and Kotlin have completely different PSI classes
+involved. This means that writing a lint check using PSI would involve
+writing a lot of logic twice; once for Java, and once for Kotlin. (And
+the Kotlin PSI is a bit trickier to work with.)
+
+That's what UAST is for: there's a ”bridge“ from the Java PSI to UAST
+and there's a bridge from the Kotlin PSI to UAST, and your lint check
+just analyzes UAST.
+
+However, there are a few scenarios where we have to use PSI.
+
+The first, and most common one, is listed in the previous section on
+resolving. UAST does not completely replace PSI; in fact, PSI leaks
+through in part of the UAST API surface. For example,
+`UMethod.resolve()` returns a `PsiMethod`. And more importantly,
+`UMethod` **extends** `PsiMethod`.
+
+!!! Warning
+   For historical reasons, `PsiMethod` and other PSI classes contain
+   some unfortunate APIs that only work for Java, such as asking for
+   the method body. Because `UMethod` extends `PsiMethod`, you might be
+   tempted to call `getBody()` on it, but this will return null from
+   Kotlin. If your unit tests for your lint check only have test cases
+   written in Java, you may not realize that your check is doing the
+   wrong thing and won't work on Kotlin code. It should call `uastBody`
+   on the `UMethod` instead. Lint's special detector for lint detectors
+   looks for this and a few other scenarios (such as calling `parent`
+   instead of `uastParent`), so be sure to configure it for your
+   project.
+
+When you are dealing with ”signatures“ -- looking at classes and
+class inheritance, methods, parameters and so on -- using PSI is
+fine -- and unavoidable since UAST does not represent bytecode
+(though in the future it potentially could, via a decompiler)
+or any other JVM languages than Kotlin and Java.
+
+However, if you are looking at anything *inside* a method or class
+or field initializer, you **must** use UAST.
+
+The **second** scenario where you may need to use PSI is where you have
+to do something language specific which is not represented in UAST. For
+example, if you are trying to look up the names or default values of a
+parameter, or whether a given class is a companion object, then you'll
+need to dip into Kotlin PSI.
+
+There is usually no need to look at Java PSI since UAST fully covers
+it, unless you want to look at individual details like specific
+whitespace between AST nodes, which is represented in PSI but not UAST.
+
+## Testing
+
+Writing unit tests for the lint check is important, and this is covered
+in detail in the dedicated [unit testing](unit-testing.md.html)
+chapter.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
