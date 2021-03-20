@@ -1,0 +1,362 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Example: Sample Lint Check GitHub Project
+
+The [](https://github.com/googlesamples/android-custom-lint-rules)
+GitHub project provides a sample lint check which shows a working
+skeleton.
+
+This chapter walks through that sample project and explains
+what and why.
+
+## Project Layout
+
+Here's the project layout of the sample project:
+
+*******************************************************************
+*                                                                 *
+*    +----+  implementation  +--------+  lintPublish  +-------+   *
+*    |:app+----------------->|:library+-------------->|:checks|   *
+*    +----+                  +--------+               +-------+   *
+*                                                                 *
+*******************************************************************
+
+We have an application module, `app`, which depends (via an
+`implementation` dependency) on a `library`, and the library itself has
+a `lintPublish` dependency on the `checks` project.
+
+## :checks
+
+The `checks` project is where the actual lint checks are implemented.
+This project is a plain Kotlin or plain Java Gradle project:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!!! Tip
+   If you look at the sample project, you'll see a third plugin
+   applied: `apply plugin: 'com.android.lint'`. This pulls in the
+   standalone Lint Gradle plugin, which adds a lint target to this
+   Kotlin project. This means that you can run `./gradlew lint` on the
+   `:checks` project too. This is useful because lint ships with a
+   dozen lint checks that look for mistakes in lint detectors! This
+   includes warnings about using the wrong UAST methods, invalid id
+   formats, words in messages which look like code which should
+   probably be surrounded by apostrophes, etc.
+
+The Gradle file also declares the dependencies on lint APIs
+that our detector needs:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+dependencies {
+    compileOnly "com.android.tools.lint:lint-api:$lintVersion"
+    compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
+    testImplementation "com.android.tools.lint:lint-tests:$lintVersion"
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second dependency is usually not necessary; you just need to depend
+on the Lint API. However, the built-in checks define a lot of
+additional infrastructure which it's sometimes convenient to depend on,
+such as `ApiLookup` which lets you look up the required API level for a
+given method, and so on. Don't add the dependency until you need it.
+
+## lintVersion?
+
+What is the `lintVersion` variable defined above?
+
+Here's the top level build.gradle
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+buildscript {
+    ext {
+        kotlinVersion = '1.4.31'
+
+        // Current lint target: Studio 4.2 / AGP 7
+        //gradlePluginVersion = '4.2.0-beta06'
+        //lintVersion = '27.2.0-beta06'
+
+        // Upcoming lint target: Arctic Fox / AGP 7
+        gradlePluginVersion = '7.0.0-alpha10'
+        lintVersion = '30.0.0-alpha10'
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `$lintVersion` variable is defined on line 11. We don't technically
+need to define the `$gradlePluginVersion` here or add it to the classpath on line 19, but that's done so that we can add the `lint`
+plugin on the checks themselves, as well as for the other modules,
+`:app` and `:library`, which do need it.
+
+When you build lint checks, you're compiling against the Lint APIs
+distributed on maven.google.com (which is referenced via `google()` in
+Gradle files). These follow the Gradle plugin version numbers.
+
+Therefore, you first pick which of lint's API you'd like to compile
+against. You should use the latest available if possible.
+
+Once you know the Gradle plugin version number, say 4.2.0-beta06, you
+can compute the lint version number by simply adding **23** to the
+major version of the gradle plugin, and leave everything the same:
+
+**lintVersion = gradlePluginVersion + 23.0.0**
+
+For example, 7 + 23 = 30, so AGP version *7.something* corresponds to
+Lint version *30.something*. As another example; as of this writing the
+current stable version of AGP is 4.1.2, so the corresponding version of
+the Lint API is 27.1.2.
+
+!!! Tip
+   Why this arbitrary numbering -- why can't lint just use the same
+   numbers? This is historical; lint (and various other sibling
+   libraries that lint depends on) was released earlier than the Gradle
+   plugin; it was up to version 22 or so. When we then shipped the
+   initial version of the Gradle plugin with Android Studio 1.0, we
+   wanted to start the numbering over from “1” for this brand new
+   artifact. However, some of the other libraries, like lint, couldn't
+   just start over at 1, so we continued incrementing their versions in
+   lockstep. Most users don't see this, but it's a wrinkle users of the
+   Lint API have to be aware of.
+
+## :library and :app
+
+The `library` project depends on the lint check project, and will
+package the lint checks as part of its payload. The `app` project
+then depends on the `library`, and has some code which triggers
+the lint check. This is there to demonstrate how lint checks can
+be published and consumed, and this is described in detail in the
+[Publishing a Lint Check](publishing.md.html) chapter.
+
+## Lint Check Project Layout
+
+The lint checks source project is very simple
+
+```
+checks/build.gradle
+checks/src/main/resources/META-INF/services/com.android.tools.lint.client.api.IssueRegistry
+checks/src/main/java/com/example/lint/checks/SampleIssueRegistry.kt
+checks/src/main/java/com/example/lint/checks/SampleCodeDetector.kt
+checks/src/test/java/com/example/lint/checks/SampleCodeDetectorTest.kt
+```
+
+First is the build file, which we've discussed above.
+
+## Service Registration
+
+Then there's the service registration file. Notice how this file is in
+the source set `src/main/resources/`, which means that Gradle will
+treat it as a resource and will package it into the output jar, in the
+`META-INF/services` folder. This is using the service-provider loading facility in the JDK to register a service lint can look up. The
+key is the fully qualified name for lint's `IssueRegistry` class.
+And the **contents** of that file is a single line, the fully
+qualified name of the issue registry:
+
+```
+$ cat checks/src/main/resources/META-INF/services/com.android.tools.lint.client.api.IssueRegistry
+com.example.lint.checks.SampleIssueRegistry
+```
+
+(The service loader mechanism is understood by IntelliJ, so it will
+correctly update the service file contents if the issue registry is
+renamed etc.)
+
+The service registration can contain more than one issue registry,
+though there's usually no good reason for that, since a single issue
+registry can provide multiple issues.
+
+## IssueRegistry
+
+Next we have the `IssueRegistry` linked from the service registration.
+Lint will instantiate this class and ask it to provide a list of
+issues. These are then merged with lint's other issues when lint
+performs its analysis.
+
+In its simplest form we'd only need to have the following code
+in that file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+package com.example.lint.checks
+import com.android.tools.lint.client.api.IssueRegistry
+class SampleIssueRegistry : IssueRegistry() {
+    override val issues = listOf(SampleCodeDetector.ISSUE)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+However, we're also providing some additional metadata about these lint
+checks, such as the `Vendor`, which contains information about the
+author and (optionally) contact address or bug tracker information,
+displayed to users when an incident is found.
+
+We also provide some information about which version of lint's API the
+check was compiled against, and the lowest version of the lint API that
+this lint check has been tested with. (Note that the API versions are
+not identical to the versions of lint itself; the idea and hope is that
+the API may evolve at a slower pace than updates to lint delivering new
+functionality).
+
+## Detector
+
+The `IssueRegistry` references the `SampleCodeDetector.ISSUE`,
+so let's take a look at `SampleCodeDetector`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+class SampleCodeDetector : Detector(), UastScanner {
+
+    // ...
+
+    companion object {
+        /**
+         * Issue describing the problem and pointing to the detector
+         * implementation.
+         */
+        @JvmField
+        val ISSUE: Issue = Issue.create(
+            // ID: used in @SuppressLint warnings etc
+            id = "ShortUniqueId",
+            // Title -- shown in the IDE's preference dialog, as category headers in the
+            // Analysis results window, etc
+            briefDescription = "Lint Mentions",
+            // Full explanation of the issue; you can use some markdown markup such as
+            // `monospace`, *italic*, and **bold**.
+            explanation = """
+                    This check highlights string literals in code which mentions the word `lint`. \
+                    Blah blah blah.
+
+                    Another paragraph here.
+                    """,
+            category = Category.CORRECTNESS,
+            priority = 6,
+            severity = Severity.WARNING,
+            implementation = Implementation(
+                SampleCodeDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+        )
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `Issue` registration is pretty self-explanatory, and the details
+about issue registration are covered in the [basics](basics.md.html)
+chapter. The excessive comments here are there to explain the sample,
+and there are usually no comments in issue registration code like this.
+
+Note how on line 29, the `Issue` registration names the `Detector`
+class responsible for analyzing this issue: `SampleCodeDetector`. In
+the above I deleted the body of that class; here it is now without the
+issue registration at the end:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example.lint.checks
+
+import com.android.tools.lint.client.api.UElementHandler
+import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Detector.UastScanner
+import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Issue
+import com.android.tools.lint.detector.api.JavaContext
+import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity
+import org.jetbrains.uast.UElement
+import org.jetbrains.uast.ULiteralExpression
+import org.jetbrains.uast.evaluateString
+
+class SampleCodeDetector : Detector(), UastScanner {
+    override fun getApplicableUastTypes(): List<Class<out UElement?>> {
+        return listOf(ULiteralExpression::class.java)
+    }
+
+    override fun createUastHandler(context: JavaContext): UElementHandler {
+        return object : UElementHandler() {
+            override fun visitLiteralExpression(node: ULiteralExpression) {
+                val string = node.evaluateString() ?: return
+                if (string.contains("lint") && string.matches(Regex(".*\\blint\\b.*"))) {
+                    context.report(
+                        ISSUE, node, context.getLocation(node),
+                        "This code mentions `lint`: **Congratulations**"
+                    )
+                }
+            }
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This lint check is very simple; for Kotlin and Java files, it visits
+all the literal strings, and if the string contains the word “lint”,
+then it issues a warning.
+
+This is using a very general mechanism of AST analysis; specifying the
+relevant node types (literal expressions, on line 18) and visiting them
+on line 23. Lint has a large number of convenience APIs for doing
+higher level things, such as “call this callback when somebody extends
+this class”, or “when somebody calls a method named ”foo“, and so on.
+Explore the `SourceCodeScanner` and other `Detector` interfaces to see
+what's possible. We'll hopefully also add more dedicated documentation
+for this.
+
+## Detector Test
+
+Last but not least, let's not forget the unit test:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example.lint.checks
+
+import com.android.tools.lint.checks.infrastructure.TestFiles.java
+import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import org.junit.Test
+
+class SampleCodeDetectorTest {
+    @Test
+    fun testBasic() {
+        lint().files(
+            java(
+                """
+                package test.pkg;
+                public class TestClass1 {
+                    // In a comment, mentioning "lint" has no effect
+                    private static String s1 = "Ignore non-word usages: linting";
+                    private static String s2 = "Let's say it: lint";
+                }
+                """
+            ).indented()
+        )
+        .issues(SampleCodeDetector.ISSUE)
+        .run()
+        .expect(
+            """
+            src/test/pkg/TestClass1.java:5: Warning: This code mentions lint: Congratulations [ShortUniqueId]
+                private static String s2 = "Let's say it: lint";
+                                           ∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼
+            0 errors, 1 warnings
+            """
+        )
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you can see, writing a lint unit test is very simple, because
+lint ships with a dedicated testing library; this is what the
+
+```
+    testImplementation "com.android.tools.lint:lint-tests:$lintVersion"
+```
+
+dependency in build.gradle pulled in.
+
+Unit testing lint checks is covered in depth in the
+[unit testing chapter](unit-testing.md.html), so we'll cut the
+explanation of the above test short here.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

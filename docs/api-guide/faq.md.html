@@ -1,0 +1,308 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Frequently Asked Questions
+
+This chapter contains a random collection of questions people
+have asked in the past.
+
+### My detector callbacks aren't invoked
+
+If you've for example implemented the Detector callback for visiting
+method calls, `visitMethodCall`, notice how the third parameter is a
+`PsiMethod`, and that it is not nullable:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    open fun visitMethodCall(
+        context: JavaContext,
+        node: UCallExpression,
+        method: PsiMethod
+    ) {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This passes in the method that has been called. When lint is visiting
+the AST, it will resolve calls, and if the called method cannot be
+resolved, the callback won't be called.
+
+This happens when the classpath that lint has been configured with does
+not contain everything needed. When lint is running from Gradle, this
+shouldn't happen; the build system should have a complete classpath and
+pass it to Lint (or the build wouldn't have succeeded in the first
+place).
+
+This usually comes up in unit tests for lint, where you've added a test
+case which is referencing some API for some library, but the library
+itself isn't part of the test. The solution for this is to create stubs
+for the part of the API you care about. This is discussed in more
+detail in the [unit testing](unit-testing.md.html) chapter.
+
+### My lint check works from the unit test but not in the IDE
+
+There are several things to check if you have a lint check which
+works correctly from your unit test but not in the IDE.
+
+1. First check that the lint jar is packaged correctly; use `jar tvf
+   lint.jar` to look at the jar file to make sure it contains the
+   service loader registration of your issue registry, and `javap
+   -classpath lint.jar com.example.YourIssueRegistry` to inspect your
+   issue registry.
+
+2. If that's correct, the next thing to check is that lint is actually
+   loading your issue registry. First look in the IDE log (from the
+   Help menu) to make sure there aren't log messages from lint
+   explaining why it can't load the registry, for example because it
+   does not specify a valid applicable API range.
+
+3. If there's no relevant warning in the log, try setting the
+   `$ANDROID_LINT_JARS` environment variable to point directly to your
+   lint jar file and restart Studio to make sure that that works.
+
+4. Next, try running **Analyze | Inspect Code...**. This runs lint on
+   the whole project. If that works, then the issue is that your lint
+   check isn't eligible to run “on the fly”; the reason for this is
+   that your implementation scope registers more than one scope, which
+   says that your lint check can only run if lint gets to look at both
+   types of files, and in the editor, only the current file is analyzed
+   by lint. However, you can still make the check work on the fly by
+   specifying additional analysis scopes; see the API guide for more
+   information about this.
+
+### `visitAnnotationUsage` isn't called for annotations
+
+If you want to just visit any annotation declarations (e.g. `@Foo` on
+method `foo`), don't use the `applicableAnnotations` and
+`visitAnnotationUsage` machinery. The purpose of that facility is to
+look at *elements* that are being combined with annotated elements,
+such as a method call to a method whose return value has been
+annotated, or an argument to a method a method parameter that has been
+annotated, or assigning an assigned value to an annotated variable, etc.
+
+If you just want to look at annotations, use `getApplicableUastTypes`
+with `UAnnotation::class.java`, and a `UElementHandler` which overrides
+`visitAnnotation`.
+
+### How do I check if a UAST or PSI element is for Java or Kotlin?
+
+To check whether an element is in Java or Kotlin, call one
+of the package level methods in the detector API (and from
+Java, you can access them as utility methods on the “Lint”
+class) :
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+package com.android.tools.lint.detector.api
+
+/** Returns true if the given element is written in Java. */
+fun isJava(element: PsiElement?): Boolean { /* ... */ }
+
+/** Returns true if the given language is Kotlin. */
+fun isKotlin(language: Language?): Boolean { /* ... */ }
+
+/** Returns true if the given language is Java. */
+fun isJava(language: Language?): Boolean { /* ... */ }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you have a `UElement` and need a `PsiElement` for the above method,
+see the next question.
+
+### What if I need a `PsiElement` and I have a `UElement` ?
+
+If you have a `UElement`, you can get the underlying source PSI element
+by calling `element.sourcePsi`.
+
+### How do I get the `UMethod` for a `PsiMethod` ?
+
+Call `psiMethod.toUElementOfType<UMethod>()`. Note that this may return
+null if UAST cannot find valid Java or Kotlin source code for the
+method.
+
+For `PsiField` and `PsiClass` instances use the equivalent
+`toUElementOfType` type arguments.
+
+### How do get a `JavaEvaluator` ?
+
+The `Context` passed into most of the `Detector` callback methods
+relevant to Kotlin and Java analysis is of type `JavaContext`, and it
+has a public `evaluator` property which provides a `JavaEvaluator` you
+can use in your analysis.
+
+If you need one outside of that scenario (this is not common) you can
+construct one directly by instantiating a `DefaultJavaEvaluator`; the
+constructor parameters are nullable, and are only needed for a couple
+of operations on the evaluator.
+
+### How do I check whether an element is internal?
+
+First get a `JavaEvaluator` as explained above, then call
+this evaluator method:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+open fun isInternal(owner: PsiModifierListOwner?): Boolean { /* ... */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(Note that a `PsiModifierListOwner` is an interface which includes
+`PsiMethod`, `PsiClass`, `PsiField`, `PsiMember`, `PsiVariable`, etc.)
+
+### Is element inline, sealed, operator, infix, suspend, data?
+
+Get the `JavaEvaluator` as explained above, and then call one of these
+evaluator method:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+open fun isData(owner: PsiModifierListOwner?): Boolean { /* ... */
+open fun isInline(owner: PsiModifierListOwner?): Boolean { /* ... */
+open fun isLateInit(owner: PsiModifierListOwner?): Boolean { /* ... */
+open fun isSealed(owner: PsiModifierListOwner?): Boolean { /* ... */
+open fun isOperator(owner: PsiModifierListOwner?): Boolean { /* ... */
+open fun isInfix(owner: PsiModifierListOwner?): Boolean { /* ... */
+open fun isSuspend(owner: PsiModifierListOwner?): Boolean { /* ... */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### How do I look up a class if I have its fully qualified name?
+
+Get the `JavaEvaluator` as explained above, then call
+`evaluator.findClass(qualifiedName: String)`. Note that the result is
+nullable.
+
+### How do I look up a class if I have a PsiType?
+
+Get the `JavaEvaluator` as explained above, then call
+`evaluator.getTypeClass`. To go from a class to its type,
+use `getClassType`.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    abstract fun getClassType(psiClass: PsiClass?): PsiClassType?
+    abstract fun getTypeClass(psiType: PsiType?): PsiClass?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### How do I look up hierarhcy annotations for an element?
+
+You can directly look up annotations via the modified list
+of PsiElement or the annotations for a `UAnnotated` element,
+but if you want to search the inheritance hierarchy for
+annotations (e.g. if a method is overriding another, get
+any annotations specified on super implementations), use
+one of these two evaluator methods:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    abstract fun getAllAnnotations(
+        owner: UAnnotated,
+        inHierarchy: Boolean
+    ): List<UAnnotation>
+
+    abstract fun getAllAnnotations(
+        owner: PsiModifierListOwner,
+        inHierarchy: Boolean
+    ): Array<PsiAnnotation>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### How do I look up if a class is a subclass of another?
+
+To see if a method is a direct member of a particular
+named class, use the following method in `JavaEvaluator`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+fun isMemberInClass(member: PsiMember?, className: String): Boolean { }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To see if a method is a member in any *subclass* of a named class, use
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    open fun isMemberInSubClassOf(
+        member: PsiMember,
+        className: String,
+        strict: Boolean = false
+    ): Boolean { /* ... */ }
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here, use `strict = true` if you don't want to include members in the
+named class itself as a match.
+
+To see if a class extends another or implements an interface, use one
+of these methods. Again, `strict` controls whether we include the super
+class or super interface itself as a match.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    abstract fun extendsClass(
+        cls: PsiClass?,
+        className: String,
+        strict: Boolean = false
+    ): Boolean
+
+    abstract fun implementsInterface(
+        cls: PsiClass,
+        interfaceName: String,
+        strict: Boolean = false
+    ): Boolean
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### How do I know which parameter a call argument corresponds to?
+
+In Java, matching up the arguments in a call with the parameters in the
+called method is easy: the first argument corresponds to the first
+parameter, the second argument corresponds to the second parameter and
+so on. If there are more arguments than parameters, the last arguments
+are all vararg arguments to the last parameter.
+
+In Kotlin, it's much more complicated. With named parameters, but
+arguments can appear in any order, and with default parameters, only
+some of them may be specified. And if it's an extension method, the
+first argument passed to a `PsiMethod` is actually the instance itself.
+
+Lint has a utility method to help with this on the `JavaEvaluator`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    open fun computeArgumentMapping(
+        call: UCallExpression,
+        method: PsiMethod
+    ): Map<UExpression, PsiParameter> { /* ... */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This returns a map from UAST expressions (each argument to a UAST call
+is a `UExpression`, and these are the `valueArguments` property on the
+`UCallExpression`) to each corresponding `PsiParameter` on the
+`PsiMethod` that the method calls.
+
+### How can my lint checks target two different versions of lint?
+
+If you need to ship different versions of your lint checks to target
+different versions of lint (because perhaps you need to work both with
+an older version of lint, and a newer version that has a different
+API), the way to do this (as of Lint 7.0) is to use the `maxApi`
+property on the `IssueRegistry`. In the service loader registration
+(`META-INF/services`), register *two* issue registries; one for each
+implementation, and mark the older one with the right `minApi` to
+`maxApi` range, and the newer one with `minApi` following the previous
+registry's `maxApi`. (Both `minApi` and `maxApi` are inclusive). When
+lint loads the issue registries it will ignore registries with a range
+outside of the current API level.
+
+### How do I check out the current lint source code?
+
+```shell
+$ git clone --branch=mirror-goog-studio-master-dev --single-branch \
+   https://android.googlesource.com/platform/tools/base
+Cloning into 'base'...
+remote: Total 648820 (delta 325442), reused 635137 (delta 325442)
+Receiving objects: 100% (648820/648820), 1.26 GiB | 15.52 MiB/s, done.
+Resolving deltas: 100% (325442/325442), done.
+Updating files: 100% (14416/14416), done.
+
+$ du -sh base
+1.8G    base
+$ cd base/lint
+$ ls
+.editorconfig           BUILD                   build.gradle            libs/
+.gitignore              MODULE_LICENSE_APACHE2  cli/
+$ ls libs/
+intellij-core/   kotlin-compiler/ lint-api/        lint-checks/     lint-gradle/     lint-model/      lint-tests/      uast/
+```
+
+### Where do I find examples of lint checks?
+
+The built-in lint checks are a good source. Check out the source code
+as shown above and look in
+`lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/` or
+browse sources online:
+[](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/)
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

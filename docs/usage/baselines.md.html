@@ -1,0 +1,87 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Baselines
+
+# Creating a Baseline
+
+You can take a snapshot of your project's current set of warnings,
+and then use the snapshot as a baseline for future inspection runs
+so that only new issues are reported. The baseline snapshot lets you
+start using lint to fail the build without having to go back and
+address all existing issues first.
+
+To create a baseline snapshot, modify your project's `build.gradle```
+file as follows.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+android {
+  lintOptions {
+    baseline file("lint-baseline.xml")
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you first add this line, the `lint-baseline.xml` file is
+created to establish your baseline. From then on, the tools only
+read the file to determine the baseline. If you want to create a new
+baseline, manually delete the file and run lint again to recreate it.
+
+Then, run lint from the IDE (**Analyze > Inspect Code**) or from
+the command line as follows. The output prints the location of the
+lint-baseline.xml file. The file location for your setup might be
+different from what is shown here.
+
+```shell
+    $ ./gradlew lintDebug
+    ...
+    Wrote XML report to file:///app/lint-baseline.xml
+    Created baseline file /app/lint-baseline.xml
+```
+
+Running lint records all of the current issues in the
+`lint-baseline.xml` file. The set of current issues is called the
+baseline, and you can check the lint-baseline.xml file into version
+control if you want to share it with others.
+
+## Customize the baseline
+
+If you want to add some issue types to the baseline, but not all of
+them, you can specify the issues to add by editing your project's
+build.gradle, as follows.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+android {
+  lintOptions {
+    check 'NewApi', 'HandlerLeak'
+    baseline file("lint-baseline.xml")
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After you create the baseline, if you add any new warnings to the
+codebase, lint lists only the newly introduced bugs.
+
+## Baseline warning
+
+When baselines are in effect, you get an informational warning that
+tells you that one or more issues were filtered out because they
+were already listed in the baseline. The reason for this warning is
+to help you remember that you have configured a baseline, because
+ideally, you would want to fix all of the issues at some point.
+
+This informational warning does not only tell you the exact number of
+errors and warnings that were filtered out, it also keeps track of
+issues that are not reported anymore. This information lets you know
+if you have actually fixed issues, so you can optionally re-create
+the baseline to prevent the error from coming back undetected.
+
+!!! Note: Baselines are enabled when you run inspections in batch
+   mode in the IDE, but they are ignored for the in-editor checks that
+   run in the background when you are editing a file. The reason is that
+   baselines are intended for the case where a codebase has a massive
+   number of existing warnings, but you do want to fix issues locally
+   while you touch the code.
+
+[Official documentation](https://developer.android.com/studio/write/lint#snapshot)
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

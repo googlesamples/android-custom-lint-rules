@@ -1,0 +1,114 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Publishing a Lint Check
+
+Lint will look for jar files with a service registry key for issue
+registries.
+
+You can manually point it to your custom lint checks jar files by using
+the environment variable `ANDROID_LINT_JARS`:
+
+```shell
+$ export ANDROID_LINT_JARS=/path/to/first.jar:/path/to/second.jar
+```
+(On Windows, use `;` instead of `:` as the path separator)
+
+However, that is only intended for development and as a workaround for
+build systems that do not have direct support for lint or embedded lint
+libraries, such as the internal Google build system.
+
+## Android
+
+### AAR Support
+
+Android libraries are shipped as `.aar` files instead of `.jar` files.
+This means that they can carry more than just the code payload. Under
+the hood, `.aar` files are just zip files which contain many other
+nested files, including api and implementation jars, resources,
+proguard/r8 rules, and yes, lint jars.
+
+For example, if we look at the contents of the timber logging library's
+AAR file, we can see the lint.jar with several lint checks within as
+part of the payload:
+
+```shell
+$ jar tvf ~/.gradle/caches/.../jakewharton.timber/timber/4.5.1/?/timber-4.5.1.aar
+   216 Fri Jan 20 14:45:28 PST 2017 AndroidManifest.xml
+  8533 Fri Jan 20 14:45:28 PST 2017 classes.jar
+ 10111 Fri Jan 20 14:45:28 PST 2017 lint.jar
+    39 Fri Jan 20 14:45:28 PST 2017 proguard.txt
+     0 Fri Jan 20 14:45:24 PST 2017 aidl/
+     0 Fri Jan 20 14:45:28 PST 2017 assets/
+     0 Fri Jan 20 14:45:28 PST 2017 jni/
+     0 Fri Jan 20 14:45:28 PST 2017 res/
+     0 Fri Jan 20 14:45:28 PST 2017 libs/
+```
+
+The advantage of this approach is that when lint notices that you
+depend on a library, and that library contains custom lint checks, then
+lint will pull in those checks and apply them. This gives library
+authors a way to provide their own additional checks enforcing usage.
+
+### lintPublish Configuration
+
+The Android Gradle library plugin provides some special configurations,
+`lintConfig` and `lintPublish`.
+
+The `lintPublish` configuration lets you reference another project, and
+it will take that project's output jar and package it as a `lint.jar`
+inside the AAR file.
+
+The [](https://github.com/googlesamples/android-custom-lint-rules)
+sample project demonstrates this setup.
+
+The `:checks` project is a pure Kotlin library which depends on the
+Lint APIs, implements a `Detector`, and provides an `IssueRegistry`
+which is linked from `META-INF/services`.
+
+Then in the Android library, the `:library` project applies the Android
+Gradle library plugin. It then specifies a `lintPublish` configuration
+referencing the checks lint project:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+apply plugin: 'com.android.library'
+dependencies {
+    lintPublish project(':checks')
+    // other dependencies
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Finally, the sample `:app` project is an example of an Android app
+which depends on the library, and the source code in the app contains a
+violation of the lint check defined in the `:checks` project. If you
+run `./gradlew :app:lint` to analyze the app, the build will fail
+emitting the custom lint check.
+
+### Local Checks
+
+What if you aren't publishing a library, but you'd like to apply
+some checks locally for your own codebase?
+
+You can use a similar approach to `lintPublish`: In your app
+module, specify
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+apply plugin: 'com.android.application'
+dependencies {
+    lintConfig project(':checks')
+    // other dependencies
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now, when lint runs on this application, it will apply the checks
+provided from the given project.
+
+!!! Warning
+   This mechanism works well on the CI server for enforcing local code
+   conventions, and it also works for developers on your team; the
+   errors should be flagged in the IDE (providing they are analyzing
+   single-file scopes). However, there have been various bugs and
+   difficulties around the lint checks getting rebuilt after changes or
+   clean builds. There are some bugs in the Android Gradle Plugin issue
+   tracker for this.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

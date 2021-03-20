@@ -1,0 +1,75 @@
+**Recent Changes**
+
+This chapter lists recent changes to lint that affect lint check
+authors: new features, API and behavior changes, and so on. For
+information about user visible changes to lint, see
+[](../usage/changes.md.html).
+
+**7.0**
+
+* The API level has bumped to 10.
+
+* Partial analysis. Lint's architecture has changed to support better
+  scalability across large projects, where module results can be
+  cached, etc. See the api-guide's dedicated chapter for more details.
+  To opt in before it's turned on by default to test this on your full
+  Gradle projects rather than just the detector tests, add
+
+      `android.experimental.useLintPartialAnalysis=true`
+
+  to your `gradle.properties` file. If you want to debug your lint check
+  you may want to also set
+
+      `android.experimental.runLintInProcess=true`
+
+* Issue registration now takes an optional `Vendor` property, where you
+  can specify information about which company or team provided this
+  lint check, which library it's associated with, contact information,
+  and so on. This will make it easier for users to figure out where to
+  send feedback or requests for 3rd party lint checks.
+
+* Bytecode verification: Instead of warning about 3rd party lint checks
+  being obsolete because they were not compiled against the latest Lint
+  API, lint now run its own bytecode verification against the lint jar
+  and will silently accept accept older (and newer!) lint checks if
+  they do not reference APIs that are not available.
+
+* Android Lint checks can now always access the resource repository for
+  random access to resources, instead of having to gather them in batch
+  mode. (Previously this was only available when lint checks were
+  running in the IDE.)
+
+* The lint unit testing library now provides a `TestMode` concept. You
+  can define setup and teardown methods, and lint will run unit tests
+  repeatedly for each test mode. There are a number of built-in test
+  modes already enabled; for example, all lint tests will run both in
+  global analysis mode and in partial analysis mode, and the results
+  compared to ensure they are the same.
+
+* Lint unit tests now include source contents for secondary locations
+  too. If the test fails, lint will retry without secondary source
+  locations and not report an error; this preserves backwards
+  compatibility.
+
+* There's a new `Incident` class which is used to hold information to
+  be reported to the user. Previously, there were a number of
+  overloaded methods to report issues, taking locations, error
+  messages, quick fixes, and so on. Each time we added another one we'd
+  have to add another overload. Now, you instead just report incidents.
+  This is critical to the new partial analysis architecture but is also
+  required if you for example want to override severities per incident
+  as described above.
+
+* Lint checks can now vary the severity on a per incident basis by
+  calling overrideSeverity on the incidents. This means that there is
+  no longer a need to create separate issues for flavors of the same
+  underlying problem with slightly different expectations around
+  warnings or errors.
+
+* There are additional modifier lookup methods for Kotlin modifiers
+  on `JavaEvaluator, like isReified(), isCompanion(), isTailRec(), and
+  so on.
+
+* API documentation is now available.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

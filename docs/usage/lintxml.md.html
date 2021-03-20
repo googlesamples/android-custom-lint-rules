@@ -1,0 +1,129 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Configuring Using lint.xml Files
+
+In addition to configuring lint with command line flags or Gradle DSL
+options, you can also create XML files named `lint.xml`, which lint
+will look for automatically.
+
+Like `.gitignore` files, these can be nested, so you can for example
+create a `lint.xml` file which sets the severity of an issue to error,
+but then in a specific subfolder change the severity to be just a
+warning.
+
+This chapter describes the syntax of `lint.xml` files.
+
+XML Syntax
+===========
+
+The root tag is always `<lint>`, and it can contain one or more
+`<issue>` elements. Each <issue> can specify the following
+attributes: `id`: The issue id the following configuration applies
+to. Note that this can be a comma separated list of multiple id's, in
+which case the configuration applies to all of them. It can also be
+the special value “all”, which will match all issue id's. And when
+configuring severity, the id is also allowed to be a category, such
+as “Security”.
+
+`in`: Specifies that this configuration only applies when lint
+runs in the given hosts. There are predefined names for various
+integrations of lint; “gradle” refers to lint running in the Gradle
+plugin; “studio” refers to lint running in the IDE, “cli” refers to
+lint running from the command line tools “lint” binary, etc. Like
+with id's, this can be a comma separated list, which makes the rule
+match if the lint host is any of the listed hosts. Finally, note that
+you can also add a “!” in front of each host to negate the check. For
+example, to enable a check anywhere except when running in Studio,
+use `in="!studio"`.
+
+In addition, the <issue> element can specify one or more children:
+
+`<ignore path="...">`: Specifies a path to ignore. Can contain the
+globbing character “*” to match any substring in the path. `<ignore
+regexp="...">`: Specifies either a regular expression to ignore. The
+regular expression is matched against both the location of the error
+and the error message itself. `<option name="..." value="...">`:
+Specifies an option value. This can be used to configure some lint
+checks with options.
+
+Finally, on the root <lint> element you can specify a number of
+attributes, such as `lintJars` (a list of jar files containing custom
+lint checks, separated by a semicolon as a path separator), and
+flags like warningsAsErrors, checkTestSources, etc (matching most
+of the flags offered via the lintOptions block in Gradle files.)
+
+Nesting & Precedence
+======================
+
+You can specify configurations for “all”, but these will be
+matched after an exact match has been done. E.g. if we have
+both `<issue id="all" severity="ignore">` and `<issue id="MyId"
+severity="error">`, the severity for `MyId` will be “error”“ since
+that's a more exact match.
+
+The lint.xml files can be nested in a directory structure, and when
+lint reports an error, it looks up the closest lint.xml file, and
+if no configuration is found there, continues searching upwards in
+the directory tree. This means that the configuration closest to the
+report location takes precedence. Note however, that this has higher
+priority than the above all versus id match, so if there is an `all`
+match in a `lint.xml` file and an exact match in a more distant
+parent `lint.xml` file, the closest `lint.xml` all match will be
+used.
+
+When there are configurations which specify a host, lint will search
+in this order:
+1. An exact host match. E.g. if you're running in Studio and there is
+   an `<issue>` configuration which specifies
+   `in="studio"`, then that configuration will be used.
+2. A match which does not specify a host. Usually `<issue>`
+   configurations do not specify a host,
+   and these will be consulted next.
+3. A match which specifies other hosts. For example, if you're
+   running in Studio and a configuration specifies
+   ”!gradle“, this will match after the other attempts.
+
+Sample lint.xml file
+====================
+Typically lint.xml files are pretty short and simple, but here's
+one which uses most of the available features. (Note: the
+HTML version of this isn't properly handling empty elements,
+so if you're going to copy/paste go to the source file.)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<lint lintJars="../checks/local.jar;../checks/custom.jar">
+    <!-- The special id "all" matches all issues but is only consulted
+         if there is no specific match -->
+    <issue id="all" severity="ignore" />
+    <!-- Possible severities: ignore, information, warning, error, fatal -->
+    <issue id="ValidActionsXml" severity="error" />
+    <issue id="ObsoleteLayoutParam">
+        <!-- The <ignore> tag has two possible attributes: path and regexp (see below) -->
+        <ignore path="res/layout-xlarge/activation.xml" />
+        <!-- You can use globbing patterns in the path strings -->
+        <ignore path="**/layout-x*/onclick.xml" />
+        <ignore path="res/**/activation.xml" />
+    </issue>
+    <issue id="NewApi">
+        <!-- You can also ignore via a regular expression, this is not only
+            matched against the path but also the error message -->
+        <ignore regexp="st.*gs" />
+    </issue>
+    <!-- The "in" attribute lets you specify that the element only
+         applies in a particular tools, such as gradle, studio, etc; this
+         can be a comma separated list -->
+    <issue in="studio" id="NewerVersionAvailable" severity="error" />
+    <!-- You can also use ! to specify that it does not apply in a tool  -->
+    <issue in="!gradle" id="TrulyRandom" severity="error" />
+    <issue id="UnknownNullness">
+        <!-- For detectors that support it, you can also specify option values -->
+        <option name="ignore-deprecated" value="true" />
+    </issue>
+    <issue id="TooManyViews">
+        <option name="maxCount" value="20" />
+    </issue>
+</lint>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

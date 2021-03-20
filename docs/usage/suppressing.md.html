@@ -1,0 +1,71 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Suppressing Lint Checks
+
+Lint errors can be suppressed in a variety of ways:
+
+1. With a `@SuppressLint` annotation in the Java code
+2. With a `tools:ignore` attribute in the XML file
+3. With a //noinspection comment in the source code
+4. With ignore flags specified in the `build.gradle` file,
+   as explained below
+5. With a `lint.xml` configuration file in the project
+6. With a `lint.xml` configuration file passed to lint
+   via the --config flag
+7. With the --ignoreflag passed to lint
+8. With a [baseline](baselines.md.html)
+
+To suppress a lint warning with an annotation, add
+a `@SuppressLint("id")` annotation on the class, method
+or variable declaration closest to the warning instance
+you want to disable. The id can be one or more issue
+id's, such as `"UnusedResources"` or `{"UnusedResources",
+"UnusedIds"}`, or it can be `"all"` to suppress all lint
+warnings in the given scope.
+
+You can also use `@Suppress` in Kotlin or `@SuppressWarnings`
+in Java.
+
+To suppress a lint warning with a comment, add
+a `//noinspection id` comment on the line before the statement
+with the error.
+
+To suppress a lint warning in an XML file, add a
+`tools:ignore="id"` attribute on the element containing
+the error, or one of its surrounding elements. You also
+need to define the namespace for the tools prefix on the
+root element in your document, next to the `xmlns:android`
+declaration:
+`xmlns:tools="http://schemas.android.com/tools"`
+
+To suppress a lint warning in a `build.gradle` file, add a
+section like this:
+
+```gradle
+android {
+    lintOptions {
+        disable 'TypographyFractions','TypographyQuotes'
+    }
+}
+```
+
+Here we specify a comma separated list of issue id's after the
+disable command. You can also use `warning` or `error` instead
+of `disable` to change the severity of issues.
+
+To suppress lint warnings with a configuration XML file,
+create a file named `lint.xml`. See the
+[lint.xml configuration](lintxml.md.html) document
+for more details.
+
+To suppress lint checks from the command line, pass the
+`--ignore` flag with a comma separated list of ids to be suppressed, such as:
+
+```shell
+$ lint --ignore UnusedResources,UselessLeaf /my/project/path
+```
+
+For more information, see
+https://developer.android.com/studio/write/lint.html#config
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,112 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Terminology
+
+You don't need to read this up front and understand everything, but
+this is hopefully a handy reference to return to.
+
+In alphabetical order:
+
+Configuration
+: A configuration provides extra information or parameters to lint on a
+  per project, or even per directory basis. For example, the `lint.xml`
+  files can change the severity for issues, or list incidents to ignore
+  (matched for example by a regular expression), or even provide values
+  for options read by a specific detector.
+
+Context
+: An object passed into detectors in many APIs, providing data about
+  (for example) which file is being analyzed (and in which project),
+  and for specific types of analysis additional information; for
+  example, an XmlContext points to the DOM document, a JavaContext
+  includes the AST, and so on.
+
+Detector
+: The implementation of the lint check which registers Issues, analyzes
+  the code, and reports Incidents.
+
+Implementation
+: An `Implementation` tells lint how a given issue is actually
+  analyzed, such as which detector class to instantiate, as well as
+  which scopes the detector applies to.
+
+Incident
+: A specific occurrence of the issue at a specific location.
+  An example of an incident is:
+  ```text
+      Warning: In file IoUtils.kt, line 140, the field download folder
+      is "/sdcard/downloads"; do not hardcode the path to `/sdcard`.
+  ```
+
+Issue
+: A type or class of problem that your lint check identifies. An issue
+  has an associated severity (error, warning or info), a priority, a
+  category, an explanation, and so on.
+
+  An example of an issue is “Don't hardcode paths to /sdcard”.
+
+IssueRegistry
+: An `IssueRegistry` provides a list of issues to lint. When you write
+  one or more lint checks, you'll register these in an `IssueRegistry`
+  and point to it using the `META-INF` service loader mechanism.
+
+LintClient
+: The `LintClient` represents the specific tool the detector is running
+  in. For example, when running in the IDE there is a LintClient which
+  (when incidents are reported) will show highlights in the editor,
+  whereas when lint is running as part of the Gradle plugin, incidents
+  are instead accumulated into HTML (and XML and text) reports, and
+  the build interrupted on error.
+
+Location
+: A “location” refers to a place where an incident is reported.
+  Typically this refers to a text range within a source file, but a
+  location can also point to a binary file such as a `png` file.
+  Locations can also be linked together, along with descriptions.
+  Therefore, if you for example are reporting a duplicate declaration,
+  you can include **both** Locations, and in the IDE, both locations
+  (if they're in the same file) will be highlighted. A location linked
+  from another is called a “secondary” location, but the chaining can
+  be as long as you want (and lint's unit testing infrastructure will
+  make sure there are no cycles.)
+
+Partial Analysis
+: A “map reduce” architecture in lint which makes it possible to
+  analyze individual modules in isolation and then later filter and
+  customize the partial results based on conditions outside of these
+  modules. This is explained in greater detail in the
+  [partial analysis](partial-analysis.md.html) chapter.
+
+Platform
+: The `Platform` abstraction allows lint issues to indicate where they
+  apply (such as “Android”, or “Server”, and so on). This means that an
+  Android-specific check won't trigger warnings on non-Android code.
+
+Scope
+: `Scope` is an enum which lists various types of files that a detector
+  may want to analyze.
+
+  For example, there is a scope for XML files, there is a scope for
+  Java and Kotlin files, there is a scope for .class files, and so on.
+
+  Typically lint cares about which **set** of scopes apply,
+  so most of the APIs take an `EnumSet< Scope>`, but we'll often
+  refer to this as just “the scope” instead of the “scope set”.
+
+Severity
+: For an issue, whether the incident should be an error, or just a
+  warning, or neither (just an FYI highlight). There is also a special
+  type of error severity, “fatal”, discussed later.
+
+TextFormat
+: An enum describing various text formats lint understands. Lint checks
+  will typically only operate with the “raw” format, which is
+  markdown-like (e.g. you can surround words with an asterisk to make
+  it italics or two to make it bold, and so on).
+
+Vendor
+: A `Vendor` is a simple data class which provides information about
+  the provenance of a lint check: who wrote it, where to file issues,
+  and so on.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

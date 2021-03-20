@@ -1,0 +1,633 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Partial Analysis
+
+## About
+
+This chapter describes Lint's “partial analysis”; its architecture and
+APIs for allowing lint results to be cached.
+
+This focuses on how to write or update existing lint checks such that
+they work correctly under partial analysis. For other details about
+partial analysis, such as the client side implemented by the build
+system, see the lint internal docs folder.
+
+!!! Note
+   Note that while lint has this architecture, and all lint detectors
+   must support it, the checks may not run in partial analysis mode;
+   they may instead run in “global analysis mode”, which is how lint
+   has worked up until this point.
+
+   This is because coordinating partial results and merging is
+   performed by the `LintClient`; e.g. in the IDE, there's no good
+   reason to do all this extra work (because all sources are generally
+   available, including “downstream” module info like the
+   `minSdkVersion`).
+
+   Right now, only the Android Gradle Plugin turns on partial analysis
+   mode. But that's a very important client, since it's usually how
+   lint checks are performed on continuous integration servers to
+   validate code reviews.
+
+## The Problem
+
+Many lint checks require “global” analysis. For example you can't
+determine whether a particular string defined in a library module is
+unused unless you look at all modules transitively consuming this
+library as well.
+
+However, many developers run lint as part of their continuous
+integration. Particularly in large projects, analyzing all modules for
+every check-in is too costly.
+
+This chapter describes lint's architecture for handling this, such
+that module results can be cached.
+
+## Overview
+
+Briefly stated, lint's architecture for this is “map reduce”: lint now
+has two separate phases, analyze and report (map and reduce
+respectively):
+
+* **analyze** - where lint analyzes source code of a single module in
+  isolation, and stores some intermediate partial results (map)
+
+* **report** - where lint reads in the previously stored module results,
+  and performs some post-processing on this data to generate an actual
+  lint report.
+
+Crucially, the individual module results can be cached, such that if
+nothing has changed in a module, the module results continue to be
+valid (unless signatures have changed in libraries it depends on.)
+
+Making this work requires some modifications to any `Detector` which
+considers data from outside the current module. However, there are some
+very common scenarios that lint has special support for to make this
+easier.
+
+Detectors fit into one of the following categories (and these
+categories will be explained in subsequent sessions) :
+
+1. Local analysis which doesn't depend on anything else. For example, a
+   lint check check which flags typos can report incidents immediately.
+   Lint calls these “definite incidents”.
+
+2. Local analysis which depends on a few, common conditions. For
+   example, in Android, a check may only apply if the `minSdkVersion <
+   21`. Lint has special support for this; you basically report an
+   incident and attach a “constraint” to it. Lint calls these, and
+   incidents reported as part of #3 below, as “provisional incidents”.
+
+3. Analysis which depends on some conditions of downstream modules that
+   are not part of the built-in constraints. For example, a lint check
+   may only apply if the consuming module depends on a certain version
+   of a networking library. In this case, the detector will report the
+   incident and attach a map to it, with whatever data it needs to
+   consult later to decide if the incident actually should be reported.
+   When the detector reports incidents this way, it has to also
+   override a callback method. Lint will record these incidents, and
+   during reporting, call the detector and pass it back its data map
+   and provisional incidents such that it can decide whether the
+   incidents should indeed be reported.
+
+4. Last, and least, there are some scenarios where you cannot compute
+   provisional incidents up front and filter them later (or doing so
+   would be very costly). For example, unused resources fit into this
+   category. We don't want to report every single resource declaration
+   as unused and then filter later. Instead, we compute the resource
+   usage graph within the module analysis. And in the reporting task,
+   we then load all the partial usage graphs, and merge them together
+   and walk the graph to report all the unused resources. To support
+   this, lint provides a map per module for detectors to put their data
+   into, and you can put maps into the map to model structured data.
+   Lint will persist these, and in the reporting task the lint
+   detectors will be passed their data to do their post-processing and
+   reporting based on their data.
+
+These are listed in increasing order of effort, and thankfully, they're
+also listed in order of frequency. For lint's built-in checks (~385),
+
+* 89% needed no work at all.
+* 6% were updated to report incidents with constraints
+* 4% were updated to report incidents with data for later filtering
+* 1% were updated to perform map recording and later reduce filtering
+
+## Does my Detector Need Work?
+
+At this point you're probably wondering whether your checks are in the
+89% category where you don't need to do anything, or in the remaining
+11%. How do you know?
+
+Lint has several built-in mechanisms to try to catch problems. There
+are a few scenarios it cannot detect, and these are described below,
+but for the vast majority, simply running your unit tests (which are
+comprehensive, right?) should create unit test failures if your
+detector is doing something it shouldn't.
+
+### Catching Mistakes: Blocking Access to Main Project
+
+In Android checks, it's very common to try to access the main (“app”)
+project, to see what the real `minSdkVersion` is, since the app
+`minSdkVersion` can be higher than the one in the library. For the
+`targetSdkVersion` it's even more important, since the library
+`targetSdkVersion` has no meaningful relationship to the app one.
+
+When you run lint unit tests, as of 7.0, it will now run your tests
+twice -- once with global analysis (the previous behavior), and once
+with partial analysis. When lint is running in partial analysis, a
+number of calls, such as looking up the main project, or consulting the
+merged manifest, is not allowed during the analysis phase. Attempting
+to do so will generate an error:
+
+```none
+    SdCardTest.java: Error: The lint detector
+        com.android.tools.lint.checks.SdCardDetector
+    called context.getMainProject() during module analysis.
+
+    This does not work correctly when running in Lint Unit Tests.
+
+    In particular, there may be false positives or false negatives because
+    the lint check may be using the minSdkVersion or manifest information
+    from the library instead of any consuming app module.
+
+    Contact the vendor of the lint issue to get it fixed/updated (if
+    known, listed below), and in the meantime you can try to work around
+    this by disabling the following issues:
+
+    "SdCardPath"
+
+    Issue Vendor:
+    Vendor: Android Open Source Project
+    Contact: https://groups.google.com/g/lint-dev
+    Feedback: https://issuetracker.google.com/issues/new?component=192708
+
+    Call stack: Context.getMainProject(Context.kt:117)←SdCardDetector$createUastHandler$1.visitLiteralExpression(SdCardDetector.kt:66)
+        ←UElementVisitor$DispatchPsiVisitor.visitLiteralExpression(UElementVisitor.kt:791)
+        ←ULiteralExpression$DefaultImpls.accept(ULiteralExpression.kt:38)
+        ←JavaULiteralExpression.accept(JavaULiteralExpression.kt:24)←UVariableKt.visitContents(UVariable.kt:64)
+        ←UVariableKt.access$visitContents(UVariable.kt:1)←UField$DefaultImpls.accept(UVariable.kt:92)
+        ...
+```
+
+Specific examples of information many lint checks look at in this
+category:
+* `minSdkVersion` and `targetSdkVersion`
+* The merged manifest
+* The resource repository
+* Whether the main module is an Android project
+
+### Catching Mistakes: Simulated App Module
+
+Lint will also modify the unit test when running the test in partial
+analysis mode. In particular, let's say your test has a manifest which
+sets `minSdkVersion` to 21.
+
+Lint will instead run the analysis task on a modified test project
+where the `minSdkVersion` is set to 1, and then run the reporting task
+where `minSdkVersion` is set back to 21. This ensures that lint checks
+will correctly use the `minSdkVersion` from the main project, not the
+library.
+
+### Catching Mistakes: Diffing Results
+
+Lint will also diff the report output from running the same unit tests
+both in global analysis mode and in partial analysis mode. We expect
+the results to always be identical, and in some cases if the module
+analysis is not written correctly, they're not.
+
+### Catching Mistakes: Remaining Issues
+
+The above three mechanisms will catch most problems related to partial
+analysis. However, there are a few remaining scenarios to be aware of:
+
+* Resolving into library source code. If you have a Kotlin or Java
+  function call AST node (`UCallExpression`) you can call `resolve()`
+  on it to find the called `PsiMethod`, and from there you can look at
+  its source code, to make some decisions.
+
+  For example, lint's API Check uses this to see if a given method is a
+  version-check utility (“`SDK_INT > 21`?”); it resolves the method
+  call in `if (isOnLollipop()) { ... }` and looks at its method body to
+  see if the return value corresponds to a proper `SDK_INT` check.
+
+  In partial analysis mode, you cannot look at source files from
+  libraries you depend on; they will only be provided in binary
+  (bytecode inside a jar file) form.
+
+  This means that instead, you need to aggregate data along the way.
+  For example, the way lint handles the version check method lookup is
+  to look for SDK_INT comparisons, and if found, stores a reference to
+  the method in ther partial results map which it can later consult
+  from downstream modules.
+
+* Multiple passes across the modules (lint has a way to request
+  multiple passes; this was used by a few lint checks like the unused
+  resource detector; the multiple passes now only apply to the local
+  module)
+
+In order to test for correct operation of your check, you should add
+your own individual unit test for a multi-module project.
+
+Lint's unit test infrastructure makes this easy; just use relative
+paths in the test file descriptions.
+
+For example, if you have the following unit test declaration:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+   lint().files(
+       manifest().minSdk(15),
+       manifest().to("../app/AndroidManifest.xml").minSdk(21),
+       xml(
+           "res/layout/linear.xml",
+           "<LinearLayout ...>" + ...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second `manifest()` call here on line 3 does all the heavy lifting:
+the fact that you're referencing `../app` means it will create another
+module named “app”, and it will add a dependency from that module on
+this one. It will also mark the current module as a library. This is
+based on the name patterns; if you for example reference say `../lib1`,
+it will assume the current module is an app module and the dependency
+will go from here to the library.
+
+Finally, to test a multi-module setup where the code in the other
+module is only available as binary, lint has a new special test file
+type. The `CompiledSourceFile` can be constructed via either
+`compiled()`, if you want to make both the source code and the class
+file available in the project, or `bytecode()` if you want to only
+provide the bytecode. In both cases you include the source code in the
+test file declaration, and the first time you run your test it will try
+to run compilation and emit the extra base64 string to include the test
+file. By having the sources included for the binary it's easy to
+regenerate bytecode tests later (this was an issue with some of lint's
+older unit tests; we recently decompiled them and created new test
+files using this mechanism to make the code more maintainable.
+
+Lint's partial analysis testing support will automatically only use
+binaries for the dependencies (even if using `CompiledSourceFile` with
+sources).
+
+!!! Note
+   Lint's testing infrastructure may try to automate this testing at
+   some point; e.g. by looking at the error locations from a global
+   analysis, it can then create a new project where only the source
+   file with the warnings is provided as source, and all the other test
+   files are placed in a separate module, and then represented only as
+   binaries (through a lint AST to PsiCompiled pretty printer.)
+
+## Incidents
+
+In the past, you would typically report problems like this:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+    context.report(
+        ISSUE,
+        element,
+        context.getNameLocation(element),
+        "Missing `contentDescription` attribute on image"
+    )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+At some point, we added support for quickfixes, so the
+report method took an additional parameter, line 6:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+    context.report(
+        ISSUE,
+        element,
+        context.getNameLocation(element),
+        "Missing `contentDescription` attribute on image",
+        fix().set().todo(ANDROID_URI, ATTR_CONTENT_DESCRIPTION).build()
+)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that we need to attach various additional data (like constraints
+and maps), we don't really want to just add more parameters.
+
+Instead, this tuple of data about a particular occurrence of a problem
+is called an “incident”, and there is a new `Incident` class which
+represents it. To report an incident you simply call
+`context.report(incident)`. There are several ways to create these
+incidents. The easiest is to simply edit your existing call above by
+adding `Incident(` (or from Java, `new Incident(`) inside the
+`context.report` block like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    context.report(Incident(
+        ISSUE,
+        element,
+        context.getNameLocation(element),
+        "Missing `contentDescription` attribute on image"
+    ))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+and then reformatting the source code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    context.report(
+        Incident(
+            ISSUE,
+            element,
+            context.getNameLocation(element),
+            "Missing `contentDescription` attribute on image"
+        )
+)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`Incident` has a number of overloaded constructors to make it easy to
+construct it from existing report calls.
+
+There are other ways to construct it too, for example like the
+following:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    Incident(context)
+        .issue(ISSUE)
+        .scope(node)
+        .location(context.getLocation(node))
+        .message("Do not hardcode \"/sdcard/\"").report()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+That are additional methods you can fall too, like `fix()`, and
+conveniently, `at()` which specifies not only the scope node but
+automatically computes and records the location of that scope node too,
+such that the following is equivalent:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    Incident(context)
+        .issue(ISSUE)
+        .at(node)
+        .message("Do not hardcode \"/sdcard/\"").report()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So step one to partial analysis is to convert your code to report
+incidents instead of the passing in all the individual properties of an
+incident. Note that for backwards compatibility, if your check doesn't
+need any work for partial analysis, you can keep calling the older
+report methods; they will be redirected to an `Incident` call
+internally, but since you don't need to attach data you don't have to
+make any changes
+
+## Constraints
+
+If your check needs to be conditional, perhaps on the `minSdkVersion`,
+you need to attach a “constraint” to your report call.
+
+All the constraints are built in; there isn't a way to implement your
+own. For custom logic, see the next section: LintMaps.
+
+Here are the current constraints, though this list may grow over time:
+
+* minSdkAtLeast(Int)
+* minSdkLessThan(Int)
+* targetSdkAtLeast(Int)
+* targetSdkLessThan(Int)
+* isLibraryProject()
+* isAndroidProject()
+* notLibraryProject()
+* notAndroidProject()
+
+These are package-level functions, though from Java you can access them
+from the `Constraints` class.
+
+Recording an incident with a constraint is easy; first construct the
+`Incident` as before, and then report them via
+`context.report(incident, constraint)`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java
+    String message =
+        "One or more images in this project can be converted to "
+        + "the WebP format which typically results in smaller file sizes, "
+        + "even for lossless conversion";
+    Incident incident = new Incident(WEBP_ELIGIBLE, location, message);
+    context.report(incident, minSdkAtLeast(18));
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Finally, note that you can combine constraints; there are both “and”
+and “or” operators defined for the `Constraint` class. so the following
+is valid:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    val constraint = targetSdkAtLeast(23) and notLibraryProject()
+    context.report(incident, constraint)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+That's all you have to do. Lint will record this provisional incident,
+and when it is performing reporting, it will evaluate these constraints
+on its own and only report incidents that meet the constraint.
+
+## Incident LintMaps
+
+In some cases, you cannot use one of the built-in constraints; you have
+to do your own “filtering” from the reporting task, where you have
+access to the main module.
+
+In that case, you call `context.report(incident, map)` instead.
+
+Like `Incident`, `LintMap` is a new data holder class in lint which
+makes it convenient to pass around (and more importantly, persist)
+data. All the set methods return the map itself, so you can easily
+chain property calls.
+
+Here's an example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    context.report(
+        incident,
+        map()
+            .put(KEY_OVERRIDES, overrides)
+            .put(KEY_IMPLICIT, implicitlyExportedPreS)
+    )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here, `map()` is a method defined by `Detector` to create a new
+`LintMap`, similar to how `fix()` constructs a new `LintFix`.
+
+Note however that when reporting data, you need to do the post
+processing yourself. To do this, you need to override this method:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    /**
+     * Filter which looks at incidents previously reported via
+     * [Context.report] with a [LintMap], and returns false if the issue
+     * does not apply in the current reporting project context, or true
+     * if the issue should be reported. For issues that are accepted,
+     * the detector is also allowed to mutate the issue, such as
+     * customizing the error message further.
+     */
+    open fun filterIncident(context: Context, incident: Incident, map: LintMap): Boolean { }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For example, for the above report call, the corresponding
+implementation of `filterIncident` looks like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    override fun filterIncident(context: Context, incident: Incident, map: LintMap): Boolean {
+        if (context.mainProject.targetSdk < 19) return true
+        if (map.getBoolean(KEY_IMPLICIT, false) == true && context.mainProject.targetSdk >= 31) return true
+        return map.getBoolean(KEY_OVERRIDES, false) == false
+    }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note also that you are allowed to modify incidents here before
+reporting them. The most common reason scenario for this is changing
+the incident message, perhaps to reflect data not known at module
+analysis time. For example, lint's API check creates messages like this:
+
+*Error: Cast from AudioFormat to Parcelable requires API level 24 (current min is 21)*
+
+At module analysis time when the incident was created, the minSdk being
+21 was not known (and in fact can vary if this library is consumed by
+many different app modules!)
+
+!!! WARNING
+   You must store state in the lint map; don't try to store it in the
+   detector itself as instance state. That won't work because the
+   detector instance that `filterInstance` is called on is not the same
+   instance as the one which originally reported it. If you think about
+   it, that makes sense; when module results are cached, the same
+   reported data can be used over and over again for repeated builds,
+   each time for new detector instances in the reporting task.
+
+## Module LintMaps
+
+The last (and most involved) scenario for partial analysis is one where
+you cannot just create incidents and filter or customize them later.
+
+The most complicated example of this is lint's built-in
+UnusedResourceDetector, which locates unused resources. This “requires”
+global analysis, since we want to include all resources in the entire
+project. We also cannot just store lists of “resources declared” and
+"resources referenced“ since we really want to treat this as a graph.
+For example if `@layout/main` is including `@drawable/icon`, then a
+naive approach would see the icon as referenced (by main) and therefore
+mark it as not unused. But what we want is that if the icon is **only**
+referenced from main, and if main is unused, then so is the icon.
+
+To handle this, we model the resources as a graph, with edges
+representing references.
+
+When analyzing individual modules, we create the resource graph for
+just that model, and we store that in the results. That means we store
+it in the module's `LintMap`. This is a map for the whole module
+maintained by lint, so you can access it repeatedly and add to it.
+(This is also where lint's API check stores the `SDK_INT` comparison
+functions as described earlier in this chapter).
+
+The unused resource detector creates a persistence string for the
+graph, and records that in the map.
+
+Then, during reporting, it is given access to *all* the lint maps for
+all the modules that the reporting module depends on, including itself.
+It then merges all the graphs into a single reference graph.
+
+For example, let's say in module 1 we have layout A which includes
+drawables B and D, and B in turn depends on color C. We get a resource
+graph like the following:
+
+**********************************************
+*                                            *
+*    .-.        .-.        .-.               *
+*   | A +----->| B +----->| C |              *
+*    '+'        '-'        '-'               *
+*     |                                      *
+*     |                                      *
+*     |     .-.                              *
+*     +--->| D |                             *
+*           '-'                              *
+*                                            *
+**********************************************
+
+Then in another module, we have the following resource reference graph:
+
+**********************************************
+*                                            *
+*    .-.        .-.        .-.               *
+*   | E +----->| B +----->| D |              *
+*    '-'        '-'        '-'               *
+*                                            *
+**********************************************
+
+In the reporting task, we merge the two graphs like the following:
+
+**********************************************
+*                                            *
+*               .-.                          *
+*              | E |                         *
+*               '+'                          *
+*                |                           *
+*                v                           *
+*    .-.        .-.        .-.               *
+*   | A +----->| B +----->| C |              *
+*    '+'        '+'        '-'               *
+*     |          |                           *
+*     |          v                           *
+*     |         .-.                          *
+*     +------->| D |                         *
+*               '-'                          *
+*                                            *
+**********************************************
+
+Once that's done, it can proceed precisely as before: analyze the graph
+and report all the resources that are not reachable from the reference
+roots (e.g. manifest and used code).
+
+The way this works in code is that you report data into the module by
+first looking up the module data map, by calling this method on the
+`Context`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    /**
+     * Returns a [PartialResult] where state can be stored for later
+     * analysis. This is a more general mechanism for reporting
+     * provisional issues when you need to collect a lot of data and do
+     * some post processing before figuring out what to report and you
+     * can't enumerate out specific [Incident] occurrences up front.
+     *
+     * Note that in this case, the lint infrastructure will not
+     * automatically look up the error location (since there isn't one
+     * yet) to see if the issue has been suppressed (via annotations,
+     * lint.xml and other mechanisms), so you should do this
+     * yourself, via the various [LintDriver.isSuppressed] methods.
+     */
+    fun getPartialResults(issue: Issue): PartialResult { ... }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Then you put whatever data you want, such as the resource usage model
+encoded as a string.
+
+!!!
+   Note that you don't have to worry about clashes in key names; each
+   issue (and therefore detector) is given its own map.
+
+And then your detector should also override the following method, where
+you can walk through the map contents, compute incidents and report
+them:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    /**
+     * Callback to detectors that add partial results (by adding entries
+     * to the map returned by [LintClient.getPartialResults]). This is
+     * where the data should be analyzed and merged and results reported
+     * (via [Context.report]) to lint.
+     */
+    open fun checkPartialResults(context: Context, partialResults: PartialResult) { ... }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Optimizations
+
+Most lint checks run on the fly in the IDE editor as well. In some
+cases, if all the map computations are expensive, you can check whether
+partial analysis is in effect, and if not, just directly access (for
+example) the main project.
+
+Do this by calling `isGlobalAnalysis()`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+   if (context.isGlobalAnalysis()) {
+       // shortcut
+   } else {
+       // partial analysis code path
+   }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

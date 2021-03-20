@@ -1,0 +1,140 @@
+<meta charset="utf-8" lang="kotlin">
+
+**Lint Features**
+
+# Features for users
+
+* Around 400 built-in checks and growing regularly
+
+* Built-in mechanism for libraries to provide their own additional
+  checks enforcing correct usage of the library. For example, the
+  AndroidX libraries are currently providing ~30 issues, and other open
+  source libraries like the Timber logging library also provide their
+  own checks.
+
+* Integration with IDEs like Android Studio and IntelliJ
+
+* Integration with build systems like Gradle (as well as a command line
+  tool which can be used to run lint from scripts and other build
+  systems; this is for example used to run lint inside Google with its
+  own build system.)
+
+* Support for “baselines”: this allows you to record all the current
+  issues found in a codebase, check that in, and then any subsequent
+  runs of lint will only report newly introduced issues, not the ones
+  already marked in the baseline. This makes it easy to introduce lint
+  into existing codebases and enforce no regressions without having to
+  clean everything up right away.
+
+* Support for suppressing incidents many other ways:
+  - Using `@Suppress` (Kotlin) or `@SuppressWarnings` (Java)
+  - Using `//noinspection` comment markers (already used by IntelliJ)
+  - Using `tools:ignore` attributes in XML files
+  - Using `lint.xml` files to record specific incidents to ignore,
+    or matched by globs on paths or regular expressions on messages
+    or locations
+
+* Many other configuration options. For example, via `lint.xml` files,
+  or Gradle DSL methods, or command line flags, you can change the
+  severity of any issue, to for example turn a warning into an error or
+  vice versa. The `lint.xml` files can be nested, and the closest
+  configuration is used.
+
+* In the Android Gradle integration, support for running a subset of
+  the checks automatically in release builds, not just when the lint
+  targets are invoked (the `lintVital` target, which `assembleRelease`
+  depends on). This helps solve the problem where static analysis tools
+  are available but unaware users aren't running them. (This is
+  reserved for only the most critical issues, which in lint's parlance
+  is known as “fatal” severity. Thanks to the above configurability,
+  you can promote your own issues to fatal or demote some of the
+  built-in ones.
+
+* Support for quickfixes. Many lint checks have associated quickfixes,
+  which can be invoked in the IDE, or (for fixes marked as safe and
+  unambiguous) via a Gradle target (`lintFix`) to apply them all Kotlin
+  batch.
+
+* Support for many report output formats, including SARIF (recently
+  supported by GitHub for unified static analysis tool visualization.)
+
+# Features for lint-check authors
+
+* Ability to easily target both Java and Kotlin source files without
+  writing the checks twice, using UAST.
+
+* Powerful AST APIs for analyzing source code: UAST and PSI for Java
+  and Kotlin, ASM for bytecode, DOM for XML.
+
+* Support not just for Kotlin and Java, but a number of other file
+  types:
+  - XML files
+  - Property files
+  - bytecode / `.class` files
+  - Gradle files (`.gradle` and `.gradle.kts`)
+  - Icon files (`.png`, `.webp`, `.gif`, etc)
+  - Kotlin and Java
+  - ProGuard/R8 files
+  - Other (a callback which lets a lint check visit all files; for
+    example, lint's `PrivateKeyDetector` looks at files to see if it
+    looks like somebody has accidentally included a private key ASCII
+    file.)
+
+* Importantly, a lint check can check more than one of these, so for
+  example, in Android, it can see which icon is designated as the
+  application icon in the XML manifest file, and then it can check the
+  bitmap in the icon to make sure it conforms with the styleguide for
+  application icons (size guidelines, transparency, etc).
+
+* Generic support for visiting abstract syntax trees with a visitor,
+  but a number of convenience implementations to make common operations
+  much easier. For example, you can get callbacks when
+  - A method of a given name is called
+  - An object of a given type is instantiated
+  - A subclass of a given class or interface is implemented
+  - A method annotated with a specific annotation is called (or
+    more generally, an element associated with an annotated package,
+    class, method, parameter or variable, is referenced.)
+
+* A number of built-in helpers to make analysis easier, such as
+
+  - A constant evaluator, such that if you evaluate the AST node for `3
+    > 4 && 5 < 7> is returns `false`, including references to static
+    final constants in the code or class files.
+
+  - A code evaluator which can check whether one class extends another
+    or implements an interface, or computing the parameter to argument
+    mapping (which in Kotlin with named and default parameters and
+    extension methods is not as trivial as lining up the parameters and
+    arguments the way it can be done for Java)
+
+  - A data flow analyzer which performs some simple data flow analysis
+    within a method. This is used by a number of built-in checks, for
+    example ensure that when you create a transaction, you also call
+    `commit` on it.
+
+* Support for implementing quickfixes. A number of lint fix
+  implementations making it easy to perform text edits, perform source
+  formatting or import cleanup afterwards, providing composite or
+  alternatives, etc.)
+
+* Support for a pseudo-markdown syntax in error messages, which allows
+  you to use emphasis or code fonts to reference symbols etc, which
+  makes the presentation in the IDE (in tooltips) or in HTML reports
+  look better.
+
+* Strong unit testing infrastructure, making it easy to write unit
+  tests for lint checks and catching common errors (by running the unit
+  tests repeatedly under different conditions for example). There are
+  also around a dozen lint checks which looks at implementations of
+  lint checks and flags potential issues. This is implemented by the
+  LintDetectorDetector :-)
+
+* Through the analysis scopes mechanism, support for writing lint
+  checks that run on the fly in the editor in the IDE.
+
+* For Android checks, a number of important abstractions such as access
+  to the merged manifest, random access lookup of Android resources,
+  etc.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
