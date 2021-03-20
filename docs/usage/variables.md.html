@@ -1,0 +1,152 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Appendix: Environment Variables and System Properties
+
+This chapter lists the various environment variables and system
+properties that Lint will look at. None of these are really intended to
+be used or guaranteed to be supported in the future, but documenting
+what they are seems useful.
+
+## Environment Variables
+
+### Detector Configuration Variables
+
+`ANDROID_LINT_INCLUDE_LDPI`
+: Lint's icon checks normally ignore the `ldpi` density since it's not
+  commonly used any more, but you can turn this back on with this
+  environment variable set to `true`.
+
+`ANDROID_LINT_MAX_VIEW_COUNT`
+: Lint's `TooManyViews` check makes sure that a single layout does not
+  have more than 80 views. You can set this environment variable to a
+  different number to change the limit.
+
+`ANDROID_LINT_MAX_DEPTH`
+: Lint's `TooManyViews` check makes sure that a single layout does not
+  have a deeper layout hierarchy than 10 levels.You can set this
+  environment variable to a different number to change the limit.
+
+`ANDROID_LINT_NULLNESS_IGNORE_DEPRECATED`
+: Lint's `UnknownNullness` which flags any API element which is not
+  explicitly annotated with nullness annotations, normally skips
+  deprecated elements. Set this environment variable to true to include
+  these as well.
+
+  Corresponding system property: `lint.nullness.ignore-deprecated`
+
+### Lint Configuration Variables
+
+`ANDROID_SDK_ROOT`
+: Locates the Android SDK root
+
+`ANDROID_HOME`
+: Locates the Android SDK root, if `$ANDROID_SDK_ROOT` has not been set
+
+`JAVA_HOME`
+: Locates the JDK when lint is analyzing JDK (not Android) projects
+
+`LINT_XML_ROOT`
+: Normally the search for `lint.xml` files proceeds upwards in the
+  directory hierarchy. In the Gradle integration, the search will stop
+  at the root Gradle project, but in other build systems, it can
+  continue up to the root directory. This environment variable sets a
+  path where the search should stop.
+
+`ANDROID_LINT_JARS`
+: A path of jar files (using the path separator -- semicolon on
+  Windows, colon elsewhere) for lint to load extra lint checks from
+
+`ANDROID_SDK_CACHE_DIR`
+: Sets the directory where lint should read and write its cache files.
+  Lint has a number of databases that it caches between invocations,
+  such as its binary representation of the SDK API database, used to
+  look up API levels quickly. In the Gradle integration of lint, this
+  cache directory is set to the root `build/` directory, but elsewhere
+  the cache directory is located in a `lint` subfolder of the normal
+  Android tooling cache directory, such as `~/.android`.
+
+`LINT_OVERRIDE_CONFIGURATION`
+: Path to a lint XML file which should override any local `lint.xml`
+  files closer to reported issues. This provides a way to globally
+  change configuration.
+
+  Corresponding system property: `lint.configuration.override`
+
+`LINT_DO_NOT_REUSE_UAST_ENV`
+: Set to `true` to enable a workaround (if affected) for
+  [bug 159733104](https://issuetracker.google.com/159733104)
+  until 7.0 is released.
+
+  Corresponding system property: `lint.do.not.reuse.uast.env`
+
+`LINT_API_DATABASE`
+: Point lint to an alternative API database XML file instead of the
+  normally used `$SDK/platforms/android-?/data/api-versions.xml` file.
+
+### Lint Development Variables
+
+`LINT_PRINT_STACKTRACE`
+: If set to true, lint will print the full stack traces of any internal
+  exceptions encountered during analysis. This is useful for authors of
+  lint checks, or for power users who can reproduce a bug and want to
+  report it with more details.
+
+  Corresponding system property: `lint.print-stacktrace`
+
+`LINT_TEST_KOTLINC`
+: When writing a lint check unit test, when creating a `compiled` or
+  `bytecode` test file, lint can generate the .class file binary
+  content automatically if it is pointed to the `kotlinc` compiler.
+
+`LINT_TEST_JAVAC`
+: When writing a lint check unit test, when creating a `compiled` or
+  `bytecode` test file, lint can generate the .class file binary
+  content automatically if it is pointed to the `javac` compiler.
+
+`INCLUDE_EXPENSIVE_LINT_TESTS`
+: When working on lint itself, set this environment variable to `true`
+  some really, really expensive tests that we don't want run on the CI
+  server or by the rest of the development team.
+
+## System Properties
+
+!!! Tip
+   To set system properties when running lint via Gradle, try for
+   example `./gradlew lintDebug -Dlint.baselines.continue=true`
+
+`lint.baselines.continue`
+: When you configure a new baseline, lint normally fails the build
+  after creating the baseline. You can set this system property to true
+  to force lint to continue.
+
+`lint.autofix`
+: Turns on auto-fixing (applying safe quickfixes) by default. This is a
+  shortcut for invoking the `lintFix` targets or running the `lint`
+  command with `--apply-suggestions`.
+
+`lint.html.prefs`
+: This property allows you to customize lint's HTML reports. It
+  consists of a comma separated list of property assignments, e.g.
+  `./gradlew :app:lintDebug -Dlint.html.prefs=theme=darcula,window=5`
+
+  Property          |  Explanation and Values                  | Default
+  ------------------|------------------------------------------|--------
+  `theme`           | `light`, `darcula`, `solarized`          | `light`
+  `window`          | Number of lines around problem           | 3
+  `maxPerIssue`.    | Issue count before “More...” button      | 50
+  `underlineErrors` | If true, wavy underlines, else highlight | `true`
+
+`lint.unused-resources.exclude-tests`
+: Whether the unused resource check should exclude test sources as
+  referenced resources.
+
+`lint.configuration.override`
+: Alias for `$LINT_OVERRIDE_CONFIGURATION`
+
+`lint.print-stacktrace`
+: Alias for `$LINT_PRINT_STACKTRACE`
+
+`lint.do.not.reuse.uast.env`
+: Alias for `$LINT_DO_NOT_REUSE_UAST_ENV`
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,294 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Adding Quick Fixes
+
+## Introduction
+
+When your detector reports an incident, it can also provide one or more
+"quick fixes“, which are actions the users can invoke in the IDE (or,
+for safe fixes, in batch mode) to address the reported incident.
+
+For example, if the lint check reports an unused resource, a quick fix
+could offer to remove the unused resource.
+
+In some cases, quick fixes can take partial steps towards fixing the
+problem, but not fully. For example, the accessibility lint check which
+makes sure that for images you set a content description, the quickfix
+can offer to add it -- but obviously it doesn't know what description
+to put. In that case, the lint fix will go ahead and add the attribute
+declaration with the correct namespace and attribute name, but will
+leave the value up to the user (so it uses a special quick fix provided
+by lint to place a TODO marker as the value, along with selecting just
+that TODO string such that the user can type to replace without having
+to manually delete the TODO string first.)
+
+## The LintFix builder class
+
+The class in lint which represents a quick fix is `LintFix`.
+
+Note that `LintFix` is **not** a class you can subclass and then for
+example implement your own arbitrary code in something like a
+`perform()` method.
+
+Instead, `LintFix` has a number of builders where you *describe* the
+action that you would like the quickfix to take. Then, lint will offer
+that quickfix in the IDE, and when the user invokes it, lint runs its
+own implementation of the various descriptors.
+
+The historical reason for this is that many of the quickfixes in lint
+depended on machinery in the IDE (such as code and import cleanup after
+an edit operation) that isn't available in lint itself, along with
+other concepts that only make sense in the IDE, such as moving the
+caret, opening files, selecting text, and so on.
+
+More recently, this is also used to persist quickfixes properly for
+later reuse; this is required for [partial
+analysis](partial-analysis.md.html).
+
+## Creating a LintFix
+
+Lint fixes use a ”fluent API“; you first construct a `LintFix`, and on
+that method you call various available type methods, which will then
+further direct you to the allowed options.
+
+For example, to create a lint fix to set an XML attribute of a given
+name to ”true“, use something like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+LintFix fix = fix().set(null, "singleLine", "true").build()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here the `fix()` method is provided by the `Detector` super class, but
+that's just a utility method for `LintFix.fix()` (or in older versions,
+`LintFix.create()`).
+
+There are a number of additional, common methods you can set on
+the `fix()` object:
+
+* `name`: Sets the description of the lint fix. This should be brief;
+  it's in the quickfix popup shown to the user.
+
+* `sharedName`: This sets the ”shared“ or ”family“ name: all fixes in
+  the file will with the same name can be applied in a single
+  invocation by the user. For example, if you register 500 ”Remove
+  unused import“ quickfixes in a file, you don't want to force the user
+  to have to invoke each and every one. By setting the shared name, the
+  user will be offered to **Fix All *$family name* problems in the
+  current file**, which they can then perform to have all 500
+  individual fixes applied in one go.
+
+* `autoFix`: If you get a lint report and you notice there are a lot of
+  incidents that lint can fix automatically, you don't want to have to
+  go and open each and every file and all the fixes in the file.
+  Therefore, lint can apply the fixes in batch mode; the Gradle
+  integration has a `lintFix` target to perform this, and the `lint`
+  command has an `--apply-suggestions` option.
+
+  However, many quick fixes require user intervention. Not just the
+  ones where the user has to choose among alternatives, and not just
+  the ones where the quick fix inserts a placeholder value like TODO.
+  Take for example lint's built-in check which requires overrides of a
+  method annotated with `@CallSuper` to invoke `super.` on the
+  overridden method. Where should we insert the call -- at the
+  beginning? At the end?
+
+  Therefore, lint has the `autoFix` property you can set on a quickfix.
+  This indicates that this fix is ”safe“ and can be performed in batch
+  mode. When the `lintFix` target runs, it will only apply fixes marked
+  safe in this way.
+
+## Available Fixes
+
+The current set of available quick fix types are:
+
+* `fix().replace`: String replacements. This is the most general
+  mechanism, and allows you to perform arbitrary edits to the source
+  code. In addition to the obvious ”replace old string with new“, the
+  old string can use a different location range than the incident
+  range, you can match with regular expressions (and perform
+  replacements on a specific group within the regular expression), and
+  so on.
+
+  This fix is also the most straightforward way to **delete** text.
+
+  It offers some useful cleanup operations:
+
+  - Source code cleanup, which will run the IDE's code formatter on the
+    modified source code range. This will apply the user's code
+    preferences, such as whether there should be a space between a cast
+    and the expression, and so on.
+
+  - Import cleanup. That means that if you are referencing a new type,
+    you don't have to worry about checking whether it is imported and
+    if not adding an import statement; you can simply write your string
+    replacements using the fully qualified names, and then tag the
+    quickfix with the import cleanup option, and when the quickfix is
+    performed the import will be added if necessary and all the fully
+    qualified references replaced with simple names. And this will also
+    correctly handle the scenario where the symbols cannot be replaced
+    with simple names because there is a conflicting import of the same
+    name from a different package.
+
+* `fix().annotate`: Annotating an element. This will add (or optionally
+  replace) an annotation on a source element such as a method. It will
+  also handle import management.
+
+* `fix().set`: Add XML attributes. This will insert an attribute into
+  the given element, applying the user's code style preferences for
+  where to insert the attribute. (In Android XML for example there's a
+  specific sorting convention which is generally alphabetical, except
+  layout params go before other attributes, and width goes before
+  height.)
+
+  You can either set the value to something specific, or place the
+  caret inside the newly created empty attribute value, or set it
+  to TODO and select that text for easy type-to-replace.
+
+!!! Tip
+   If you use the `todo()` quickfix, it's a good idea to special case
+   your lint check to deliberately not accept ”TODO“ as a valid value.
+   For example, for lint's accessibility check which makes sure you set
+   a content description, it will complain both when you haven't set
+   the content description attribute, **and** if the text is set to
+   ”TODO“. That way, if the user applies the quickfix, which creates
+   the attribute in the right place and moves the focus to the right
+   place, the editor is still showing a warning that the content
+   description should be set.
+
+* `fix().unset`: Remove XML attribute. This is a special case of add
+  attribute.
+
+* `fix().url`: Show URL. In some cases, you can't ”fix“ or do anything
+  local to address the problem, but you really want to direct the
+  user's attention to additional documentation. In that case, you can
+  attach a ”show this URL“ quick fix to the incident which will open
+  the browser with the given URL when invoked. For example, in a
+  complicated deprecation where you want users to migrate from one
+  approach to a completely different one that you cannot automate, you
+  could use something like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val message = "Job scheduling with `GcmNetworkManager` is deprecated: Use AndroidX `WorkManager` instead"
+val fix = fix()
+.url("https://developer.android.com/topic/libraries/architecture/workmanager/migrating-gcm")
+.build()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Combining Fixes
+
+You might notice that lint's APIs to report incidents only takes a
+**single** quick fix instead of a list of fixes.
+
+But let's say that it *did* take a list of quick fixes.
+
+- Should they *all* be performed as a single unit? That makes sense if
+  you're trying to write a quickfix which performs multiple string
+  replacements.
+
+- Or should they be offered as separate alternatives for the user to
+  choose between? That makes sense if the incident says for example
+  that you must set at least one attribute among three possibilities;
+  in this case we may want to add quickfixes for setting each attribute.
+
+Both scenarios have their uses, so lint makes this explicit:
+
+- `fix().composite`: create a ”composite“ fix, which composes the fix
+  out of multiple individual fixes, or
+
+- `fix().alternatives`: create an ”alternatives“ fix, which holds a
+  number of individual fixes, which lint will present as separate
+  options to the user.
+
+Here's an example of how to create a composite fix, which will be
+performed as a unit; here we're both setting a new attribute and
+deleting a previous attribute:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val fix = fix().name("Replace with singleLine=\"true\"")
+    .composite(
+        fix().set(ANDROID_URI, "singleLine", "true").build(),
+        fix().unset(namespace, oldAttributeName).build()
+    )
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+And here's an example of how to create an alternatives fix, which are
+offered to the user as separate options; this is from our earlier
+example of the accessibility check which requires you to set a content
+description, which can be set either on the ”text“ attribute or the
+"contentDescription” attribute:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val fix = fix().alternatives(
+    fix().set().todo(ANDROID_URI, "text").build(),
+    fix().set().todo(ANDROID_URI, "contentDescription")
+    .build())
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Refactoring Java and Kotlin code
+
+It would be nice if there was an AST manipulation API, similar to UAST
+for visiting ASTs, that quickfixes could use to implement refactorings,
+but we don't have a library like that. And it's unlikely it would work
+well; when you rewrite the user's code you typically have to take
+language specific conventions into account.
+
+Therefore, today, when you create quickfixes for Kotlin and Java code,
+if the quickfix isn't something simple which would work for both
+languages, then you need to conditionally create either the Kotlin
+version or the Java version of the quickfix based on whether the source
+file it applies to is in Kotlin or Java. (For an easy way to check you
+can use the `isKotlin` or `isJava` package level methods in
+`com.android.tools.lint.detector.api`.)
+
+However, it's often the case that the quickfix is something simple
+which would work for both; that's true for most of the built-in lint
+checks with quickfixes for Kotlin and Java.
+
+## Regular Expressions and Back References
+
+The `replace` string quick fix allows you to match the text to
+with regular expressions.
+
+You can also use back references in the regular expression such
+that the quick fix replacement text includes portions from the
+original string.
+
+Here's an example from lint's `AssertDetector`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+val fix = fix().name("Surround with desiredAssertionStatus() check")
+    .replace()
+    .range(context.getLocation(assertCall))
+    .pattern("(.*)")
+    .with("if (javaClass.desiredAssertionStatus()) { \\k<1> }")
+    .reformat(true)
+    .build()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The replacement string's back reference above, on line 5, is \k<1>. If
+there were multiple regular expression groups in the replacement
+string, this could have been \k<2>, \k<3>, and so on.
+
+Here's how this looks when applied, from its unit test:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+lint().files().run().expectFixDiffs(
+    """
+    Fix for src/test/pkg/AssertTest.kt line 18: Surround with desiredAssertionStatus() check:
+    @@ -18 +18
+    -         assert(expensive()) // WARN
+    +         if (javaClass.desiredAssertionStatus()) { assert(expensive()) } // WARN
+    """
+)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Emitting quick fix XML to apply on CI
+
+Note that the `lint` has an option (`--describe-suggestions`) to emit
+an XML file which describes all the edits to perform on documents to
+apply a fix. This maps all quick fixes into chapter edits (including
+XML logic operations). This can be (and is, within Google) used to
+integrate with code review tools such that the user can choose whether
+to auto-fix a suggestion right from within the code review tool.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

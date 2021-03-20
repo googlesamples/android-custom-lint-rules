@@ -1,0 +1,35 @@
+**Recent Changes**
+
+This chapter lists recent changes to lint that affect users of lint.
+For information about internal improvements and API changes affecting
+lint check authors, see [](../api-guide/changes.md.html).
+
+**7.0**
+
+* There are a number of new lint checks, particularly to support
+  Android 12.
+
+* Lint checks now include information for reported incidents where the
+  lint check came from, such as which library artifact provided it.
+  This should make it easier to request enhancements or file bugs
+  around false positives or false negatives.
+
+* Lint “partial analysis” mode is now integrated in lint, off by
+  default, but you can enable it by modifying `gradle.properties`
+  to include
+
+      `android.experimental.useLintPartialAnalysis=true`
+
+**4.2**
+
+* Improved support for lint.xml configuration files. You can now
+  specify lint.xml files in project source folders, where the settings
+  will apply recursively within just that folder. You can also specify
+  options for detectors, and enable or disable checks for specific
+  clients (such as just in Gradle, or just in the IDE, and so on.)
+
+* Support for SARIF reports; a static analysis report file format
+  supported by for example GitHub, allowing the results to be
+  visualized in a unified way on CI servers.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

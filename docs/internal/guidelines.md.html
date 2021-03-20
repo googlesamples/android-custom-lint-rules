@@ -1,0 +1,80 @@
+<meta charset="utf-8" lang="kotlin">
+
+**Lint Development Guidelines**
+
+(This folder should also contain architectural information documents.)
+
+# Setup
+
+To develop lint, use a recent IntelliJ, check out the Android tools
+repository and then open up the folder `tools/` as a Gradle project.
+
+# Code
+
+* All new files should be written in Kotlin.
+
+* Code should be formatted using “cd lint && gradle formatLint”, which
+  will format both the Java and Kotlin files according to the
+  configured style.
+
+* All lint checks must have tests checking both for false positives and
+  false negatives.
+
+* Make sure that lint checks have the correct platform applied (e.g.
+  androidSpecific=true in the issue registration for any Android
+  checks.)
+
+# Debugging lint under Gradle
+
+To be able to attach to and debug lint when invoked from within the
+Android Gradle plugin, add this to the `gradle.properties` file in the
+target project before invoking gradle with the debug flags:
+
+```
+android.experimental.runLintInProcess=true
+```
+
+# Debugging lint in the IDE
+
+When debugging lint running in the IDE, machinery the IDE has
+to avoid UI freezes involves throwing exceptions if read operations
+are taking too long -- and then the editor restarting highlighting
+at a later time. This makes debugging tricky. There are probably
+better ways to do this (I remember an IntelliJ registry key to set
+that I can't find now), but what I do is open `LintIdeClient` and
+in the `runReadAction` method, I change
+
+```
+if (application.isUnitTestMode()) {
+```
+
+to
+
+```
+if (true || application.isUnitTestMode()) {
+```
+
+# Updating Baselines
+
+If you've added a new lint check which has a number of existing
+violations in the Studio tree, you can run the following target
+to update the baselines:
+
+```
+bazel run --test_env=UPDATE_LINT_BASELINE=1  \
+  $(bazel query --output=label 'kind(.*lint_test, //tools/...)')
+```
+
+# Registering Inspections
+
+When lint runs in the IDE, all lint checks are wrapped as IntelliJ
+inspections, such that they show up in the Inspections options list
+etc. Lazily discovered lint checks (3rd party lint checks) will show up
+as soon as lint has run to discover them, but for built-in checks we
+should register them in advance such that they always show up. To do
+this, open the `tools/adt/idea` project and run the
+`LintInspectionRegistrationTest` test. To have your sources updated in
+place, either set `$ADT_SOURCE_TREE` or edit the test first to point
+the `sourceTree` var to point to your checkout.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,6 +1,16 @@
 Custom Lint Rules
 =================
 
+The lint source code contains a lot of documentation on how to write
+custom checks; this git repository contains a snapshot of this
+documentation which you can read here:
+
+* [Full API Guide](https://google.github.io/android-custom-lint-rules/docs/book.html)
+* [Other docs](https://google.github.io/android-custom-lint-rules/docs/README.md.html)
+
+Lint
+----
+
 The [Android `lint` tool](http://developer.android.com/tools/help/lint.html) is a static code
 analysis tool that checks your project source files for potential bugs and optimization
 improvements for correctness, security, performance, usability, accessibility, and
