@@ -111,4 +111,34 @@ provided from the given project.
    clean builds. There are some bugs in the Android Gradle Plugin issue
    tracker for this.
 
+### Unpublishing
+
+If you end up “deleting” a lint check, perhaps because the original
+conditions for the lint check are not true, don't just stop
+distributing lint checks with your library. Instead, you'll want to
+update your `IssueRegistry` to override the `deletedIssues` property to
+return your deleted issue id or ids:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/**
+ * The issue id's from any issues that have been deleted from this
+ * registry. This is here such that when an issue no longer applies
+ * and is no longer registered, any existing mentions of the issue
+ * id in baselines, lint.xml files etc are gracefully handled.
+ */
+open val deletedIssues: List<String> = emptyList()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The reason you'll want to do this is listed right there in the doc: If
+you don't do this, and if users have for example listed your issue id
+in their `build.gradle` file or in `lint.xml` to say change the
+severity, then lint will report an error that it's an unknown id. This
+is done to catch issue id typos. And if the user has a baseline file
+listing incidents from your check, then if your issue id is not
+registered as deleted, lint will think this is an issue that has been
+"fixed“ since it's no longer reported, and lint will issue an
+informational message that the baseline contains issues no longer
+reported (which is done such that users can update their baseline
+files, to ensure that the fixed issues aren't reintroduced again.)
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

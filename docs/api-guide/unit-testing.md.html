@@ -236,23 +236,23 @@ lint().files(...)
 
 ## Library Dependencies and Stubs
 
-Let's say you're writing a lint check for something like the
-AndroidX library's `RecyclerView` widget.
+Let's say you're writing a lint check for something like the Android
+Jetpack library's `RecyclerView` widget.
 
 In this case, it's highly likely that your unit test will reference
 `RecyclerView`. But how does lint know what `RecyclerView` is? If it
 doesn't, type resolve won't work, and as a result the detector won't.
 
-You could make your test ”depend“ on the recyclerview. This is
+You could make your test ”depend“ on the `RecyclerView`. This is
 possible, using the `LibraryReferenceTestFile`, but is not recommended.
 
 Instead, the recommended approach is to just use ”stubs“; create
 skeleton classes which represent only the **signatures** of the
-library, and in particular, only the subset that your lint check
-cares about.
+library, and in particular, only the subset that your lint check cares
+about.
 
-For example, for lint's own recycler view test, the unit test
-declares a field holding the recycler view stub:
+For example, for lint's own `RecyclerView` test, the unit test declares
+a field holding the recycler view stub:
 
 ```
 private val recyclerViewStub = java(
@@ -348,5 +348,17 @@ This isn't just a convenience; lint's test infrastructure also uses
 this to test some additional scenarios (for example, in a multi- module
 project it will only provide the binaries, not the sources, for
 upstream modules.)
+
+## My Detector Isn't Invoked From a Test!
+
+One common question we hear is
+
+> My Detector works fine when I run it in the IDE or from Gradle, but
+> from my unit test, my detector is never called! Why?
+
+This is almost always because the test sources are referring to some
+library or dependency which isn't on the class path. See the ”Library
+Dependencies and Stubs“ section above, as well as the [frequently asked
+questions](faq.md.html).
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

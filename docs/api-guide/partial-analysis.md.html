@@ -112,7 +112,7 @@ also listed in order of frequency. For lint's built-in checks (~385),
 * 4% were updated to report incidents with data for later filtering
 * 1% were updated to perform map recording and later reduce filtering
 
-## Does my Detector Need Work?
+## Does My Detector Need Work?
 
 At this point you're probably wondering whether your checks are in the
 89% category where you don't need to do anything, or in the remaining
@@ -494,7 +494,7 @@ The last (and most involved) scenario for partial analysis is one where
 you cannot just create incidents and filter or customize them later.
 
 The most complicated example of this is lint's built-in
-UnusedResourceDetector, which locates unused resources. This “requires”
+[UnusedResourceDetector](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnusedResourceDetector.java), which locates unused resources. This “requires”
 global analysis, since we want to include all resources in the entire
 project. We also cannot just store lists of “resources declared” and
 "resources referenced“ since we really want to treat this as a graph.
