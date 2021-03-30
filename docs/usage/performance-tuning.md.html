@@ -1,0 +1,290 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Performance Tuning
+
+Lint tends to get slower for every release. There's a reason for that:
+It keeps checking more and more things (as of 7.0 canary we're up to
+around 400 separate issues), and existing issues are often made more
+complex as well, doing deeper flow and data analysis, and occasionally
+there are new features which also add costs, such as baselines, Kotlin
+analysis, etc. And this is all compounded by the codebases lint is
+getting run on also growing bigger and bigger, and being broken up into
+more and more modules.
+
+This chapter provides some tips on how to improve the performance of
+lint on CI servers.
+
+!!! Tip
+   Some of these suggestions are not true in all cases, so you might
+   want to time before and after to verify that for your project each
+   change is an improvement.
+
+## Use 7.0 and Incremental Lint
+
+In 7.0, lint will finally be capable of running incrementally across
+modules, meaning that if you change code in just one module, lint will
+only have to rerun analysis on modules downstream from that module.
+With large projects with many modules, this should be a significant
+improvement.
+
+To use this:
+
+1. Update to the latest 7.0 canary 12 or later.
+
+2. Update your CI configuration such that it does not clean the working
+   directories between each build.
+
+We are working on making the state files used by this mechanism path
+relative such that this facility will also work for Gradle's remote
+cache; once that's done, this will work for clean builds as well.
+
+## Use the `lintDebug` target, not `lint`
+
+If you run “./gradlew tasks” you'll see that there's a `lint` task, and
+you may be tempted to run it. But lint also adds specific tasks for
+each variant. For example, if you only have “debug” and “release”
+variants (e.g. you haven't defined any product flavors or additional
+build types), lint will create 3 targets:
+
+* `lint`
+* `lintDebug`
+* `lintRelease`
+
+If you have defined additional build types or product flavors, you can
+end up with many more of these -- `lintFreeDebug`, `lintProDebug`,
+`lintFreeBeta`, `lintProBeta`, etc.
+
+**Don't configure your CI job to run the `lint` task; pick a specific
+variant instead, such as `lintDebug`**. The reason this is so
+important, is that what the `lint` task really does is run lint over
+and over again, for *each* variant, and then it collates the results in
+the end! It combines all the errors it found, and shows which specific
+variants every error applies to, unless it applies to all (which is
+nearly always the case).
+
+The rationale for this behavior is that you could have a
+variant-specific issue; for example, you may have a resource file which
+is only present in a variant-specific source set (such as
+`src/debug/res/values`), so the general lint target checks everything.
+Of course, you're probably only shipping your release variant, so you
+could limit yourself to just running `lintRelease` and you're not going
+to miss much.
+
+!!! Note
+   You're probably shipping your release variant, not your debug
+   variant, so instead of running `lintDebug` it's probably more
+   accurate to run `lintRelease`. However, unless you're doing anything
+   variant specific, it's unlikely that this matters, and running
+   `lintRelease` can take significantly longer since it performs more
+   build time optimizations.
+
+If you have lots of variants this makes a huge difference; with 7
+variants, `lint` will take ~7x longer than `lintDebug` !! (modulo some
+minor caching)
+
+!!! Tip
+   In 7.0 and Arctic Fox we're changing the behavior of the `lint`
+   target such that it is just an alias for `lintDebug`, so once you
+   update to 7.0 this is no longer a problem.
+
+## Only analyze app/leaf modules
+
+If you have divided your project into many smaller modules - a number
+of libraries and just a couple of app modules, it's much better to
+
+1. Turn on checkDependencies mode, and
+
+2. Only run lint on the app modules, instead of recursively running
+   lint on each module.
+
+To do this, first add this to your app module's build.gradle file:
+
+```
+android {
+    ...
+    lintOptions {
+        ...
+        checkDependencies true
+        ...
+    }
+}
+```
+
+Then instead of running `./gradlew lintDebug`, run `./gradlew
+:app:lintDebug`.
+
+Since you've turned on check-dependencies mode, running lint on the app
+module will also run it on all the dependent modules the app depends on
+-- e.g. all the libraries. But this should also make things run a lot
+faster, since it's a single lint invocation, where lint shares a lot
+more computation (such as symbol resolution in the SDK and various
+shared libraries, etc).
+
+!!! Note
+   Note that `checkDependencies true` will also cause lint to analyze
+   Kotlin-only or Java-only modules, which the normal `./gradlew
+   lintDebug` approach will not do, since that just invokes lint on
+   modules that apply the Android plugins. This is actually a good
+   thing since that code does get included in your Android app and lint
+   has a number of checks that are relevant for that code. But note
+   that this analysis isn't free, so it's technically possible that in
+   some cases (if you have a lot of these modules relative to the
+   number of Android modules) lint will not actually run faster with
+   `checkDependencies true`. However, for this scenario it's probably a
+   change you want to make anyway.
+
+This isn't just a good idea from a performance perspective; you'll also
+get more accurate results. For example, the unused resource analysis
+will now correctly know whether a resource defined in a library is
+consumed by the app module; that doesn't happen when you run lint first
+on the library, and later on just the app, which is what happens when
+you run `./gradlew lintDebug`. As a bonus you'll also get a single HTML
+report containing all the results from your codebase, instead of having
+to hunt around the tree for all the various reports and look at each
+one separately.
+
+!!! Note
+   This mode used to be on by default, since it has better usability.
+   We had to turn it off for performance reasons, because many users
+   were running redundant targets. But in 7.0 we've added a new
+   mechanism (partial analysis) which solves these performance
+   problems, so we will most likely turn this mode back on by default.
+
+## Don't analyze test sources
+
+Lint has two flags controlling what to do about test sources:
+`checkTestSources` and `ignoreTestSources`. These mean different things.
+
+The `checkTestSources` option controls whether lint should run all the
+normal checks on the test sources. This is already off by default, so
+there's really no performance reason to tweak it. The only reason you'd
+turn this on is if you really want to make sure your test sources are
+pristine as well. The `ignoreTestSources` option on the other hand
+controls whether lint should really ignore all test sources. Even if
+lint doesn't run normal checks on the test sources, it still has to
+include them in analysis for some of the regular lint checks for
+production code. For example, what if you have a resource which is only
+referenced from a test; do you then want to flag this as unused when
+the test is still referencing it?
+
+Add the following to your app module's `build.gradle` file to tell lint
+to completely ignore your test sources, which should help lint run
+faster since (for well tested code) this can help skip a lot of code
+analysis and type resolution:
+
+```
+android {
+    ...
+    lintOptions {
+        ...
+        ignoreTestSources true
+        ...
+    }
+}
+```
+
+## Don't use checkAllWarnings
+
+Lint has a `checkAllWarnings` option you can use to turn on checking of
+all warnings, including those that are off by default. This flag is off
+by default, but some developers turn it on (*“because I want all the
+tips I can get”* is what I heard from one developer).
+
+Be careful doing that, because some of the disabled checks are slow,
+and some have a lot of false positives which is why they're off by
+default but available if you really want to audit for one specific
+problem. (In older versions this would also turn on the
+`WrongThreadInterprocedural` check, which is particularly expensive,
+though in recent versions we've specifically exempted this check from
+`checkAllWarnings`.)
+
+## Use latest version
+
+Try using the latest versions of lint (the Android Gradle plugin), as
+well as of Gradle -- even if that means using a canary version. Yes, by
+all means, for your production builds use a stable version of the
+Gradle plugin to build your release APK/bundle, but for your CI server,
+consider running the latest preview version of lint, since generally
+those versions will have the most up to date fixes. (Yes, regressions
+happen and canaries go through less testing, but in general lint has
+really good coverage so regressions do not happen very often.)
+
+## Give lint a lot of RAM
+
+This one is kind of obvious, but lint (especially the code analysis
+part) is really memory hungry; it does a lot of the same work as a
+compiler, except that it also hangs on to a lot more data (e.g. the
+full ASTs with whitespace and comments etc). Explore bumping up the
+memory given to the Gradle daemon significantly to see if it helps
+bring down the overall analysis time.
+
+This is *especially* important if you happen to run many lint jobs in
+parallel! If you follow the advice above (where you're running a single
+lint job with recursive dependencies on the app module) this is less
+likely to happen, but I've seen various thread dumps from users asking
+about performance where there was 16-20 concurrent separate lint jobs
+running in the Gradle daemon, and each one requires a lot of memory;
+these separate lint job threads are not sharing data.
+
+One user reported this result:
+
+> I have a very large project (with over 2000 classes) and giving lint
+> more memory had a huge effect:
+>
+> `./gradlew -Dorg.gradle.jvmargs=-Xmx2g app:lintDebug` takes 25m 18s
+>
+> `./gradlew -Dorg.gradle.jvmargs=-Xmx8g app:lintDebug` takes 8m 57s!
+
+## Finding Slow Lint Checks
+
+We have a tool we use to try to attribute the time spent during
+analysis to individual lint checks. When analysis is taking longer
+than expected, we run this tool to see if any of the lint checks
+are misbehaving. Here's some sample output:
+
+```
+$ ./gradlew lintDebug -no-daemon -Dorg.gradle.jvmargs="..."
+
+BUILD SUCCESSFUL in 10s
+15 actionable tasks: 1 executed, 14 up-to-date
+
+Lint detector performance stats:
+                                     total           self          calls
+                 LintDriver        3709 ms        1302 ms           2821
+TopDownAnalyzerFacadeForJVM        2121 ms        2121 ms              6
+               IconDetector          81 ms          81 ms            257
+           OverdrawDetector          51 ms          51 ms             36
+     InvalidPackageDetector          34 ms          34 ms          51744
+             GradleDetector          20 ms          20 ms             94
+       LocaleFolderDetector          11 ms          11 ms            986
+         RestrictToDetector          11 ms          11 ms             19
+                ApiDetector          11 ms          11 ms           1255
+    PrivateResourceDetector          10 ms          10 ms            422
+                      [...]
+```
+Here you can see that `InvalidPackageDetector` is taking up an
+unreasonable amount of time. And this is actually real output from an
+earlier version of lint where we tracked down a real problem in that
+detector.
+
+You can read more about this tool in [this
+post](https://groups.google.com/g/lint-dev/c/mwpTCaQPXYU/m/YKc4EcMYAgAJ).
+
+If you see a suspicious check, you can try to disable its issues
+(unless you find their value is worth the cost; after all, real world
+bugs are typically more expensive than server compute cycles.) But
+don't forget to also report the bug to the lint check author!
+
+!!! Warning
+   One thing to be aware of is that the “blame” is not entirely fair.
+   There are a number of expensive operations in lint, and especially
+   symbol resolution, which is cached. That means that the first
+   unlucky detector that comes along has to perform the computation,
+   and subsequent detectors just get to reuse the result. Because of
+   this, it's not always the case that a particular detector is a
+   performance culprit, and as soon as you disable it, a new detector
+   moves to the top of the list paying the same initialization costs.
+   The main use for this tool is to find extreme or unusual performance
+   behaviors.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -2,7 +2,7 @@
 
 This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
-lint check authors, see [](../api-guide/changes.md.html).
+lint check authors, see the API Guide.
 
 **7.0**
 
@@ -14,11 +14,11 @@ lint check authors, see [](../api-guide/changes.md.html).
   This should make it easier to request enhancements or file bugs
   around false positives or false negatives.
 
-* Lint “partial analysis” mode is now integrated in lint, off by
-  default, but you can enable it by modifying `gradle.properties`
-  to include
+* Lint “partial analysis” mode is now integrated in lint. It is
+  enabled by default, but you can disable it by modifying
+  `gradle.properties` to include
 
-      `android.experimental.useLintPartialAnalysis=true`
+      `android.enableParallelLint=false`
 
 **4.2**
 

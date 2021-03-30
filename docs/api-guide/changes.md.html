@@ -2,8 +2,8 @@
 
 This chapter lists recent changes to lint that affect lint check
 authors: new features, API and behavior changes, and so on. For
-information about user visible changes to lint, see
-[](../usage/changes.md.html).
+information about user visible changes to lint, see the User
+Guide.
 
 **7.0**
 
@@ -12,10 +12,10 @@ information about user visible changes to lint, see
 * Partial analysis. Lint's architecture has changed to support better
   scalability across large projects, where module results can be
   cached, etc. See the api-guide's dedicated chapter for more details.
-  To opt in before it's turned on by default to test this on your full
-  Gradle projects rather than just the detector tests, add
+  It is enabled by default starting in AGP 7.0.0-alpha13, but you can
+  disable it by adding
 
-      `android.experimental.useLintPartialAnalysis=true`
+      `android.enableParallelLint=false`
 
   to your `gradle.properties` file. If you want to debug your lint check
   you may want to also set
@@ -71,5 +71,28 @@ information about user visible changes to lint, see
   so on.
 
 * API documentation is now available.
+
+* Certain Kotlin PSI elements have new implementations known as
+  _ultra light classes_. Ultra light classes improve performance
+  by answering PSI queries "directly from source" rather than
+  delegating to the Kotlin compiler backend. You may see ultra
+  light classes when accessing the `UElement.javaPsi` property of a
+  Kotlin UAST element. They can also appear when resolving references.
+  For example, resolving a Kotlin field reference to its declaration
+  may result in an instance of `KtUltraLightFieldForSourceDeclaration`.
+  As a reminder, Kotlin light classes represent the "Java view" of an
+  underlying Kotlin PSI element. To access the underlying Kotlin PSI
+  element you should use `UElement.sourcePsi` (preferred)
+  or otherwise the extension property `PsiElement.unwrapped` (declared
+  in `org.jetbrains.kotlin.asJava`).
+
+* There is a new bug where calling `getNameIdentifier()` on Kotlin
+  fields may return `null`
+  ([KT-45629](https://youtrack.jetbrains.com/issue/KT-45629)).
+  As a workaround you can use `JavaContext.findNameElement()` instead.
+
+* Kotlin references to Java methods now trigger both the
+  `visitMethodCall()` callback _and_ the `visitReference()` callback.
+  Previously only `visitMethodCall()` was triggered.
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
