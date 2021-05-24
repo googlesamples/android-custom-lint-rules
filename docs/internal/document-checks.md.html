@@ -1,0 +1,167 @@
+<meta charset="utf-8">
+
+# Documenting Lint Checks
+
+Lint ships with a tool to generate documentation pages for lint
+checks, both built-in ones as well as third party checks.
+
+You can access the documentation driver directly via a
+`java -jar` command, but it's also accessible indirectly via
+the “lint” binary, which may be more convenient.
+
+Here's the basic usage:
+```shell
+$ $ANDROID_HOME/cmdline-tools/latest/bin/lint -generate-docs
+Usage: lint --generate-docs [flags] <output file or directory>
+
+Flags:
+
+--help                            This message.
+--single-doc                      Instead of writing one page per issue into a
+                                  directory, write a single page containing
+                                  all the issues
+--md                              Write to plain Markdown (.md) files instead
+                                  of Markdeep (.md.html)
+--lint-jars <jar-path>            Read the lint issues from the specific path
+                                  (separated by : of custom jar files
+--issues [issues]                 Limits the issues documented to the specific
+                                  (comma-separated) list of issue id's
+--source-url <url-prefix> <path>  Searches for the detector source code under
+                                  the given source folder or folders separated
+                                  by semicolons, and if found, prefixes the
+                                  path with the given URL prefix and includes
+                                  this source link in the issue
+                                  documentation.
+--test-url <url-prefix> <path>    Like --source-url, but for detector unit
+                                  tests instead. These must be named the same
+                                  as the detector class, plus `Test` as a
+                                  suffix.
+--no-suppress-info                Do not include suppression information
+--no-examples                     Do not include examples pulle from unit
+                                  tests, if found
+--no-links                        Do not include hyperlinks to detector source
+                                  code
+```
+
+(If you get “`-generate-docs does not exist`” you need to use a newer
+version of lint.)
+
+## Built-in Checks
+
+Here's a sample invocation, invoked from the `tools/base` location
+in the Android Studio tree, which will generate the docs published
+to https://github.com/googlesamples/android-custom-lint-rules/tree/main/docs:
+
+```shell
+$ lint --generate-docs \
+    --source-url \
+    https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/ \
+    lint/libs/lint-checks/src/main/java \
+    --test-url \
+    https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/ \
+    lint/libs/lint-tests/src/test/java \
+    /tmp/lint-docs/
+```
+
+Here, we use `--source-url` and `--test-url` to not only point the tool
+to the right URLs to link to for access to the source code, but also
+source locations to search to find the source files, which are then
+mined for things like sample unit tests to include as examples in the
+documentation.
+
+## Custom Checks
+
+You can generate documentation for third-party checks. To do this, use
+the `lint-jars` flag to specify one or more jar file to scan for lint
+checks. If your lint check are packaged as an AAR file, you can unzip
+this file to find `lint.jar` inside.
+
+## Special Conventions
+
+If you include a test URL search path (and note that the URI prefix is
+itself optional (though must be specified as an empty string), so you
+could in the built-in example above only have specified `--testurl ""
+lint/libs/lint-tests/src/test/java`), lint will search for the
+corresponding unit tests. If found, it will try to extract “examples”
+to include in the documentation.
+
+This requires that
+
+* The detector tests are located in a class named *Detector*`Test`,
+  such as `AlarmDetectorTest` for an issue whose implementation points
+  to `AlarmDetector`.
+
+* This class is located in the folder predicted by the package of the
+  detector (even though Kotlin lets you place classes wherever you
+  want).
+
+* The tests are using lint's test DSL, e.g.
+  `lint(files(...)).run().expect(...)`.
+
+* Lint will then try to extract an example from the unit tests. It does
+  this by looking at the `expect` output, and if it finds an error with
+  the right id, it will then include this error output as well as the
+  source file mentioned in the error message as an example (along with
+  a message explaining that this test case was automatically
+  generated). Lint will only include a single source file (the one
+  pointed to by the error message) because we want to keep the example
+  straight and to the point, and many unit tests provide a lot of
+  “noise” to help make the test complete. For example, for the
+  RecyclerView tests, there are stub implementations of the API. There
+  are often manifest files and gradle files in tests too which are not
+  particularly interesting to the test scenario.
+
+* However, in some cases you really do need to show multiple files to
+  illustrate the problem. For example, for the StringFormatDetector,
+  which points out an inconsistency between the parameters specified in
+  an XML formatting string and the usage from a String.format call in a
+  separate Kotlin file, the example really needs to include both.
+  Therefore, the documentation tool has support for a “curated”
+  example. If you name your unit test `testExample` or `example` or
+  `testDocumentationExample`, the tool will include this example, and
+  in this case `*all*` the source files and all the error output.
+
+  * Note that if you have a detector which reports multiple issues, you
+    can actually suffix the issue id to this name to scope it to the
+    specific example, e.g. for “SdCardPath”, the test name could be
+    `testDocumentationExampleSdCardPath`.
+
+  * Note also that you can include source files which are ommitted from
+    the example if the source contains the string
+    `HIDE-FROM-DOCUMENTATION` somewhere, typically in a comment. This
+    is typically only needed for things like stubs and R classes to
+    make the test symbols resolve.
+
+  * By convention, the test class in the example uses the issue id as
+    its name when there isn't another obvious choice.
+
+  * To keep examples as short as possible, consider just using the
+    default package and even using fully qualified names in some places
+    to shorten the import list (as long as it doesn't hinder
+    readability for the relevant part of the example.)
+
+  * Consider also adding in some highlighting comment to point out the
+    problem. Many lint tests put `// ERROR` as a line suffix for
+    statements that produce an error, as well as `// OK` for statements
+    that should not (to verify no false positives, though this isn't
+    typical useful in an example.)
+
+  * Don't use the manifest DSL for constructing manifest files when
+    creating documentation samples; create an explicit manifest XML
+    file instead (using `manifest(...)`).
+
+* Similarly, if you have a unit test for suppressing the error, you can
+  get this included as an example by naming the test exactly
+  `testSuppressExample` or `suppressExample`. Note that this is usually
+  not necessary; lint will include generic information about how to
+  suppress an element using the applicable mechanisms. But there may be
+  cases where the suppression mechanism has some special cases, and in
+  that scenario you might want to include an example.
+
+!!! Tip
+   If you are develping a new lint check and want to review the
+   documentation that will be generated, you can also use the `--issues
+   <id>` flag to limit the document generation to just a single check
+   (or a comma separated list of checks).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,76 @@
+<meta charset="utf-8">
+(#) Layout has too many views
+
+!!! WARNING: Layout has too many views
+   This is a warning.
+
+Id
+:   `TooManyViews`
+Summary
+:   Layout has too many views
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TooManyViewsDetector.java)
+
+Using too many views in a single layout is bad for performance. Consider
+using compound drawables or other tricks for reducing the number of
+views in this layout.
+
+The maximum view count defaults to 80 but can be configured with the
+environment variable `ANDROID_LINT_MAX_VIEW_COUNT`.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="TooManyViews"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TooManyViews" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TooManyViews'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TooManyViews ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

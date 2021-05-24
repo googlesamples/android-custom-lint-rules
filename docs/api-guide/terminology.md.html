@@ -82,6 +82,13 @@ Platform
   apply (such as “Android”, or “Server”, and so on). This means that an
   Android-specific check won't trigger warnings on non-Android code.
 
+Scanner
+: A `Scanner` is a particular interface a detector can implement to
+  indicate that it supports a specific set of callbacks. For example,
+  the `XmlScanner` interface is where the methods for visiting XML
+  elements and attributes are defined, and the `ClassScanner` is where
+  the ASM bytecode handling methods are defined, and so on.
+
 Scope
 : `Scope` is an enum which lists various types of files that a detector
   may want to analyze.

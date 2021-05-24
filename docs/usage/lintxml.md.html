@@ -13,8 +13,7 @@ warning.
 
 This chapter describes the syntax of `lint.xml` files.
 
-XML Syntax
-===========
+## XML Syntax
 
 The root tag is always `<lint>`, and it can contain one or more
 `<issue>` elements. Each <issue> can specify the following
@@ -52,8 +51,7 @@ lint checks, separated by a semicolon as a path separator), and
 flags like warningsAsErrors, checkTestSources, etc (matching most
 of the flags offered via the lintOptions block in Gradle files.)
 
-Nesting & Precedence
-======================
+## Nesting & Precedence
 
 You can specify configurations for “all”, but these will be
 matched after an exact match has been done. E.g. if we have
@@ -83,8 +81,8 @@ in this order:
    running in Studio and a configuration specifies
    ”!gradle“, this will match after the other attempts.
 
-Sample lint.xml file
-====================
+## Sample lint.xml file
+
 Typically lint.xml files are pretty short and simple, but here's
 one which uses most of the available features. (Note: the
 HTML version of this isn't properly handling empty elements,
