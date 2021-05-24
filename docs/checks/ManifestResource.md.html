@@ -1,0 +1,135 @@
+<meta charset="utf-8">
+(#) Manifest Resource References
+
+!!! ERROR: Manifest Resource References
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `ManifestResource`
+Summary
+:   Manifest Resource References
+Severity
+:   Fatal
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ManifestResourceDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestResourceDetectorTest.kt)
+
+Elements in the manifest can reference resources, but those resources
+cannot vary across configurations (except as a special case, by version,
+and except for a few specific package attributes such as the application
+title and icon).
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:6:Error: Resources referenced from the manifest
+cannot vary by configuration (except for version qualifiers, e.g. -v21).
+Found variation in mcc [ManifestResource]
+
+    &lt;application android:fullBackupContent="@xml/backup"&gt;
+                                            -----------
+
+
+AndroidManifest.xml:8:Error: Resources referenced from the manifest
+cannot vary by configuration (except for version qualifiers, e.g. -v21).
+Found variation in en-rUS [ManifestResource]
+
+    android:process="@string/location_process"
+                     ------------------------
+
+
+AndroidManifest.xml:9:Error: Resources referenced from the manifest
+cannot vary by configuration (except for version qualifiers, e.g. -v21).
+Found variation in watch-v20 [ManifestResource]
+
+    android:enabled="@bool/enable_wearable_location_service"&gt;
+                     --------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"&gt;
+    &lt;uses-sdk android:minSdkVersion="14" /&gt;
+
+    &lt;application android:fullBackupContent="@xml/backup"&gt;
+        &lt;service
+            android:process="@string/location_process"
+            android:enabled="@bool/enable_wearable_location_service"&gt;
+        &lt;/service&gt;    &lt;/application&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestResourceDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ManifestResourceDetector.testInvalidManifestReference`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="ManifestResource"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ManifestResource" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ManifestResource'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ManifestResource ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

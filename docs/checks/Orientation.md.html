@@ -1,0 +1,176 @@
+<meta charset="utf-8">
+(#) Missing explicit orientation
+
+!!! ERROR: Missing explicit orientation
+   This is an error.
+
+Id
+:   `Orientation`
+Summary
+:   Missing explicit orientation
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InefficientWeightDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InefficientWeightDetectorTest.java)
+
+The default orientation of a `LinearLayout` is horizontal. It's pretty
+easy to believe that the layout is vertical, add multiple children to
+it, and wonder why only the first child is visible (when the subsequent
+children are off screen to the right). This lint rule helps pinpoint
+this issue by warning whenever a `LinearLayout` is used with an implicit
+orientation and multiple children.
+
+It also checks for empty LinearLayouts without an `orientation`
+attribute that also defines an `id` attribute. This catches the
+scenarios where children will be added to the `LinearLayout`
+dynamically. 
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/inefficient_weight.xml:3:Error: Wrong orientation? No
+orientation specified, and the default is horizontal, yet this layout
+has multiple children where at least one has layout_width="match_parent"
+[Orientation]
+
+&lt;LinearLayout
+ ------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/inefficient_weight.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+
+	&lt;Button
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+        android:layout_weight="1.0" /&gt;
+
+	&lt;LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+
+		android:orientation="vertical"&gt;
+
+		&lt;Button
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1.0" /&gt;
+
+	&lt;/LinearLayout&gt;
+
+	&lt;LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+
+		android:orientation="vertical"&gt;
+
+		&lt;Button
+		    android:layout_width="match_parent"
+		    android:layout_height="0dip"
+            android:layout_weight="1.0" /&gt;
+
+	&lt;/LinearLayout&gt;
+
+    &lt;LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/MyStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"&gt;
+        &lt;Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" /&gt;
+
+        &lt;Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" /&gt;
+
+    &lt;/LinearLayout&gt;
+
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InefficientWeightDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InefficientWeightDetector.testWeights`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="Orientation"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="Orientation" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'Orientation'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore Orientation ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

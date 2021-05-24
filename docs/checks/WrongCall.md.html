@@ -1,0 +1,228 @@
+<meta charset="utf-8">
+(#) Using wrong draw/layout method
+
+!!! ERROR: Using wrong draw/layout method
+   This is an error.
+
+Id
+:   `WrongCall`
+Summary
+:   Using wrong draw/layout method
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WrongCallDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WrongCallDetectorTest.java)
+
+Custom views typically need to call `measure()` on their children, not
+`onMeasure`. Ditto for onDraw, onLayout, etc.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/LayoutTest.java:23:Error: Suspicious method call; should
+probably call "layout" rather than "onLayout" [WrongCall]
+
+  child.onLayout(changed, left, top, right, bottom); // Not OK
+        --------
+
+
+src/test/pkg/LayoutTest.java:25:Error: Suspicious method call; should
+probably call "measure" rather than "onMeasure" [WrongCall]
+
+  super.onMeasure(0, 0); // Not OK
+        ---------
+
+
+src/test/pkg/LayoutTest.java:26:Error: Suspicious method call; should
+probably call "draw" rather than "onDraw" [WrongCall]
+
+  super.onDraw(null); // Not OK
+        ------
+
+
+src/test/pkg/LayoutTest.java:33:Error: Suspicious method call; should
+probably call "layout" rather than "onLayout" [WrongCall]
+
+  super.onLayout(false, 0, 0, 0, 0); // Not OK
+        --------
+
+
+src/test/pkg/LayoutTest.java:34:Error: Suspicious method call; should
+probably call "measure" rather than "onMeasure" [WrongCall]
+
+  child.onMeasure(widthMeasureSpec, heightMeasureSpec); // Not OK
+        ---------
+
+
+src/test/pkg/LayoutTest.java:41:Error: Suspicious method call; should
+probably call "draw" rather than "onDraw" [WrongCall]
+
+  child.onDraw(canvas); // Not OK
+        ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/LayoutTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
+@SuppressWarnings("unused")
+public class LayoutTest extends LinearLayout {
+	private MyChild child;
+
+	public LayoutTest(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
+		super.onLayout(changed, left, top, right, bottom); // OK
+		child.onLayout(changed, left, top, right, bottom); // Not OK
+
+		super.onMeasure(0, 0); // Not OK
+		super.onDraw(null); // Not OK
+		child.layout(left, top, right, bottom); // OK
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec); // OK
+		super.onLayout(false, 0, 0, 0, 0); // Not OK
+		child.onMeasure(widthMeasureSpec, heightMeasureSpec); // Not OK
+		child.measure(widthMeasureSpec, heightMeasureSpec); // OK
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas); // OK
+		child.onDraw(canvas); // Not OK
+		child.draw(canvas); // OK
+	}
+
+	private class MyChild extends FrameLayout {
+		public MyChild(Context context, AttributeSet attrs, int defStyle) {
+			super(context, attrs, defStyle);
+		}
+
+		@Override
+		protected void onLayout(boolean changed, int left, int top, int right,
+				int bottom) {
+			super.onLayout(changed, left, top, right, bottom);
+		}
+
+		@Override
+		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		}
+
+		@Override
+		protected void onDraw(Canvas canvas) {
+			super.onDraw(canvas);
+		}
+	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WrongCallDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WrongCallDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WrongCall")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WrongCall")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WrongCall
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WrongCall" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WrongCall'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WrongCall ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

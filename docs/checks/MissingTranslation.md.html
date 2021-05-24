@@ -1,0 +1,164 @@
+<meta charset="utf-8">
+(#) Incomplete translation
+
+!!! ERROR: Incomplete translation
+   This is an error.
+
+Id
+:   `MissingTranslation`
+Summary
+:   Incomplete translation
+Severity
+:   Error
+Category
+:   Correctness: Messages
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Binary resource files, resource files and resource folders
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TranslationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TranslationDetectorTest.kt)
+
+If an application has more than one locale, then all the strings
+declared in one language should also be translated in all other
+languages.
+
+If the string should **not** be translated, you can add the attribute
+`translatable="false"` on the `<string>` element, or you can define all
+your non-translatable strings in a resource file called
+`donottranslate.xml`. Or, you can ignore the issue with a
+`tools:ignore="MissingTranslation"` attribute.
+
+You can tell lint (and other tools) which language is the default
+language in your `res/values/` folder by specifying
+`tools:locale="languageCode"` for the root `<resources>` element in your
+resource file. (The `tools` prefix refers to the namespace declaration
+`http://schemas.android.com/tools`.)
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values/strings.xml:20:Error: "show_all_apps" is not translated in
+"nl" (Dutch) [MissingTranslation]
+
+    &lt;string name="show_all_apps"&gt;All&lt;/string&gt;
+            --------------------
+
+
+res/values/strings.xml:23:Error: "menu_wallpaper" is not translated in
+"nl" (Dutch) [MissingTranslation]
+
+    &lt;string name="menu_wallpaper"&gt;Wallpaper&lt;/string&gt;
+            ---------------------
+
+
+res/values/strings.xml:25:Error: "menu_settings" is not translated in
+"cs" (Czech), "de" (German), "es" (Spanish), "nl" (Dutch)
+[MissingTranslation]
+
+    &lt;string name="menu_settings"&gt;Settings&lt;/string&gt;
+            --------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+--&gt;
+
+&lt;resources&gt;
+    &lt;!-- Home --&gt;
+    &lt;string name="home_title"&gt;Home Sample&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;All&lt;/string&gt;
+
+    &lt;!-- Home Menus --&gt;
+    &lt;string name="menu_wallpaper"&gt;Wallpaper&lt;/string&gt;
+    &lt;string name="menu_search"&gt;Search&lt;/string&gt;
+    &lt;string name="menu_settings"&gt;Settings&lt;/string&gt;
+    &lt;string name="sample" translatable="false"&gt;Ignore Me&lt;/string&gt;
+
+    &lt;!-- Wallpaper --&gt;
+    &lt;string name="wallpaper_instructions"&gt;Tap picture to set portrait wallpaper&lt;/string&gt;
+&lt;/resources&gt;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TranslationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TranslationDetector.testTranslation`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="MissingTranslation"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MissingTranslation" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MissingTranslation'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MissingTranslation ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

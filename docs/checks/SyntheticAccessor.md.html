@@ -1,0 +1,269 @@
+<meta charset="utf-8">
+(#) Synthetic Accessor
+
+!!! WARNING: Synthetic Accessor
+   This is a warning.
+
+Id
+:   `SyntheticAccessor`
+Summary
+:   Synthetic Accessor
+Note
+:   **This issue is disabled by default**; use `--enable SyntheticAccessor`
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SyntheticAccessorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SyntheticAccessorDetectorTest.kt)
+
+A private inner class which is accessed from the outer class will force
+the compiler to insert a synthetic accessor; this means that you are
+causing extra overhead. This is not important in small projects, but is
+important for large apps running up against the 64K method handle limit,
+and especially for **libraries** where you want to make sure your
+library is as small as possible for the cases where your library is used
+in an app running up against the 64K limit.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/AccessTest.java:33:Warning: Access to private constructor
+of class AccessTest requires synthetic accessor [SyntheticAccessor]
+
+    new AccessTest(); // ERROR
+    ----------------
+
+
+src/test/pkg/AccessTest.java:36:Warning: Access to private field field1
+of class AccessTest requires synthetic accessor [SyntheticAccessor]
+
+    int f1 = field1; // ERROR
+             ------
+
+
+src/test/pkg/AccessTest.java:40:Warning: Access to private field field5
+of class AccessTest requires synthetic accessor [SyntheticAccessor]
+
+    Inner[] f5 = field5; // ERROR
+                 ------
+
+
+src/test/pkg/AccessTest.java:42:Warning: Access to private method
+method1 of class AccessTest requires synthetic accessor
+[SyntheticAccessor]
+
+    method1(); // ERROR
+    -------
+
+
+src/test/pkg/AccessTest.java:61:Warning: Access to private constructor
+of class AccessTest requires synthetic accessor [SyntheticAccessor]
+
+    new AccessTest(); // ERROR
+    ----------------
+
+
+src/test/pkg/AccessTest.java:64:Warning: Access to private field field1
+of class AccessTest requires synthetic accessor [SyntheticAccessor]
+
+    int f1 = field1; // ERROR
+             ------
+
+
+src/test/pkg/AccessTest.java:68:Warning: Access to private field field5
+of class AccessTest requires synthetic accessor [SyntheticAccessor]
+
+    Inner[] f5 = field5; // ERROR
+                 ------
+
+
+src/test/pkg/AccessTest.java:70:Warning: Access to private method
+method1 of class AccessTest requires synthetic accessor
+[SyntheticAccessor]
+
+    method1(); // ERROR
+    -------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/AccessTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+@SuppressWarnings({"unused", "WeakerAccess", "FieldCanBeLocal", "ClassNameDiffersFromFileName"})
+public class AccessTest {
+
+    private int field1;
+    int field2;
+    public int field3;
+    private final int field4 = 100;
+    private final Inner[] field5 = new Inner[100];
+
+
+    private AccessTest() {
+    }
+
+    AccessTest(int x) {
+    }
+
+    private void method1() {
+        int f = field1; // OK - private but same class
+    }
+
+    void method2() {
+        method1(); // OK - private but same class
+    }
+
+    public void method3() {
+    }
+
+    class Inner {
+        @SuppressWarnings("ResultOfObjectAllocationIgnored")
+        private void innerMethod() {
+            new AccessTest(); // ERROR
+            new AccessTest(42); // OK - package private
+
+            int f1 = field1; // ERROR
+            int f2 = field2; // OK - package private
+            int f3 = field3; // OK - public
+            int f4 = field4; // OK (constants inlined)
+            Inner[] f5 = field5; // ERROR
+
+            method1(); // ERROR
+            method2(); // OK - package private
+            method3(); // OK - public
+        }
+
+        private void testSuppress() {
+            //noinspection SyntheticAccessor
+            method1(); // OK - suppressed
+            //noinspection PrivateMemberAccessBetweenOuterAndInnerClass
+            method1(); // OK - suppressed with IntelliJ similar inspection id
+            //noinspection SyntheticAccessorCall
+            method1(); // OK - suppressed with IntelliJ similar inspection id
+        }
+    }
+
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
+    public void viaAnonymousInner() {
+        Object btn = new Object() {
+            public void method4() {
+                new AccessTest(); // ERROR
+                new AccessTest(42); // OK - package private
+
+                int f1 = field1; // ERROR
+                int f2 = field2; // OK - package private
+                int f3 = field3; // OK - public
+                int f4 = field4; // OK (constants inlined)
+                Inner[] f5 = field5; // ERROR
+
+                method1(); // ERROR
+                method2(); // OK - package private
+                method3(); // OK - public
+            }
+        };
+    }
+}
+
+@SuppressWarnings("ClassNameDiffersFromFileName")
+class Outer {
+    void method(AccessTest o) {
+        // TODO: Shouldn't flag this: compiler won't accept it anyway because it's a private reference
+        //   int f = o.field1;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SyntheticAccessorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SyntheticAccessorDetector.testBasicJava`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SyntheticAccessor")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SyntheticAccessor")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SyntheticAccessor
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SyntheticAccessor" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SyntheticAccessor'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SyntheticAccessor ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

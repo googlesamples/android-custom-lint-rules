@@ -1,0 +1,234 @@
+<meta charset="utf-8">
+(#) Incorrect Half Float
+
+!!! ERROR: Incorrect Half Float
+   This is an error.
+
+Id
+:   `HalfFloat`
+Summary
+:   Incorrect Half Float
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ResourceTypeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ResourceTypeDetectorTest.kt)
+
+Half-precision floating point are stored in a short data type, and
+should be manipulated using the `android.util.Half` class. This check
+flags usages where it appears that these values are used incorrectly.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/HalfFloatTest.java:23:Error: Expected a half float here,
+not a resource id [HalfFloat]
+
+    method1(getDimension1()); // ERROR
+            ---------------
+
+
+src/test/pkg/HalfFloatTest.java:24:Error: Expected a half float here,
+not a dimension [HalfFloat]
+
+    method1(getDimension2()); // ERROR
+            ---------------
+
+
+src/test/pkg/HalfFloatTest.java:25:Error: Expected a half float here,
+not a color [HalfFloat]
+
+    method1(getActualColor()); // ERROR
+            ----------------
+
+
+src/test/pkg/HalfFloatTest.java:26:Error: Expected a half float here,
+not a resource id [HalfFloat]
+
+    method1(getTextId()); // ERROR
+            -----------
+
+
+src/test/pkg/HalfFloatTest.java:43:Error: Half-float type in expression
+widened to int [HalfFloat]
+
+    int result3 = float1 + 1; // error: widening
+                  ------
+
+
+src/test/pkg/HalfFloatTest.java:44:Error: Half-float type in expression
+widened to int [HalfFloat]
+
+    boolean result4 = float1 + 1 &gt; 5; // error: widening
+                      ------
+
+
+src/test/pkg/HalfFloatTest.java:50:Error: Half-float type in expression
+widened to int [HalfFloat]
+
+    Math.round(float1); // Error: should use Half.round
+               ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/HalfFloatTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+
+import android.support.annotation.ColorInt;
+import android.support.annotation.DimenRes;
+import android.support.annotation.HalfFloat;
+import android.support.annotation.Px;
+import android.support.annotation.StringRes;
+
+@SuppressWarnings({"UnnecessaryLocalVariable", "ResultOfMethodCallIgnored", "WeakerAccess"})
+public class HalfFloatTest {
+    public void method1(@HalfFloat short foo) {
+    }
+
+    @HalfFloat
+    public short method2() {
+    }
+
+    public void testHalfFloat() {
+        int myFloat = method2(); // WARN: widening
+        short myFloat2 = method2();
+        boolean x1 = myFloat2 != 0; // implicit conversion
+        method1(getDimension1()); // ERROR
+        method1(getDimension2()); // ERROR
+        method1(getActualColor()); // ERROR
+        method1(getTextId()); // ERROR
+    }
+
+    public void testConstants() {
+        // TODO: Look for constant usages
+    }
+
+    public void testOperations(@HalfFloat short float1, short float2) {
+        boolean x1 = float1 < float2;
+        boolean x2 = float2 > float1;
+        // because implicit promotions to int
+    }
+
+    public void testWidening(@HalfFloat short float1, short float2) {
+        short result1 = float1; // ok
+        int result2 = float2; // error: widening
+        Math.abs(float2); // error: widening
+        int result3 = float1 + 1; // error: widening
+        boolean result4 = float1 + 1 > 5; // error: widening
+        byte b = 1;
+        method1(b); // ERROR: widening
+    }
+
+    public void testWrongMethod(@HalfFloat short float1) {
+        Math.round(float1); // Error: should use Half.round
+    }
+
+
+    @DimenRes
+    public abstract int getDimension1();
+    @ColorInt
+    public abstract int getActualColor();
+    @StringRes
+    public abstract int getTextId();
+    public abstract void setDimension1(@DimenRes int dimension);
+    @Px
+    public abstract int getDimension2();
+    public abstract void setDimension2(@Px int dimension);
+
+    // TODO: Arrays
+    // TODO: Add cast
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ResourceTypeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ResourceTypeDetector.testHalfFloats`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("HalfFloat")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("HalfFloat")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection HalfFloat
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="HalfFloat" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'HalfFloat'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore HalfFloat ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

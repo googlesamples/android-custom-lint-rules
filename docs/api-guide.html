@@ -3131,8 +3131,8 @@ categories will be explained in subsequent sessions) :
 </p><p>
 
 </p><ol start="1">
-<li class="number">Local analysis which doesn't depend on anything else. For example, a
-   lint check which flags typos can report incidents immediately.
+<li class="number">Local analysis which doesn't depend on anything else. For example,
+   a lint check which flags typos can report incidents immediately.
    Lint calls these “definite incidents”.
 
 <p></p><p>
@@ -4266,8 +4266,8 @@ Guide.
 <li class="asterisk">Bytecode verification: Instead of warning about 3rd party lint checks
   being obsolete because they were not compiled against the latest Lint
   API, lint now run its own bytecode verification against the lint jar
-  and will silently accept accept older (and newer!) lint checks if
-  they do not reference APIs that are not available.
+  and will silently accept older (and newer!) lint checks if they do
+  not reference APIs that are not available.
 
 <p></p><p>
 
@@ -4320,8 +4320,8 @@ Guide.
 
 </p></li>
 <li class="asterisk">There are additional modifier lookup methods for Kotlin modifiers
-  on `JavaEvaluator, like isReified(), isCompanion(), isTailRec(), and
-  so on.
+  on <code>JavaEvaluator</code>, like <code>isReified()</code>, <code>isCompanion()</code>,
+  <code>isTailRec()</code>, and so on.
 
 <p></p><p>
 
@@ -4331,19 +4331,19 @@ Guide.
 <p></p><p>
 
 </p></li>
-<li class="asterisk">Certain Kotlin PSI elements have new implementations known as
-  <em class="underscore">ultra light classes</em>. Ultra light classes improve performance
-  by answering PSI queries “directly from source” rather than
-  delegating to the Kotlin compiler backend. You may see ultra
-  light classes when accessing the <code>UElement.javaPsi</code> property of a
-  Kotlin UAST element. They can also appear when resolving references.
-  For example, resolving a Kotlin field reference to its declaration
-  may result in an instance of <code>KtUltraLightFieldForSourceDeclaration</code>.
-  As a reminder, Kotlin light classes represent the “Java view” of an
+<li class="asterisk">Certain Kotlin PSI elements have new implementations known as <em class="underscore">ultra
+  light classes</em>. Ultra light classes improve performance by answering
+  PSI queries “directly from source” rather than delegating to the
+  Kotlin compiler backend. You may see ultra light classes when
+  accessing the <code>UElement.javaPsi</code> property of a Kotlin UAST element.
+  They can also appear when resolving references. For example,
+  resolving a Kotlin field reference to its declaration may result in
+  an instance of <code>KtUltraLightFieldForSourceDeclaration</code>. As a
+  reminder, Kotlin light classes represent the “Java view” of an
   underlying Kotlin PSI element. To access the underlying Kotlin PSI
-  element you should use <code>UElement.sourcePsi</code> (preferred)
-  or otherwise the extension property <code>PsiElement.unwrapped</code> (declared
-  in <code>org.jetbrains.kotlin.asJava</code>).
+  element you should use <code>UElement.sourcePsi</code> (preferred) or otherwise
+  the extension property <code>PsiElement.unwrapped</code> (declared in
+  <code>org.jetbrains.kotlin.asJava</code>).
 
 <p></p><p>
 
@@ -4358,7 +4358,19 @@ Guide.
 </p></li>
 <li class="asterisk">Kotlin references to Java methods now trigger both the
   <code>visitMethodCall()</code> callback <em class="underscore">and</em> the <code>visitReference()</code> callback.
-  Previously only <code>visitMethodCall()</code> was triggered.</li></ul>
+  Previously only <code>visitMethodCall()</code> was triggered.
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">Quickfixes can now create and delete new files; see
+  <code>LintFix#newFile</code> and <code>LintFix#deleteFile</code>..
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">For quickfixes, the <code>independent</code> property had inverted logic;
+  this has now been reversed to follow the meaning of the name.</li></ul>
 
 <p></p>
 <a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc10">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
@@ -4514,6 +4526,9 @@ what they are seems useful.
 </p></dd></td></tr><tr valign="top"><td><dt><code>lint.print-stacktrace</code></dt></td><td><dd><p>  Alias for <code>$LINT_PRINT_STACKTRACE</code>
 
 </p></dd></td></tr><tr valign="top"><td><dt><code>lint.do.not.reuse.uast.env</code></dt></td><td><dd><p>  Alias for <code>$LINT_DO_NOT_REUSE_UAST_ENV</code>
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>android.lint.log-jar-problems</code></dt></td><td><dd><p>  Controls whether lint will complain about custom check lint jar
+  loading problems. By default, true.
 
 </p></dd></td></tr></tbody></table></dl><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility=&ldquo;visible&rdquo;)</script>
 <p></p></span><div id="mdContextMenu" style="visibility:hidden"></div><div class="markdeepFooter"><i>formatted by <a href="https://casual-effects.com/markdeep" style="color:#999">Markdeep&nbsp;1.13&nbsp;&nbsp;</a></i><div style="display:inline-block;font-size:13px;font-family:'Times New Roman',serif;vertical-align:middle;transform:translate(-3px,-1px)rotate(135deg);">✒</div></div></body></html>

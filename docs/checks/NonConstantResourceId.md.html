@@ -1,0 +1,161 @@
+<meta charset="utf-8">
+(#) Checks use of resource IDs in places requiring constants.
+
+!!! WARNING: Checks use of resource IDs in places requiring constants.
+   This is a warning.
+
+Id
+:   `NonConstantResourceId`
+Summary
+:   Checks use of resource IDs in places requiring constants.
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/NonConstantResourceIdDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NonConstantResourceIdDetectorTest.kt)
+
+Avoid the usage of resource IDs where constant expressions are
+required.
+
+A future version of the Android Gradle Plugin will generate R classes
+with non-constant IDs in order to improve the performance of incremental
+compilation.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/SwitchTest.java:13:Warning: Resource IDs will be non-final
+by default in Android Gradle Plugin version 8.0, avoid using them in
+switch case statements [NonConstantResourceId]
+
+    case R.styleable.FontFamilyFont_android_fontWeight: someValue = 1; break;
+         ---------------------------------------------
+
+
+src/test/pkg/SwitchTest.java:17:Warning: Resource IDs will be non-final
+by default in Android Gradle Plugin version 8.0, avoid using them in
+switch case statements [NonConstantResourceId]
+
+    case R.id.text: someValue = 3; break;
+         ---------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/SwitchTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+public class SwitchTest {
+
+    SwitchTest() {}
+
+    public int switchWithRClassReferences(int value) {
+        int someValue;
+        int styleableReference = R.styleable.FontFamily_fontProviderAuthority;
+        switch (value) {
+            // Warning: Case value is a resource and is not constant.
+            case R.styleable.FontFamilyFont_android_fontWeight: someValue = 1; break;
+            // No warning: Case value is not a resource and is constant.
+            case 1: someValue = 2; break;
+            // Warning: Case value is a resource and is constant.
+            case R.id.text: someValue = 3; break;
+            // The android.R class cannot be modified by the user.
+            case android.R.attr.fontFamily: someValue = 5; break;
+            default: someValue = 4; break;
+        }
+        return someValue;
+    }
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NonConstantResourceIdDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `NonConstantResourceIdDetector.test java detects constant resource ids in switch block`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("NonConstantResourceId")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("NonConstantResourceId")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection NonConstantResourceId
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="NonConstantResourceId" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'NonConstantResourceId'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore NonConstantResourceId ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

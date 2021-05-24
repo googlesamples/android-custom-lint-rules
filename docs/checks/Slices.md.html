@@ -1,0 +1,194 @@
+<meta charset="utf-8">
+(#) Slices
+
+!!! WARNING: Slices
+   This is a warning.
+
+Id
+:   `Slices`
+Summary
+:   Slices
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SliceDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SliceDetectorTest.kt)
+
+This check analyzes usages of the Slices API and offers suggestions
+based
+on best practices.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/SliceTest.java:33:Warning: A slice should have at least one
+row added to it [Slices]
+
+    Slice slice = new ListBuilder(context, uri, ttl).build();
+                  ----------------------------------
+
+
+src/test/pkg/SliceTest.java:39:Warning: A slice should have at least one
+row added to it [Slices]
+
+    ListBuilder lb2 = new ListBuilder(context, uri, ttl); // missing on this one
+                      ----------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/SliceTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.PendingIntent;
+import android.app.slice.Slice;
+import android.content.Context;
+import android.net.Uri;
+import androidx.slice.builders.GridRowBuilder;
+import androidx.slice.builders.GridRowBuilder.CellBuilder;
+import androidx.slice.builders.ListBuilder;
+import androidx.slice.builders.ListBuilder.HeaderBuilder;
+import androidx.slice.builders.ListBuilder.RowBuilder;
+import androidx.slice.builders.SliceAction;
+import androidx.core.graphics.drawable.IconCompat;
+
+@SuppressWarnings({"unused", "ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class SliceTest {
+    // ListBuilder should have at least one row
+    //
+    // // This is bad because this results in empty slice
+    // Slice slice = new ListBuilder(context, uri, ttl).build()
+    //
+    // Message:
+    // A slice should have at least one row added to it.
+    //
+    // Explanation:
+    // A slice should have at least one row added to it. If the content for
+    // the slice is unavailable or being loaded and will update eventually,
+    // you should still add all the rows that would represent your slice and
+    // indicate that content is being loaded on them, this allows the Slice
+    // to be presented correctly and update fluidly.
+    public void testMultipleRows(Context context, Uri uri, long ttl) {
+        // This is bad because this results in empty slice
+        Slice slice = new ListBuilder(context, uri, ttl).build();
+    }
+
+    public void testMultipleRows(Context context, Uri uri, long ttl,
+            SliceAction primary) {
+        ListBuilder lb1 = new ListBuilder(context, uri, ttl);
+        ListBuilder lb2 = new ListBuilder(context, uri, ttl); // missing on this one
+        RowBuilder rb = new RowBuilder(lb1);
+        rb.setPrimaryAction(primary);
+        rb.setTitle(null, true /* isLoading */);
+    }
+
+    public void testMultipleRowsOk1(Context context, Uri uri, long ttl,
+            SliceAction primary) {
+        ListBuilder lb = new ListBuilder(context, uri, ttl);
+        RowBuilder rb = new RowBuilder(lb);
+        rb.setPrimaryAction(primary);
+        rb.setTitle(null, true /* isLoading */);
+    }
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public void testMultipleRowsOk2(Context context, Uri uri, long ttl,
+            SliceAction primary) {
+        ListBuilder lb = new ListBuilder(context, uri, ttl);
+        ListBuilder lb2 = lb;
+        RowBuilder rb = new RowBuilder(lb2);
+        rb.setPrimaryAction(primary);
+        rb.setTitle(null, true /* isLoading */);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SliceDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SliceDetector.testAtLeastOneRow`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("Slices")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("Slices")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection Slices
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="Slices" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'Slices'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore Slices ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

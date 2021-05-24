@@ -1,0 +1,112 @@
+<meta charset="utf-8">
+(#) Package not included in Android
+
+!!! ERROR: Package not included in Android
+   This is an error.
+
+Id
+:   `InvalidPackage`
+Summary
+:   Package not included in Android
+Note
+:   **This issue is disabled by default**; use `--enable InvalidPackage`
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Library bytecode
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InvalidPackageDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InvalidPackageDetectorTest.java)
+
+This check scans through libraries looking for calls to APIs that are
+not included in Android.
+
+When you create Android projects, the classpath is set up such that you
+can only access classes in the API packages that are included in
+Android. However, if you add other projects to your libs/ folder, there
+is no guarantee that those .jar files were built with an Android
+specific classpath, and in particular, they could be accessing
+unsupported APIs such as java.applet.
+
+This check scans through library jars and looks for references to API
+packages that are not included in Android and flags these. This is only
+an error if your code calls one of the library classes which wind up
+referencing the unsupported package.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+libs/unsupported.jar:Error: Invalid package reference in library; not
+included in Android: javax.swing. Referenced from test.pkg.LibraryClass.
+[InvalidPackage]
+
+2 errors, 0 warnings
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`libs/unsupported.jar`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+H4sIAAAAAAAAAAvwZmYRYeAAwmMzkxwZkAAnAwuDr2uIo66nn5v+v1MMDMwMAd7sHCApJqiSAJyaRYAYrtnX0c/TzTU4RM/X7bPvmdM+3rp6F3m9dbXOnTm/OcjgivGDp0V6Xr46nr4XS1excM54KXlEerZ2hoWYyJMlWhXPVF9nfir6WMQItt1tYdofG6DZNlDbucC27UWznRWIS1KLS/RxK+GEKSnITtdH+GM6mjJpZGU+mUlFiUWVzjmJxcV6ySAyNyjaX9hR5N+y7bnXs/QDHC5yPVq69ITD0exefpMZGWEmKzOfFG67O+Xg3chNc7n+Kv/jr93Q6fuH8Z/G45u5jpk32i2Nn8/5qZf+7fv8+fsZrgSaCyRrZC5f//Pjc7ntS2Q7Em6UuO7PVzg4wV4onqW89dXH798mXr7Is3J6kOffLsW4ldskhXz3v57RoTzZVUizbY7q1M32H3LUf2jkXE/UiKpz35EreOKDja/al4VvjHWipk8ylzC6d2FuCs8TyWdOqsv31Ct5nr59t/HaPqOJzmrNllN4zsQL3Jb6tvVx6sYGV6FX/B7lJ7tOXXouz7SyxJu974OU2rrkmwd6NQ/6WHbP3nE0QaZdM1zQ4+isuR6Lb5kV/H6zz+LiHs2mdaptR7IW9fQ0WvN8Drwq/GvC+1P3pJfOnSe8pHD6wTvr7G9V/nnycvPzaLWwQnuZx82SakHO26Qf7gkuS/l75vwZl4y8Yyufv1vZeHyD2dsFLNuXvipaOGV967R9j+ar+V6ZX6S88jnzrhcNUo+2vTHUiZhuuWDTzU/sjscrdQ+H6/753zH7Ie8mFwGO/RJvX4gvvLpAePkJDbXr7h713afU1q7UmHlMNGrzZLaucE2jGOv9f6YqTBYxP3ZCtqfjm3XXVvmIpPcZmx1nG56aEn9TPvnrgh1mh/aKd9bLPOU43BNR1BKn8EfVKX5hMO/Pjur0Jvuny6Y7sYYm6SdIvr4iuvidzlX5SZOknpqfDGh6FHZk019xUFL9+WuOhgQwpyQzg5IqI5MIA2pWYYKnRBYGVICS69C1IucAERRttjjyHMgELgbcOQUBdiPyDW4tnCha7qHmI4RbQTkJOQikUbSxMuLNVwHerGwQ57EyGACVpjGDeADV4J9drAQAAA==
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InvalidPackageDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InvalidPackageDetector.testUnsupportedJavaLibraryCode`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="InvalidPackage" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'InvalidPackage'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore InvalidPackage ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

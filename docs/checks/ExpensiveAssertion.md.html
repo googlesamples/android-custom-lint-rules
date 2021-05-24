@@ -1,0 +1,205 @@
+<meta charset="utf-8">
+(#) Expensive Assertions
+
+!!! WARNING: Expensive Assertions
+   This is a warning.
+
+Id
+:   `ExpensiveAssertion`
+Summary
+:   Expensive Assertions
+Note
+:   **This issue is disabled by default**; use `--enable ExpensiveAssertion`
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AssertDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AssertDetectorTest.kt)
+
+In Kotlin, assertions are not handled the same way as from the Java
+programming language. In particular, they're just implemented as a
+library call, and inside the library call the error is only thrown if
+assertions are enabled.
+
+This means that the arguments to the `assert` call will **always** be
+evaluated. If you're doing any computation in the expression being
+asserted, that computation will unconditionally be performed whether or
+not assertions are turned on. This typically turns into wasted work in
+release builds.
+
+This check looks for cases where the assertion condition is nontrivial,
+e.g. it is performing method calls or doing more work than simple
+comparisons on local variables or fields.
+
+You can work around this by writing your own inline assert method
+instead:
+
+```kotlin
+@Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")
+inline fun assert(condition: () -> Boolean) {
+    if (_Assertions.ENABLED && !condition()) {
+        throw AssertionError()
+    }
+}
+```
+
+In Android, because assertions are not enforced at runtime, instead use
+this:
+
+```kotlin
+inline fun assert(condition: () -> Boolean) {
+    if (BuildConfig.DEBUG && !condition()) {
+        throw AssertionError()
+    }
+}
+```
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/AssertTest.kt:18:Warning: Kotlin assertion arguments are
+always evaluated, even when assertions are off. Consider surrounding
+assertion with if (javaClass.desiredAssertionStatus()) { assert(...) }
+[ExpensiveAssertion]
+
+    assert(expensive()) // WARN
+           -----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/AssertTest.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+class AssertTest {
+    fun test() {
+        assert(true) // Error on Android, not elsewhere
+        assert(false) // Error on Android, not elsewhere
+        assert(true, { "My lazy message" }) // Error on Android, not elsewhere
+        assert(true) { "My lazy message" } // Error on Android, not elsewhere
+    }
+
+    fun testNotExpensive(int: Int, bool1: Boolean, bool2: Boolean) {
+        assert(int < 5)
+        assert(!bool1 || bool2 == bool1)
+        assert(int != bool1) { "This is $int and x2=$bool2" } // ERROR
+    }
+
+    fun testExpensive() {
+        assert(expensive()) // WARN
+    }
+
+    fun testOk() {
+        if (AssertTest::class.java.desiredAssertionStatus()) {
+            assert(expensive()) // Error on Android, ok elsewhere
+        }
+        if (javaClass.desiredAssertionStatus()) {
+            assert(expensive()) // Error on Android, ok elsewhere
+        }
+    }
+
+    private fun expensive(): Boolean {
+        Thread.sleep(500)
+        return (System.currentTimeMillis().rem(1L)) == 0L
+    }
+
+    fun foo(x1: Boolean, x2: Boolean, x3: Number?) {
+        assert(x1 == x2)  // ERROR
+        assert(x3 != null) // ERROR
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AssertDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AssertDetector.testExpensiveKotlinCalls`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ExpensiveAssertion")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ExpensiveAssertion")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ExpensiveAssertion
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ExpensiveAssertion" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ExpensiveAssertion'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ExpensiveAssertion ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,185 @@
+<meta charset="utf-8">
+(#) Battery Life Issues
+
+!!! WARNING: Battery Life Issues
+   This is a warning.
+
+Id
+:   `BatteryLife`
+Summary
+:   Battery Life Issues
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files and manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/topic/performance/background-optimization
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/BatteryDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BatteryDetectorTest.java)
+
+This issue flags code that either
+* negatively affects battery life, or
+* uses APIs that have recently changed behavior to prevent background
+  tasks from consuming memory and battery excessively.
+
+Generally, you should be using `WorkManager` instead.
+
+For more details on how to update your code, please see
+https://developer.android.com/topic/performance/background-optimization.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:9:Warning: Declaring a broadcastreceiver for
+android.net.conn.CONNECTIVITY_CHANGE is deprecated for apps targeting N
+and higher. In general, apps should not rely on this broadcast and
+instead use WorkManager. [BatteryLife]
+
+    &lt;action android:name="android.net.conn.CONNECTIVITY_CHANGE" /&gt;
+                          ------------------------------------
+
+
+AndroidManifest.xml:10:Warning: Use of
+REQUEST_IGNORE_BATTERY_OPTIMIZATIONS violates the Play Store Content
+Policy regarding acceptable use cases, as described in
+https://developer.android.com/training/monitoring-device-state/doze-standby.html
+ [BatteryLife]
+
+    &lt;action android:name="android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /&gt;
+                          -----------------------------------------------------
+
+
+AndroidManifest.xml:11:Warning: Use of com.android.camera.NEW_PICTURE is
+deprecated for all apps starting with the N release independent of the
+target SDK. Apps should not rely on these broadcasts and instead use
+WorkManager [BatteryLife]
+
+    &lt;action android:name="com.android.camera.NEW_PICTURE" /&gt;
+                          ------------------------------
+
+
+AndroidManifest.xml:12:Warning: Use of
+android.hardware.action.NEW_PICTURE is deprecated for all apps starting
+with the N release independent of the target SDK. Apps should not rely
+on these broadcasts and instead use WorkManager [BatteryLife]
+
+    &lt;action android:name="android.hardware.action.NEW_PICTURE" /&gt;
+                          -----------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.google.myapplication"&gt;
+
+    &lt;uses-sdk android:targetSdkVersion="24" /&gt;
+
+    &lt;receiver android:name=".MyReceiver" &gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name="android.net.conn.CONNECTIVITY_CHANGE" /&gt;
+            &lt;action android:name="android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /&gt;
+            &lt;action android:name="com.android.camera.NEW_PICTURE" /&gt;
+            &lt;action android:name="android.hardware.action.NEW_PICTURE" /&gt;
+            &lt;data android:mimeType="image/*" /&gt;        &lt;/intent-filter&gt;
+    &lt;/receiver&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BatteryDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `BatteryDetector.testConnectivityChange`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="BatteryLife"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("BatteryLife")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("BatteryLife")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection BatteryLife
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="BatteryLife" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'BatteryLife'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore BatteryLife ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

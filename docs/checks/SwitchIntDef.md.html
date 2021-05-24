@@ -1,0 +1,306 @@
+<meta charset="utf-8">
+(#) Missing @IntDef in Switch
+
+!!! WARNING: Missing @IntDef in Switch
+   This is a warning.
+
+Id
+:   `SwitchIntDef`
+Summary
+:   Missing @IntDef in Switch
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+
+This check warns if a `switch` statement does not explicitly include all
+the values declared by the typedef `@IntDef` declaration.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/X.java:40:Warning: Don't use a constant here; expected one
+of: LENGTH_INDEFINITE, LENGTH_LONG, LENGTH_SHORT [SwitchIntDef]
+
+    case 5:
+         -
+
+
+src/test/pkg/X.java:47:Warning: Switch statement on an int with known
+associated constant missing case LENGTH_LONG [SwitchIntDef]
+
+    switch (duration) {
+    ------
+
+
+src/test/pkg/X.java:56:Warning: Switch statement on an int with known
+associated constant missing case LENGTH_INDEFINITE, LENGTH_LONG,
+LENGTH_SHORT [SwitchIntDef]
+
+    switch (duration) {
+    ------
+
+
+src/test/pkg/X.java:66:Warning: Switch statement on an int with known
+associated constant missing case LENGTH_SHORT [SwitchIntDef]
+
+    switch (duration) {
+    ------
+
+
+src/test/pkg/X.java:75:Warning: Switch statement on an int with known
+associated constant missing case LENGTH_SHORT [SwitchIntDef]
+
+    switch ((int)getDuration()) {
+    ------
+
+
+src/test/pkg/X.java:85:Warning: Switch statement on an int with known
+associated constant missing case LENGTH_SHORT [SwitchIntDef]
+
+    switch (true ? getDuration() : 0) {
+    ------
+
+
+src/test/pkg/X.java:95:Warning: Switch statement on an int with known
+associated constant missing case X.LENGTH_SHORT [SwitchIntDef]
+
+    switch (X.getDuration()) {
+    ------
+
+
+src/test/pkg/X.java:104:Warning: Switch statement on an int with known
+associated constant missing case LENGTH_INDEFINITE [SwitchIntDef]
+
+    switch (duration) {
+    ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/X.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.SuppressLint;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@SuppressWarnings({"UnusedParameters", "unused", "SpellCheckingInspection", "RedundantCast"})
+public class X {
+    @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Duration {
+    }
+
+    public static final int LENGTH_INDEFINITE = -2;
+    public static final int LENGTH_SHORT = -1;
+    public static final int LENGTH_LONG = 0;
+
+    public void setDuration(@Duration int duration) {
+    }
+
+    @Duration
+    public static int getDuration() {
+        return LENGTH_INDEFINITE;
+    }
+
+    public static void testOk(@Duration int duration) {
+        switch (duration) {
+            case LENGTH_SHORT:
+            case LENGTH_LONG:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    public static void testLiteral(@Duration int duration) {
+        switch (duration) {
+            case LENGTH_SHORT:
+            case 5:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    public static void testParameter(@Duration int duration) {
+        switch (duration) {
+            case LENGTH_SHORT:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    public static void testMissingAll(@Duration int duration) {
+        // We don't flag these; let the IDE's normal "empty switch" check flag it
+        switch (duration) {
+        }
+    }
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public static void testLocalVariableFlow() {
+        int intermediate = getDuration();
+        int duration = intermediate;
+
+        // Missing LENGTH_SHORT
+        switch (duration) {
+            case LENGTH_LONG:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    public static void testMethodCall() {
+        // Missing LENGTH_SHORT
+        switch ((int)getDuration()) {
+            case LENGTH_LONG:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    @SuppressWarnings("ConstantConditionalExpression")
+    public static void testInline() {
+        // Missing LENGTH_SHORT
+        switch (true ? getDuration() : 0) {
+            case LENGTH_LONG:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    private static class SomeOtherClass {
+        private void method() {
+            // Missing LENGTH_SHORT
+            switch (X.getDuration()) {
+                case LENGTH_LONG:
+                case LENGTH_INDEFINITE:
+                    break;
+            }
+        }
+    }
+
+    public static void testMissingWithDefault(@Duration int duration) {
+        switch (duration) {
+            case LENGTH_SHORT:
+            case LENGTH_LONG:
+            default:
+                break;
+        }
+    }
+
+    @SuppressLint("SwitchIntDef")
+    public static void testSuppressAnnotation(@Duration int duration) {
+        switch (duration) {
+            case LENGTH_SHORT:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+
+    public static void testSuppressComment(@Duration int duration) {
+        //noinspection AndroidLintSwitchIntDef
+        switch (duration) {
+            case LENGTH_SHORT:
+            case LENGTH_INDEFINITE:
+                break;
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AnnotationDetector.testMissingIntDefSwitchConstants`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SwitchIntDef")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SwitchIntDef")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SwitchIntDef
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SwitchIntDef" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SwitchIntDef'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SwitchIntDef ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

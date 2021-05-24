@@ -1,0 +1,339 @@
+<meta charset="utf-8">
+(#) Missing Pending Bindings
+
+!!! ERROR: Missing Pending Bindings
+   This is an error.
+
+Id
+:   `PendingBindings`
+Summary
+:   Missing Pending Bindings
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/RecyclerViewDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RecyclerViewDetectorTest.kt)
+
+When using a `ViewDataBinding` in a `onBindViewHolder` method, you
+**must** call `executePendingBindings()` before the method exits;
+otherwise the data binding runtime will update the UI in the next
+animation frame causing a delayed update and potential jumps if the item
+resizes.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/RecyclerViewTest2.java:32:Error: You must call
+holder.dataBinder.executePendingBindings() before the onBind method
+exits, otherwise, the DataBinding library will update the UI in the next
+animation frame causing a delayed update & potential jumps if the item
+resizes. [PendingBindings]
+
+    holder.dataBinder.someMethod(); // ERROR - no pending call
+    ------------------------------
+
+
+src/test/pkg/RecyclerViewTest2.java:40:Error: You must call
+holder.dataBinder.executePendingBindings() before the onBind method
+exits, otherwise, the DataBinding library will update the UI in the next
+animation frame causing a delayed update & potential jumps if the item
+resizes. [PendingBindings]
+
+    holder.dataBinder.someMethod(); // ERROR: After call
+    ------------------------------
+
+
+src/test/pkg/RecyclerViewTest2.java:48:Error: You must call
+holder.dataBinder.executePendingBindings() before the onBind method
+exits, otherwise, the DataBinding library will update the UI in the next
+animation frame causing a delayed update & potential jumps if the item
+resizes. [PendingBindings]
+
+    holder.dataBinder.someMethod(); // ERROR: can't reach pending
+    ------------------------------
+
+
+src/test/pkg/RecyclerViewTest2.java:116:Error: You must call
+holder.dataBinder.executePendingBindings() before the onBind method
+exits, otherwise, the DataBinding library will update the UI in the next
+animation frame causing a delayed update & potential jumps if the item
+resizes. [PendingBindings]
+
+    holder.dataBinder.someMethod(); // ERROR
+    ------------------------------
+
+
+src/test/pkg/RecyclerViewTest2.java:139:Error: You must call
+holder.dataBinder.executePendingBindings() before the onBind method
+exits, otherwise, the DataBinding library will update the UI in the next
+animation frame causing a delayed update & potential jumps if the item
+resizes. [PendingBindings]
+
+    holder.dataBinder.someMethod(); // ERROR: no fallthrough
+    ------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/RecyclerViewTest2.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
+
+@SuppressWarnings({"unused", "ConstantIfStatement", "ConstantConditions", "StatementWithEmptyBody"})
+public class RecyclerViewTest2 {
+    // From https://developer.android.com/training/material/lists-cards.html
+    public abstract static class AbstractTest extends RecyclerView.Adapter<AbstractTest.ViewHolder> {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView mTextView;
+            public ViewDataBinding dataBinder;
+            public ViewHolder(TextView v) {
+                super(v);
+                mTextView = v;
+            }
+        }
+    }
+
+    public abstract static class Test1 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.someMethod(); // OK
+            holder.dataBinder.executePendingBindings();
+        }
+    }
+
+    public abstract static class Test2 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.someMethod(); // ERROR - no pending call
+        }
+    }
+
+    public abstract static class Test3 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.executePendingBindings();
+            holder.dataBinder.someMethod(); // ERROR: After call
+        }
+    }
+
+    public abstract static class Test4 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            if (true) {
+                holder.dataBinder.someMethod(); // ERROR: can't reach pending
+            } else {
+                holder.dataBinder.executePendingBindings();
+            }
+        }
+    }
+
+    public abstract static class Test5 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.someMethod(); // OK
+            if (true) {
+                if (true) {
+                    if (false) {
+
+                    } else {
+                        holder.dataBinder.executePendingBindings();
+                    }
+                }
+            }
+        }
+    }
+
+    /* We don't yet track variable reassignment to compute equivalent data binders
+    public abstract static class Test6 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.someMethod(); // OK
+            ViewDataBinding dataBinder = holder.dataBinder;
+            dataBinder.executePendingBindings();
+        }
+    }
+    */
+
+    public abstract static class Test7 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            if (true) {
+                holder.dataBinder.someMethod(); // OK
+            }
+            holder.dataBinder.executePendingBindings();
+        }
+    }
+
+    public abstract static class Test8 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.someMethod(); // OK
+            synchronized (this) {
+                holder.dataBinder.executePendingBindings();
+            }
+        }
+    }
+
+    public abstract static class Test9 extends AbstractTest {
+        @SuppressWarnings("UnusedLabel")
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.dataBinder.someMethod(); // OK
+        myLabel:
+            holder.dataBinder.executePendingBindings();
+        }
+    }
+
+    public abstract static class Test10 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            if (true) {
+                holder.dataBinder.someMethod(); // ERROR
+                return;
+            }
+            holder.dataBinder.executePendingBindings();
+        }
+    }
+
+    public abstract static class Test11 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            switch (position) {
+                case 1: holder.dataBinder.someMethod(); // OK: fallthrough
+                case 2: holder.dataBinder.executePendingBindings();
+            }
+        }
+    }
+
+    public abstract static class Test12 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            switch (position) {
+                case 1:
+                    holder.dataBinder.someMethod(); // Not last: don't flag
+                    holder.dataBinder.someMethod(); // ERROR: no fallthrough
+                    break;
+                case 2:
+                    holder.dataBinder.executePendingBindings();
+            }
+        }
+    }
+
+    public abstract static class Test13 extends AbstractTest {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            do {
+                holder.dataBinder.someMethod(); // OK
+                holder.dataBinder.executePendingBindings();
+            } while (position-- >= 0);
+        }
+    }
+
+    public static class ViewDataBinding {
+        private View root;
+
+        public void someMethod() {
+        }
+        public void executePendingBindings() {
+        }
+
+        public View getRoot() {
+            return root;
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RecyclerViewDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RecyclerViewDetector.testExecuteBindings`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("PendingBindings")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("PendingBindings")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection PendingBindings
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="PendingBindings" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'PendingBindings'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore PendingBindings ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

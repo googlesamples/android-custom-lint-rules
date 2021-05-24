@@ -1,0 +1,200 @@
+<meta charset="utf-8">
+(#) Malformed Device Admin
+
+!!! WARNING: Malformed Device Admin
+   This is a warning.
+
+Id
+:   `DeviceAdmin`
+Summary
+:   Malformed Device Admin
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ManifestDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestDetectorTest.kt)
+
+If you register a broadcast receiver which acts as a device admin, you
+must also register an `<intent-filter>` for the action
+`android.app.action.DEVICE_ADMIN_ENABLED`, without any `<data>`, such
+that the device admin can be activated/deactivated.
+
+To do this, add
+```xml
+`<intent-filter>`
+    `<action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />`
+`</intent-filter>`
+```
+to your `<receiver>`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:30:Warning: You must have an intent filter for
+action android.app.action.DEVICE_ADMIN_ENABLED [DeviceAdmin]
+
+    &lt;meta-data android:name="android.app.device_admin"
+               ---------------------------------------
+
+
+AndroidManifest.xml:43:Warning: You must have an intent filter for
+action android.app.action.DEVICE_ADMIN_ENABLED [DeviceAdmin]
+
+    &lt;meta-data android:name="android.app.device_admin"
+               ---------------------------------------
+
+
+AndroidManifest.xml:55:Warning: You must have an intent filter for
+action android.app.action.DEVICE_ADMIN_ENABLED [DeviceAdmin]
+
+    &lt;meta-data android:name="android.app.device_admin"
+               ---------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="foo.bar2"
+          android:versionCode="1"
+          android:versionName="1.0"&gt;
+
+    &lt;uses-sdk android:minSdkVersion="14"/&gt;
+
+    &lt;application
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"&gt;
+
+        &lt;!-- OK --&gt;
+        &lt;receiver android:name=".DeviceAdminTestReceiver"
+                  android:label="@string/app_name"
+                  android:description="@string/app_name"
+                  android:permission="android.permission.BIND_DEVICE_ADMIN"&gt;
+            &lt;meta-data android:name="android.app.device_admin"
+                       android:resource="@xml/device_admin"/&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+
+        &lt;!-- Specifies data --&gt;
+        &lt;receiver android:name=".DeviceAdminTestReceiver"
+                  android:label="@string/app_name"
+                  android:description="@string/app_name"
+                  android:permission="android.permission.BIND_DEVICE_ADMIN"&gt;
+            &lt;meta-data android:name="android.app.device_admin"
+                       android:resource="@xml/device_admin"/&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/&gt;
+                &lt;data android:scheme="content" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+
+        &lt;!-- Missing right intent-filter --&gt;
+        &lt;receiver android:name=".DeviceAdminTestReceiver"
+                  android:label="@string/app_name"
+                  android:description="@string/app_name"
+                  android:permission="android.permission.BIND_DEVICE_ADMIN"&gt;
+            &lt;meta-data android:name="android.app.device_admin"
+                       android:resource="@xml/device_admin"/&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="com.test.foo.DEVICE_ADMIN_ENABLED"/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+
+        &lt;!-- Missing intent-filter --&gt;
+        &lt;receiver android:name=".DeviceAdminTestReceiver"
+                  android:label="@string/app_name"
+                  android:description="@string/app_name"
+                  android:permission="android.permission.BIND_DEVICE_ADMIN"&gt;
+            &lt;meta-data android:name="android.app.device_admin"
+                       android:resource="@xml/device_admin"/&gt;
+        &lt;/receiver&gt;
+
+        &lt;!-- Suppressed --&gt;
+        &lt;receiver android:name=".DeviceAdminTestReceiver"
+                  android:label="@string/app_name"
+                  android:description="@string/app_name"
+                  android:permission="android.permission.BIND_DEVICE_ADMIN"
+                  tools:ignore="DeviceAdmin"&gt;
+            &lt;meta-data android:name="android.app.device_admin"
+                       android:resource="@xml/device_admin"/&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="com.test.foo.DEVICE_ADMIN_ENABLED"/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ManifestDetector.testDeviceAdmin`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="DeviceAdmin"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DeviceAdmin" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DeviceAdmin'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DeviceAdmin ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

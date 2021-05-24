@@ -1,0 +1,166 @@
+<meta charset="utf-8">
+(#) Code contains `STOPSHIP` marker
+
+!!! ERROR: Code contains `STOPSHIP` marker
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `StopShip`
+Summary
+:   Code contains `STOPSHIP` marker
+Note
+:   **This issue is disabled by default**; use `--enable StopShip`
+Severity
+:   Fatal
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Gradle build files, Kotlin and Java files, manifest files, property files and resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CommentDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CommentDetectorTest.java)
+
+Using the comment `// STOPSHIP` can be used to flag code that is
+incomplete but checked in. This comment marker can be used to indicate
+that the code should not be shipped until the issue is addressed, and
+lint will look for these. In Gradle projects, this is only checked for
+non-debug (release) builds.
+
+In Kotlin, the `TODO()` method is also treated as a stop ship marker;
+you can use it to make incomplete code compile, but it will throw an
+exception at runtime and therefore should be fixed before shipping
+releases.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Hidden.java:11:Error: STOPSHIP comment found; points to
+code which must be fixed prior to release [StopShip]
+
+    // STOPSHIP
+       --------
+
+
+src/test/pkg/Hidden.java:12:Error: STOPSHIP comment found; points to
+code which must be fixed prior to release [StopShip]
+
+    /* We must STOPSHIP! */
+               --------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Hidden.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+public class Hidden {
+    // Innocent comment...?
+    /* \u002a\u002f static { System.out.println("I'm executed on class load"); } \u002f\u002a */
+    /* \u002A\U002F static { System.out.println("I'm executed on class load"); } \u002f\u002a */
+    /* Normal \\u002A\U002F */ // OK
+    static {
+        String s = "\u002a\u002f"; // OK
+    }
+    // STOPSHIP
+    /* We must STOPSHIP! */
+    String x = "STOPSHIP"; // OK
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CommentDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CommentDetector.testJava`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("StopShip")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("StopShip")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection StopShip
+  problematicStatement()
+  ```
+
+* Adding the suppression attribute `tools:ignore="StopShip"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="StopShip" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'StopShip'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore StopShip ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

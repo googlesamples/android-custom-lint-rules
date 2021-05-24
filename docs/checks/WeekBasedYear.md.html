@@ -1,0 +1,219 @@
+<meta charset="utf-8">
+(#) Week Based Year
+
+!!! WARNING: Week Based Year
+   This is a warning.
+
+Id
+:   `WeekBasedYear`
+Summary
+:   Week Based Year
+Severity
+:   Warning
+Category
+:   Internationalization
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://stackoverflow.com/questions/46847245/using-datetimeformatter-on-january-first-cause-an-invalid-year-value
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DateFormatDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)
+
+The `DateTimeFormatter` pattern `YYYY` returns the *week* based year,
+not the era-based year. This means that 12/29/2019 will format to 2019,
+but 12/30/2019 will format to 2020!
+
+If you expected this to format as 2019, you should use the pattern
+`yyyy` instead.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/DateFormatTest.kt:16:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    DateTimeFormatter.ofPattern("'profile-'YYYY-MM-dd-HH-mm-ss-SSS'.rawproto'", Locale.US) // ERROR
+                                           ----
+
+
+src/test/pkg/DateFormatTest.kt:29:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s1 =  DateTimeFormatter.ofPattern("MMMM d, YYYY") // ERROR
+                                                   ----
+
+
+src/test/pkg/DateFormatTest.kt:30:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s2 =  SimpleDateFormat("MMMM d, YYYY") // ERROR
+                                        ----
+
+
+src/test/pkg/DateFormatTest.kt:31:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s3 = DateTimeFormatter.ofPattern("""dd-MM-YYYY""") // ERROR
+                                                  ----
+
+
+src/test/pkg/DateFormatTest.kt:32:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s4 = DateTimeFormatter.ofPattern("'$something'dd-MM-YYYY") // ERROR
+                                         ------------------------
+
+
+src/test/pkg/DateFormatTest.kt:33:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s5 = DateTimeFormatter.ofPattern("'\u1234'dd-MM-YYYY") // ERROR
+                                         --------------------
+
+
+src/test/pkg/DateFormatTest.kt:35:Warning: DateFormat character 'Y' in
+YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s6 = DateTimeFormatter.ofPattern(constant) // ERROR
+                                         --------
+
+
+src/test/pkg/DateFormatTest.kt:36:Warning: DateFormat character 'Y' in
+YY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+
+    val s7 = DateTimeFormatter.ofPattern("""dd-YY-MM""") // ERROR
+                                               --
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/DateFormatTest.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+@file:Suppress("unused")
+
+package test.pkg
+
+import android.annotation.SuppressLint
+import android.icu.text.SimpleDateFormat
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.format.DateTimeFormatter
+import java.util.*
+
+@SuppressLint("SimpleDateFormat")
+@RequiresApi(Build.VERSION_CODES.O)
+class DateFormatTest {
+    private val PROFILE_FILE_NAME: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("'profile-'YYYY-MM-dd-HH-mm-ss-SSS'.rawproto'", Locale.US) // ERROR
+
+    fun testOk() {
+        val s1 = DateTimeFormatter.ofPattern("'Year'dd-MM-yy") // OK
+        val s2 = DateTimeFormatter.ofPattern("'''Y'dd-MM-yy") // OK
+        val s3 = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss") // OK
+        val s4 = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss") // OK
+        val s5 = SimpleDateFormat("HH:mm, MMM dd, yyyy") // OK
+        val s6 = java.text.SimpleDateFormat("HH:mm, MMM dd, yyyy") // OK
+        val s7 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()) // OK
+    }
+
+    fun testProblems(something: String) {
+        val s1 =  DateTimeFormatter.ofPattern("MMMM d, YYYY") // ERROR
+        val s2 =  SimpleDateFormat("MMMM d, YYYY") // ERROR
+        val s3 = DateTimeFormatter.ofPattern("""dd-MM-YYYY""") // ERROR
+        val s4 = DateTimeFormatter.ofPattern("'$something'dd-MM-YYYY") // ERROR
+        val s5 = DateTimeFormatter.ofPattern("'\u1234'dd-MM-YYYY") // ERROR
+        val constant = "dd-MM-YYYY"
+        val s6 = DateTimeFormatter.ofPattern(constant) // ERROR
+        val s7 = DateTimeFormatter.ofPattern("""dd-YY-MM""") // ERROR
+        val s7 = DateTimeFormatter.ofPattern("YYYY-dd-MM versus yyyy-dd-MM") // OK -- both, probably okay
+        val s7 = DateTimeFormatter.ofPattern("YYYY-WW-FF") // OK No days or months
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DateFormatDetector.testEraYear`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WeekBasedYear")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WeekBasedYear")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WeekBasedYear
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WeekBasedYear" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WeekBasedYear'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WeekBasedYear ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

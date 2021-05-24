@@ -1,0 +1,221 @@
+<meta charset="utf-8">
+(#) Using deprecated resources
+
+!!! WARNING: Using deprecated resources
+   This is a warning.
+
+Id
+:   `Deprecated`
+Summary
+:   Using deprecated resources
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files, manifest files and resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DeprecationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DeprecationDetectorTest.kt)
+
+Deprecated views, attributes and so on are deprecated because there is a
+better way to do something. Do it that new way. You've been warned.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/deprecation.xml:1:Warning: AbsoluteLayout is deprecated
+[Deprecated]
+
+&lt;AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ --------------
+
+
+res/layout/deprecation.xml:15:Warning: android:autoText is deprecated:
+Use inputType instead [Deprecated]
+
+    android:autoText="true"
+    -----------------------
+
+
+res/layout/deprecation.xml:16:Warning: android:capitalize is deprecated:
+Use inputType instead [Deprecated]
+
+    android:capitalize="true"
+    -------------------------
+
+
+res/layout/deprecation.xml:17:Warning: android:editable is deprecated:
+Use an <EditText> to make it editable [Deprecated]
+
+    android:editable="true"
+    -----------------------
+
+
+res/layout/deprecation.xml:19:Warning: android:inputMethod is
+deprecated: Use inputType instead [Deprecated]
+
+    android:inputMethod="@+id/foo"
+    ------------------------------
+
+
+res/layout/deprecation.xml:20:Warning: android:numeric is deprecated:
+Use inputType instead [Deprecated]
+
+    android:numeric="true"
+    ----------------------
+
+
+res/layout/deprecation.xml:21:Warning: android:password is deprecated:
+Use inputType instead [Deprecated]
+
+    android:password="true"
+    -----------------------
+
+
+res/layout/deprecation.xml:22:Warning: android:phoneNumber is
+deprecated: Use inputType instead [Deprecated]
+
+    android:phoneNumber="true"
+    --------------------------
+
+
+res/layout/deprecation.xml:25:Warning: android:editable is deprecated:
+<EditText> is already editable [Deprecated]
+
+    &lt;EditText android:editable="true" /&gt;
+              -----------------------
+
+
+res/layout/deprecation.xml:26:Warning: android:editable is deprecated:
+Use inputType instead [Deprecated]
+
+    &lt;EditText android:editable="false" /&gt;
+              ------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/deprecation.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" &gt;
+
+    &lt;Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="5dp"
+        android:layout_y="100dp"
+        android:text="Button" /&gt;
+
+    &lt;!--  Deprecated attributes --&gt;
+    &lt;TextView
+        android:autoText="true"
+        android:capitalize="true"
+        android:editable="true"
+        android:enabled="true"
+        android:inputMethod="@+id/foo"
+        android:numeric="true"
+        android:password="true"
+        android:phoneNumber="true"
+        android:singleLine="true" /&gt;
+
+    &lt;EditText android:editable="true" /&gt;
+    &lt;EditText android:editable="false" /&gt;
+
+&lt;/AbsoluteLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DeprecationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DeprecationDetector.testApi4`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="Deprecated"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("Deprecated")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("Deprecated")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection Deprecated
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="Deprecated" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'Deprecated'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore Deprecated ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

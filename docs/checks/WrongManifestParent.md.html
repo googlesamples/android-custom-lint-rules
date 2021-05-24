@@ -1,0 +1,221 @@
+<meta charset="utf-8">
+(#) Wrong manifest parent
+
+!!! ERROR: Wrong manifest parent
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `WrongManifestParent`
+Summary
+:   Wrong manifest parent
+Severity
+:   Fatal
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/topics/manifest/manifest-intro.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ManifestDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestDetectorTest.kt)
+
+The `<uses-library>` element should be defined as a direct child of the
+`<application>` tag, not the `<manifest>` tag or an `<activity>` tag.
+Similarly, a `<uses-sdk>` tag must be declared at the root level, and so
+on. This check looks for incorrect declaration locations in the
+manifest, and complains if an element is found in the wrong place.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:7:Error: The <uses-sdk> element must be a direct
+child of the <manifest> root element [WrongManifestParent]
+
+    &lt;uses-sdk android:minSdkVersion="Froyo" /&gt;
+     --------
+
+
+AndroidManifest.xml:8:Error: The <uses-permission> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;uses-permission /&gt;
+     ---------------
+
+
+AndroidManifest.xml:9:Error: The <permission> element must be a direct
+child of the <manifest> root element [WrongManifestParent]
+
+    &lt;permission /&gt;
+     ----------
+
+
+AndroidManifest.xml:10:Error: The <permission-tree> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;permission-tree /&gt;
+     ---------------
+
+
+AndroidManifest.xml:11:Error: The <permission-group> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;permission-group /&gt;
+     ----------------
+
+
+AndroidManifest.xml:13:Error: The <uses-sdk> element must be a direct
+child of the <manifest> root element [WrongManifestParent]
+
+    &lt;uses-sdk /&gt;
+     --------
+
+
+AndroidManifest.xml:14:Error: The <uses-configuration> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;uses-configuration /&gt;
+     ------------------
+
+
+AndroidManifest.xml:15:Error: The <uses-feature> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;uses-feature /&gt;
+     ------------
+
+
+AndroidManifest.xml:16:Error: The <supports-screens> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;supports-screens /&gt;
+     ----------------
+
+
+AndroidManifest.xml:17:Error: The <compatible-screens> element must be a
+direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;compatible-screens /&gt;
+     ------------------
+
+
+AndroidManifest.xml:18:Error: The <supports-gl-texture> element must be
+a direct child of the <manifest> root element [WrongManifestParent]
+
+    &lt;supports-gl-texture /&gt;
+     -------------------
+
+
+AndroidManifest.xml:23:Error: The <uses-library> element must be a
+direct child of the <application> element [WrongManifestParent]
+
+   &lt;uses-library /&gt;
+    ------------
+
+
+AndroidManifest.xml:24:Error: The <activity> element must be a direct
+child of the <application> element [WrongManifestParent]
+
+   &lt;activity android:name=".HelloWorld"
+    --------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="com.example.helloworld"
+     android:versionCode="1"
+     android:versionName="1.0"&gt;
+   &lt;application android:icon="@drawable/icon" android:label="@string/app_name"&gt;
+       &lt;!-- Wrong declaration locations --&gt;
+       &lt;uses-sdk android:minSdkVersion="Froyo" /&gt;
+       &lt;uses-permission /&gt;
+       &lt;permission /&gt;
+       &lt;permission-tree /&gt;
+       &lt;permission-group /&gt;
+       &lt;instrumentation /&gt;
+       &lt;uses-sdk /&gt;
+       &lt;uses-configuration /&gt;
+       &lt;uses-feature /&gt;
+       &lt;supports-screens /&gt;
+       &lt;compatible-screens /&gt;
+       &lt;supports-gl-texture /&gt;
+
+   &lt;/application&gt;
+
+   &lt;!-- Wrong declaration locations --&gt;
+   &lt;uses-library /&gt;
+   &lt;activity android:name=".HelloWorld"
+                 android:label="@string/app_name" /&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ManifestDetector.testWrongLocation`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="WrongManifestParent"` on the problematic XML element
+  (or one of its enclosing elements). You may also need to add the
+  following namespace declaration on the root element in the XML file
+  if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WrongManifestParent" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WrongManifestParent'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WrongManifestParent ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

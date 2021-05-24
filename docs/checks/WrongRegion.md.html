@@ -1,0 +1,113 @@
+<meta charset="utf-8">
+(#) Suspicious Language/Region Combination
+
+!!! WARNING: Suspicious Language/Region Combination
+   This is a warning.
+
+Id
+:   `WrongRegion`
+Summary
+:   Suspicious Language/Region Combination
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource folders
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LocaleFolderDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LocaleFolderDetectorTest.kt)
+
+Android uses the letter codes ISO 639-1 for languages, and the letter
+codes ISO 3166-1 for the region codes. In many cases, the language code
+and the country where the language is spoken is the same, but it is also
+often not the case. For example, while 'se' refers to Sweden, where
+Swedish is spoken, the language code for Swedish is **not** `se` (which
+refers to the Northern Sami language), the language code is `sv`. And
+similarly the region code for `sv` is El Salvador.
+
+This lint check looks for suspicious language and region combinations,
+to help catch cases where you've accidentally used the wrong language or
+region code. Lint knows about the most common regions where a language
+is spoken, and if a folder combination is not one of these, it is
+flagged as suspicious.
+
+Note however that it may not be an error: you can theoretically have
+speakers of any language in any region and want to target that with your
+resources, so this check is aimed at tracking down likely mistakes, not
+to enforce a specific set of region and language combinations.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values-nb-rSE/strings.xml:Warning: Suspicious language and region
+combination nb (Norwegian Bokmål) with SE (Sweden): language nb is
+usually paired with: NO (Norway), SJ (Svalbard & Jan Mayen)
+[WrongRegion]
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values-nb-rSE/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LocaleFolderDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LocaleFolderDetector.testSuspiciousRegion`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WrongRegion" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WrongRegion'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WrongRegion ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,234 @@
+<meta charset="utf-8">
+(#) WifiManager Potential Leak
+
+!!! WARNING: WifiManager Potential Leak
+   This is a warning.
+
+Id
+:   `WifiManagerPotentialLeak`
+Summary
+:   WifiManager Potential Leak
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ServiceCastDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ServiceCastDetectorTest.java)
+
+On versions prior to Android N (24), initializing the `WifiManager` via
+`Context#getSystemService` can cause a memory leak if the context is not
+the application context.
+
+In many cases, it's not obvious from the code where the `Context` is
+coming from (e.g. it might be a parameter to a method, or a field
+initialized from various method calls). It's possible that the context
+being passed in is the application context, but to be on the safe side,
+you should consider changing `context.getSystemService(...)` to
+`context.getApplicationContext().getSystemService(...)`.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/WifiManagerTest.java:32:Warning: The WIFI_SERVICE must be
+looked up on the Application context or memory will leak on devices <
+Android N. Try changing foreignContext to
+foreignContext.getApplicationContext() [WifiManagerPotentialLeak]
+
+    foreignContext.getSystemService(Context.WIFI_SERVICE); // UNKNOWN
+    -----------------------------------------------------
+
+
+src/test/pkg/WifiManagerTest.java:33:Warning: The WIFI_SERVICE must be
+looked up on the Application context or memory will leak on devices <
+Android N. Try changing mContext to mContext.getApplicationContext()
+[WifiManagerPotentialLeak]
+
+    mContext.getSystemService(Context.WIFI_SERVICE); // UNKNOWN
+    -----------------------------------------------
+
+
+src/test/pkg/WifiManagerTest.java:41:Warning: The WIFI_SERVICE must be
+looked up on the Application context or memory will leak on devices <
+Android N. Try changing ctx to ctx.getApplicationContext()
+[WifiManagerPotentialLeak]
+
+    ctx.getSystemService(Context.WIFI_SERVICE); // UNKNOWN (though likely)
+    ------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/WifiManagerTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.app.Application;
+import android.app.Fragment;
+import android.app.Service;
+import android.content.Context;
+import android.preference.PreferenceActivity;
+import android.widget.Button;
+
+@SuppressWarnings("unused")
+public class WifiManagerTest {
+    public void testErrors(PreferenceActivity someActivity, Service someService, Fragment fragment) {
+        someActivity.getSystemService(Context.WIFI_SERVICE); // ERROR: Activity context
+        someService.getSystemService(Context.WIFI_SERVICE);  // ERROR: Service context
+        fragment.getActivity().getSystemService(Context.WIFI_SERVICE); // ERROR: Activity context
+        fragment.getContext().getSystemService(Context.WIFI_SERVICE); // ERROR: FragmentHost context
+    }
+
+    private Context mContext;
+    private Application mApplication;
+    private Activity mActivity;
+
+    public void testFlow(Activity activity, Context foreignContext) {
+        @SuppressWarnings("UnnecessaryLocalVariable")
+        Context c2;
+        c2 = activity;
+        Context context = c2;
+        context.getSystemService(Context.WIFI_SERVICE); // ERROR
+
+        // Consider calling foreignContext.getApplicationContext() here
+        foreignContext.getSystemService(Context.WIFI_SERVICE); // UNKNOWN
+        mContext.getSystemService(Context.WIFI_SERVICE); // UNKNOWN
+        mActivity.getSystemService(Context.WIFI_SERVICE); // ERROR: activity service
+        mApplication.getSystemService(Context.WIFI_SERVICE); // OK
+        activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE); // OK
+    }
+
+    public void test(Context ctx) {
+        mContext = ctx.getApplicationContext();
+        ctx.getSystemService(Context.WIFI_SERVICE); // UNKNOWN (though likely)
+    }
+
+    public void testOk(Application application) {
+        application.getSystemService(Context.WIFI_SERVICE); // OK
+
+        Context applicationContext = application.getApplicationContext();
+        applicationContext.getSystemService(Context.WIFI_SERVICE); // OK
+    }
+
+    public static class MyActivity extends Activity {
+        public void test() {
+            getSystemService(WIFI_SERVICE); // ERROR: Activity context
+            this.getSystemService(Context.WIFI_SERVICE); // ERROR: Activity context
+        }
+    }
+
+    public abstract static class MyApplication extends Application {
+        public void test() {
+            getSystemService(WIFI_SERVICE); // OK: Application context
+        }
+    }
+
+    public abstract static class MyService extends Service {
+        public void test() {
+            getSystemService(WIFI_SERVICE); // ERROR: Service context
+        }
+    }
+
+    public abstract class MyCustomView extends Button {
+        public MyCustomView(Context context) {
+            super(context);
+        }
+
+        public void test() {
+            getContext().getSystemService(Context.WIFI_SERVICE); // ERROR: View context
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ServiceCastDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ServiceCastDetector.testWifiManagerLookup`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WifiManagerPotentialLeak")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WifiManagerPotentialLeak")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WifiManagerPotentialLeak
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WifiManagerPotentialLeak" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WifiManagerPotentialLeak'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WifiManagerPotentialLeak ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

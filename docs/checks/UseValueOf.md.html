@@ -1,0 +1,383 @@
+<meta charset="utf-8">
+(#) Should use `valueOf` instead of `new`
+
+!!! WARNING: Should use `valueOf` instead of `new`
+   This is a warning.
+
+Id
+:   `UseValueOf`
+Summary
+:   Should use `valueOf` instead of `new`
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/JavaPerformanceDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/JavaPerformanceDetectorTest.java)
+
+You should not call the constructor for wrapper classes directly, such
+as`new Integer(42)`. Instead, call the `valueOf` factory method, such as
+`Integer.valueOf(42)`. This will typically use less memory because
+common integers such as 0 and 1 will share a single instance.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/JavaPerformanceTest.java:36:Warning: Use Integer.valueOf(5)
+instead [UseValueOf]
+
+    Integer i = new Integer(5);
+                --------------
+
+
+src/test/pkg/JavaPerformanceTest.java:137:Warning: Use
+Integer.valueOf(42) instead [UseValueOf]
+
+    Integer i1 = new Integer(42);
+                 ---------------
+
+
+src/test/pkg/JavaPerformanceTest.java:138:Warning: Use Long.valueOf(42L)
+instead [UseValueOf]
+
+    Long l1 = new Long(42L);
+              -------------
+
+
+src/test/pkg/JavaPerformanceTest.java:139:Warning: Use
+Boolean.valueOf(true) instead [UseValueOf]
+
+    Boolean b1 = new Boolean(true);
+                 -----------------
+
+
+src/test/pkg/JavaPerformanceTest.java:140:Warning: Use
+Character.valueOf('c') instead [UseValueOf]
+
+    Character c1 = new Character('c');
+                   ------------------
+
+
+src/test/pkg/JavaPerformanceTest.java:141:Warning: Use
+Float.valueOf(1.0f) instead [UseValueOf]
+
+    Float f1 = new Float(1.0f);
+               ---------------
+
+
+src/test/pkg/JavaPerformanceTest.java:142:Warning: Use
+Double.valueOf(1.0) instead [UseValueOf]
+
+    Double d1 = new Double(1.0);
+                ---------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/JavaPerformanceTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Rect;
+import android.graphics.Shader.TileMode;
+import android.util.AttributeSet;
+import android.util.SparseArray;
+import android.widget.Button;
+import java.util.HashMap;
+import java.util.Map;
+
+/** Some test data for the JavaPerformanceDetector */
+@SuppressWarnings("unused")
+public class JavaPerformanceTest extends Button {
+    public JavaPerformanceTest(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    private Rect cachedRect;
+
+    @Override
+    protected void onDraw(android.graphics.Canvas canvas) {
+        super.onDraw(canvas);
+
+        // Various allocations:
+        new String("foo");
+        String s = new String("bar");
+
+        // This one should not be reported:
+        @SuppressLint("DrawAllocation")
+        Integer i = new Integer(5);
+
+        // Cached object initialized lazily: should not complain about these
+        if (cachedRect == null) {
+            cachedRect = new Rect(0, 0, 100, 100);
+        }
+        if (cachedRect == null || cachedRect.width() != 50) {
+            cachedRect = new Rect(0, 0, 50, 100);
+        }
+
+        boolean b = Boolean.valueOf(true); // auto-boxing
+        sample(1, 2);
+
+        // Non-allocations
+        super.animate();
+        sample2(1, 2);
+        int x = 4 + '5';
+
+        // This will involve allocations, but we don't track
+        // inter-procedural stuff here
+        someOtherMethod();
+    }
+
+    void sample(Integer foo, int bar) {
+        sample2(foo, bar);
+    }
+
+    void sample2(int foo, int bar) {
+    }
+
+    void someOtherMethod() {
+        // Allocations are okay here
+        new String("foo");
+        String s = new String("bar");
+        boolean b = Boolean.valueOf(true); // auto-boxing
+    }
+
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec,
+                             boolean x) { // wrong signature
+        new String("not an error");
+    }
+
+    protected void onMeasure(int widthMeasureSpec) { // wrong signature
+        new String("not an error");
+    }
+
+    protected void onLayout(boolean changed, int left, int top, int right,
+                            int bottom, int wrong) { // wrong signature
+        new String("not an error");
+    }
+
+    protected void onLayout(boolean changed, int left, int top, int right) {
+        // wrong signature
+        new String("not an error");
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right,
+                            int bottom) {
+        new String("flag me");
+    }
+
+    @SuppressWarnings("null") // not real code
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        new String("flag me");
+
+        // Forbidden factory methods:
+        Bitmap.createBitmap(100, 100, null);
+        android.graphics.Bitmap.createScaledBitmap(null, 100, 100, false);
+        BitmapFactory.decodeFile(null);
+        Canvas canvas = null;
+        canvas.getClipBounds(); // allocates on your behalf
+        canvas.getClipBounds(null); // NOT an error
+
+        final int layoutWidth = getWidth();
+        final int layoutHeight = getHeight();
+        if (mAllowCrop && (mOverlay == null || mOverlay.getWidth() != layoutWidth ||
+                mOverlay.getHeight() != layoutHeight)) {
+            mOverlay = Bitmap.createBitmap(layoutWidth, layoutHeight, Bitmap.Config.ARGB_8888);
+            mOverlayCanvas = new Canvas(mOverlay);
+        }
+
+        if (widthMeasureSpec == 42) {
+            throw new IllegalStateException("Test"); // NOT an allocation
+        }
+
+        // More lazy init tests
+        boolean initialized = false;
+        if (!initialized) {
+            new String("foo");
+            initialized = true;
+        }
+
+        // NOT lazy initialization
+        if (!initialized || mOverlay == null) {
+            new String("foo");
+        }
+    }
+
+    void factories() {
+        Integer i1 = new Integer(42);
+        Long l1 = new Long(42L);
+        Boolean b1 = new Boolean(true);
+        Character c1 = new Character('c');
+        Float f1 = new Float(1.0f);
+        Double d1 = new Double(1.0);
+
+        // The following should not generate errors:
+        Object i2 = new foo.bar.Integer(42);
+        Integer i3 = Integer.valueOf(42);
+    }
+
+    private boolean mAllowCrop;
+    private Canvas mOverlayCanvas;
+    private Bitmap mOverlay;
+private abstract class JavaPerformanceTest1 extends JavaPerformanceTest {
+    @Override
+    public void layout(int l, int t, int r, int b) {
+        // Using "this." to reference fields
+        if (this.shader == null)
+            this.shader = new LinearGradient(0, 0, getWidth(), 0, GRADIENT_COLORS, null,
+                    TileMode.REPEAT);
+    }
+} private abstract class JavaPerformanceTest2 extends JavaPerformanceTest {
+        @Override
+    public void layout(int l, int t, int r, int b) {
+        int width = getWidth();
+        int height = getHeight();
+
+        if ((shader == null) || (lastWidth != width) || (lastHeight != height))
+        {
+            lastWidth = width;
+            lastHeight = height;
+
+            shader = new LinearGradient(0, 0, width, 0, GRADIENT_COLORS, null, TileMode.REPEAT);
+        }
+    }
+} private abstract class JavaPerformanceTest3 extends JavaPerformanceTest {
+    @Override
+    public void layout(int l, int t, int r, int b) {
+        if ((shader == null) || (lastWidth != getWidth()) || (lastHeight != getHeight())) {
+        }
+    }
+}
+    public void inefficientSparseArray() {
+        new SparseArray<Integer>(); // Use SparseIntArray instead
+        new SparseArray<Long>();    // Use SparseLongArray instead
+        new SparseArray<Boolean>(); // Use SparseBooleanArray instead
+        new SparseArray<Object>();  // OK
+    }
+
+    public void longSparseArray() { // but only minSdkVersion >= 17 or if has v4 support lib
+        Map<Long, String> myStringMap = new HashMap<Long, String>();
+    }
+
+    public void byteSparseArray() { // bytes easily apply to ints
+        Map<Byte, String> myByteMap = new HashMap<Byte, String>();
+    }
+
+    protected LinearGradient shader;
+    protected int lastWidth;
+    protected int lastHeight;
+    protected int[] GRADIENT_COLORS;
+
+    private static class foo {
+        private static class bar {
+            private static class Integer {
+                public Integer(int val) {
+                }
+            }
+        }
+    }
+    public JavaPerformanceTest() {
+        super(null);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/JavaPerformanceDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `JavaPerformanceDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UseValueOf")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UseValueOf")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UseValueOf
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UseValueOf" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UseValueOf'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UseValueOf ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

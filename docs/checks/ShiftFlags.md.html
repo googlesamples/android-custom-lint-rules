@@ -1,0 +1,200 @@
+<meta charset="utf-8">
+(#) Dangerous Flag Constant Declaration
+
+!!! WARNING: Dangerous Flag Constant Declaration
+   This is a warning.
+
+Id
+:   `ShiftFlags`
+Summary
+:   Dangerous Flag Constant Declaration
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+
+When defining multiple constants for use in flags, the recommended style
+is to use the form `1 << 2`, `1 << 3`, `1 << 4` and so on to ensure that
+the constants are unique and non-overlapping.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/IntDefTest.java:13:Warning: Consider declaring this
+constant using 1 << 44 instead [ShiftFlags]
+
+    public static final long FLAG5 = 0x100000000000L;
+                                     ---------------
+
+
+src/test/pkg/IntDefTest.java:14:Warning: Consider declaring this
+constant using 1 << 49 instead [ShiftFlags]
+
+    public static final long FLAG6 = 0x0002000000000000L;
+                                     -------------------
+
+
+src/test/pkg/IntDefTest.java:15:Warning: Consider declaring this
+constant using 1 << 3 instead [ShiftFlags]
+
+    public static final long FLAG7 = 8L;
+                                     --
+
+
+src/test/pkg/IntDefTest.java:20:Warning: Consider declaring this
+constant using 1 << 4 instead [ShiftFlags]
+
+    public static final int  FLAG12 = 0x10;
+                                      ----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/IntDefTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@SuppressWarnings("unused")
+public class IntDefTest {
+    public static final long FLAG1 = 1;
+    public static final long FLAG2 = 2;
+    public static final long FLAG3 = 1 << 2;
+    public static final long FLAG4 = 1 << 3;
+    public static final long FLAG5 = 0x100000000000L;
+    public static final long FLAG6 = 0x0002000000000000L;
+    public static final long FLAG7 = 8L;
+    public static final long FLAG8 = 9L;
+    public static final long FLAG9 = 0;
+    public static final long FLAG10 = 1;
+    public static final long FLAG11 = -1;
+    public static final int  FLAG12 = 0x10;
+    public static final int  FLAG13 = 1 << 1;
+    public static final int  FLAG14 = 1 << 2;
+
+    @IntDef({FLAG1, FLAG2, FLAG3})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags1 {}
+
+    @IntDef(flag = true, value={FLAG1, FLAG2})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags2 {}
+
+    @IntDef(flag = true, value={FLAG9, FLAG10, FLAG11})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags3 {}
+
+    @IntDef(flag = true, value={FLAG1, FLAG3, FLAG4})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags4 {}
+
+    @IntDef(flag = true, value={FLAG5, FLAG6, FLAG7, FLAG8})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags5 {}
+
+    @IntDef(flag = true, value={FLAG5, FLAG6, FLAG7, FLAG8})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags6 {}
+
+    @IntDef(flag = true, value={FLAG12, FLAG13, FLAG14})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags7 {}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AnnotationDetector.testFlagStyle`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ShiftFlags")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ShiftFlags")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ShiftFlags
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ShiftFlags" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ShiftFlags'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ShiftFlags ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

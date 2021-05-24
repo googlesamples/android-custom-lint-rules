@@ -1,0 +1,177 @@
+<meta charset="utf-8">
+(#) Obsolete Gradle Dependency
+
+!!! WARNING: Obsolete Gradle Dependency
+   This is a warning.
+
+Id
+:   `GradleDependency`
+Summary
+:   Obsolete Gradle Dependency
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+
+This detector looks for usages of libraries where the version you are
+using is not the current stable release. Using older versions is fine,
+and there are cases where you deliberately want to stick with an older
+version. However, you may simply not be aware that a more recent version
+is available, and that is what this lint check helps find.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:5:Warning: Old buildToolsVersion 19.0.0; recommended
+version is 19.1 or later [GradleDependency]
+
+    buildToolsVersion "19.0.0"
+    --------------------------
+
+
+build.gradle:24:Warning: A newer version of com.google.guava:guava than
+11.0.2 is available: 21.0 [GradleDependency]
+
+    freeCompile 'com.google.guava:guava:11.0.2'
+                -------------------------------
+
+
+build.gradle:25:Warning: A newer version of
+com.android.support:appcompat-v7 than 13.0.0 is available: 19.1.0
+[GradleDependency]
+
+    compile 'com.android.support:appcompat-v7:13.0.0'
+            -----------------------------------------
+
+
+build.gradle:26:Warning: A newer version of
+com.google.android.support:wearable than 1.2.0 is available: 1.3.0
+[GradleDependency]
+
+    compile 'com.google.android.support:wearable:1.2.0'
+            -------------------------------------------
+
+
+build.gradle:27:Warning: A newer version of com.android.support:multidex
+than 1.0.0 is available: 1.0.1 [GradleDependency]
+
+    compile 'com.android.support:multidex:1.0.0'
+            ------------------------------------
+
+
+build.gradle:29:Warning: A newer version of
+com.android.support.test:runner than 0.3 is available: 0.5
+[GradleDependency]
+
+    androidTestCompile 'com.android.support.test:runner:0.3'
+                       -------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+    }
+
+    productFlavors {
+        free {
+        }
+        pro {
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:+'
+    freeCompile 'com.google.guava:guava:11.0.2'
+    compile 'com.android.support:appcompat-v7:13.0.0'
+    compile 'com.google.android.support:wearable:1.2.0'
+    compile 'com.android.support:multidex:1.0.0'
+
+    androidTestCompile 'com.android.support.test:runner:0.3'
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testBasic`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection GradleDependency
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="GradleDependency" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'GradleDependency'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore GradleDependency ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

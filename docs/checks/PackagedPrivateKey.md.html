@@ -1,0 +1,114 @@
+<meta charset="utf-8">
+(#) Packaged private key
+
+!!! ERROR: Packaged private key
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `PackagedPrivateKey`
+Summary
+:   Packaged private key
+Severity
+:   Fatal
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PrivateKeyDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PrivateKeyDetectorTest.kt)
+
+In general, you should not package private key files inside your app.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/private_key.pem:Error: The res/private_key.pem file seems to be a
+private key file. Please make sure not to embed this in your APK file.
+[PackagedPrivateKey]
+
+1 errors, 0 warnings
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/private_key.pem`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: DES-EDE3-CBC,77F426A58B274623
+
+FH1NdgJgrX1OGKM0WfzwWUWmLTmfawdaUPeFNJbz1+WJ5DEt1DmC6o0QkXoxIPC
+Te/+FS80gNruYgYIWu4WXWtCSdvSfGI8LP1JZ7hmMCW055J2mLVKT4o6HqAQnHrb
+hTATVG6CB/GdHTFPG3J65qIyTlG50jyzfwZtliMCCAWi+AaAlo5xzUe0DgedytB2
+sFkLq5EiD6066P/LXPH/Z5WJKiMCFOl0Gjwd3M9ohZufnWJPJT5ap2fm7OSJSfa6
+jPREY+UwhPyKkYOc2cWgojj6HrsSQlXPl176b1+31c19hhhRAtDfJBIU2OrOFVk/
+V88/Dm0I+ROyLme0rYfFg8uHz2aIymWEMds5ZKEFTFbBhaWbVYKIX7+82tftnd+P
+2kT15JAK9V27F0p4SRiWQ5RsDkT3rBWWjtk9Rptkrgec9WKoTaO2fT8bPaWFR/M1
+6X7kjMqhLw1sHmsSeDKx0YCWfS+gWh7RPWGQ2EfH2pxoZkWAR5R3cZCEn3Ia1BeV
+UTFWy+DwjEeSrNkO96E0WH1r8204cJAKK8cWS4HSAPMsQPf5cZjIrrAak/9Wupkq
+fnrB0Ae6GFO2gWHYQfbSWdEq6w5+S6XZyTauVyaJAjjIFWmegfaKWHzNvqCWJ4T
+YPsiptUrKz6WWYyhiUrNJQKcyGWHWrwMNIblWqSBNCa8OIVoaZiRibgO1SIafAGAS
+9MDXXVaY6rqx1yfZYDcWVgKGXTJhBXALCeGMWF43bvAmPq3M13QJA0rlO7lAUUF2
+5INqBUeJxZWYxn6tRr9WMty/UcYnPR3YHgt0RDZycvbcqPsU5tHk9Q==
+-----END RSA PRIVATE KEY-----
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PrivateKeyDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `PrivateKeyDetector.testPrivateKey`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="PackagedPrivateKey" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'PackagedPrivateKey'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore PackagedPrivateKey ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

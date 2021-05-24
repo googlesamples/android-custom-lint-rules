@@ -1,0 +1,198 @@
+<meta charset="utf-8">
+(#) Static Field Leaks
+
+!!! WARNING: Static Field Leaks
+   This is a warning.
+
+Id
+:   `StaticFieldLeak`
+Summary
+:   Static Field Leaks
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LeakDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LeakDetectorTest.kt)
+
+A static field will leak contexts.
+
+Non-static inner classes have an implicit reference to their outer
+class. If that outer class is for example a `Fragment` or `Activity`,
+then this reference means that the long-running handler/loader/task will
+hold a reference to the activity which prevents it from getting garbage
+collected.
+
+Similarly, direct field references to activities and fragments from
+these longer running instances can cause leaks.
+
+ViewModel classes should never point to Views or non-application
+Contexts.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/LeakTest.java:18:Warning: Do not place Android context
+classes in static fields; this is a memory leak [StaticFieldLeak]
+
+    private static Activity sField7; // LEAK!
+            ------
+
+
+src/test/pkg/LeakTest.java:19:Warning: Do not place Android context
+classes in static fields; this is a memory leak [StaticFieldLeak]
+
+    private static Fragment sField8; // LEAK!
+            ------
+
+
+src/test/pkg/LeakTest.java:20:Warning: Do not place Android context
+classes in static fields; this is a memory leak [StaticFieldLeak]
+
+    private static Button sField9; // LEAK!
+            ------
+
+
+src/test/pkg/LeakTest.java:21:Warning: Do not place Android context
+classes in static fields (static reference to MyObject which has field
+mActivity pointing to Activity); this is a memory leak
+[StaticFieldLeak]
+
+    private static MyObject sField10;
+            ------
+
+
+src/test/pkg/LeakTest.java:30:Warning: Do not place Android context
+classes in static fields; this is a memory leak [StaticFieldLeak]
+
+    private static Activity sAppContext1; // LEAK
+            ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/LeakTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.app.Fragment;
+import android.widget.Button;
+import java.util.List;
+
+@SuppressWarnings("unused")
+public class LeakTest {
+    private static int sField1;
+    private static Object sField2;
+    private static String sField3;
+    private static List sField4;
+    private int mField5;
+    private Activity mField6;
+    private static Activity sField7; // LEAK!
+    private static Fragment sField8; // LEAK!
+    private static Button sField9; // LEAK!
+    private static MyObject sField10;
+    private MyObject mField11;
+    @SuppressLint("StaticFieldLeak")
+    private static Activity sField12;
+
+    private static class MyObject {
+        private int mKey;
+        private Activity mActivity;
+    }
+    private static Activity sAppContext1; // LEAK
+    private static Context sAppContext2; // Probably app context leak
+    private static Context applicationCtx; // Probably app context leak
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LeakDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LeakDetector.testStaticFields`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("StaticFieldLeak")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("StaticFieldLeak")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection StaticFieldLeak
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="StaticFieldLeak" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'StaticFieldLeak'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore StaticFieldLeak ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

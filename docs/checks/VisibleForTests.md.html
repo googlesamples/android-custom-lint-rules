@@ -1,0 +1,157 @@
+<meta charset="utf-8">
+(#) Visible Only For Tests
+
+!!! WARNING: Visible Only For Tests
+   This is a warning.
+
+Id
+:   `VisibleForTests`
+Summary
+:   Visible Only For Tests
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/RestrictToDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RestrictToDetectorTest.kt)
+
+With the `@VisibleForTesting` annotation you can specify an `otherwise=`
+attribute which specifies the intended visibility if the method had not
+been made more widely visible for the tests.
+
+This check looks for accesses from production code (e.g. not tests)
+where the access would not have been allowed with the intended
+production visibility.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/otherpkg/OtherPkg.java:8:Warning: This method should only be
+accessed from tests or within protected scope [VisibleForTests]
+
+    new ProductionCode().testHelper3(); // ERROR
+                         -----------
+
+
+src/test/otherpkg/OtherPkg.java:9:Warning: This method should only be
+accessed from tests or within private scope [VisibleForTests]
+
+    new ProductionCode().testHelper4(); // ERROR
+                         -----------
+
+
+src/test/otherpkg/OtherPkg.java:10:Warning: This method should only be
+accessed from tests or within package private scope [VisibleForTests]
+
+    new ProductionCode().testHelper5(); // ERROR
+                         -----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/otherpkg/OtherPkg.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.otherpkg;
+import android.support.annotation.VisibleForTesting;
+import test.pkg.ProductionCode;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class OtherPkg {
+    public void test() {
+        new ProductionCode().testHelper3(); // ERROR
+        new ProductionCode().testHelper4(); // ERROR
+        new ProductionCode().testHelper5(); // ERROR
+        new ProductionCode().testHelper6(); // ERROR
+
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RestrictToDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RestrictToDetector.testVisibleForTesting`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("VisibleForTests")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("VisibleForTests")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection VisibleForTests
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="VisibleForTests" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'VisibleForTests'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore VisibleForTests ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

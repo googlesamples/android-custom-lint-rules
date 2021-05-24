@@ -1,0 +1,163 @@
+<meta charset="utf-8">
+(#) Notification Launches Services or BroadcastReceivers
+
+!!! WARNING: Notification Launches Services or BroadcastReceivers
+   This is a warning.
+
+Id
+:   `LaunchActivityFromNotification`
+Summary
+:   Notification Launches Services or BroadcastReceivers
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/topics/ui/notifiers/notifications?hl=en#Actions
+See
+:   https://material.io/design/platform-guidance/android-notifications.html#behavior
+See
+:   https://developer.android.com/guide/topics/ui/notifiers/notifications?hl=en
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/NotificationTrampolineDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NotificationTrampolineDetectorTest.kt)
+
+Notifications should only launch activities -- that's what users expect
+(and has been the guidance in both the Android SDK and Material Design
+documentation for a while).
+
+A `Service` or a `BroadcastReceiver` should not be used as an
+intermediate, because this can lead to significant performance problems,
+and as a result, this will not be allowed in Android 12.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/NotificationTest.java:22:Warning: Notifications should only
+launch a Service from notification actions (addAction)
+[LaunchActivityFromNotification]
+
+    .setContentIntent(serviceIntent)
+     -------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/NotificationTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import androidx.core.app.NotificationCompat;
+@SuppressWarnings("unused")
+public class NotificationTest {
+    public void testServices(Context context, String channelId, int id) {
+        NotificationManager notificationManager =
+                context.getSystemService(NotificationManager.class);
+        Intent notificationIntent = new Intent(context, ServiceTrampoline.class);
+        PendingIntent serviceIntent = PendingIntent.getService(context, 0, notificationIntent, 0);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
+                        .setContentTitle("Notification Trampoline Test")
+                        .setContentText("Tap this notification to launch a new service")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(serviceIntent)
+                        .setAutoCancel(true);
+        Notification notification = builder.build();
+        notificationManager.notify(id, notification);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NotificationTrampolineDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `NotificationTrampolineDetector.testLaunchUnknownService`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LaunchActivityFromNotification")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LaunchActivityFromNotification")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LaunchActivityFromNotification
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LaunchActivityFromNotification" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LaunchActivityFromNotification'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LaunchActivityFromNotification ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

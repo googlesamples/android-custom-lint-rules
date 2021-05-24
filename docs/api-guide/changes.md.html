@@ -31,8 +31,8 @@ Guide.
 * Bytecode verification: Instead of warning about 3rd party lint checks
   being obsolete because they were not compiled against the latest Lint
   API, lint now run its own bytecode verification against the lint jar
-  and will silently accept older (and newer!) lint checks if
-  they do not reference APIs that are not available.
+  and will silently accept older (and newer!) lint checks if they do
+  not reference APIs that are not available.
 
 * Android Lint checks can now always access the resource repository for
   random access to resources, instead of having to gather them in batch
@@ -67,24 +67,24 @@ Guide.
   warnings or errors.
 
 * There are additional modifier lookup methods for Kotlin modifiers
-  on `JavaEvaluator, like isReified(), isCompanion(), isTailRec(), and
-  so on.
+  on `JavaEvaluator`, like `isReified()`, `isCompanion()`,
+  `isTailRec()`, and so on.
 
 * API documentation is now available.
 
-* Certain Kotlin PSI elements have new implementations known as
-  _ultra light classes_. Ultra light classes improve performance
-  by answering PSI queries "directly from source" rather than
-  delegating to the Kotlin compiler backend. You may see ultra
-  light classes when accessing the `UElement.javaPsi` property of a
-  Kotlin UAST element. They can also appear when resolving references.
-  For example, resolving a Kotlin field reference to its declaration
-  may result in an instance of `KtUltraLightFieldForSourceDeclaration`.
-  As a reminder, Kotlin light classes represent the "Java view" of an
+* Certain Kotlin PSI elements have new implementations known as _ultra
+  light classes_. Ultra light classes improve performance by answering
+  PSI queries “directly from source” rather than delegating to the
+  Kotlin compiler backend. You may see ultra light classes when
+  accessing the `UElement.javaPsi` property of a Kotlin UAST element.
+  They can also appear when resolving references. For example,
+  resolving a Kotlin field reference to its declaration may result in
+  an instance of `KtUltraLightFieldForSourceDeclaration`. As a
+  reminder, Kotlin light classes represent the “Java view” of an
   underlying Kotlin PSI element. To access the underlying Kotlin PSI
-  element you should use `UElement.sourcePsi` (preferred)
-  or otherwise the extension property `PsiElement.unwrapped` (declared
-  in `org.jetbrains.kotlin.asJava`).
+  element you should use `UElement.sourcePsi` (preferred) or otherwise
+  the extension property `PsiElement.unwrapped` (declared in
+  `org.jetbrains.kotlin.asJava`).
 
 * There is a new bug where calling `getNameIdentifier()` on Kotlin
   fields may return `null`
@@ -94,5 +94,11 @@ Guide.
 * Kotlin references to Java methods now trigger both the
   `visitMethodCall()` callback _and_ the `visitReference()` callback.
   Previously only `visitMethodCall()` was triggered.
+
+* Quickfixes can now create and delete new files; see
+  `LintFix#newFile` and `LintFix#deleteFile`..
+
+* For quickfixes, the `independent` property had inverted logic;
+  this has now been reversed to follow the meaning of the name.
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

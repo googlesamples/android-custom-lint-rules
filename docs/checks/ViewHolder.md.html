@@ -1,0 +1,298 @@
+<meta charset="utf-8">
+(#) View Holder Candidates
+
+!!! WARNING: View Holder Candidates
+   This is a warning.
+
+Id
+:   `ViewHolder`
+Summary
+:   View Holder Candidates
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/topics/ui/layout/recyclerview#ViewHolder
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ViewHolderDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ViewHolderDetectorTest.kt)
+
+When implementing a view Adapter, you should avoid unconditionally
+inflating a new layout; if an available item is passed in for reuse, you
+should try to use that one instead. This helps make for example
+`ListView` scrolling much smoother.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/ViewHolderTest.java:42:Warning: Unconditional layout
+inflation from view adapter: Should use View Holder pattern (use
+recycled view passed into this method as the second parameter) for
+smoother scrolling [ViewHolder]
+
+    convertView = mInflater.inflate(R.layout.your_layout, null);
+                  ---------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/ViewHolderTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+@SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
+public abstract class ViewHolderTest extends BaseAdapter {
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    public static class Adapter1 extends ViewHolderTest {
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
+        }
+    }
+
+    public static class Adapter2 extends ViewHolderTest {
+        LayoutInflater mInflater;
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Should use View Holder pattern here
+            convertView = mInflater.inflate(R.layout.your_layout, null);
+
+            TextView text = (TextView) convertView.findViewById(R.id.text);
+            text.setText("Position " + position);
+
+            return convertView;
+        }
+    }
+
+    public static class Adapter3 extends ViewHolderTest {
+        LayoutInflater mInflater;
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Already using View Holder pattern
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.your_layout, null);
+            }
+
+            TextView text = (TextView) convertView.findViewById(R.id.text);
+            text.setText("Position " + position);
+
+            return convertView;
+        }
+    }
+
+    public static class Adapter4 extends ViewHolderTest {
+        LayoutInflater mInflater;
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Already using View Holder pattern
+            //noinspection StatementWithEmptyBody
+            if (convertView != null) {
+            } else {
+                convertView = mInflater.inflate(R.layout.your_layout, null);
+            }
+
+            TextView text = (TextView) convertView.findViewById(R.id.text);
+            text.setText("Position " + position);
+
+            return convertView;
+        }
+    }
+
+    public static class Adapter5 extends ViewHolderTest {
+        LayoutInflater mInflater;
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Already using View Holder pattern
+            convertView = convertView == null ? mInflater.inflate(R.layout.your_layout, null) : convertView;
+
+            TextView text = (TextView) convertView.findViewById(R.id.text);
+            text.setText("Position " + position);
+
+            return convertView;
+        }
+    }
+
+    public static class Adapter6 extends ViewHolderTest {
+        private Context mContext;
+        private LayoutInflater mLayoutInflator;
+        private ArrayList<Double> mLapTimes;
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (mLayoutInflator == null)
+                mLayoutInflator = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View v = convertView;
+            if (v == null) v = mLayoutInflator.inflate(R.layout.your_layout, null);
+
+            LinearLayout listItemHolder = (LinearLayout) v.findViewById(R.id.laptimes_list_item_holder);
+            listItemHolder.removeAllViews();
+
+            for (int i = 0; i < mLapTimes.size(); i++) {
+                View lapItemView = mLayoutInflator.inflate(R.layout.laptime_item, null);
+                if (i == 0) {
+                    TextView t = (TextView) lapItemView.findViewById(R.id.laptime_text);
+                    //t.setText(TimeUtils.createStyledSpannableString(mContext, mLapTimes.get(i), true));
+                }
+
+                TextView t2 = (TextView) lapItemView.findViewById(R.id.laptime_text2);
+                if (i < mLapTimes.size() - 1 && mLapTimes.size() > 1) {
+                    double laptime = mLapTimes.get(i) - mLapTimes.get(i + 1);
+                    if (laptime < 0) laptime = mLapTimes.get(i);
+                    //t2.setText(TimeUtils.createStyledSpannableString(mContext, laptime, true));
+                } else {
+                    //t2.setText(TimeUtils.createStyledSpannableString(mContext, mLapTimes.get(i), true));
+                }
+
+                listItemHolder.addView(lapItemView);
+
+            }
+            return v;
+        }
+    }
+
+    public static class Adapter7 extends ViewHolderTest {
+        LayoutInflater inflater;
+
+        @Override
+        public View getView(final int position, final View convertView, final ViewGroup parent) {
+            View rootView = convertView;
+            final int itemViewType = getItemViewType(position);
+            switch (itemViewType) {
+                case 0:
+                    if (rootView != null)
+                        return rootView;
+                    rootView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+                    break;
+            }
+            return rootView;
+        }
+    }
+
+    public static final class R {
+        public static final class layout {
+            public static final int your_layout = 0x7f0a0000;
+            public static final int laptime_item = 0x7f0a0001;
+        }
+        public static final class id {
+            public static final int text = 0x7f0a0000;
+            public static final int laptimes_list_item_holder = 0x7f0a0001;
+            public static final int laptime_text = 0x7f0a0002;
+            public static final int laptime_text2 = 0x7f0a0003;
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ViewHolderDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ViewHolderDetector.testBasic`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ViewHolder")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ViewHolder")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ViewHolder
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ViewHolder" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ViewHolder'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ViewHolder ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

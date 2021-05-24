@@ -1,0 +1,222 @@
+<meta charset="utf-8">
+(#) Unknown nullness
+
+!!! WARNING: Unknown nullness
+   This is a warning.
+
+Id
+:   `UnknownNullness`
+Summary
+:   Unknown nullness
+Note
+:   **This issue is disabled by default**; use `--enable UnknownNullness`
+Severity
+:   Warning
+Category
+:   Interoperability: Kotlin Interoperability
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InteroperabilityDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+
+To improve referencing this code from Kotlin, consider adding
+explicit nullness information here with either `@NonNull` or
+`@Nullable`.
+
+You can set the environment variable
+```
+    `ANDROID_LINT_NULLNESS_IGNORE_DEPRECATED=true`
+```
+if you want lint to ignore classes and members that have been annotated
+with
+`@Deprecated`.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Test.java:10:Warning: Unknown nullability; explicitly
+declare as @Nullable or @NonNull to improve Kotlin interoperability; see
+https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+ [UnknownNullness]
+
+    public Object error1(Integer error2, int[] error3) { return null; }
+                                         -----
+
+
+src/test/pkg/Test.java:14:Warning: Unknown nullability; explicitly
+declare as @Nullable or @NonNull to improve Kotlin interoperability; see
+https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+ [UnknownNullness]
+
+    public Float error4;
+           -----
+
+
+src/test/pkg/Test.java:16:Warning: Unknown nullability; explicitly
+declare as @Nullable or @NonNull to improve Kotlin interoperability; see
+https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+ [UnknownNullness]
+
+    public Float error5;
+           -----
+
+
+src/test/pkg/Test.java:18:Warning: Unknown nullability; explicitly
+declare as @Nullable or @NonNull to improve Kotlin interoperability; see
+https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+ [UnknownNullness]
+
+    public Object error6() { return null; }
+           ------
+
+
+src/test/pkg/Test.java:19:Warning: Unknown nullability; explicitly
+declare as @Nullable or @NonNull to improve Kotlin interoperability; see
+https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+ [UnknownNullness]
+
+    protected Float error7;
+              -----
+
+
+src/test/pkg/Test.java:34:Warning: Unknown nullability; explicitly
+declare as @Nullable or @NonNull to improve Kotlin interoperability; see
+https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+ [UnknownNullness]
+
+    public Float error8;
+           -----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Test.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class Test {
+    public void ok(int x, float y, boolean z) { }
+    @Nullable public Object ok2(@NonNull Integer i, @NonNull int[] array) { return null; }
+    private Object ok3(Integer i) { return null; }
+    public Object error1(Integer error2, int[] error3) { return null; }
+    @NonNull public Float ok4 = 5;
+    @NonNull protected Float ok5 = 5;
+    private Float ok6 = 5;
+    public Float error4;
+    /** Field comment */
+    public Float error5;
+    /** Method comment */
+    public Object error6() { return null; }
+    protected Float error7;
+
+    // Don't flag public methods and fields in non-public classes or
+    // in anonymous inner classes
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
+    class Inner {
+        public void ok(Integer i) {
+            new Runnable() {
+                @Override public void run() {
+                }
+                public void ok2(Integer i) {  }
+            };
+        }
+    }
+    @Deprecated
+    public Float error8;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InteroperabilityDetector.testNullness`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnknownNullness")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnknownNullness")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnknownNullness
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnknownNullness" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnknownNullness'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnknownNullness ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

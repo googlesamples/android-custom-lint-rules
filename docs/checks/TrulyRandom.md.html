@@ -1,0 +1,137 @@
+<meta charset="utf-8">
+(#) Weak RNG
+
+!!! WARNING: Weak RNG
+   This is a warning.
+
+Id
+:   `TrulyRandom`
+Summary
+:   Weak RNG
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Class files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SecureRandomGeneratorDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SecureRandomGeneratorDetectorTest.java)
+
+Key generation, signing, encryption, and random number generation may
+not receive cryptographically strong values due to improper
+initialization of the underlying PRNG on Android 4.3 and below.
+
+If your application relies on cryptographically secure random number
+generation you should apply the workaround described in
+https://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
+ .
+
+This lint rule is mostly informational; it does not accurately detect
+whether cryptographically secure RNG is required, or whether the
+workaround has already been applied. After reading the blog entry and
+updating your code if necessary, you can disable this lint issue.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/PrngCalls.java:13:Warning: Potentially insecure random
+numbers on Android 4.3 and older. Read
+https://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
+ for more info. [TrulyRandom]
+
+    KeyGenerator generator = KeyGenerator.getInstance("AES", "BC");
+                                          -----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/PrngCalls.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+
+import javax.crypto.KeyAgreement;
+import javax.crypto.KeyGenerator;
+
+public class PrngCalls {
+    public void testKeyGenerator() throws NoSuchAlgorithmException, NoSuchProviderException {
+        KeyGenerator generator = KeyGenerator.getInstance("AES", "BC");
+        generator.init(128);
+
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(512);
+
+        KeyAgreement agreement = KeyAgreement.getInstance("DH", "BC");
+        agreement.generateSecret();
+
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[20];
+        random.nextBytes(bytes);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SecureRandomGeneratorDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SecureRandomGeneratorDetector.testWithoutWorkaround`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TrulyRandom" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TrulyRandom'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TrulyRandom ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

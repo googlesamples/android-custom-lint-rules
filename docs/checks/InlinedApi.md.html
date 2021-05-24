@@ -1,0 +1,198 @@
+<meta charset="utf-8">
+(#) Using inlined constants on older versions
+
+!!! WARNING: Using inlined constants on older versions
+   This is a warning.
+
+Id
+:   `InlinedApi`
+Summary
+:   Using inlined constants on older versions
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ApiDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)
+
+This check scans through all the Android API field references in the
+application and flags certain constants, such as static final integers
+and Strings, which were introduced in later versions. These will
+actually be copied into the class files rather than being referenced,
+which means that the value is available even when running on older
+devices. In some cases that's fine, and in other cases it can result in
+a runtime crash or incorrect behavior. It depends on the context, so
+consider the code carefully and decide whether it's safe and can be
+suppressed or whether the code needs to be guarded.
+
+If you really want to use this API and don't need to support older
+devices just set the `minSdkVersion` in your `build.gradle` or
+`AndroidManifest.xml` files.
+
+If your code is **deliberately** accessing newer APIs, and you have
+ensured (e.g. with conditional execution) that this code will only ever
+be called on a supported platform, then you can annotate your class or
+method with the `@TargetApi` annotation specifying the local minimum SDK
+to apply, such as `@TargetApi(11)`, such that this check considers 11
+rather than your manifest file's minimum SDK as the required API level.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/bar/ApiCallTest.java:33:Warning: Field requires API level 11
+(current min is 1): dalvik.bytecode.OpcodeInfo#MAXIMUM_VALUE
+[InlinedApi]
+
+  int field = OpcodeInfo.MAXIMUM_VALUE; // API 11
+              ------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/bar/ApiCallTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo.bar;
+
+import org.w3c.dom.DOMError;
+import org.w3c.dom.DOMErrorHandler;
+import org.w3c.dom.DOMLocator;
+
+import android.view.ViewGroup.LayoutParams;
+import android.app.Activity;
+import android.app.ApplicationErrorReport;
+import android.app.ApplicationErrorReport.BatteryInfo;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
+import android.widget.Chronometer;
+import android.widget.GridLayout;
+import dalvik.bytecode.OpcodeInfo;
+
+public class ApiCallTest extends Activity {
+	public void method(Chronometer chronometer, DOMLocator locator) {
+		// Virtual call
+		getActionBar(); // API 11
+
+		// Class references (no call or field access)
+		DOMError error = null; // API 8
+		Class<?> clz = DOMErrorHandler.class; // API 8
+
+		// Method call
+		chronometer.getOnChronometerTickListener(); // API 3 
+
+		// Inherited method call (from TextView
+		chronometer.setTextIsSelectable(true); // API 11
+
+		// Field access
+		int field = OpcodeInfo.MAXIMUM_VALUE; // API 11
+		int fillParent = LayoutParams.FILL_PARENT; // API 1
+		// This is a final int, which means it gets inlined
+		int matchParent = LayoutParams.MATCH_PARENT; // API 8
+		// Field access: non final
+		BatteryInfo batteryInfo = getReport().batteryInfo;
+
+		// Enum access
+		Mode mode = PorterDuff.Mode.OVERLAY; // API 11
+	}
+
+	// Return type
+	GridLayout getGridLayout() { // API 14
+		return null;
+	}
+
+	private ApplicationErrorReport getReport() {
+		return null;
+	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ApiDetector.testApi1`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("InlinedApi")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("InlinedApi")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection InlinedApi
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="InlinedApi" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'InlinedApi'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore InlinedApi ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

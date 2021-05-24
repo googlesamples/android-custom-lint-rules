@@ -1,0 +1,369 @@
+<meta charset="utf-8">
+(#) Incorrect constant
+
+!!! ERROR: Incorrect constant
+   This is an error.
+
+Id
+:   `WrongConstant`
+Summary
+:   Incorrect constant
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TypedefDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TypedefDetectorTest.kt)
+
+Ensures that when parameter in a method only allows a specific set of
+constants, calls obey those rules.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/IntDefTest.java:31:Error: Must be one of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setStyle(0, 0); // ERROR
+             -
+
+
+src/test/pkg/IntDefTest.java:32:Error: Must be one of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setStyle(-1, 0); // ERROR
+             --
+
+
+src/test/pkg/IntDefTest.java:33:Error: Must be one of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setStyle(UNRELATED, 0); // ERROR
+             ---------
+
+
+src/test/pkg/IntDefTest.java:34:Error: Must be one of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setStyle(IntDefTest.UNRELATED, 0); // ERROR
+             --------------------
+
+
+src/test/pkg/IntDefTest.java:35:Error: Flag not allowed here
+[WrongConstant]
+
+    setStyle(IntDefTest.STYLE_NORMAL|STYLE_NO_FRAME, 0); // ERROR: Not a flag
+             --------------------------------------
+
+
+src/test/pkg/IntDefTest.java:36:Error: Flag not allowed here
+[WrongConstant]
+
+    setStyle(~STYLE_NO_FRAME, 0); // ERROR: Not a flag
+             ---------------
+
+
+src/test/pkg/IntDefTest.java:55:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", UNRELATED); // ERROR
+                 ---------
+
+
+src/test/pkg/IntDefTest.java:56:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", UNRELATED|STYLE_NO_TITLE); // ERROR
+                 ---------
+
+
+src/test/pkg/IntDefTest.java:57:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", STYLE_NORMAL|STYLE_NO_TITLE|UNRELATED); // ERROR
+                                             ---------
+
+
+src/test/pkg/IntDefTest.java:58:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", 1); // ERROR
+                 -
+
+
+src/test/pkg/IntDefTest.java:59:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", arg &lt; 0 ? STYLE_NORMAL : UNRELATED); // ERROR
+                                          ---------
+
+
+src/test/pkg/IntDefTest.java:60:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", arg &lt; 0 ? UNRELATED : STYLE_NORMAL); // ERROR
+                           ---------
+
+
+src/test/pkg/IntDefTest.java:79:Error: Must be one of:
+IntDefTest.TYPE_1, IntDefTest.TYPE_2 [WrongConstant]
+
+    setTitle("", UNRELATED_TYPE); // ERROR
+                 --------------
+
+
+src/test/pkg/IntDefTest.java:80:Error: Must be one of:
+IntDefTest.TYPE_1, IntDefTest.TYPE_2 [WrongConstant]
+
+    setTitle("", "type2"); // ERROR
+                 -------
+
+
+src/test/pkg/IntDefTest.java:87:Error: Must be one of:
+IntDefTest.TYPE_1, IntDefTest.TYPE_2 [WrongConstant]
+
+    setTitle("", type); // ERROR
+                 ----
+
+
+src/test/pkg/IntDefTest.java:92:Error: Must be one or more of:
+IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
+IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+
+    setFlags("", flag); // ERROR
+                 ----
+
+
+src/test/pkg/IntDefTest.java:99:Error: Must be one of:
+View.LAYOUT_DIRECTION_LTR, View.LAYOUT_DIRECTION_RTL,
+View.LAYOUT_DIRECTION_INHERIT, View.LAYOUT_DIRECTION_LOCALE
+[WrongConstant]
+
+    view.setLayoutDirection(View.TEXT_DIRECTION_LTR); // ERROR
+                            -----------------------
+
+
+src/test/pkg/IntDefTest.java:100:Error: Must be one of:
+View.LAYOUT_DIRECTION_LTR, View.LAYOUT_DIRECTION_RTL,
+View.LAYOUT_DIRECTION_INHERIT, View.LAYOUT_DIRECTION_LOCALE
+[WrongConstant]
+
+    view.setLayoutDirection(0); // ERROR
+                            -
+
+
+src/test/pkg/IntDefTest.java:101:Error: Flag not allowed here
+[WrongConstant]
+
+    view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR|View.LAYOUT_DIRECTION_RTL); // ERROR
+                            ---------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/IntDefTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.Context;
+import android.support.annotation.IntDef;
+import android.support.annotation.StringDef;
+import android.view.View;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@SuppressWarnings("UnusedDeclaration")
+public class IntDefTest {
+    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DialogStyle {}
+
+    public static final int STYLE_NORMAL = 0;
+    public static final int STYLE_NO_TITLE = 1;
+    public static final int STYLE_NO_FRAME = 2;
+    public static final int STYLE_NO_INPUT = 3;
+    public static final int UNRELATED = 3;
+
+    public void setStyle(@DialogStyle int style, int theme) {
+    }
+
+    public void testIntDef(int arg) {
+        setStyle(STYLE_NORMAL, 0); // OK
+        setStyle(IntDefTest.STYLE_NORMAL, 0); // OK
+        setStyle(arg, 0); // OK (not sure)
+
+        setStyle(0, 0); // ERROR
+        setStyle(-1, 0); // ERROR
+        setStyle(UNRELATED, 0); // ERROR
+        setStyle(IntDefTest.UNRELATED, 0); // ERROR
+        setStyle(IntDefTest.STYLE_NORMAL|STYLE_NO_FRAME, 0); // ERROR: Not a flag
+        setStyle(~STYLE_NO_FRAME, 0); // ERROR: Not a flag
+    }
+    @IntDef(value = {STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT}, flag=true)
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DialogFlags {}
+
+    public void setFlags(Object first, @DialogFlags int flags) {
+    }
+
+    public void testFlags(int arg) {
+        setFlags("", -1); // OK
+        setFlags("", 0); // OK
+        setFlags("", STYLE_NORMAL); // OK
+        setFlags(arg, 0); // OK (not sure)
+        setFlags("", IntDefTest.STYLE_NORMAL); // OK
+        setFlags("", STYLE_NORMAL|STYLE_NO_TITLE); // OK
+        setFlags("", STYLE_NORMAL|STYLE_NO_TITLE|STYLE_NO_INPUT); // OK
+        setFlags("", arg < 0 ? STYLE_NORMAL : STYLE_NO_TITLE); // OK
+
+        setFlags("", UNRELATED); // ERROR
+        setFlags("", UNRELATED|STYLE_NO_TITLE); // ERROR
+        setFlags("", STYLE_NORMAL|STYLE_NO_TITLE|UNRELATED); // ERROR
+        setFlags("", 1); // ERROR
+        setFlags("", arg < 0 ? STYLE_NORMAL : UNRELATED); // ERROR
+        setFlags("", arg < 0 ? UNRELATED : STYLE_NORMAL); // ERROR
+    }
+
+    public static final String TYPE_1 = "type1";
+    public static final String TYPE_2 = "type2";
+    public static final String UNRELATED_TYPE = "other";
+
+    @StringDef({TYPE_1, TYPE_2})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DialogType {}
+
+    public void setTitle(String title, @DialogType String type) {
+    }
+
+    public void testStringDef(String typeArg) {
+        setTitle("", TYPE_1); // OK
+        setTitle("", TYPE_2); // OK
+        setTitle("", null); // OK
+        setTitle("", typeArg); // OK (unknown)
+        setTitle("", UNRELATED_TYPE); // ERROR
+        setTitle("", "type2"); // ERROR
+    }
+
+    public void testFlow() {
+        String type = TYPE_1;
+        setTitle("", type); // OK
+        type = UNRELATED_TYPE;
+        setTitle("", type); // ERROR
+        int flag = 0;
+        flag |= STYLE_NORMAL;
+        setFlags("", flag); // OK
+        flag = UNRELATED;
+        setFlags("", flag); // ERROR
+    }
+
+    public void testExternalAnnotations(View view, Context context) {
+        view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR); // OK
+        context.getSystemService(Context.ALARM_SERVICE); // OK
+
+        view.setLayoutDirection(View.TEXT_DIRECTION_LTR); // ERROR
+        view.setLayoutDirection(0); // ERROR
+        view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR|View.LAYOUT_DIRECTION_RTL); // ERROR
+        //context.getSystemService(TYPE_1); // ERROR
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TypedefDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TypedefDetector.testTypeDef`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WrongConstant")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WrongConstant")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WrongConstant
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WrongConstant" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WrongConstant'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WrongConstant ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

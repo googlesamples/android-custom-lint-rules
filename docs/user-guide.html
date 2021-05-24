@@ -78,12 +78,31 @@ lint check authors, see the API Guide.
 </p><p>
 
 </p><ul>
-<li class="asterisk">There are a number of new lint checks, particularly to support
-  Android 12.
+<li class="asterisk">New built-in lint checks:</li></ul>
 
 <p></p><p>
 
-</p></li>
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>AnnotateVersionCheck</code> </td><td style="text-align:left"> Annotate SDK_INT checks </td></tr>
+<tr><td style="text-align:left"> <code>CoarseFineLocation</code> </td><td style="text-align:left"> Cannot use <code>ACCESS_FINE_LOCATION</code> without <code>ACCESS_COARSE_LOCATION</code> </td></tr>
+<tr><td style="text-align:left"> <code>CustomSplashScreen</code> </td><td style="text-align:left"> Application-defined Launch Screen </td></tr>
+<tr><td style="text-align:left"> <code>CustomX509TrustManager</code> </td><td style="text-align:left"> Implements custom TLS trust manager </td></tr>
+<tr><td style="text-align:left"> <code>HighSamplingRate</code> </td><td style="text-align:left"> High sensor sampling rate </td></tr>
+<tr><td style="text-align:left"> <code>IntentFilterExportedReceiver</code> </td><td style="text-align:left"> Unspecified <code>android:exported</code> in manifest </td></tr>
+<tr><td style="text-align:left"> <code>LaunchActivityFromNotification</code> </td><td style="text-align:left"> Notification Launches Services or BroadcastReceivers </td></tr>
+<tr><td style="text-align:left"> <code>LeanbackUsesWifi</code> </td><td style="text-align:left"> Using android.hardware.wifi on TV </td></tr>
+<tr><td style="text-align:left"> <code>MediaCapabilities</code> </td><td style="text-align:left"> Media Capabilities property not specified </td></tr>
+<tr><td style="text-align:left"> <code>NotificationTrampoline</code> </td><td style="text-align:left"> Notification Trampolines </td></tr>
+<tr><td style="text-align:left"> <code>NotifyDataSetChanged</code> </td><td style="text-align:left"> Invalidating All RecyclerView Data </td></tr>
+<tr><td style="text-align:left"> <code>TileProviderPermissions</code> </td><td style="text-align:left"> TileProvider does not set permission </td></tr>
+<tr><td style="text-align:left"> <code>TrustAllX509TrustManager</code> </td><td style="text-align:left"> Insecure TLS/SSL trust manager </td></tr>
+<tr><td style="text-align:left"> <code>UnspecifiedImmutableFlag</code> </td><td style="text-align:left"> Missing <code>PendingIntent</code> mutability flag </td></tr>
+<tr><td style="text-align:left"> <code>WatchFaceEditor</code> </td><td style="text-align:left"> Watch face editor must use launchMode=“standard” </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
+</p><ul>
 <li class="asterisk">Lint checks now include information for reported incidents where the
   lint check came from, such as which library artifact provided it.
   This should make it easier to request enhancements or file bugs
@@ -98,7 +117,12 @@ lint check authors, see the API Guide.
 
 <p></p><p>
 
-      <code>android.enableParallelLint=false</code></p></li></ul>
+      <code>android.enableParallelLint=false</code>
+
+</p><p>
+
+</p></li>
+<li class="asterisk">The API check now also looks up operator overloading functions.</li></ul>
 
 <p></p><p>
 
@@ -854,12 +878,31 @@ lint check authors, see the API Guide.
 </p><p>
 
 </p><ul>
-<li class="asterisk">There are a number of new lint checks, particularly to support
-  Android 12.
+<li class="asterisk">New built-in lint checks:</li></ul>
 
 <p></p><p>
 
-</p></li>
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>AnnotateVersionCheck</code> </td><td style="text-align:left"> Annotate SDK_INT checks </td></tr>
+<tr><td style="text-align:left"> <code>CoarseFineLocation</code> </td><td style="text-align:left"> Cannot use <code>ACCESS_FINE_LOCATION</code> without <code>ACCESS_COARSE_LOCATION</code> </td></tr>
+<tr><td style="text-align:left"> <code>CustomSplashScreen</code> </td><td style="text-align:left"> Application-defined Launch Screen </td></tr>
+<tr><td style="text-align:left"> <code>CustomX509TrustManager</code> </td><td style="text-align:left"> Implements custom TLS trust manager </td></tr>
+<tr><td style="text-align:left"> <code>HighSamplingRate</code> </td><td style="text-align:left"> High sensor sampling rate </td></tr>
+<tr><td style="text-align:left"> <code>IntentFilterExportedReceiver</code> </td><td style="text-align:left"> Unspecified <code>android:exported</code> in manifest </td></tr>
+<tr><td style="text-align:left"> <code>LaunchActivityFromNotification</code> </td><td style="text-align:left"> Notification Launches Services or BroadcastReceivers </td></tr>
+<tr><td style="text-align:left"> <code>LeanbackUsesWifi</code> </td><td style="text-align:left"> Using android.hardware.wifi on TV </td></tr>
+<tr><td style="text-align:left"> <code>MediaCapabilities</code> </td><td style="text-align:left"> Media Capabilities property not specified </td></tr>
+<tr><td style="text-align:left"> <code>NotificationTrampoline</code> </td><td style="text-align:left"> Notification Trampolines </td></tr>
+<tr><td style="text-align:left"> <code>NotifyDataSetChanged</code> </td><td style="text-align:left"> Invalidating All RecyclerView Data </td></tr>
+<tr><td style="text-align:left"> <code>TileProviderPermissions</code> </td><td style="text-align:left"> TileProvider does not set permission </td></tr>
+<tr><td style="text-align:left"> <code>TrustAllX509TrustManager</code> </td><td style="text-align:left"> Insecure TLS/SSL trust manager </td></tr>
+<tr><td style="text-align:left"> <code>UnspecifiedImmutableFlag</code> </td><td style="text-align:left"> Missing <code>PendingIntent</code> mutability flag </td></tr>
+<tr><td style="text-align:left"> <code>WatchFaceEditor</code> </td><td style="text-align:left"> Watch face editor must use launchMode=“standard” </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
+</p><ul>
 <li class="asterisk">Lint checks now include information for reported incidents where the
   lint check came from, such as which library artifact provided it.
   This should make it easier to request enhancements or file bugs
@@ -874,7 +917,12 @@ lint check authors, see the API Guide.
 
 <p></p><p>
 
-      <code>android.enableParallelLint=false</code></p></li></ul>
+      <code>android.enableParallelLint=false</code>
+
+</p><p>
+
+</p></li>
+<li class="asterisk">The API check now also looks up operator overloading functions.</li></ul>
 
 <p></p><p>
 
@@ -1050,6 +1098,9 @@ what they are seems useful.
 </p></dd></td></tr><tr valign="top"><td><dt><code>lint.print-stacktrace</code></dt></td><td><dd><p>  Alias for <code>$LINT_PRINT_STACKTRACE</code>
 
 </p></dd></td></tr><tr valign="top"><td><dt><code>lint.do.not.reuse.uast.env</code></dt></td><td><dd><p>  Alias for <code>$LINT_DO_NOT_REUSE_UAST_ENV</code>
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>android.lint.log-jar-problems</code></dt></td><td><dd><p>  Controls whether lint will complain about custom check lint jar
+  loading problems. By default, true.
 
 </p></dd></td></tr></tbody></table></dl><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility=&ldquo;visible&rdquo;)</script>
 <p></p></span><div id="mdContextMenu" style="visibility:hidden"></div><div class="markdeepFooter"><i>formatted by <a href="https://casual-effects.com/markdeep" style="color:#999">Markdeep&nbsp;1.13&nbsp;&nbsp;</a></i><div style="display:inline-block;font-size:13px;font-family:'Times New Roman',serif;vertical-align:middle;transform:translate(-3px,-1px)rotate(135deg);">✒</div></div></body></html>

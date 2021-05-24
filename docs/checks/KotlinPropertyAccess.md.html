@@ -1,0 +1,269 @@
+<meta charset="utf-8">
+(#) Kotlin Property Access
+
+!!! WARNING: Kotlin Property Access
+   This is a warning.
+
+Id
+:   `KotlinPropertyAccess`
+Summary
+:   Kotlin Property Access
+Note
+:   **This issue is disabled by default**; use `--enable KotlinPropertyAccess`
+Severity
+:   Warning
+Category
+:   Interoperability: Kotlin Interoperability
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://android.github.io/kotlin-guides/interop.html#property-prefixes
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InteroperabilityDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+
+For a method to be represented as a property in Kotlin, strict
+“bean”-style prefixing must be used.
+
+Accessor methods require a `get` prefix or for boolean-returning methods
+an `is` prefix can be used.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/GetterSetter.java:30:Warning: This method should be called
+getError1 such that error1 can be accessed as a property from Kotlin;
+see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    public String hasError1() { return ""; }
+                  ---------
+
+
+src/test/pkg/GetterSetter.java:34:Warning: This method should be called
+getError2 such that error2 can be accessed as a property from Kotlin;
+see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    public String error2() { return ""; }
+                  ------
+
+
+src/test/pkg/GetterSetter.java:38:Warning: This method should be called
+getError3 such that error3 can be accessed as a property from Kotlin;
+see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    public String hazzError3() { return ""; }
+                  ----------
+
+
+src/test/pkg/GetterSetter.java:42:Warning: The getter return type
+(Integer) and setter parameter type (String) getter and setter methods
+for property error4 should have exactly the same type to allow be
+accessed as a property from Kotlin; see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    public Integer getError4() { return 0; }
+                   ---------
+
+
+src/test/pkg/GetterSetter.java:46:Warning: This getter should be public
+such that error5 can be accessed as a property from Kotlin; see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    protected String getError5() { return ""; }
+                     ---------
+
+
+src/test/pkg/GetterSetter.java:50:Warning: This getter should not be
+static such that error6 can be accessed as a property from Kotlin; see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    public static String getError6() { return ""; }
+           ------
+
+
+src/test/pkg/GetterSetter.java:70:Warning: The getter return type
+(Float) is not the same as the setter return type (Number); they should
+have exactly the same type to allow number3 be accessed as a property
+from Kotlin; see
+https://android.github.io/kotlin-guides/interop.html#property-prefixes
+[KotlinPropertyAccess]
+
+    @Override public Float getNumber3() { return 0.0f; } // ERROR (even though we have corresponding setter)
+                           ----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/GetterSetter.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "unused", "MethodMayBeStatic", "NonBooleanMethodNameMayNotStartWithQuestion"})
+public class GetterSetter {
+    // Correct Java Bean - get-prefix
+    public void setOk1(String s) { }
+    public String getOk1() { return ""; }
+
+    // Correct Java Bean - is-prefix
+    public void setOk2(String s) {}
+    public String isOk2() { return ""; }
+
+    // This is a read-only bean but we don't interpret these
+    public String getOk2() { return ""; }
+
+    // This is *potentially* an incorrectly named read-only Java Bean but we don't flag these
+    public String hasOk3() { return ""; }
+
+    // This is a write-only Java Bean we but we don't flag these
+    public void setOk4(String s) { }
+
+    // Using "wrong" return type on the setter is fine, Kotlin doesn't care
+    public String setOk5(String s) { return s; }
+    public String getOk5() { return ""; }
+
+    // Now the errors
+
+    // Using "has" instead of is
+    public void setError1(String s) { }
+    public String hasError1() { return ""; }
+
+    // Using property name itself
+    public void setError2(String s) { }
+    public String error2() { return ""; }
+
+    // Using some other suffix
+    public void setError3(String s) { }
+    public String hazzError3() { return ""; }
+
+    // Mismatched getter and setter types
+    public void setError4(String s) { }
+    public Integer getError4() { return 0; }
+
+    // Wrong access modifier
+    public void setError5(String s) { }
+    protected String getError5() { return ""; }
+
+    // Wrong static
+    public void setError6(String s) { }
+    public static String getError6() { return ""; }
+
+    private class NonApi {
+        // Not valid java bean but we don't flag stuff in private classes
+        public String setOk1(String s) { return ""; }
+        public String getOk1() { return ""; }
+    }
+
+    public static class SuperClass {
+        public Number getNumber1() { return 0.0; }
+        public void setNumber1(Number number) { }
+        public Number getNumber2() { return 0.0; }
+        public void setNumber2(Number number) { }
+        public Number getNumber3() { return 0.0; }
+        public void setNumber3(Number number) { }
+    }
+
+    public static class SubClass extends SuperClass {
+        @Override public Float getNumber1() { return 0.0f; } // OK
+        @Override public void setNumber2(Number number) { } // OK
+        @Override public Float getNumber3() { return 0.0f; } // ERROR (even though we have corresponding setter)
+        public void setNumber3(Float number) { } // OK
+        public Float getNumber4() { return 0.0f; } // OK
+        public void setNumber4(Float number) { } // OK
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InteroperabilityDetector.testPropertyAccess`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("KotlinPropertyAccess")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("KotlinPropertyAccess")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection KotlinPropertyAccess
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="KotlinPropertyAccess" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'KotlinPropertyAccess'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore KotlinPropertyAccess ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

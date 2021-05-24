@@ -1,0 +1,188 @@
+<meta charset="utf-8">
+(#) Vector Image Generation
+
+!!! WARNING: Vector Image Generation
+   This is a warning.
+
+Id
+:   `VectorRaster`
+Summary
+:   Vector Image Generation
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/VectorDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDetectorTest.java)
+
+Vector icons require API 21 or API 24 depending on used features, but
+when `minSdkVersion` is less than 21 or 24 and Android Gradle plugin 1.4
+or higher is used, a vector drawable placed in the `drawable` folder is
+automatically moved to `drawable-anydpi-v21` or `drawable-anydpi-v24`
+and bitmap images are generated for different screen resolutions for
+backwards compatibility.
+
+However, there are some limitations to this raster image generation, and
+this lint check flags elements and attributes that are not fully
+supported. You should manually check whether the generated output is
+acceptable for those older devices.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/main/res/drawable/foo.xml:6:Warning: This attribute is not supported
+in images generated from this vector icon for API < 21; check generated
+icon to make sure it looks acceptable [VectorRaster]
+
+    android:autoMirrored="true"
+    --------------------
+
+
+src/main/res/drawable/foo.xml:7:Warning: Resource references will not
+work correctly in images generated for this vector icon for API < 21;
+check generated icon to make sure it looks acceptable [VectorRaster]
+
+    android:tint="?attr/colorControlActivated"&gt;
+                  ---------------------------
+
+
+src/main/res/drawable/foo.xml:9:Warning: This tag is not supported in
+images generated from this vector icon for API < 21; check generated
+icon to make sure it looks acceptable [VectorRaster]
+
+    &lt;clip-path android:pathData="M10,10h40v30h-40z"/&gt;
+    -------------------------------------------------
+
+
+src/main/res/drawable/foo.xml:19:Warning: Resource references will not
+work correctly in images generated for this vector icon for API < 21;
+check generated icon to make sure it looks acceptable [VectorRaster]
+
+    android:strokeColor="@color/white"
+                         ------------
+
+
+src/main/res/drawable/foo.xml:23:Warning: This attribute is not
+supported in images generated from this vector icon for API < 21; check
+generated icon to make sure it looks acceptable [VectorRaster]
+
+    android:trimPathEnd="0"
+    -------------------
+
+
+src/main/res/drawable/foo.xml:24:Warning: This attribute is not
+supported in images generated from this vector icon for API < 21; check
+generated icon to make sure it looks acceptable [VectorRaster]
+
+    android:trimPathOffset="0"
+    ----------------------
+
+
+src/main/res/drawable/foo.xml:25:Warning: This attribute is not
+supported in images generated from this vector icon for API < 21; check
+generated icon to make sure it looks acceptable [VectorRaster]
+
+    android:trimPathStart="0" /&gt;
+    ---------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/main/res/drawable/foo.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:height="76dp"
+        android:width="76dp"
+        android:viewportHeight="48"
+        android:viewportWidth="48"
+        android:autoMirrored="true"
+        android:tint="?attr/colorControlActivated"&gt;
+
+    &lt;clip-path android:pathData="M10,10h40v30h-40z"/&gt;
+
+    &lt;group
+        android:name="root"
+        android:translateX="24.0"
+        android:translateY="24.0" &gt;
+        &lt;path
+            android:name="progressBar"
+            android:fillColor="#00000000"
+            android:pathData="M0, 0 m 0, -19 a 19,19 0 1,1 0,38 a 19,19 0 1,1 0,-38"
+            android:strokeColor="@color/white"
+            android:strokeLineCap="square"
+            android:strokeLineJoin="miter"
+            android:strokeWidth="4"
+            android:trimPathEnd="0"
+            android:trimPathOffset="0"
+            android:trimPathStart="0" /&gt;
+    &lt;/group&gt;
+
+&lt;/vector&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `VectorDetector.testWarn`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="VectorRaster"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="VectorRaster" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'VectorRaster'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore VectorRaster ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

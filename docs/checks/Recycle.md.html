@@ -1,0 +1,377 @@
+<meta charset="utf-8">
+(#) Missing `recycle()` calls
+
+!!! WARNING: Missing `recycle()` calls
+   This is a warning.
+
+Id
+:   `Recycle`
+Summary
+:   Missing `recycle()` calls
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CleanupDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CleanupDetectorTest.kt)
+
+Many resources, such as TypedArrays, VelocityTrackers, etc., should be
+recycled (with a `recycle()` call) after use. This lint check looks for
+missing `recycle()` calls.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/RecycleTest.java:56:Warning: This TypedArray should be
+recycled after use with #recycle() [Recycle]
+
+    final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                                      ----------------------
+
+
+src/test/pkg/RecycleTest.java:63:Warning: This TypedArray should be
+recycled after use with #recycle() [Recycle]
+
+    final TypedArray a = getContext().obtainStyledAttributes(new int[0]);
+                                      ----------------------
+
+
+src/test/pkg/RecycleTest.java:79:Warning: This VelocityTracker should be
+recycled after use with #recycle() [Recycle]
+
+    VelocityTracker tracker = VelocityTracker.obtain();
+                                              ------
+
+
+src/test/pkg/RecycleTest.java:92:Warning: This MotionEvent should be
+recycled after use with #recycle() [Recycle]
+
+    MotionEvent event1 = MotionEvent.obtain(null);
+                                     ------
+
+
+src/test/pkg/RecycleTest.java:93:Warning: This MotionEvent should be
+recycled after use with #recycle() [Recycle]
+
+    MotionEvent event2 = MotionEvent.obtainNoHistory(null);
+                                     ---------------
+
+
+src/test/pkg/RecycleTest.java:98:Warning: This MotionEvent should be
+recycled after use with #recycle() [Recycle]
+
+    MotionEvent event2 = MotionEvent.obtainNoHistory(null); // Not recycled
+                                     ---------------
+
+
+src/test/pkg/RecycleTest.java:103:Warning: This MotionEvent should be
+recycled after use with #recycle() [Recycle]
+
+    MotionEvent event1 = MotionEvent.obtain(null);  // Not recycled
+                                     ------
+
+
+src/test/pkg/RecycleTest.java:129:Warning: This Parcel should be
+recycled after use with #recycle() [Recycle]
+
+    Parcel myparcel = Parcel.obtain();
+                             ------
+
+
+src/test/pkg/RecycleTest.java:190:Warning: This TypedArray should be
+recycled after use with #recycle() [Recycle]
+
+    final TypedArray a = getContext().obtainStyledAttributes(attrs,  // Not recycled
+                                      ----------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/RecycleTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.os.Message;
+import android.os.Parcel;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
+import android.view.View;
+
+@SuppressWarnings({"unused", "ClassNameDiffersFromFileName", "UnnecessaryLocalVariable", "UnusedAssignment", "MethodMayBeStatic"})
+public class RecycleTest extends View {
+    // ---- Check recycling TypedArrays ----
+
+    public RecycleTest(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    public void ok1(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        String example = a.getString(R.styleable.MyView_exampleString);
+        a.recycle();
+    }
+
+    public void ok2(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        String example = a.getString(R.styleable.MyView_exampleString);
+        // If there's complicated logic, don't flag
+        if (something()) {
+            a.recycle();
+        }
+    }
+
+    public TypedArray ok3(AttributeSet attrs, int defStyle) {
+        // Value passes out of method: don't flag, caller might be recycling
+        return getContext().obtainStyledAttributes(attrs, R.styleable.MyView,
+                defStyle, 0);
+    }
+
+    private TypedArray myref;
+
+    public void ok4(AttributeSet attrs, int defStyle) {
+        // Value stored in a field: might be recycled later
+        TypedArray ref = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        myref = ref;
+    }
+
+    public void wrong1(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        String example = a.getString(R.styleable.MyView_exampleString);
+        // a.recycle();
+    }
+
+    public void wrong2(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(new int[0]);
+        // a.recycle();
+    }
+
+    public void unknown(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        // We don't know what this method is (usually it will be in a different
+        // class)
+        // so don't flag it; it might recycle
+        handle(a);
+    }
+
+    // ---- Check recycling VelocityTracker ----
+
+    public void tracker() {
+        VelocityTracker tracker = VelocityTracker.obtain();
+    }
+
+    // ---- Check recycling Message ----
+
+    public void message() {
+        Message message1 = getHandler().obtainMessage();
+        Message message2 = Message.obtain();
+    }
+
+    // ---- Check recycling MotionEvent ----
+
+    public void motionEvent() {
+        MotionEvent event1 = MotionEvent.obtain(null);
+        MotionEvent event2 = MotionEvent.obtainNoHistory(null);
+    }
+
+    public void motionEvent2() {
+        MotionEvent event1 = MotionEvent.obtain(null); // OK
+        MotionEvent event2 = MotionEvent.obtainNoHistory(null); // Not recycled
+        event1.recycle();
+    }
+
+    public void motionEvent3() {
+        MotionEvent event1 = MotionEvent.obtain(null);  // Not recycled
+        MotionEvent event2 = MotionEvent.obtain(event1);
+        event2.recycle();
+    }
+
+    // ---- Using recycled objects ----
+
+    public void recycled() {
+        MotionEvent event1 = MotionEvent.obtain(null);  // Not recycled
+        event1.recycle();
+        int contents2 = event1.describeContents(); // BAD, after recycle
+        final TypedArray a = getContext().obtainStyledAttributes(new int[0]);
+        String example = a.getString(R.styleable.MyView_exampleString); // OK
+        a.recycle();
+        example = a.getString(R.styleable.MyView_exampleString); // BAD, after recycle
+    }
+
+    // ---- Check recycling Parcel ----
+
+    public void parcelOk() {
+        Parcel myparcel = Parcel.obtain();
+        myparcel.createBinderArray();
+        myparcel.recycle();
+    }
+
+    public void parcelMissing() {
+        Parcel myparcel = Parcel.obtain();
+        myparcel.createBinderArray();
+    }
+
+
+    // ---- Check suppress ----
+
+    @SuppressLint("Recycle")
+    public void recycledSuppress() {
+        MotionEvent event1 = MotionEvent.obtain(null);  // Not recycled
+        event1.recycle();
+        int contents2 = event1.describeContents(); // BAD, after recycle
+        final TypedArray a = getContext().obtainStyledAttributes(new int[0]);
+        String example = a.getString(R.styleable.MyView_exampleString); // OK
+    }
+
+    // ---- Stubs ----
+
+    static void handle(TypedArray a) {
+        // Unknown method
+    }
+
+    protected boolean something() {
+        return true;
+    }
+
+    public android.content.res.TypedArray obtainStyledAttributes(
+            AttributeSet set, int[] attrs, int defStyleAttr, int defStyleRes) {
+        return null;
+    }
+
+    private static class R {
+        public static class styleable {
+            public static final int[] MyView = new int[] {};
+            public static final int MyView_exampleString = 2;
+        }
+    }
+
+    // Local variable tracking
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public void ok5(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        String example = a.getString(R.styleable.MyView_exampleString);
+        TypedArray b = a;
+        b.recycle();
+    }
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public void ok6(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.MyView, defStyle, 0);
+        String example = a.getString(R.styleable.MyView_exampleString);
+        TypedArray b;
+        b = a;
+        b.recycle();
+    }
+
+    @SuppressWarnings({"UnnecessaryLocalVariable", "UnusedAssignment"})
+    public void wrong3(AttributeSet attrs, int defStyle) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs,  // Not recycled
+                R.styleable.MyView, defStyle, 0);
+        String example = a.getString(R.styleable.MyView_exampleString);
+        TypedArray b;
+        b = a;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CleanupDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CleanupDetector.testRecycle`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("Recycle")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("Recycle")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection Recycle
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="Recycle" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'Recycle'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore Recycle ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

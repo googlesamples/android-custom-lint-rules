@@ -1,0 +1,173 @@
+<meta charset="utf-8">
+(#) Overlapping Enumeration Constants
+
+!!! ERROR: Overlapping Enumeration Constants
+   This is an error.
+
+Id
+:   `UniqueConstants`
+Summary
+:   Overlapping Enumeration Constants
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+
+The `@IntDef` annotation allows you to create a light-weight "enum" or
+type definition. However, it's possible to accidentally specify the same
+value for two or more of the values, which can lead to hard-to-detect
+bugs. This check looks for this scenario and flags any repeated
+constants.
+
+In some cases, the repeated constant is intentional (for example,
+renaming a constant to a more intuitive name, and leaving the old name
+in place for compatibility purposes).  In that case, simply suppress
+this check by adding a `@SuppressLint("UniqueConstants")` annotation.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/IntDefTest.java:9:Error: Constants STYLE_NO_INPUT and
+STYLE_NO_FRAME specify the same exact value (2); this is usually a cut &
+paste or merge error [UniqueConstants]
+
+    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
+                                                           --------------
+
+
+src/test/pkg/IntDefTest.java:28:Error: Constants FLAG3 and FLAG2 specify
+the same exact value (562949953421312); this is usually a cut & paste or
+merge error [UniqueConstants]
+
+    @IntDef({FLAG2, FLAG3, FLAG1})
+                    -----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/IntDefTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+import android.support.annotation.IntDef;
+import android.annotation.SuppressLint;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@SuppressLint("UnusedDeclaration")
+public class IntDefTest {
+    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DialogStyle {}
+
+    public static final int STYLE_NORMAL = 0;
+    public static final int STYLE_NO_TITLE = 1;
+    public static final int STYLE_NO_FRAME = 2;
+    public static final int STYLE_NO_INPUT = 2;
+
+    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
+    @SuppressWarnings("UniqueConstants")
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface SuppressedDialogStyle {}
+
+
+    public static final long FLAG1 = 0x100000000000L;
+    public static final long FLAG2 = 0x0002000000000000L;
+    public static final long FLAG3 = 0x2000000000000L;
+
+    @IntDef({FLAG2, FLAG3, FLAG1})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface Flags {}
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AnnotationDetector.testUniqueValues`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UniqueConstants")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UniqueConstants")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UniqueConstants
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UniqueConstants" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UniqueConstants'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UniqueConstants ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

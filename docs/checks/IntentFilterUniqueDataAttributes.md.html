@@ -1,0 +1,227 @@
+<meta charset="utf-8">
+(#) Data tags should only declare unique attributes
+
+!!! WARNING: Data tags should only declare unique attributes
+   This is a warning.
+
+Id
+:   `IntentFilterUniqueDataAttributes`
+Summary
+:   Data tags should only declare unique attributes
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/components/intents-filters
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppLinksValidDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksValidDetectorTest.kt)
+
+`<intent-filter>` `<data>` tags should only declare a single unique
+attribute (i.e. scheme OR host, but not both). This better matches the
+runtime behavior of intent filters, as they combine all of the declared
+data attributes into a single matcher which is allowed to handle any
+combination across attribute types.
+
+For example, the following two `<intent-filter>` declarations are the
+same:
+```xml
+<intent-filter>
+    <data android:scheme="http" android:host="example.com" />
+    <data android:scheme="https" android:host="example.org" />
+</intent-filter>
+```
+
+```xml
+<intent-filter>
+    <data android:scheme="http"/>
+    <data android:scheme="https"/>
+    <data android:host="example.com" />
+    <data android:host="example.org" />
+</intent-filter>
+```
+
+They both handle all of the following:
+* http://example.com
+* https://example.com
+* http://example.org
+* https://example.org
+
+The second one better communicates the combining behavior and is clearer
+to an external reader that one should not rely on the scheme/host being
+self contained. It is not obvious in the first that http://example.org
+is also matched, which can lead to confusion (or incorrect behavior)
+with a more complex set of schemes/hosts.
+
+Note that this does not apply to host + port, as those must be declared
+in the same `<data>` tag and are only associated with each other.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:5:Warning: Consider splitting data tag into multiple
+tags with individual attributes to avoid confusion
+[IntentFilterUniqueDataAttributes]
+
+    &lt;data android:scheme="https" android:host="example.com"/&gt;
+    ---------------------------------------------------------
+
+
+AndroidManifest.xml:6:Warning: Consider splitting data tag into multiple
+tags with individual attributes to avoid confusion
+[IntentFilterUniqueDataAttributes]
+
+    &lt;data android:scheme="http" android:host="example.org"/&gt;
+    --------------------------------------------------------
+
+
+AndroidManifest.xml:12:Warning: Consider splitting data tag into
+multiple tags with individual attributes to avoid confusion
+[IntentFilterUniqueDataAttributes]
+
+    &lt;data
+    ^
+
+
+AndroidManifest.xml:24:Warning: Consider splitting data tag into
+multiple tags with individual attributes to avoid confusion
+[IntentFilterUniqueDataAttributes]
+
+    &lt;data android:host="example.com" android:port="41" android:path="/sub"/&gt;
+    ------------------------------------------------------------------------
+
+
+AndroidManifest.xml:30:Warning: Consider splitting data tag into
+multiple tags with individual attributes to avoid confusion
+[IntentFilterUniqueDataAttributes]
+
+    &lt;data android:host="example.com" android:mimeType="image/jpeg"/&gt;
+    ----------------------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.helloworld" &gt;
+    &lt;activity android:name="com.example.Activity"&gt;
+        &lt;intent-filter&gt;
+            &lt;data android:scheme="https" android:host="example.com"/&gt;
+            &lt;data android:scheme="http" android:host="example.org"/&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+    &lt;receiver android:name="com.example.Receiver"&gt;
+        &lt;intent-filter&gt;
+            &lt;data android:scheme="https"/&gt;
+            &lt;data
+                android:host="example.com"
+                android:path="/path"
+                android:scheme="https"
+                /&gt;
+        &lt;/intent-filter&gt;
+    &lt;/receiver&gt;
+    &lt;service android:name="com.example.Service"&gt;
+        &lt;intent-filter&gt;
+            &lt;data android:scheme="https"/&gt;
+            &lt;!-- Don't warn on only host and port --&gt;
+            &lt;data android:host="example.com" android:port="40"/&gt;
+            &lt;data android:host="example.com" android:port="41" android:path="/sub"/&gt;
+        &lt;/intent-filter&gt;
+    &lt;/service&gt;
+    &lt;provider android:name="com.example.Provider"&gt;
+        &lt;intent-filter&gt;
+            &lt;data android:scheme="https"/&gt;
+            &lt;data android:host="example.com" android:mimeType="image/jpeg"/&gt;
+        &lt;/intent-filter&gt;
+    &lt;/provider&gt;
+    &lt;activity android:name="com.example.Activity2"&gt;
+        &lt;intent-filter&gt;
+            &lt;data android:scheme="https" android:host="example.com"/&gt;
+            &lt;!-- Don't warn on multiple attributes of only path variants--&gt;
+            &lt;data
+                android:pathPrefix="/prefix"
+                android:path="/path"
+                android:pathPattern="/pattern/*"
+                /&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+    &lt;activity android:name="com.example.Activity3"&gt;
+        &lt;intent-filter&gt;
+            &lt;!-- Don't warn on only 1 data tag --&gt;
+            &lt;data android:scheme="https" android:host="example.com"/&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksValidDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AppLinksValidDetector.testIntentFilterDataDeclaration`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="IntentFilterUniqueDataAttributes"` on the problematic
+  XML element (or one of its enclosing elements). You may also need to
+  add the following namespace declaration on the root element in the
+  XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="IntentFilterUniqueDataAttributes" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'IntentFilterUniqueDataAttributes'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore IntentFilterUniqueDataAttributes ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,185 @@
+<meta charset="utf-8">
+(#) `File.setWritable()` used to make file world-writable
+
+!!! WARNING: `File.setWritable()` used to make file world-writable
+   This is a warning.
+
+Id
+:   `SetWorldWritable`
+Summary
+:   `File.setWritable()` used to make file world-writable
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SecurityDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SecurityDetectorTest.java)
+
+Setting files world-writable is very dangerous, and likely to cause
+security holes in applications. It is strongly discouraged; instead,
+applications should use more formal mechanisms for interactions such as
+`ContentProvider`, `BroadcastReceiver`, and `Service`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/WorldWriteableFile.java:48:Warning: Setting file
+permissions to world-writable can be risky, review carefully
+[SetWorldWritable]
+
+    mFile.setWritable(true, false);
+    ------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/WorldWriteableFile.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.app.Activity;
+import android.os.Bundle;
+
+public class WorldWriteableFile extends Activity {
+    File mFile;
+    Context mContext;
+
+    public void foo() {
+        OutputStream out = null;
+        SharedPreferences prefs = null;
+        File dir = null;
+
+        boolean success = false;
+        try {
+            //out = openFileOutput(mFile.getName()); // ok
+            out = openFileOutput(mFile.getName(), MODE_PRIVATE); // ok
+            out = openFileOutput(mFile.getName(), MODE_WORLD_WRITEABLE);
+            out = openFileOutput(mFile.getName(), MODE_WORLD_READABLE);
+
+            prefs = getSharedPreferences(mFile.getName(), 0); // ok
+            prefs = getSharedPreferences(mFile.getName(), MODE_PRIVATE); // ok
+            prefs = getSharedPreferences(mFile.getName(), MODE_WORLD_WRITEABLE);
+            prefs = getSharedPreferences(mFile.getName(), MODE_WORLD_READABLE);
+
+            dir = getDir(mFile.getName(), MODE_PRIVATE); // ok
+            dir = getDir(mFile.getName(), MODE_WORLD_WRITEABLE);
+            dir = getDir(mFile.getName(), MODE_WORLD_READABLE);
+
+            mFile.setReadable(true, true); // ok
+            mFile.setReadable(false, true); // ok
+            mFile.setReadable(false, false); // ok
+            mFile.setReadable(true, false);
+            mFile.setReadable(true); // ok
+            mFile.setReadable(false); // ok
+
+            mFile.setWritable(true, true); // ok
+            mFile.setWritable(false, true); // ok
+            mFile.setWritable(false, false); // ok
+            mFile.setWritable(true, false);
+            mFile.setWritable(true); // ok
+            mFile.setWritable(false); // ok
+
+            // Flickr.get().downloadPhoto(params[0], Flickr.PhotoSize.LARGE,
+            // out);
+            success = true;
+        } catch (FileNotFoundException e) {
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SecurityDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SecurityDetector.testWorldWriteable`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SetWorldWritable")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SetWorldWritable")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SetWorldWritable
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SetWorldWritable" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SetWorldWritable'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SetWorldWritable ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

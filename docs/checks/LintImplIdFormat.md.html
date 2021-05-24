@@ -1,0 +1,219 @@
+<meta charset="utf-8">
+(#) Lint ID Format
+
+!!! ERROR: Lint ID Format
+   This is an error.
+
+Id
+:   `LintImplIdFormat`
+Summary
+:   Lint ID Format
+Severity
+:   Error
+Category
+:   Lint Implementation Issues
+Platform
+:   JDK
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LintDetectorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
+
+This check looks at lint issue id registrations and makes sure the id
+follows the expected conventions: capitalized, camel case, no spaces,
+and not too long.
+
+Note: You shouldn't change id's for lint checks that are already widely
+used, since the id can already appear in `@SuppressLint` annotations,
+`tools:ignore=` attributes, lint baselines, Gradle `lintOptions` blocks,
+`lint.xml` files, and so on. In these cases, just explicitly suppress
+this warning instead using something like
+
+```kotlin
+@JvmField
+val ISSUE = Issue.create(
+    // ID string is too long, but we can't change this now since
+    // this id is already used in user suppress configurations
+    //noinspection LintImplIdFormat
+    id = "IncompatibleMediaBrowserServiceCompatVersion",
+    ...
+```
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyKotlinLintDetector.kt:60:Error: Lint issue IDs should use
+capitalized camel case, such as MyIssueId [LintImplIdFormat]
+
+    id = "badlyCapitalized id",
+          -------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MyKotlinLintDetector.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+/* Copyright (C) 2020 The Android Open Source Project */
+package test.pkg
+import com.intellij.psi.PsiCallExpression
+import com.intellij.psi.PsiExpression
+import com.intellij.psi.PsiField
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiTreeUtil
+import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Issue
+import com.android.tools.lint.detector.api.JavaContext
+import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity
+import org.jetbrains.uast.UCallExpression
+
+class MyKotlinLintDetector : Detector() {
+    fun testGetBody(method: PsiMethod) {
+        val body = method.body // ERROR - must use UAST
+    }
+    @Suppress("ReplaceCallWithBinaryOperator","ControlFlowWithEmptyBody")
+    fun testEquals(element1: PsiCallExpression, element2: PsiExpression) {
+        if (element1.equals(element2)) { }
+        if (element2.equals(element1)) { }
+        if (element1 == element2) { }
+        if (element1 === element2) { }
+        if (element1 != element2) { }
+        if (element1 !== element2) { }
+        if (element1 == null) { } // OK
+        if (element1 === null) { } // OK
+        if (element1 != null) { } // OK
+        if (element1 !== null) { } // OK
+    }
+    @Suppress("UsePropertyAccessSyntax")
+    fun testGetInitializer(field: PsiField) {
+        field.getInitializer() // ERROR - must use UAST
+        field.initializer // ERROR - must use UAST
+    }
+    fun testParents(field: PsiField) {
+        val parent = field.parent
+        val method = PsiTreeUtil.getParentOfType(field, PsiMethod::class.java)
+    }
+
+    fun testReport(context: JavaContext, node: UCallExpression) {
+        context.report(ISSUE, node, context.getLocation(node),
+             """
+                    |Instead you should call foo().bar().baz() here.
+                    |""".trimIndent())
+    }
+
+    companion object {
+        private val IMPLEMENTATION =
+            Implementation(
+                MyKotlinLintDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+
+        val ISSUE =
+            Issue.create(
+                id = "badlyCapitalized id",
+                briefDescription = "checks MyLintDetector",
+                explanation = """
+                    Some description here.
+                    Here's a call: foo.bar.baz(args).
+                    """.trimIndent(),
+                category = Category.INTEROPERABILITY_KOTLIN,
+                moreInfo = "https://code.google.com/p/android/issues/detail?id=65351", // OBSOLETE
+                priority = 4,
+                severity = Severity.WARNING,
+                implementation = IMPLEMENTATION
+            )
+            .addMoreInfo("https://issuetracker.google.com/issues/3733548") // ERROR - missing digit
+            .addMoreInfo("https://issuetracker.google.com/issues/373354878") // OK - including digit
+            .addMoreInfo("http://issuetracker.google.com/issues/37335487") // ERROR - http instead of https
+            .addMoreInfo("https://b.corp.google.com/issues/139153781") // ERROR - don't point to buganizer with internal link
+            .addMoreInfo("https://goo.gle/policy-storage-help") // OK - regression test for goo.gle
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LintDetectorDetector.testProblems`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LintImplIdFormat")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LintImplIdFormat")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LintImplIdFormat
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LintImplIdFormat" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LintImplIdFormat'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LintImplIdFormat ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

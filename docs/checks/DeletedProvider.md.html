@@ -1,0 +1,167 @@
+<meta charset="utf-8">
+(#) Using Deleted Provider
+
+!!! ERROR: Using Deleted Provider
+   This is an error.
+
+Id
+:   `DeletedProvider`
+Summary
+:   Using Deleted Provider
+Severity
+:   Error
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DeletedProviderDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DeletedProviderDetectorTest.kt)
+
+The `Crypto` provider has been completely removed in Android P (and was
+deprecated in an earlier release). This means that the code will throw a
+`NoSuchProviderException` and the app will crash. Even if the code
+catches that exception at a higher level, this is not secure and should
+not be used.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/RemovedGeneratorTest.java:24:Error: The Crypto provider has
+been deleted in Android P (and was deprecated in Android N), so the code
+will crash [DeletedProvider]
+
+    SecureRandom instance2 = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+                                                                  --------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/RemovedGeneratorTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+
+@SuppressWarnings({"FieldCanBeLocal", "EmptyCatchBlock", "ClassNameDiffersFromFileName", "TryWithIdenticalCatches"})
+public class RemovedGeneratorTest {
+    private static byte[] f3341b;
+    private static byte[] f3340a;
+    private static SecretKey f3342c;
+    private static IvParameterSpec f3343d;
+    private static Cipher f3344e;
+    static {
+        System.loadLibrary("NewSecretJNI");
+        if (f3340a != null && f3341b != null) {
+            try {
+                KeyGenerator instance = KeyGenerator.getInstance("AES");
+                SecureRandom instance2 = SecureRandom.getInstance("SHA1PRNG", "Crypto");
+                instance2.setSeed(f3340a);
+                instance.init(128, instance2);
+                f3342c = instance.generateKey();
+                f3343d = new IvParameterSpec(f3341b);
+                f3344e = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            } catch (NoSuchAlgorithmException e) {
+            } catch (NoSuchPaddingException e2) {
+            } catch (NoSuchProviderException e3) {
+                e3.printStackTrace();
+            }
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DeletedProviderDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DeletedProviderDetector.testScenario`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("DeletedProvider")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("DeletedProvider")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection DeletedProvider
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DeletedProvider" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DeletedProvider'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DeletedProvider ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
