@@ -1,0 +1,232 @@
+<meta charset="utf-8">
+(#) Default Parcel Class Loader
+
+!!! WARNING: Default Parcel Class Loader
+   This is a warning.
+
+Id
+:   `ParcelClassLoader`
+Summary
+:   Default Parcel Class Loader
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/android/os/Parcel.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ReadParcelableDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ReadParcelableDetectorTest.java)
+
+The documentation for `Parcel#readParcelable(ClassLoader)` (and its
+variations) says that you can pass in `null` to pick up the default
+class loader. However, that ClassLoader is a system class loader and is
+not able to find classes in your own application.
+
+If you are writing your own classes into the `Parcel` (not just SDK
+classes like `String` and so on), then you should supply a `ClassLoader`
+for your application instead; a simple way to obtain one is to just call
+`getClass().getClassLoader()` from your own class.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/ParcelableDemo.java:10:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    Parcelable error1   = in.readParcelable(null);
+                             --------------------
+
+
+src/test/pkg/ParcelableDemo.java:11:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    Parcelable[] error2 = in.readParcelableArray(null);
+                             -------------------------
+
+
+src/test/pkg/ParcelableDemo.java:12:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    Bundle error3       = in.readBundle(null);
+                             ----------------
+
+
+src/test/pkg/ParcelableDemo.java:13:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    Object[] error4     = in.readArray(null);
+                             ---------------
+
+
+src/test/pkg/ParcelableDemo.java:14:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    SparseArray error5  = in.readSparseArray(null);
+                             ---------------------
+
+
+src/test/pkg/ParcelableDemo.java:15:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    Object error6       = in.readValue(null);
+                             ---------------
+
+
+src/test/pkg/ParcelableDemo.java:16:Warning: Passing null here (to use
+the default class loader) will not work if you are restoring your own
+classes. Consider using for example getClass().getClassLoader() instead.
+[ParcelClassLoader]
+
+    Parcelable error7   = in.readPersistableBundle(null);
+                             ---------------------------
+
+
+src/test/pkg/ParcelableDemo.java:17:Warning: Using the default class
+loader will not work if you are restoring your own classes. Consider
+using for example readBundle(getClass().getClassLoader()) instead.
+[ParcelClassLoader]
+
+    Bundle error8       = in.readBundle();
+                             ------------
+
+
+src/test/pkg/ParcelableDemo.java:18:Warning: Using the default class
+loader will not work if you are restoring your own classes. Consider
+using for example readPersistableBundle(getClass().getClassLoader())
+instead. [ParcelClassLoader]
+
+    Parcelable error9   = in.readPersistableBundle();
+                             -----------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/ParcelableDemo.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.SparseArray;
+
+public class ParcelableDemo {
+    private void testParcelable(Parcel in) {
+        Parcelable error1   = in.readParcelable(null);
+        Parcelable[] error2 = in.readParcelableArray(null);
+        Bundle error3       = in.readBundle(null);
+        Object[] error4     = in.readArray(null);
+        SparseArray error5  = in.readSparseArray(null);
+        Object error6       = in.readValue(null);
+        Parcelable error7   = in.readPersistableBundle(null);
+        Bundle error8       = in.readBundle();
+        Parcelable error9   = in.readPersistableBundle();
+
+        Parcelable ok      = in.readParcelable(getClass().getClassLoader());
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ReadParcelableDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ReadParcelableDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ParcelClassLoader")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ParcelClassLoader")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ParcelClassLoader
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ParcelClassLoader" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ParcelClassLoader'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ParcelClassLoader ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

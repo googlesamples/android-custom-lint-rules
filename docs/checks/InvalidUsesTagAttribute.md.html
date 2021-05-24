@@ -1,0 +1,142 @@
+<meta charset="utf-8">
+(#) Invalid `name` attribute for `uses` element
+
+!!! ERROR: Invalid `name` attribute for `uses` element
+   This is an error.
+
+Id
+:   `InvalidUsesTagAttribute`
+Summary
+:   Invalid `name` attribute for `uses` element
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files, manifest files and resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/training/auto/start/index.html#auto-metadata
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AndroidAutoDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidAutoDetectorTest.java)
+
+The <uses> element in `<automotiveApp>` should contain a valid value for
+the `name` attribute.
+Valid values are `media`, `notification`, or `sms`.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/xml/automotive_app_desc.xml:3:Error: Expecting one of media,
+notification, sms, or template for the name attribute in uses tag
+[InvalidUsesTagAttribute]
+
+    &lt;uses name="medias"/&gt;
+          -------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/xml/automotive_app_desc.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;automotiveApp&gt;
+    &lt;uses name="medias"/&gt;
+&lt;/automotiveApp&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidAutoDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AndroidAutoDetector.testInvalidUsesTagInMetadataFile`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="InvalidUsesTagAttribute"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("InvalidUsesTagAttribute")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("InvalidUsesTagAttribute")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection InvalidUsesTagAttribute
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="InvalidUsesTagAttribute" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'InvalidUsesTagAttribute'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore InvalidUsesTagAttribute ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

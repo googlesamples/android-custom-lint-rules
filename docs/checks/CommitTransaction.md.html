@@ -1,0 +1,282 @@
+<meta charset="utf-8">
+(#) Missing `commit()` calls
+
+!!! WARNING: Missing `commit()` calls
+   This is a warning.
+
+Id
+:   `CommitTransaction`
+Summary
+:   Missing `commit()` calls
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CleanupDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CleanupDetectorTest.kt)
+
+After creating a `FragmentTransaction`, you typically need to commit it
+as well.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/CommitTest.java:25:Warning: This transaction should be
+completed with a commit() call [CommitTransaction]
+
+    getFragmentManager().beginTransaction(); // Missing commit
+                         ----------------
+
+
+src/test/pkg/CommitTest.java:30:Warning: This transaction should be
+completed with a commit() call [CommitTransaction]
+
+    FragmentTransaction transaction2 = getFragmentManager().beginTransaction(); // Missing commit
+                                                            ----------------
+
+
+src/test/pkg/CommitTest.java:39:Warning: This transaction should be
+completed with a commit() call [CommitTransaction]
+
+    getFragmentManager().beginTransaction(); // Missing commit
+                         ----------------
+
+
+src/test/pkg/CommitTest.java:65:Warning: This transaction should be
+completed with a commit() call [CommitTransaction]
+
+    getSupportFragmentManager().beginTransaction();
+                                ----------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/CommitTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+
+@SuppressWarnings({"unused", "ClassNameDiffersFromFileName", "ConstantConditions", "UnusedAssignment", "MethodMayBeStatic"})
+public class CommitTest extends Activity {
+    public void ok1() {
+        getFragmentManager().beginTransaction().commit();
+    }
+
+    public void ok2() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.commit();
+    }
+
+    public void ok3() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.commitAllowingStateLoss();
+    }
+
+    public void error1() {
+        getFragmentManager().beginTransaction(); // Missing commit
+    }
+
+    public void error() {
+        FragmentTransaction transaction1 = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction2 = getFragmentManager().beginTransaction(); // Missing commit
+        transaction1.commit();
+    }
+
+    public void error3_public() {
+        error3();
+    }
+
+    private void error3() {
+        getFragmentManager().beginTransaction(); // Missing commit
+    }
+
+    public void ok4(FragmentManager manager, String tag) {
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(null, tag);
+        ft.commit();
+    }
+
+    // Support library
+
+    private android.support.v4.app.FragmentManager getSupportFragmentManager() {
+        return null;
+    }
+
+    public void ok5() {
+        getSupportFragmentManager().beginTransaction().commit();
+    }
+
+    public void ok6(android.support.v4.app.FragmentManager manager, String tag) {
+        android.support.v4.app.FragmentTransaction ft = manager.beginTransaction();
+        ft.add(null, tag);
+        ft.commit();
+    }
+
+    public void error4() {
+        getSupportFragmentManager().beginTransaction();
+    }
+
+    android.support.v4.app.Fragment mFragment1 = null;
+    Fragment mFragment2 = null;
+
+    public void ok7() {
+        getSupportFragmentManager().beginTransaction().add(android.R.id.content, mFragment1).commit();
+    }
+
+    public void ok8() {
+        getFragmentManager().beginTransaction().add(android.R.id.content, mFragment2).commit();
+    }
+
+    public void ok10() {
+        // Test chaining
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().addToBackStack("test").attach(mFragment2).detach(mFragment2)
+        .disallowAddToBackStack().hide(mFragment2).setBreadCrumbShortTitle("test")
+        .show(mFragment2).setCustomAnimations(0, 0).commit();
+    }
+
+    public void ok9() {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().commit();
+    }
+
+    public void ok11() {
+        FragmentTransaction transaction;
+        // Comment in between variable declaration and assignment
+        transaction = getFragmentManager().beginTransaction();
+        transaction.commit();
+    }
+
+    public void ok12() {
+        FragmentTransaction transaction;
+        transaction = (getFragmentManager().beginTransaction());
+        transaction.commit();
+    }
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public void ok13() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction temp;
+        temp = transaction;
+        temp.commitAllowingStateLoss();
+    }
+
+    @SuppressWarnings("UnnecessaryLocalVariable")
+    public void ok14() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction temp = transaction;
+        temp.commitAllowingStateLoss();
+    }
+
+    public void error5(FragmentTransaction unrelated) {
+        FragmentTransaction transaction;
+        // Comment in between variable declaration and assignment
+        transaction = getFragmentManager().beginTransaction();
+        transaction = unrelated;
+        transaction.commit();
+    }
+
+    public void error6(FragmentTransaction unrelated) {
+        FragmentTransaction transaction;
+        FragmentTransaction transaction2;
+        // Comment in between variable declaration and assignment
+        transaction = getFragmentManager().beginTransaction();
+        transaction2 = transaction;
+        transaction2 = unrelated;
+        transaction2.commit();
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CleanupDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CleanupDetector.testCommit`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("CommitTransaction")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("CommitTransaction")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection CommitTransaction
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="CommitTransaction" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'CommitTransaction'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore CommitTransaction ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

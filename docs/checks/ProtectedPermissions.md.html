@@ -1,0 +1,815 @@
+<meta charset="utf-8">
+(#) Using system app permission
+
+!!! ERROR: Using system app permission
+   This is an error.
+
+Id
+:   `ProtectedPermissions`
+Summary
+:   Using system app permission
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SystemPermissionsDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SystemPermissionsDetectorTest.java)
+
+Permissions with the protection level `signature`, `privileged` or
+`signatureOrSystem` are only granted to system apps. If an app is a
+regular non-system app, it will never be able to use these permissions.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:15:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE" /&gt;
+                     --------------------------------------------------------------------------
+
+
+AndroidManifest.xml:16:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ACCESS_CACHE_FILESYSTEM" /&gt;
+                     ---------------------------------------------------------
+
+
+AndroidManifest.xml:17:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" /&gt;
+                     -----------------------------------------------------------
+
+
+AndroidManifest.xml:18:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ACCESS_MTP" /&gt;
+                     --------------------------------------------
+
+
+AndroidManifest.xml:19:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" /&gt;
+                     --------------------------------------------------------
+
+
+AndroidManifest.xml:20:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ACCOUNT_MANAGER" /&gt;
+                     -------------------------------------------------
+
+
+AndroidManifest.xml:21:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ALLOW_ANY_CODEC_FOR_PLAYBACK" /&gt;
+                     --------------------------------------------------------------
+
+
+AndroidManifest.xml:22:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ASEC_ACCESS" /&gt;
+                     ---------------------------------------------
+
+
+AndroidManifest.xml:23:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ASEC_CREATE" /&gt;
+                     ---------------------------------------------
+
+
+AndroidManifest.xml:24:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ASEC_DESTROY" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:25:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ASEC_MOUNT_UNMOUNT" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:26:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.ASEC_RENAME" /&gt;
+                     ---------------------------------------------
+
+
+AndroidManifest.xml:27:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BACKUP" /&gt;
+                     ----------------------------------------
+
+
+AndroidManifest.xml:28:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_APPWIDGET" /&gt;
+                     ------------------------------------------------
+
+
+AndroidManifest.xml:29:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:30:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_INPUT_METHOD" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:31:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_PACKAGE_VERIFIER" /&gt;
+                     -------------------------------------------------------
+
+
+AndroidManifest.xml:32:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_REMOTEVIEWS" /&gt;
+                     --------------------------------------------------
+
+
+AndroidManifest.xml:33:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_TEXT_SERVICE" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:34:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_VPN_SERVICE" /&gt;
+                     --------------------------------------------------
+
+
+AndroidManifest.xml:35:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_WALLPAPER" /&gt;
+                     ------------------------------------------------
+
+
+AndroidManifest.xml:36:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BRICK" /&gt;
+                     ---------------------------------------
+
+
+AndroidManifest.xml:37:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BROADCAST_PACKAGE_REMOVED" /&gt;
+                     -----------------------------------------------------------
+
+
+AndroidManifest.xml:38:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BROADCAST_SMS" /&gt;
+                     -----------------------------------------------
+
+
+AndroidManifest.xml:39:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BROADCAST_WAP_PUSH" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:40:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CALL_PRIVILEGED" /&gt;
+                     -------------------------------------------------
+
+
+AndroidManifest.xml:41:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CHANGE_BACKGROUND_DATA_SETTING" /&gt;
+                     ----------------------------------------------------------------
+
+
+AndroidManifest.xml:42:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" /&gt;
+                     ----------------------------------------------------------------
+
+
+AndroidManifest.xml:43:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:44:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CONFIRM_FULL_BACKUP" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:45:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CONNECTIVITY_INTERNAL" /&gt;
+                     -------------------------------------------------------
+
+
+AndroidManifest.xml:46:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" /&gt;
+                     ----------------------------------------------------------
+
+
+AndroidManifest.xml:47:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.COPY_PROTECTED_DATA" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:48:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.CRYPT_KEEPER" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:49:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.DELETE_CACHE_FILES" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:50:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.DELETE_PACKAGES" /&gt;
+                     -------------------------------------------------
+
+
+AndroidManifest.xml:51:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.DEVICE_POWER" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:52:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.DIAGNOSTIC" /&gt;
+                     --------------------------------------------
+
+
+AndroidManifest.xml:53:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.DUMP" /&gt;
+                     --------------------------------------
+
+
+AndroidManifest.xml:54:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.FACTORY_TEST" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:55:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.FORCE_BACK" /&gt;
+                     --------------------------------------------
+
+
+AndroidManifest.xml:56:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:57:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.GLOBAL_SEARCH" /&gt;
+                     -----------------------------------------------
+
+
+AndroidManifest.xml:58:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.GLOBAL_SEARCH_CONTROL" /&gt;
+                     -------------------------------------------------------
+
+
+AndroidManifest.xml:59:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.HARDWARE_TEST" /&gt;
+                     -----------------------------------------------
+
+
+AndroidManifest.xml:60:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.INJECT_EVENTS" /&gt;
+                     -----------------------------------------------
+
+
+AndroidManifest.xml:61:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.INSTALL_LOCATION_PROVIDER" /&gt;
+                     -----------------------------------------------------------
+
+
+AndroidManifest.xml:62:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.INSTALL_PACKAGES" /&gt;
+                     --------------------------------------------------
+
+
+AndroidManifest.xml:63:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" /&gt;
+                     --------------------------------------------------------
+
+
+AndroidManifest.xml:64:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MANAGE_APP_TOKENS" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:65:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MANAGE_NETWORK_POLICY" /&gt;
+                     -------------------------------------------------------
+
+
+AndroidManifest.xml:66:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MANAGE_USB" /&gt;
+                     --------------------------------------------
+
+
+AndroidManifest.xml:67:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MASTER_CLEAR" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:68:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MODIFY_NETWORK_ACCOUNTING" /&gt;
+                     -----------------------------------------------------------
+
+
+AndroidManifest.xml:69:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MODIFY_PHONE_STATE" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:70:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MOVE_PACKAGE" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:71:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.NET_ADMIN" /&gt;
+                     -------------------------------------------
+
+
+AndroidManifest.xml:72:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.MODIFY_PHONE_STATE" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:73:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:74:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.PACKAGE_VERIFICATION_AGENT" /&gt;
+                     ------------------------------------------------------------
+
+
+AndroidManifest.xml:75:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.PERFORM_CDMA_PROVISIONING" /&gt;
+                     -----------------------------------------------------------
+
+
+AndroidManifest.xml:76:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.READ_FRAME_BUFFER" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:77:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.READ_INPUT_STATE" /&gt;
+                     --------------------------------------------------
+
+
+AndroidManifest.xml:78:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.READ_NETWORK_USAGE_HISTORY" /&gt;
+                     ------------------------------------------------------------
+
+
+AndroidManifest.xml:79:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" /&gt;
+                     -------------------------------------------------------------
+
+
+AndroidManifest.xml:80:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.REBOOT" /&gt;
+                     ----------------------------------------
+
+
+AndroidManifest.xml:81:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.RECEIVE_EMERGENCY_BROADCAST" /&gt;
+                     -------------------------------------------------------------
+
+
+AndroidManifest.xml:82:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.REMOVE_TASKS" /&gt;
+                     ----------------------------------------------
+
+
+AndroidManifest.xml:83:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.RETRIEVE_WINDOW_CONTENT" /&gt;
+                     ---------------------------------------------------------
+
+
+AndroidManifest.xml:84:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SEND_SMS_NO_CONFIRMATION" /&gt;
+                     ----------------------------------------------------------
+
+
+AndroidManifest.xml:85:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_ACTIVITY_WATCHER" /&gt;
+                     ------------------------------------------------------
+
+
+AndroidManifest.xml:86:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_ORIENTATION" /&gt;
+                     -------------------------------------------------
+
+
+AndroidManifest.xml:87:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_POINTER_SPEED" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:88:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_PREFERRED_APPLICATIONS" /&gt;
+                     ------------------------------------------------------------
+
+
+AndroidManifest.xml:89:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_SCREEN_COMPATIBILITY" /&gt;
+                     ----------------------------------------------------------
+
+
+AndroidManifest.xml:90:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_TIME" /&gt;
+                     ------------------------------------------
+
+
+AndroidManifest.xml:91:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SET_WALLPAPER_COMPONENT" /&gt;
+                     ---------------------------------------------------------
+
+
+AndroidManifest.xml:92:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.SHUTDOWN" /&gt;
+                     ------------------------------------------
+
+
+AndroidManifest.xml:93:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.STATUS_BAR" /&gt;
+                     --------------------------------------------
+
+
+AndroidManifest.xml:94:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.STATUS_BAR_SERVICE" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:95:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.STOP_APP_SWITCHES" /&gt;
+                     ---------------------------------------------------
+
+
+AndroidManifest.xml:96:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.UPDATE_DEVICE_STATS" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:97:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.WRITE_APN_SETTINGS" /&gt;
+                     ----------------------------------------------------
+
+
+AndroidManifest.xml:98:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.WRITE_GSERVICES" /&gt;
+                     -------------------------------------------------
+
+
+AndroidManifest.xml:99:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /&gt;
+                     -----------------------------------------------------
+
+
+AndroidManifest.xml:100:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /&gt;
+                     -------------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="foo.bar2"
+    android:versionCode="1"
+    android:versionName="1.0" &gt;
+
+    &lt;uses-sdk android:minSdkVersion="14" /&gt;
+
+    &lt;!-- No warnings for those --&gt;
+    &lt;uses-permission android:name="android.permission.GET_ACCOUNTS" /&gt;
+    &lt;uses-permission android:name="android.permission.SEND_SMS" /&gt;
+    &lt;uses-permission android:name="android.permission.INTERNET" /&gt;
+
+    &lt;!-- Warnings for those --&gt;
+    &lt;uses-permission android:name="android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_CACHE_FILESYSTEM" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_MTP" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCOUNT_MANAGER" /&gt;
+    &lt;uses-permission android:name="android.permission.ALLOW_ANY_CODEC_FOR_PLAYBACK" /&gt;
+    &lt;uses-permission android:name="android.permission.ASEC_ACCESS" /&gt;
+    &lt;uses-permission android:name="android.permission.ASEC_CREATE" /&gt;
+    &lt;uses-permission android:name="android.permission.ASEC_DESTROY" /&gt;
+    &lt;uses-permission android:name="android.permission.ASEC_MOUNT_UNMOUNT" /&gt;
+    &lt;uses-permission android:name="android.permission.ASEC_RENAME" /&gt;
+    &lt;uses-permission android:name="android.permission.BACKUP" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_APPWIDGET" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_DEVICE_ADMIN" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_INPUT_METHOD" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_PACKAGE_VERIFIER" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_REMOTEVIEWS" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_TEXT_SERVICE" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_VPN_SERVICE" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_WALLPAPER" /&gt;
+    &lt;uses-permission android:name="android.permission.BRICK" /&gt;
+    &lt;uses-permission android:name="android.permission.BROADCAST_PACKAGE_REMOVED" /&gt;
+    &lt;uses-permission android:name="android.permission.BROADCAST_SMS" /&gt;
+    &lt;uses-permission android:name="android.permission.BROADCAST_WAP_PUSH" /&gt;
+    &lt;uses-permission android:name="android.permission.CALL_PRIVILEGED" /&gt;
+    &lt;uses-permission android:name="android.permission.CHANGE_BACKGROUND_DATA_SETTING" /&gt;
+    &lt;uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" /&gt;
+    &lt;uses-permission android:name="android.permission.CONFIRM_FULL_BACKUP" /&gt;
+    &lt;uses-permission android:name="android.permission.CONNECTIVITY_INTERNAL" /&gt;
+    &lt;uses-permission android:name="android.permission.CONTROL_LOCATION_UPDATES" /&gt;
+    &lt;uses-permission android:name="android.permission.COPY_PROTECTED_DATA" /&gt;
+    &lt;uses-permission android:name="android.permission.CRYPT_KEEPER" /&gt;
+    &lt;uses-permission android:name="android.permission.DELETE_CACHE_FILES" /&gt;
+    &lt;uses-permission android:name="android.permission.DELETE_PACKAGES" /&gt;
+    &lt;uses-permission android:name="android.permission.DEVICE_POWER" /&gt;
+    &lt;uses-permission android:name="android.permission.DIAGNOSTIC" /&gt;
+    &lt;uses-permission android:name="android.permission.DUMP" /&gt;
+    &lt;uses-permission android:name="android.permission.FACTORY_TEST" /&gt;
+    &lt;uses-permission android:name="android.permission.FORCE_BACK" /&gt;
+    &lt;uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" /&gt;
+    &lt;uses-permission android:name="android.permission.GLOBAL_SEARCH" /&gt;
+    &lt;uses-permission android:name="android.permission.GLOBAL_SEARCH_CONTROL" /&gt;
+    &lt;uses-permission android:name="android.permission.HARDWARE_TEST" /&gt;
+    &lt;uses-permission android:name="android.permission.INJECT_EVENTS" /&gt;
+    &lt;uses-permission android:name="android.permission.INSTALL_LOCATION_PROVIDER" /&gt;
+    &lt;uses-permission android:name="android.permission.INSTALL_PACKAGES" /&gt;
+    &lt;uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" /&gt;
+    &lt;uses-permission android:name="android.permission.MANAGE_APP_TOKENS" /&gt;
+    &lt;uses-permission android:name="android.permission.MANAGE_NETWORK_POLICY" /&gt;
+    &lt;uses-permission android:name="android.permission.MANAGE_USB" /&gt;
+    &lt;uses-permission android:name="android.permission.MASTER_CLEAR" /&gt;
+    &lt;uses-permission android:name="android.permission.MODIFY_NETWORK_ACCOUNTING" /&gt;
+    &lt;uses-permission android:name="android.permission.MODIFY_PHONE_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.MOVE_PACKAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.NET_ADMIN" /&gt;
+    &lt;uses-permission android:name="android.permission.MODIFY_PHONE_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" /&gt;
+    &lt;uses-permission android:name="android.permission.PACKAGE_VERIFICATION_AGENT" /&gt;
+    &lt;uses-permission android:name="android.permission.PERFORM_CDMA_PROVISIONING" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_FRAME_BUFFER" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_INPUT_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_NETWORK_USAGE_HISTORY" /&gt;
+    &lt;uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" /&gt;
+    &lt;uses-permission android:name="android.permission.REBOOT" /&gt;
+    &lt;uses-permission android:name="android.permission.RECEIVE_EMERGENCY_BROADCAST" /&gt;
+    &lt;uses-permission android:name="android.permission.REMOVE_TASKS" /&gt;
+    &lt;uses-permission android:name="android.permission.RETRIEVE_WINDOW_CONTENT" /&gt;
+    &lt;uses-permission android:name="android.permission.SEND_SMS_NO_CONFIRMATION" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_ACTIVITY_WATCHER" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_ORIENTATION" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_POINTER_SPEED" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_PREFERRED_APPLICATIONS" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_SCREEN_COMPATIBILITY" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_TIME" /&gt;
+    &lt;uses-permission android:name="android.permission.SET_WALLPAPER_COMPONENT" /&gt;
+    &lt;uses-permission android:name="android.permission.SHUTDOWN" /&gt;
+    &lt;uses-permission android:name="android.permission.STATUS_BAR" /&gt;
+    &lt;uses-permission android:name="android.permission.STATUS_BAR_SERVICE" /&gt;
+    &lt;uses-permission android:name="android.permission.STOP_APP_SWITCHES" /&gt;
+    &lt;uses-permission android:name="android.permission.UPDATE_DEVICE_STATS" /&gt;
+    &lt;uses-permission android:name="android.permission.WRITE_APN_SETTINGS" /&gt;
+    &lt;uses-permission android:name="android.permission.WRITE_GSERVICES" /&gt;
+    &lt;uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /&gt;
+    &lt;uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /&gt;
+
+    &lt;application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" &gt;
+        &lt;activity
+            android:label="@string/app_name"
+            android:name=".Foo2Activity" &gt;
+            &lt;intent-filter &gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SystemPermissionsDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SystemPermissionsDetector.testBrokenOrder`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="ProtectedPermissions"` on the problematic XML element
+  (or one of its enclosing elements). You may also need to add the
+  following namespace declaration on the root element in the XML file
+  if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ProtectedPermissions" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ProtectedPermissions'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ProtectedPermissions ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

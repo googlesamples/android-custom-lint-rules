@@ -1,0 +1,193 @@
+<meta charset="utf-8">
+(#) Using Wrong AppCompat Method
+
+!!! WARNING: Using Wrong AppCompat Method
+   This is a warning.
+
+Id
+:   `AppCompatMethod`
+Summary
+:   Using Wrong AppCompat Method
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/topic/libraries/support-library/
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppCompatCallDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppCompatCallDetectorTest.java)
+
+When using the appcompat library, there are some methods you should be
+calling instead of the normal ones; for example, `getSupportActionBar()`
+instead of `getActionBar()`. This lint check looks for calls to the
+wrong method.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/AppCompatTest.java:5:Warning: Should use
+getSupportActionBar instead of getActionBar name [AppCompatMethod]
+
+    getActionBar();                                     // ERROR
+    --------------
+
+
+src/test/pkg/AppCompatTest.java:8:Warning: Should use
+startSupportActionMode instead of startActionMode name
+[AppCompatMethod]
+
+    startActionMode(null);                              // ERROR
+    ---------------------
+
+
+src/test/pkg/AppCompatTest.java:11:Warning: Should use
+supportRequestWindowFeature instead of requestWindowFeature name
+[AppCompatMethod]
+
+    requestWindowFeature(0);                            // ERROR
+    -----------------------
+
+
+src/test/pkg/AppCompatTest.java:14:Warning: Should use
+setSupportProgressBarVisibility instead of setProgressBarVisibility name
+[AppCompatMethod]
+
+    setProgressBarVisibility(true);                     // ERROR
+    ------------------------------
+
+
+src/test/pkg/AppCompatTest.java:15:Warning: Should use
+setSupportProgressBarIndeterminate instead of
+setProgressBarIndeterminate name [AppCompatMethod]
+
+    setProgressBarIndeterminate(true);                  // ERROR
+    ---------------------------------
+
+
+src/test/pkg/AppCompatTest.java:16:Warning: Should use
+setSupportProgressBarIndeterminateVisibility instead of
+setProgressBarIndeterminateVisibility name [AppCompatMethod]
+
+    setProgressBarIndeterminateVisibility(true);        // ERROR
+    -------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/AppCompatTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+public class AppCompatTest extends IntermediateActivity {
+    public void test() {
+        getActionBar();                                     // ERROR
+        getSupportActionBar();                              // OK
+
+        startActionMode(null);                              // ERROR
+        startSupportActionMode(null);                       // OK
+
+        requestWindowFeature(0);                            // ERROR
+        supportRequestWindowFeature(0);                     // OK
+
+        setProgressBarVisibility(true);                     // ERROR
+        setProgressBarIndeterminate(true);                  // ERROR
+        setProgressBarIndeterminateVisibility(true);        // ERROR
+
+        setSupportProgressBarVisibility(true);              // OK
+        setSupportProgressBarIndeterminate(true);           // OK
+        setSupportProgressBarIndeterminateVisibility(true); // OK
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppCompatCallDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AppCompatCallDetector.testArguments`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AppCompatMethod")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AppCompatMethod")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AppCompatMethod
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AppCompatMethod" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AppCompatMethod'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AppCompatMethod ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,266 @@
+<meta charset="utf-8">
+(#) Using a fixed seed with `SecureRandom`
+
+!!! WARNING: Using a fixed seed with `SecureRandom`
+   This is a warning.
+
+Id
+:   `SecureRandom`
+Summary
+:   Using a fixed seed with `SecureRandom`
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/java/security/SecureRandom.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SecureRandomDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SecureRandomDetectorTest.kt)
+
+Specifying a fixed seed will cause the instance to return a predictable
+sequence of numbers. This may be useful for testing but it is not
+appropriate for secure use.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/SecureRandomTest.java:12:Warning: It is dangerous to seed
+SecureRandom with the current time because that value is more
+predictable to an attacker than the default seed [SecureRandom]
+
+    random1.setSeed(System.currentTimeMillis()); // Wrong
+    -------------------------------------------
+
+
+src/test/pkg/SecureRandomTest.java:13:Warning: It is dangerous to seed
+SecureRandom with the current time because that value is more
+predictable to an attacker than the default seed [SecureRandom]
+
+    random1.setSeed(System.nanoTime()); // Wrong
+    ----------------------------------
+
+
+src/test/pkg/SecureRandomTest.java:15:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random1.setSeed(0); // Wrong
+    ------------------
+
+
+src/test/pkg/SecureRandomTest.java:16:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random1.setSeed(1); // Wrong
+    ------------------
+
+
+src/test/pkg/SecureRandomTest.java:17:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random1.setSeed((int)1023); // Wrong
+    --------------------------
+
+
+src/test/pkg/SecureRandomTest.java:18:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random1.setSeed(1023L); // Wrong
+    ----------------------
+
+
+src/test/pkg/SecureRandomTest.java:19:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random1.setSeed(FIXED_SEED); // Wrong
+    ---------------------------
+
+
+src/test/pkg/SecureRandomTest.java:29:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random3.setSeed(0); // Wrong: owner is java/util/Random, but applied to SecureRandom object
+    ------------------
+
+
+src/test/pkg/SecureRandomTest.java:41:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random2.setSeed(seed); // Wrong
+    ---------------------
+
+
+src/test/pkg/SecureRandomTest.java:47:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random2.setSeed(seedBytes); // Wrong
+    --------------------------
+
+
+src/test/pkg/SecureRandomTest.java:55:Warning: Do not call setSeed() on
+a SecureRandom with a fixed seed: it is not secure. Use getSeed().
+[SecureRandom]
+
+    random2.setSeed(fixedSeed); // Wrong
+    --------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/SecureRandomTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.security.SecureRandom;
+import java.util.Random;
+@SuppressWarnings({"ClassNameDiffersFromFileName", "RedundantCast", "MethodMayBeStatic"})
+public class SecureRandomTest {
+    private static final long FIXED_SEED = 1000L;
+    protected int getDynamicSeed() {  return 1; }
+
+    public void testLiterals() {
+        SecureRandom random1 = new SecureRandom();
+        random1.setSeed(System.currentTimeMillis()); // Wrong
+        random1.setSeed(System.nanoTime()); // Wrong
+        random1.setSeed(getDynamicSeed()); // OK
+        random1.setSeed(0); // Wrong
+        random1.setSeed(1); // Wrong
+        random1.setSeed((int)1023); // Wrong
+        random1.setSeed(1023L); // Wrong
+        random1.setSeed(FIXED_SEED); // Wrong
+    }
+
+    public static void testRandomTypeOk() {
+        Random random2 = new Random();
+        random2.setSeed(0); // OK
+    }
+
+    public static void testRandomTypeWrong() {
+        Random random3 = new SecureRandom();
+        random3.setSeed(0); // Wrong: owner is java/util/Random, but applied to SecureRandom object
+    }
+
+    public static void testBytesOk() {
+        SecureRandom random1 = new SecureRandom();
+        byte[] seed = random1.generateSeed(4);
+        random1.setSeed(seed); // OK
+    }
+
+    public static void testBytesWrong() {
+        SecureRandom random2 = new SecureRandom();
+        byte[] seed = new byte[3];
+        random2.setSeed(seed); // Wrong
+    }
+
+    public static void testFixedSeedBytes(byte something) {
+        SecureRandom random2 = new SecureRandom();
+        byte[] seedBytes = new byte[] { 1, 2, 3 };
+        random2.setSeed(seedBytes); // Wrong
+        byte[] seedBytes2 = new byte[] { 1, something, 3 };
+        random2.setSeed(seedBytes2); // OK
+    }
+
+    private static final byte[] fixedSeed = new byte[] { 1, 2, 3 };
+    public void testFixedSeedBytesField() {
+        SecureRandom random2 = new SecureRandom();
+        random2.setSeed(fixedSeed); // Wrong
+    }
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SecureRandomDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SecureRandomDetector.testSeed`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SecureRandom")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SecureRandom")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SecureRandom
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SecureRandom" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SecureRandom'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SecureRandom ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

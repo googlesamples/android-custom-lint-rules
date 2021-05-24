@@ -1,0 +1,552 @@
+<meta charset="utf-8">
+(#) Outside Range
+
+!!! ERROR: Outside Range
+   This is an error.
+
+Id
+:   `Range`
+Summary
+:   Outside Range
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/RangeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RangeDetectorTest.kt)
+
+Some parameters are required to in a particular numerical range; this
+check makes sure that arguments passed fall within the range. For
+arrays, Strings and collections this refers to the size or length.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/RangeTest.java:32:Error: Expected length 5 (was 4) [Range]
+
+    printExact("1234"); // ERROR
+               ------
+
+
+src/test/pkg/RangeTest.java:34:Error: Expected length 5 (was 6) [Range]
+
+    printExact("123456"); // ERROR
+               --------
+
+
+src/test/pkg/RangeTest.java:36:Error: Expected length ≥ 5 (was 4)
+[Range]
+
+    printMin("1234"); // ERROR
+             ------
+
+
+src/test/pkg/RangeTest.java:43:Error: Expected length ≤ 8 (was 9)
+[Range]
+
+    printMax("123456789"); // ERROR
+             -----------
+
+
+src/test/pkg/RangeTest.java:45:Error: Expected length ≥ 4 (was 3)
+[Range]
+
+    printRange("123"); // ERROR
+               -----
+
+
+src/test/pkg/RangeTest.java:49:Error: Expected length ≤ 6 (was 7)
+[Range]
+
+    printRange("1234567"); // ERROR
+               ---------
+
+
+src/test/pkg/RangeTest.java:53:Error: Expected size 5 (was 4) [Range]
+
+    printExact(new int[]{1, 2, 3, 4}); // ERROR
+               ---------------------
+
+
+src/test/pkg/RangeTest.java:55:Error: Expected size 5 (was 6) [Range]
+
+    printExact(new int[]{1, 2, 3, 4, 5, 6}); // ERROR
+               ---------------------------
+
+
+src/test/pkg/RangeTest.java:57:Error: Expected size ≥ 5 (was 4) [Range]
+
+    printMin(new int[]{1, 2, 3, 4}); // ERROR
+             ---------------------
+
+
+src/test/pkg/RangeTest.java:65:Error: Expected size ≤ 8 (was 9) [Range]
+
+    printMax(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}); // ERROR
+             ------------------------------------
+
+
+src/test/pkg/RangeTest.java:67:Error: Expected size ≥ 4 (was 3) [Range]
+
+    printRange(new int[] {1,2,3}); // ERROR
+               -----------------
+
+
+src/test/pkg/RangeTest.java:71:Error: Expected size ≤ 6 (was 7) [Range]
+
+    printRange(new int[] {1,2,3,4,5,6,7}); // ERROR
+               -------------------------
+
+
+src/test/pkg/RangeTest.java:74:Error: Expected size to be a multiple of
+3 (was 4 and should be either 3 or 6) [Range]
+
+    printMultiple(new int[] {1,2,3,4}); // ERROR
+                  -------------------
+
+
+src/test/pkg/RangeTest.java:75:Error: Expected size to be a multiple of
+3 (was 5 and should be either 3 or 6) [Range]
+
+    printMultiple(new int[] {1,2,3,4,5}); // ERROR
+                  ---------------------
+
+
+src/test/pkg/RangeTest.java:77:Error: Expected size to be a multiple of
+3 (was 7 and should be either 6 or 9) [Range]
+
+    printMultiple(new int[] {1,2,3,4,5,6,7}); // ERROR
+                  -------------------------
+
+
+src/test/pkg/RangeTest.java:80:Error: Expected size ≥ 4 (was 3) [Range]
+
+    printMinMultiple(new int[]{1, 2, 3}); // ERROR
+                     ------------------
+
+
+src/test/pkg/RangeTest.java:84:Error: Value must be ≥ 4 (was 3) [Range]
+
+    printAtLeast(3); // ERROR
+                 -
+
+
+src/test/pkg/RangeTest.java:91:Error: Value must be ≤ 7 (was 8) [Range]
+
+    printAtMost(8); // ERROR
+                -
+
+
+src/test/pkg/RangeTest.java:93:Error: Value must be ≥ 4 (was 3) [Range]
+
+    printBetween(3); // ERROR
+                 -
+
+
+src/test/pkg/RangeTest.java:98:Error: Value must be ≤ 7 (was 8) [Range]
+
+    printBetween(8); // ERROR
+                 -
+
+
+src/test/pkg/RangeTest.java:102:Error: Value must be ≥ 2.5 (was 2.49)
+[Range]
+
+    printAtLeastInclusive(2.49f); // ERROR
+                          -----
+
+
+src/test/pkg/RangeTest.java:106:Error: Value must be > 2.5 (was 2.49)
+[Range]
+
+    printAtLeastExclusive(2.49f); // ERROR
+                          -----
+
+
+src/test/pkg/RangeTest.java:107:Error: Value must be > 2.5 (was 2.5)
+[Range]
+
+    printAtLeastExclusive(2.5f); // ERROR
+                          ----
+
+
+src/test/pkg/RangeTest.java:113:Error: Value must be ≤ 7.0 (was 7.1)
+[Range]
+
+    printAtMostInclusive(7.1f); // ERROR
+                         ----
+
+
+src/test/pkg/RangeTest.java:117:Error: Value must be < 7.0 (was 7.0)
+[Range]
+
+    printAtMostExclusive(7.0f); // ERROR
+                         ----
+
+
+src/test/pkg/RangeTest.java:118:Error: Value must be < 7.0 (was 7.1)
+[Range]
+
+    printAtMostExclusive(7.1f); // ERROR
+                         ----
+
+
+src/test/pkg/RangeTest.java:120:Error: Value must be ≥ 2.5 (was 2.4)
+[Range]
+
+    printBetweenFromInclusiveToInclusive(2.4f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:124:Error: Value must be ≤ 5.0 (was 5.1)
+[Range]
+
+    printBetweenFromInclusiveToInclusive(5.1f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:126:Error: Value must be > 2.5 (was 2.4)
+[Range]
+
+    printBetweenFromExclusiveToInclusive(2.4f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:127:Error: Value must be > 2.5 (was 2.5)
+[Range]
+
+    printBetweenFromExclusiveToInclusive(2.5f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:129:Error: Value must be ≤ 5.0 (was 5.1)
+[Range]
+
+    printBetweenFromExclusiveToInclusive(5.1f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:131:Error: Value must be ≥ 2.5 (was 2.4)
+[Range]
+
+    printBetweenFromInclusiveToExclusive(2.4f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:135:Error: Value must be < 5.0 (was 5.0)
+[Range]
+
+    printBetweenFromInclusiveToExclusive(5.0f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:137:Error: Value must be > 2.5 (was 2.4)
+[Range]
+
+    printBetweenFromExclusiveToExclusive(2.4f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:138:Error: Value must be > 2.5 (was 2.5)
+[Range]
+
+    printBetweenFromExclusiveToExclusive(2.5f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:141:Error: Value must be < 5.0 (was 5.0)
+[Range]
+
+    printBetweenFromExclusiveToExclusive(5.0f); // ERROR
+                                         ----
+
+
+src/test/pkg/RangeTest.java:145:Error: Value must be ≥ 4 (was -7)
+[Range]
+
+    printBetween(-7); // ERROR
+                 --
+
+
+src/test/pkg/RangeTest.java:146:Error: Value must be > 2.5 (was -10.0)
+[Range]
+
+    printAtLeastExclusive(-10.0f); // ERROR
+                          ------
+
+
+src/test/pkg/RangeTest.java:156:Error: Value must be ≥ -1 (was -2)
+[Range]
+
+    printIndirect(-2); // ERROR
+                  --
+
+
+src/test/pkg/RangeTest.java:157:Error: Value must be ≤ 42 (was 43)
+[Range]
+
+    printIndirect(43); // ERROR
+                  --
+
+
+src/test/pkg/RangeTest.java:158:Error: Expected length 5 (was 7)
+[Range]
+
+    printIndirectSize("1234567"); // ERROR
+                      ---------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/RangeTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+import android.support.annotation.Size;
+
+@SuppressWarnings({"UnusedDeclaration", "ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class RangeTest {
+    public void printExact(@Size(5) String arg) { System.out.println(arg); }
+    public void printMin(@Size(min=5) String arg) { }
+    public void printMax(@Size(max=8) String arg) { }
+    public void printRange(@Size(min=4,max=6) String arg) { }
+    public void printExact(@Size(5) int[] arg) { }
+    public void printMin(@Size(min=5) int[] arg) { }
+    public void printMax(@Size(max=8) int[] arg) { }
+    public void printRange(@Size(min=4,max=6) int[] arg) { }
+    public void printMultiple(@Size(multiple=3) int[] arg) { }
+    public void printMinMultiple(@Size(min=4,multiple=3) int[] arg) { }
+    public void printAtLeast(@IntRange(from=4) int arg) { }
+    public void printAtMost(@IntRange(to=7) int arg) { }
+    public void printBetween(@IntRange(from=4,to=7) int arg) { }
+    public void printAtLeastInclusive(@FloatRange(from=2.5) float arg) { }
+    public void printAtLeastExclusive(@FloatRange(from=2.5,fromInclusive=false) float arg) { }
+    public void printAtMostInclusive(@FloatRange(to=7) double arg) { }
+    public void printAtMostExclusive(@FloatRange(to=7,toInclusive=false) double arg) { }
+    public void printBetweenFromInclusiveToInclusive(@FloatRange(from=2.5,to=5.0) float arg) { }
+    public void printBetweenFromExclusiveToInclusive(@FloatRange(from=2.5,to=5.0,fromInclusive=false) float arg) { }
+    public void printBetweenFromInclusiveToExclusive(@FloatRange(from=2.5,to=5.0,toInclusive=false) float arg) { }
+    public void printBetweenFromExclusiveToExclusive(@FloatRange(from=2.5,to=5.0,fromInclusive=false,toInclusive=false) float arg) { }
+
+    public void testLength() {
+        printExact("1234"); // ERROR
+        printExact("12345"); // OK
+        printExact("123456"); // ERROR
+
+        printMin("1234"); // ERROR
+        printMin("12345"); // OK
+        printMin("123456"); // OK
+
+        printMax("123456"); // OK
+        printMax("1234567"); // OK
+        printMax("12345678"); // OK
+        printMax("123456789"); // ERROR
+
+        printRange("123"); // ERROR
+        printRange("1234"); // OK
+        printRange("12345"); // OK
+        printRange("123456"); // OK
+        printRange("1234567"); // ERROR
+    }
+
+    public void testSize() {
+        printExact(new int[]{1, 2, 3, 4}); // ERROR
+        printExact(new int[]{1, 2, 3, 4, 5}); // OK
+        printExact(new int[]{1, 2, 3, 4, 5, 6}); // ERROR
+
+        printMin(new int[]{1, 2, 3, 4}); // ERROR
+        printMin(new int[]{1, 2, 3, 4, 5}); // OK
+        printMin(new int[]{1, 2, 3, 4, 5, 6}); // OK
+
+        printMax(new int[]{1, 2, 3, 4, 5, 6}); // OK
+        printMax(new int[]{1, 2, 3, 4, 5, 6, 7}); // OK
+        printMax(new int[]{1, 2, 3, 4, 5, 6, 7, 8}); // OK
+        printMax(new int[]{1, 2, 3, 4, 5, 6, 7, 8}); // OK
+        printMax(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}); // ERROR
+
+        printRange(new int[] {1,2,3}); // ERROR
+        printRange(new int[] {1,2,3,4}); // OK
+        printRange(new int[] {1,2,3,4,5}); // OK
+        printRange(new int[] {1,2,3,4,5,6}); // OK
+        printRange(new int[] {1,2,3,4,5,6,7}); // ERROR
+
+        printMultiple(new int[] {1,2,3}); // OK
+        printMultiple(new int[] {1,2,3,4}); // ERROR
+        printMultiple(new int[] {1,2,3,4,5}); // ERROR
+        printMultiple(new int[] {1,2,3,4,5,6}); // OK
+        printMultiple(new int[] {1,2,3,4,5,6,7}); // ERROR
+
+        printMinMultiple(new int[] {1,2,3,4,5,6}); // OK
+        printMinMultiple(new int[]{1, 2, 3}); // ERROR
+    }
+
+    public void testIntRange() {
+        printAtLeast(3); // ERROR
+        printAtLeast(4); // OK
+        printAtLeast(5); // OK
+
+        printAtMost(5); // OK
+        printAtMost(6); // OK
+        printAtMost(7); // OK
+        printAtMost(8); // ERROR
+
+        printBetween(3); // ERROR
+        printBetween(4); // OK
+        printBetween(5); // OK
+        printBetween(6); // OK
+        printBetween(7); // OK
+        printBetween(8); // ERROR
+    }
+
+    public void testFloatRange() {
+        printAtLeastInclusive(2.49f); // ERROR
+        printAtLeastInclusive(2.5f); // OK
+        printAtLeastInclusive(2.6f); // OK
+
+        printAtLeastExclusive(2.49f); // ERROR
+        printAtLeastExclusive(2.5f); // ERROR
+        printAtLeastExclusive(2.501f); // OK
+
+        printAtMostInclusive(6.8f); // OK
+        printAtMostInclusive(6.9f); // OK
+        printAtMostInclusive(7.0f); // OK
+        printAtMostInclusive(7.1f); // ERROR
+
+        printAtMostExclusive(6.9f); // OK
+        printAtMostExclusive(6.99f); // OK
+        printAtMostExclusive(7.0f); // ERROR
+        printAtMostExclusive(7.1f); // ERROR
+
+        printBetweenFromInclusiveToInclusive(2.4f); // ERROR
+        printBetweenFromInclusiveToInclusive(2.5f); // OK
+        printBetweenFromInclusiveToInclusive(3f); // OK
+        printBetweenFromInclusiveToInclusive(5.0f); // OK
+        printBetweenFromInclusiveToInclusive(5.1f); // ERROR
+
+        printBetweenFromExclusiveToInclusive(2.4f); // ERROR
+        printBetweenFromExclusiveToInclusive(2.5f); // ERROR
+        printBetweenFromExclusiveToInclusive(5.0f); // OK
+        printBetweenFromExclusiveToInclusive(5.1f); // ERROR
+
+        printBetweenFromInclusiveToExclusive(2.4f); // ERROR
+        printBetweenFromInclusiveToExclusive(2.5f); // OK
+        printBetweenFromInclusiveToExclusive(3f); // OK
+        printBetweenFromInclusiveToExclusive(4.99f); // OK
+        printBetweenFromInclusiveToExclusive(5.0f); // ERROR
+
+        printBetweenFromExclusiveToExclusive(2.4f); // ERROR
+        printBetweenFromExclusiveToExclusive(2.5f); // ERROR
+        printBetweenFromExclusiveToExclusive(2.51f); // OK
+        printBetweenFromExclusiveToExclusive(4.99f); // OK
+        printBetweenFromExclusiveToExclusive(5.0f); // ERROR
+    }
+
+    public void testNegative() {
+        printBetween(-7); // ERROR
+        printAtLeastExclusive(-10.0f); // ERROR
+    }
+
+    public static final int MINIMUM = -1;
+    public static final int MAXIMUM = 42;
+    public void printIndirect(@IntRange(from = MINIMUM, to = MAXIMUM) int arg) { }
+    public static final int SIZE = 5;
+    public static void printIndirectSize(@Size(SIZE) String foo) { }
+
+    public void testIndirect() {
+        printIndirect(-2); // ERROR
+        printIndirect(43); // ERROR
+        printIndirectSize("1234567"); // ERROR
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RangeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RangeDetector.testRange`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("Range")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("Range")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection Range
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="Range" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'Range'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore Range ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

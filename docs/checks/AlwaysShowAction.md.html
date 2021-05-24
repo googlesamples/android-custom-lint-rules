@@ -1,0 +1,208 @@
+<meta charset="utf-8">
+(#) Usage of `showAsAction=always`
+
+!!! WARNING: Usage of `showAsAction=always`
+   This is a warning.
+
+Id
+:   `AlwaysShowAction`
+Summary
+:   Usage of `showAsAction=always`
+Severity
+:   Warning
+Category
+:   Usability
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files and resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AlwaysShowActionDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AlwaysShowActionDetectorTest.java)
+
+Using `showAsAction="always"` in menu XML, or
+`MenuItem.SHOW_AS_ACTION_ALWAYS` in Java code is usually a deviation
+from the user interface style guide.Use `ifRoom` or the corresponding
+`MenuItem.SHOW_AS_ACTION_IF_ROOM` instead.
+
+If `always` is used sparingly there are usually no problems and behavior
+is roughly equivalent to `ifRoom` but with preference over other
+`ifRoom` items. Using it more than twice in the same menu is a bad
+idea.
+
+This check looks for menu XML files that contain more than two `always`
+actions, or some `always` actions and no `ifRoom` actions. In Java code,
+it looks for projects that contain references to
+`MenuItem.SHOW_AS_ACTION_ALWAYS` and no references to
+`MenuItem.SHOW_AS_ACTION_IF_ROOM`.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/menu-land/actions.xml:6:Warning: Prefer "ifRoom" instead of "always"
+[AlwaysShowAction]
+
+    android:showAsAction="always|collapseActionView"
+    ------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/menu-land/actions.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+
+    &lt;item
+        android:id="@+id/menu_search"
+        android:showAsAction="always|collapseActionView"
+        android:actionViewClass="android.widget.SearchView" /&gt;
+
+    &lt;group android:id="@+id/reader_items"&gt;
+
+        &lt;item
+            android:id="@+id/menu_table_of_contents"
+            android:showAsAction="always"
+            android:actionLayout="@layout/action_table_of_contents" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_settings"
+            android:showAsAction="always" /&gt;
+
+        &lt;item android:id="@+id/menu_mode"
+            android:showAsAction="never" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_buy"
+            android:showAsAction="never" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_about"
+            android:showAsAction="never" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_share"
+            android:showAsAction="never" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_keep"
+            android:checkable="true"
+            android:showAsAction="never" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_d"
+            android:showAsAction="never" /&gt;
+
+        &lt;item
+            android:id="@+id/menu_help"
+            android:showAsAction="never" /&gt;
+
+    &lt;/group&gt;
+
+    &lt;group android:id="@+id/search_items"&gt;
+
+        &lt;item
+            android:id="@+id/menu_table_of_contents"
+            android:showAsAction="always"
+            android:actionLayout="@layout/action_table_of_contents" /&gt;
+
+        &lt;item android:id="@+id/menu_search_exit"
+              android:showAsAction="never" /&gt;
+
+    &lt;/group&gt;
+
+&lt;/menu&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AlwaysShowActionDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AlwaysShowActionDetector.testXmlMenus`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="AlwaysShowAction"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AlwaysShowAction")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AlwaysShowAction")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AlwaysShowAction
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AlwaysShowAction" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AlwaysShowAction'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AlwaysShowAction ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

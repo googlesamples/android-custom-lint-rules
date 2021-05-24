@@ -1,0 +1,184 @@
+<meta charset="utf-8">
+(#) Notification Trampolines
+
+!!! ERROR: Notification Trampolines
+   This is an error.
+
+Id
+:   `NotificationTrampoline`
+Summary
+:   Notification Trampolines
+Severity
+:   Error
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/NotificationTrampolineDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NotificationTrampolineDetectorTest.kt)
+
+Activities should not be launched indirectly from a notification via an
+intermediate `BroadcastReceiver` or `Service`. This can lead to
+significant lags in some scenarios, and is forbidden if
+`targetSdkVersion` is set to the API level for Android 12 or higher.
+
+To fix this, launch the `Activity` directly from the notification.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/NotificationTest.java:36:Error: This intent launches a
+BroadcastReceiver (BroadcastTrampoline) which launches activities; this
+indirection is bad for performance, and activities should be launched
+directly from the notification [NotificationTrampoline]
+
+    .setContentIntent(notificationPendingIntent)
+     -------------------------------------------
+
+
+src/test/pkg/NotificationTest.java:38:Error: This intent launches a
+BroadcastReceiver (BroadcastTrampoline) which launches activities; this
+indirection is bad for performance, and activities should be launched
+directly from the notification [NotificationTrampoline]
+
+    .addAction(android.R.drawable.ic_dialog_email, "Launch Receiver From Action",
+     ^
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/NotificationTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
+import androidx.core.app.NotificationCompat;
+
+import static android.app.Notification.EXTRA_NOTIFICATION_ID;
+
+public class NotificationTest {
+    public static final String ACTION_LAUNCH =
+            "test.pkg.action.LAUNCH";
+
+    public void test(Context context, String channelId, int id, int requestCode, int flags) {
+        Intent notificationIntent = new Intent(context, test.pkg.BroadcastTrampoline.class);
+        PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(context, requestCode, notificationIntent, flags);
+
+        Intent broadcastIntent = new Intent(context, BroadcastTrampoline.class);
+        broadcastIntent.setAction(ACTION_LAUNCH);
+        broadcastIntent.putExtra(EXTRA_NOTIFICATION_ID, id);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        PendingIntent broadcastPendingIntent =
+                PendingIntent.getBroadcast(context, 0, broadcastIntent, 0);
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
+                        .setContentTitle("Notification Trampoline Test")
+                        .setContentText("Tap this notification to launch a new receiver")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(notificationPendingIntent)
+                        .setAutoCancel(true)
+                        .addAction(android.R.drawable.ic_dialog_email, "Launch Receiver From Action",
+                                broadcastPendingIntent);
+        Notification notification = builder.build();
+        NotificationManager notificationManager =
+                context.getSystemService(NotificationManager.class);
+        notificationManager.notify(id, notification);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NotificationTrampolineDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `NotificationTrampolineDetector.testBroadcastTrampolineJava`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("NotificationTrampoline")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("NotificationTrampoline")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection NotificationTrampoline
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="NotificationTrampoline" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'NotificationTrampoline'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore NotificationTrampoline ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,233 @@
+<meta charset="utf-8">
+(#) Fragment not instantiatable
+
+!!! ERROR: Fragment not instantiatable
+   This is an error.
+
+Id
+:   `ValidFragment`
+Summary
+:   Fragment not instantiatable
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/android/app/Fragment.html#Fragment()
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/FragmentDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FragmentDetectorTest.kt)
+
+From the Fragment documentation:
+**Every** fragment must have an empty constructor, so it can be
+instantiated when restoring its activity's state. It is strongly
+recommended that subclasses do not have other constructors with
+parameters, since these constructors will not be called when the
+fragment is re-instantiated; instead, arguments can be supplied by the
+caller with `setArguments(Bundle)` and later retrieved by the Fragment
+with `getArguments()`.
+
+Note that this is no longer true when you are using
+`androidx.fragment.app.Fragment`; with the `FragmentFactory` you can
+supply any arguments you want (as of version androidx version 1.1).
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/FragmentTest.java:10:Error: This fragment class should be
+public (test.pkg.FragmentTest.Fragment1) [ValidFragment]
+
+    private static class Fragment1 extends Fragment {
+                         ---------
+
+
+src/test/pkg/FragmentTest.java:15:Error: This fragment inner class
+should be static (test.pkg.FragmentTest.Fragment2) [ValidFragment]
+
+    public class Fragment2 extends Fragment {
+                 ---------
+
+
+src/test/pkg/FragmentTest.java:21:Error: The default constructor must be
+public [ValidFragment]
+
+    private Fragment3() {
+            ---------
+
+
+src/test/pkg/FragmentTest.java:26:Error: This fragment should provide a
+default constructor (a public constructor with no arguments)
+(test.pkg.FragmentTest.Fragment4) [ValidFragment]
+
+    public static class Fragment4 extends Fragment {
+                        ---------
+
+
+src/test/pkg/FragmentTest.java:27:Error: Avoid non-default constructors
+in fragments: use a default constructor plus
+Fragment#setArguments(Bundle) instead [ValidFragment]
+
+    private Fragment4(int sample) {
+            ---------
+
+
+src/test/pkg/FragmentTest.java:36:Error: Avoid non-default constructors
+in fragments: use a default constructor plus
+Fragment#setArguments(Bundle) instead [ValidFragment]
+
+    public Fragment5(int sample) {
+           ---------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/FragmentTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.SuppressLint;
+import android.app.Fragment;
+
+@SuppressWarnings("unused")
+public class FragmentTest {
+
+    // Should be public
+    private static class Fragment1 extends Fragment {
+
+    }
+
+    // Should be static
+    public class Fragment2 extends Fragment {
+
+    }
+
+    // Should have a public constructor
+    public static class Fragment3 extends Fragment {
+        private Fragment3() {
+        }
+    }
+
+    // Should have a public constructor with no arguments
+    public static class Fragment4 extends Fragment {
+        private Fragment4(int sample) {
+        }
+    }
+
+    // Should *only* have the default constructor, not the
+    // multi-argument one
+    public static class Fragment5 extends Fragment {
+        public Fragment5() {
+        }
+        public Fragment5(int sample) {
+        }
+    }
+
+    // Suppressed
+    @SuppressLint("ValidFragment")
+    public static class Fragment6 extends Fragment {
+        private Fragment6() {
+        }
+    }
+
+    public static class ValidFragment1 extends Fragment {
+        public ValidFragment1() {
+        }
+    }
+
+    // (Not a fragment)
+    private class NotAFragment {
+    }
+
+    // Ok: Has implicit constructor
+    public static class Fragment7 extends Fragment {
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FragmentDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `FragmentDetector.testBasic`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ValidFragment")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ValidFragment")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ValidFragment
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ValidFragment" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ValidFragment'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ValidFragment ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

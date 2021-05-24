@@ -1,0 +1,179 @@
+<meta charset="utf-8">
+(#) `addJavascriptInterface` Called
+
+!!! WARNING: `addJavascriptInterface` Called
+   This is a warning.
+
+Id
+:   `AddJavascriptInterface`
+Summary
+:   `addJavascriptInterface` Called
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object,%20java.lang.String)
+See
+:   https://support.google.com/faqs/answer/9095419?hl=en
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AddJavascriptInterfaceDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AddJavascriptInterfaceDetectorTest.kt)
+
+For applications built for API levels below 17,
+`WebView#addJavascriptInterface` presents a security hazard as
+JavaScript on the target web page has the ability to use reflection to
+access the injected object's public fields and thus manipulate the host
+application in unintended ways.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/AddJavascriptInterfaceTest.java:16:Warning:
+WebView.addJavascriptInterface should not be called with minSdkVersion <
+17 for security reasons: JavaScript can use reflection to manipulate
+application [AddJavascriptInterface]
+
+    webView.addJavascriptInterface(object, string);
+            ----------------------
+
+
+src/test/pkg/AddJavascriptInterfaceTest.java:23:Warning:
+WebView.addJavascriptInterface should not be called with minSdkVersion <
+17 for security reasons: JavaScript can use reflection to manipulate
+application [AddJavascriptInterface]
+
+    webView.addJavascriptInterface(object, string);
+            ----------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/AddJavascriptInterfaceTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.webkit.WebView;
+import android.content.Context;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class AddJavascriptInterfaceTest {
+    private static class WebViewChild extends WebView {
+        WebViewChild(Context context) {
+            super(context);
+        }
+    }
+
+    private static class CallAddJavascriptInterfaceOnWebView {
+        public void addJavascriptInterfaceToWebView(WebView webView, Object object, String string) {
+            webView.addJavascriptInterface(object, string);
+        }
+    }
+
+    private static class CallAddJavascriptInterfaceOnWebViewChild {
+        public void addJavascriptInterfaceToWebViewChild(
+            WebViewChild webView, Object object, String string) {
+            webView.addJavascriptInterface(object, string);
+        }
+    }
+
+    private static class NonWebView {
+        public void addJavascriptInterface(Object object, String string) { }
+    }
+
+    private static class CallAddJavascriptInterfaceOnNonWebView {
+        public void addJavascriptInterfaceToNonWebView(
+            NonWebView webView, Object object, String string) {
+            webView.addJavascriptInterface(object, string);
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AddJavascriptInterfaceDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AddJavascriptInterfaceDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AddJavascriptInterface")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AddJavascriptInterface")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AddJavascriptInterface
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AddJavascriptInterface" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AddJavascriptInterface'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AddJavascriptInterface ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

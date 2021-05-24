@@ -1,0 +1,365 @@
+<meta charset="utf-8">
+(#) TextView should probably be an EditText instead
+
+!!! WARNING: TextView should probably be an EditText instead
+   This is a warning.
+
+Id
+:   `TextViewEdits`
+Summary
+:   TextView should probably be an EditText instead
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TextViewDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TextViewDetectorTest.java)
+
+Using a `<TextView>` to input text is generally an error, you should be
+using `<EditText>` instead.  `EditText` is a subclass of `TextView`, and
+some of the editing support is provided by `TextView`, so it's possible
+to set some input-related properties on a `TextView`. However, using a
+`TextView` along with input attributes is usually a cut & paste error.
+To input text you should be using `<EditText>`.
+
+This check also checks subclasses of `TextView`, such as `Button` and
+`CheckBox`, since these have the same issue: they should not be used
+with editable attributes.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/edit_textview.xml:13:Warning: Attribute android:autoText
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:autoText="true"
+    -----------------------
+
+
+res/layout/edit_textview.xml:14:Warning: Attribute android:bufferType
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:bufferType="editable"
+    -----------------------------
+
+
+res/layout/edit_textview.xml:15:Warning: Attribute android:capitalize
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:capitalize="words"
+    --------------------------
+
+
+res/layout/edit_textview.xml:16:Warning: Attribute android:cursorVisible
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:cursorVisible="true"
+    ----------------------------
+
+
+res/layout/edit_textview.xml:17:Warning: Attribute android:digits should
+not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:digits=""
+    -----------------
+
+
+res/layout/edit_textview.xml:18:Warning: Attribute android:editable
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:editable="true"
+    -----------------------
+
+
+res/layout/edit_textview.xml:19:Warning: Attribute android:editorExtras
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:editorExtras="@+id/foobar"
+    ----------------------------------
+
+
+res/layout/edit_textview.xml:22:Warning: Attribute android:imeActionId
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:imeActionId="@+id/foo"
+    ------------------------------
+
+
+res/layout/edit_textview.xml:23:Warning: Attribute
+android:imeActionLabel should not be used with <TextView>: Change
+element type to <EditText> ? [TextViewEdits]
+
+    android:imeActionLabel=""
+    -------------------------
+
+
+res/layout/edit_textview.xml:24:Warning: Attribute android:imeOptions
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:imeOptions=""
+    ---------------------
+
+
+res/layout/edit_textview.xml:25:Warning: Attribute android:inputMethod
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:inputMethod=""
+    ----------------------
+
+
+res/layout/edit_textview.xml:26:Warning: Attribute android:inputType
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:inputType="text"
+    ------------------------
+
+
+res/layout/edit_textview.xml:27:Warning: Attribute android:numeric
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:numeric=""
+    ------------------
+
+
+res/layout/edit_textview.xml:28:Warning: Attribute android:password
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:password="true"
+    -----------------------
+
+
+res/layout/edit_textview.xml:29:Warning: Attribute android:phoneNumber
+should not be used with <TextView>: Change element type to <EditText> ?
+[TextViewEdits]
+
+    android:phoneNumber="true"
+    --------------------------
+
+
+res/layout/edit_textview.xml:30:Warning: Attribute
+android:privateImeOptions should not be used with <TextView>: Change
+element type to <EditText> ? [TextViewEdits]
+
+    android:privateImeOptions="" /&gt;
+    ----------------------------
+
+
+res/layout/edit_textview.xml:38:Warning: Attribute android:cursorVisible
+should not be used with <Button>: intended for editable text widgets
+[TextViewEdits]
+
+    android:cursorVisible="true" /&gt;
+    ----------------------------
+
+
+res/layout/edit_textview.xml:44:Warning: Attribute android:cursorVisible
+should not be used with <CheckedTextView>: intended for editable text
+widgets [TextViewEdits]
+
+    android:cursorVisible="true" /&gt;
+    ----------------------------
+
+
+res/layout/edit_textview.xml:50:Warning: Attribute android:cursorVisible
+should not be used with <CheckBox>: intended for editable text widgets
+[TextViewEdits]
+
+    android:cursorVisible="true" /&gt;
+    ----------------------------
+
+
+res/layout/edit_textview.xml:56:Warning: Attribute android:cursorVisible
+should not be used with <RadioButton>: intended for editable text
+widgets [TextViewEdits]
+
+    android:cursorVisible="true" /&gt;
+    ----------------------------
+
+
+res/layout/edit_textview.xml:62:Warning: Attribute android:cursorVisible
+should not be used with <ToggleButton>: intended for editable text
+widgets [TextViewEdits]
+
+    android:cursorVisible="true" /&gt;
+    ----------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/edit_textview.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+
+    &lt;!-- Various attributes that should be set on EditTexts, not TextViews --&gt;
+
+    &lt;TextView
+        android:text="label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoText="true"
+        android:bufferType="editable"
+        android:capitalize="words"
+        android:cursorVisible="true"
+        android:digits=""
+        android:editable="true"
+        android:editorExtras="@+id/foobar"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:imeActionId="@+id/foo"
+        android:imeActionLabel=""
+        android:imeOptions=""
+        android:inputMethod=""
+        android:inputType="text"
+        android:numeric=""
+        android:password="true"
+        android:phoneNumber="true"
+        android:privateImeOptions="" /&gt;
+
+    &lt;!-- Various attributes that should be set on EditTexts, not Buttons --&gt;
+
+    &lt;Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true" /&gt;
+
+    &lt;CheckedTextView
+        android:id="@+id/checkedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true" /&gt;
+
+    &lt;CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true" /&gt;
+
+    &lt;RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true" /&gt;
+
+    &lt;ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cursorVisible="true" /&gt;
+
+
+    &lt;!-- Ok #1 --&gt;
+
+    &lt;TextView
+        android:text="label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:bufferType="spannable"
+        android:freezesText="true"
+        android:editable="false"
+        android:inputType="none" /&gt;
+
+    &lt;!-- Ok #2 --&gt;
+
+    &lt;TextView
+        android:text="label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /&gt;
+
+    &lt;TextView
+        android:id="@+id/dynamictext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /&gt;
+
+    &lt;TextView
+        android:id="@+id/dynamictext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true" /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TextViewDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TextViewDetector.testBasic`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="TextViewEdits"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TextViewEdits" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TextViewEdits'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TextViewEdits ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

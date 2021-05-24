@@ -1,0 +1,188 @@
+<meta charset="utf-8">
+(#) Straight quotes can be replaced with curvy quotes
+
+!!! WARNING: Straight quotes can be replaced with curvy quotes
+   This is a warning.
+
+Id
+:   `TypographyQuotes`
+Summary
+:   Straight quotes can be replaced with curvy quotes
+Note
+:   **This issue is disabled by default**; use `--enable TypographyQuotes`
+Severity
+:   Warning
+Category
+:   Usability: Typography
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://en.wikipedia.org/wiki/Quotation_mark
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TypographyDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TypographyDetectorTest.kt)
+
+Straight single quotes and double quotes, when used as a pair, can be
+replaced by "curvy quotes" (or directional quotes). This can make the
+text more readable.
+
+Note that you should never use grave accents and apostrophes to quote,
+`like this'.
+
+(Also note that you should not use curvy quotes for code fragments.)
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values/typography.xml:3:Warning: Replace straight quotes ('') with
+directional quotes (‘’, &#8216; and &#8217;) ? [TypographyQuotes]
+
+    &lt;string name="home_title"&gt;Home 'Sample'&lt;/string&gt;
+                              -------------
+
+
+res/values/typography.xml:5:Warning: Replace straight quotes (") with
+directional quotes (“”, &#8220; and &#8221;) ? [TypographyQuotes]
+
+    &lt;string name="show_all_apps2"&gt;Show "All"&lt;/string&gt;
+                                  ----------
+
+
+res/values/typography.xml:6:Warning: Replace straight quotes (") with
+directional quotes (“”, &#8220; and &#8221;) ? [TypographyQuotes]
+
+    &lt;string name="escaped"&gt;Skip \"All\"&lt;/string&gt;
+                           ------------
+
+
+res/values/typography.xml:7:Warning: Replace apostrophe (') with
+typographic apostrophe (’, &#8217;) ? [TypographyQuotes]
+
+    &lt;string name="single"&gt;Android's&lt;/string&gt;
+                          ---------
+
+
+res/values/typography.xml:9:Warning: Replace apostrophe (') with
+typographic apostrophe (’, &#8217;) ? [TypographyQuotes]
+
+    &lt;string name="badquotes1"&gt;`First'&lt;/string&gt;
+                              -------
+
+
+res/values/typography.xml:10:Warning: Avoid quoting with grave accents;
+use apostrophes or better yet directional quotes instead
+[TypographyQuotes]
+
+    &lt;string name="badquotes2"&gt;``second''&lt;/string&gt;
+                              ----------
+
+
+res/values/typography.xml:11:Warning: Replace straight quotes ('') with
+directional quotes (‘’, &#8216; and &#8217;) ? [TypographyQuotes]
+
+    &lt;string name="notbadquotes"&gt;Type Option-` then 'Escape'&lt;/string&gt;
+                                ---------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values/typography.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+
+&lt;resources&gt;
+    &lt;string name="home_title"&gt;Home 'Sample'&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;"All"&lt;/string&gt;
+    &lt;string name="show_all_apps2"&gt;Show "All"&lt;/string&gt;
+    &lt;string name="escaped"&gt;Skip \"All\"&lt;/string&gt;
+    &lt;string name="single"&gt;Android's&lt;/string&gt;
+    &lt;string name="copyright"&gt;(c) 2011&lt;/string&gt;
+    &lt;string name="badquotes1"&gt;`First'&lt;/string&gt;
+    &lt;string name="badquotes2"&gt;``second''&lt;/string&gt;
+    &lt;string name="notbadquotes"&gt;Type Option-` then 'Escape'&lt;/string&gt;
+    &lt;string name="fraction1"&gt;5 1/2 times&lt;/string&gt;
+    &lt;string name="fraction4"&gt;1/4 times&lt;/string&gt;
+    &lt;string name="notfraction"&gt;51/2 times, 1/20&lt;/string&gt;
+    &lt;string name="ellipsis"&gt;40 times...&lt;/string&gt;
+    &lt;string name="notellipsis"&gt;40 times.......&lt;/string&gt;
+    &lt;string name="ndash"&gt;For ages 3-5&lt;/string&gt;
+    &lt;string name="ndash2"&gt;Copyright 2007 - 2011&lt;/string&gt;
+    &lt;string name="nontndash"&gt;x-y&lt;/string&gt;
+    &lt;string name="mdash"&gt;Not found -- please try again&lt;/string&gt;
+    &lt;string name="nontndash"&gt;----&lt;/string&gt;
+    &lt;string name="notdirectional"&gt;A's and B's&lt;/string&gt;
+    &lt;string-array name="typography"&gt;
+        &lt;item&gt;Ages 3-5&lt;/item&gt;
+        &lt;item&gt;Age 5 1/2&lt;/item&gt;
+    &lt;/string-array&gt;
+    &lt;string name="ndash"&gt;X Y Z: 10 10 -1&lt;/string&gt;
+    &lt;string name="ga_trackingId"&gt;UA-0000-0&lt;/string&gt;
+&lt;/resources&gt;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TypographyDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TypographyDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="TypographyQuotes"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TypographyQuotes" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TypographyQuotes'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TypographyQuotes ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

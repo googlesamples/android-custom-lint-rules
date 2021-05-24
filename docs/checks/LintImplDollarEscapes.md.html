@@ -1,0 +1,189 @@
+<meta charset="utf-8">
+(#) Using Dollar Escapes
+
+!!! ERROR: Using Dollar Escapes
+   This is an error.
+
+Id
+:   `LintImplDollarEscapes`
+Summary
+:   Using Dollar Escapes
+Severity
+:   Error
+Category
+:   Lint Implementation Issues
+Platform
+:   JDK
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LintDetectorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
+
+Instead of putting `${"$"}` in your Kotlin raw string literals you can
+simply use ＄. This looks like the dollar sign but is instead the full
+width dollar sign, U+FF04. And this character does not need to be
+escaped in Kotlin raw strings, since it does not start a string
+template.
+
+Lint will automatically convert references to ＄ in unit test files into
+a real dollar sign, and when pulling results and error messages out of
+lint, the dollar sign back into the full width dollar sign.
+
+That means you can use ＄ everywhere instead of `${"$"}`, which makes the
+test strings more readable -- especially `$`-heavy code such as
+references to inner classes.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyKotlinLintDetectorTest.kt:22:Error: In unit tests, use
+the fullwidth dollar sign, $, instead of $, to avoid having to use
+cumbersome escapes. Lint will treat a $ as a $. [LintImplDollarEscapes]
+
+    println("Value=${"$"}")
+                   ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MyKotlinLintDetectorTest.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+import com.android.tools.lint.checks.infrastructure.LintDetectorTest
+import com.android.tools.lint.detector.api.Detector
+
+class MyKotlinLintDetectorTest : LintDetectorTest() {
+    override fun getDetector(): Detector {
+        return MyKotlinLintDetector()
+    }
+
+    fun testBasic() {
+        val expected = """
+            src/test/pkg/AlarmTest.java:9: Warning: Value will be forced up to 5000 as of Android 5.1; don't rely on this to be exact [ShortAlarm]
+                    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 50, 10, null); // ERROR
+                                                                             ~~
+            0 errors, 1 warnings
+            """
+
+        lint().files(
+            kotlin(
+                """
+                fun test() {
+                    println("Value=${"$"}")
+                }
+                """
+            ),
+            java(
+                "src/test/pkg/AlarmTest.java",
+                """
+                    package test.pkg;
+
+                    import android.app.AlarmManager;
+                    @SuppressWarnings("ClassNameDiffersFromFileName")
+                    public class AlarmTest {
+                        public void test(AlarmManager alarmManager) {
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000, 60000, null); // OK
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 6000, 70000, null); // OK
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 50, 10, null); // ERROR
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000,  // ERROR
+                                    OtherClass.MY_INTERVAL, null);                          // ERROR
+                        }
+
+                        private static class OtherClass {
+                            public static final long MY_INTERVAL = 1000L;
+                        }
+                    }
+                    """.trimIndent()
+            )
+        ).run().expect(expected)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LintDetectorDetector.testProblems`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LintImplDollarEscapes")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LintImplDollarEscapes")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LintImplDollarEscapes
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LintImplDollarEscapes" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LintImplDollarEscapes'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LintImplDollarEscapes ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

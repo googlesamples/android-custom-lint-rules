@@ -1,0 +1,228 @@
+<meta charset="utf-8">
+(#) Mismatched Styleable/Custom View Name
+
+!!! WARNING: Mismatched Styleable/Custom View Name
+   This is a warning.
+
+Id
+:   `CustomViewStyleable`
+Summary
+:   Mismatched Styleable/Custom View Name
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CustomViewDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CustomViewDetectorTest.java)
+
+The convention for custom views is to use a `declare-styleable` whose
+name matches the custom view class name. The IDE relies on this
+convention such that for example code completion can be offered for
+attributes in a custom view in layout XML resource files.
+
+(Similarly, layout parameter classes should use the suffix `_Layout`.)
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/CustomView1.java:18:Warning: By convention, the custom view
+(CustomView1) and the declare-styleable (MyDeclareStyleable) should have
+the same name (various editor features rely on this convention)
+[CustomViewStyleable]
+
+    context.obtainStyledAttributes(R.styleable.MyDeclareStyleable);
+                                   ------------------------------
+
+
+src/test/pkg/CustomView1.java:19:Warning: By convention, the custom view
+(CustomView1) and the declare-styleable (MyDeclareStyleable) should have
+the same name (various editor features rely on this convention)
+[CustomViewStyleable]
+
+    context.obtainStyledAttributes(defStyleRes, R.styleable.MyDeclareStyleable);
+                                                ------------------------------
+
+
+src/test/pkg/CustomView1.java:20:Warning: By convention, the custom view
+(CustomView1) and the declare-styleable (MyDeclareStyleable) should have
+the same name (various editor features rely on this convention)
+[CustomViewStyleable]
+
+    context.obtainStyledAttributes(attrs, R.styleable.MyDeclareStyleable);
+                                          ------------------------------
+
+
+src/test/pkg/CustomView1.java:21:Warning: By convention, the custom view
+(CustomView1) and the declare-styleable (MyDeclareStyleable) should have
+the same name (various editor features rely on this convention)
+[CustomViewStyleable]
+
+    context.obtainStyledAttributes(attrs, R.styleable.MyDeclareStyleable, defStyleAttr,
+                                          ------------------------------
+
+
+src/test/pkg/CustomView1.java:46:Warning: By convention, the
+declare-styleable (MyLayout) for a layout parameter class
+(MyLayoutParams) is expected to be the surrounding class (MyLayout) plus
+"_Layout", e.g. MyLayout_Layout. (Various editor features rely on this
+convention.) [CustomViewStyleable]
+
+    context.obtainStyledAttributes(R.styleable.MyLayout); // Wrong
+                                   --------------------
+
+
+src/test/pkg/CustomView1.java:47:Warning: By convention, the
+declare-styleable (MyDeclareStyleable) for a layout parameter class
+(MyLayoutParams) is expected to be the surrounding class (MyLayout) plus
+"_Layout", e.g. MyLayout_Layout. (Various editor features rely on this
+convention.) [CustomViewStyleable]
+
+    context.obtainStyledAttributes(R.styleable.MyDeclareStyleable); // Wrong
+                                   ------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/CustomView1.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+public class CustomView1 extends Button {
+    public CustomView1(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr);
+        // OK
+        context.obtainStyledAttributes(R.styleable.CustomView1);
+        context.obtainStyledAttributes(defStyleRes, R.styleable.CustomView1);
+        context.obtainStyledAttributes(attrs, R.styleable.CustomView1);
+        context.obtainStyledAttributes(attrs, R.styleable.CustomView1, defStyleAttr, defStyleRes);
+
+        // Wrong:
+        context.obtainStyledAttributes(R.styleable.MyDeclareStyleable);
+        context.obtainStyledAttributes(defStyleRes, R.styleable.MyDeclareStyleable);
+        context.obtainStyledAttributes(attrs, R.styleable.MyDeclareStyleable);
+        context.obtainStyledAttributes(attrs, R.styleable.MyDeclareStyleable, defStyleAttr,
+                defStyleRes);
+
+        // Unknown: Not flagged
+        int[] dynamic = getStyleable();
+        context.obtainStyledAttributes(dynamic);
+        context.obtainStyledAttributes(defStyleRes, dynamic);
+        context.obtainStyledAttributes(attrs, dynamic);
+        context.obtainStyledAttributes(attrs, dynamic, defStyleAttr, defStyleRes);
+    }
+
+    private int[] getStyleable() {
+        return new int[0];
+    }
+
+    public static class MyLayout extends LinearLayout {
+        public MyLayout(Context context, AttributeSet attrs, int defStyle) {
+            super(context, attrs, defStyle);
+            context.obtainStyledAttributes(R.styleable.MyLayout);
+        }
+
+        public static class MyLayoutParams extends LinearLayout.LayoutParams {
+            public MyLayoutParams(Context context, AttributeSet attrs) {
+                super(context, attrs);
+                context.obtainStyledAttributes(R.styleable.MyLayout_Layout); // OK
+                context.obtainStyledAttributes(R.styleable.MyLayout); // Wrong
+                context.obtainStyledAttributes(R.styleable.MyDeclareStyleable); // Wrong
+            }
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CustomViewDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CustomViewDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("CustomViewStyleable")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("CustomViewStyleable")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection CustomViewStyleable
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="CustomViewStyleable" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'CustomViewStyleable'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore CustomViewStyleable ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

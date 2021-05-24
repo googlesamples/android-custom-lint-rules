@@ -1,0 +1,177 @@
+<meta charset="utf-8">
+(#) Using BC Provider
+
+!!! WARNING: Using BC Provider
+   This is a warning.
+
+Id
+:   `DeprecatedProvider`
+Summary
+:   Using BC Provider
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CipherGetInstanceDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CipherGetInstanceDetectorTest.kt)
+
+The `BC` provider has been deprecated and will not be provided when
+`targetSdkVersion` is P or higher.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/BCProviderTest.java:16:Warning: The BC provider is
+deprecated and when targetSdkVersion is moved to P this method will
+throw a NoSuchAlgorithmException. To fix this you should stop specifying
+a provider and use the default implementation [DeprecatedProvider]
+
+    Cipher.getInstance("AES/CBC/PKCS7PADDING", "BC"); // Error
+                                               ----
+
+
+src/test/pkg/BCProviderTest.java:17:Warning: The BC provider is
+deprecated and when targetSdkVersion is moved to P this method will
+throw a NoSuchAlgorithmException. To fix this you should stop specifying
+a provider and use the default implementation [DeprecatedProvider]
+
+    Cipher.getInstance("AES/CBC/PKCS7PADDING", BC_PROVIDER); // Error
+                                               -----------
+
+
+src/test/pkg/BCProviderTest.java:19:Warning: The BC provider is
+deprecated and when targetSdkVersion is moved to P this method will
+throw a NoSuchAlgorithmException. To fix this you should stop specifying
+a provider and use the default implementation [DeprecatedProvider]
+
+    Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider("BC")); // Error
+                                               --------------------------
+
+
+src/test/pkg/BCProviderTest.java:20:Warning: The BC provider is
+deprecated and when targetSdkVersion is moved to P this method will
+throw a NoSuchAlgorithmException. To fix this you should stop specifying
+a provider and use the default implementation [DeprecatedProvider]
+
+    Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider(BC_PROVIDER)); // Error
+                                               ---------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/BCProviderTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class BCProviderTest {
+    public static final String BC_PROVIDER = "BC";
+
+    void test() throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException {
+        Cipher.getInstance("AES/CBC/PKCS7PADDING");   // OK
+        Cipher.getInstance("AES/CBC/PKCS7PADDING", "bar"); // OK
+        Cipher.getInstance("AES/CBC/PKCS7PADDING", "BC"); // Error
+        Cipher.getInstance("AES/CBC/PKCS7PADDING", BC_PROVIDER); // Error
+        Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider("bar")); // OK
+        Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider("BC")); // Error
+        Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider(BC_PROVIDER)); // Error
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CipherGetInstanceDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CipherGetInstanceDetector.testDeprecatedProvider`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("DeprecatedProvider")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("DeprecatedProvider")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection DeprecatedProvider
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DeprecatedProvider" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DeprecatedProvider'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DeprecatedProvider ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

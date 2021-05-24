@@ -1,0 +1,171 @@
+<meta charset="utf-8">
+(#) JobScheduler problems
+
+!!! WARNING: JobScheduler problems
+   This is a warning.
+
+Id
+:   `JobSchedulerService`
+Summary
+:   JobScheduler problems
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/topic/performance/scheduling.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/JobSchedulerDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/JobSchedulerDetectorTest.java)
+
+This check looks for various common mistakes in using the JobScheduler
+API: the service class must extend `JobService`, the service must be
+registered in the manifest and the registration must require the
+permission `android.permission.BIND_JOB_SERVICE`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/JobSchedulerTest.java:21:Warning: Scheduled job class
+NotAJobService must extend android.app.job.JobService
+[JobSchedulerService]
+
+    new ComponentName(this, NotAJobService.class));
+    ---------------------------------------------
+
+
+src/test/pkg/JobSchedulerTest.java:29:Warning: Scheduled job class
+NotAJobService must extend android.app.job.JobService
+[JobSchedulerService]
+
+    new ComponentName(this, NotAJobService.class));
+    ---------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/JobSchedulerTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+
+public class JobSchedulerTest extends Activity {
+    private static final int MY_ID = 0x52323;
+
+    public void testOk(JobScheduler jobScheduler) {
+        ComponentName componentName = new ComponentName(this, MyJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(MY_ID, componentName);
+        jobScheduler.schedule(builder
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .build());
+    }
+
+    public void testWrong(JobScheduler jobScheduler) {
+        JobInfo.Builder builder = new JobInfo.Builder(MY_ID,
+                new ComponentName(this, NotAJobService.class));
+        jobScheduler.schedule(builder
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .build());
+    }
+
+    public void testWrongInlined(JobScheduler jobScheduler) {
+        JobInfo.Builder builder = new JobInfo.Builder(MY_ID, 
+                new ComponentName(this, NotAJobService.class));
+        jobScheduler.schedule(builder
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .build());
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/JobSchedulerDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `JobSchedulerDetector.testFlagWrongClass`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("JobSchedulerService")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("JobSchedulerService")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection JobSchedulerService
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="JobSchedulerService" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'JobSchedulerService'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore JobSchedulerService ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

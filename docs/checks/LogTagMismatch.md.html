@@ -1,0 +1,277 @@
+<meta charset="utf-8">
+(#) Mismatched Log Tags
+
+!!! ERROR: Mismatched Log Tags
+   This is an error.
+
+Id
+:   `LogTagMismatch`
+Summary
+:   Mismatched Log Tags
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LogDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LogDetectorTest.kt)
+
+When guarding a `Log.v(tag, ...)` call with `Log.isLoggable(tag)`, the
+tag passed to both calls should be the same. Similarly, the level passed
+in to `Log.isLoggable` should typically match the type of `Log` call,
+e.g. if checking level `Log.DEBUG`, the corresponding `Log` call should
+be `Log.d`, not `Log.i`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/LogTest.java:33:Error: Mismatched tags: the d() and
+isLoggable() calls typically should pass the same tag: TAG1 versus TAG2
+[LogTagMismatch]
+
+    Log.d(TAG2, "message"); // warn: mismatched tags!
+          ----
+
+
+src/test/pkg/LogTest.java:36:Error: Mismatched tags: the d() and
+isLoggable() calls typically should pass the same tag: "my_tag" versus
+"other_tag" [LogTagMismatch]
+
+    Log.d("other_tag", "message"); // warn: mismatched tags!
+          -----------
+
+
+src/test/pkg/LogTest.java:80:Error: Mismatched logging levels: when
+checking isLoggable level DEBUG, the corresponding log call should be
+Log.d, not Log.v [LogTagMismatch]
+
+    Log.v(TAG1, "message"); // warn: wrong level
+        -
+
+
+src/test/pkg/LogTest.java:83:Error: Mismatched logging levels: when
+checking isLoggable level DEBUG, the corresponding log call should be
+Log.d, not Log.v [LogTagMismatch]
+
+    Log.v(TAG1, "message"); // warn: wrong level
+        -
+
+
+src/test/pkg/LogTest.java:86:Error: Mismatched logging levels: when
+checking isLoggable level VERBOSE, the corresponding log call should be
+Log.v, not Log.d [LogTagMismatch]
+
+    Log.d(TAG1, "message"); // warn? verbose is a lower logging level, which includes debug
+        -
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/LogTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.SuppressLint;
+import android.util.Log;
+import static android.util.Log.DEBUG;
+
+@SuppressWarnings({"UnusedDeclaration", "ClassNameDiffersFromFileName"})
+public class LogTest {
+    private static final String TAG1 = "MyTag1";
+    private static final String TAG2 = "MyTag2";
+    private static final String TAG22 = "1234567890123456789012";
+    private static final String TAG23 = "12345678901234567890123";
+    private static final String TAG24 = "123456789012345678901234";
+    private static final String LONG_TAG = "MyReallyReallyReallyReallyReallyLongTag";
+
+    public void checkConditional(String m) {
+        Log.d(TAG1, "message"); // ok: unconditional, but not performing computation
+        Log.d(TAG1, m); // ok: unconditional, but not performing computation
+        Log.d(TAG1, "ab"); // ok: unconditional, but not performing non-constant computation
+        Log.d(TAG1, Constants.MY_MESSAGE); // ok: unconditional, but constant string
+        Log.i(TAG1, "message" + m); // error: unconditional w/ computation
+        Log.i(TAG1, toString()); // error: unconditional w/ computation
+        Log.e(TAG1, toString()); // ok: only flagging debug/info messages
+        Log.w(TAG1, toString()); // ok: only flagging debug/info messages
+        Log.wtf(TAG1, toString()); // ok: only flagging debug/info messages
+        if (Log.isLoggable(TAG1, 0)) {
+            Log.d(TAG1, toString()); // ok: conditional
+        }
+    }
+
+    public void checkWrongTag(String tag) {
+        if (Log.isLoggable(TAG1, Log.DEBUG)) {
+            Log.d(TAG2, "message"); // warn: mismatched tags!
+        }
+        if (Log.isLoggable("my_tag", Log.DEBUG)) {
+            Log.d("other_tag", "message"); // warn: mismatched tags!
+        }
+        if (Log.isLoggable("my_tag", Log.DEBUG)) {
+            Log.d("my_tag", "message"); // ok: strings equal
+        }
+        if (Log.isLoggable(TAG1, Log.DEBUG)) {
+            Log.d(LogTest.TAG1, "message"); // OK: same tag; different access syntax
+        }
+        if (Log.isLoggable(tag, Log.DEBUG)) {
+            Log.d(tag, "message"); // ok: same variable
+        }
+    }
+
+    public void checkLongTag(boolean shouldLog) {
+        if (shouldLog) {
+            // String literal tags
+            Log.d("short_tag", "message"); // ok: short
+            Log.d("really_really_really_really_really_long_tag", "message"); // error: too long
+
+            // Resolved field tags
+            Log.d(TAG1, "message"); // ok: short
+            Log.d(TAG22, "message"); // ok: short
+            Log.d(TAG23, "message"); // ok: threshold
+            Log.d(TAG24, "message"); // error: too long
+            Log.d(LONG_TAG, "message"); // error: way too long
+
+            // Locally defined variable tags
+            final String LOCAL_TAG = "MyReallyReallyReallyReallyReallyLongTag";
+            Log.d(LOCAL_TAG, "message"); // error: too long
+
+            // Concatenated tags
+            Log.d(TAG22 + TAG1, "message"); // error: too long
+            Log.d(TAG22 + "MyTag", "message"); // error: too long
+        }
+    }
+
+    public void checkWrongLevel(String tag) {
+        if (Log.isLoggable(TAG1, Log.DEBUG)) {
+            Log.d(TAG1, "message"); // ok: right level
+        }
+        if (Log.isLoggable(TAG1, Log.INFO)) {
+            Log.i(TAG1, "message"); // ok: right level
+        }
+        if (Log.isLoggable(TAG1, Log.DEBUG)) {
+            Log.v(TAG1, "message"); // warn: wrong level
+        }
+        if (Log.isLoggable(TAG1, DEBUG)) { // static import of level
+            Log.v(TAG1, "message"); // warn: wrong level
+        }
+        if (Log.isLoggable(TAG1, Log.VERBOSE)) {
+            Log.d(TAG1, "message"); // warn? verbose is a lower logging level, which includes debug
+        }
+        if (Log.isLoggable(TAG1, Constants.MY_LEVEL)) {
+            Log.d(TAG1, "message"); // ok: unknown level alias
+        }
+    }
+
+    @SuppressLint("all")
+    public void suppressed1() {
+        Log.d(TAG1, "message"); // ok: suppressed
+    }
+
+    @SuppressLint("LogConditional")
+    public void suppressed2() {
+        Log.d(TAG1, "message"); // ok: suppressed
+    }
+
+    // Regression test for https://issuetracker.google.com/111063607
+    public void notActuallyConditional() {
+        if (true) {
+            Log.d("Test", "Test" + getClass().toString()); // warn: unconditional
+        }
+        if (false) {
+            Log.d("Test", "Test" + getClass().toString()); // ok: never called
+        }
+    }
+
+    private static class Constants {
+        public static final String MY_MESSAGE = "My Message";
+        public static final int MY_LEVEL = 5;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LogDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LogDetector.testBasic`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LogTagMismatch")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LogTagMismatch")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LogTagMismatch
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LogTagMismatch" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LogTagMismatch'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LogTagMismatch ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

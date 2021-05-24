@@ -1,0 +1,229 @@
+<meta charset="utf-8">
+(#) Using left/right instead of start/end attributes
+
+!!! WARNING: Using left/right instead of start/end attributes
+   This is a warning.
+
+Id
+:   `RtlHardcoded`
+Summary
+:   Using left/right instead of start/end attributes
+Severity
+:   Warning
+Category
+:   Internationalization: Bidirectional Text
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files, manifest files and resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/RtlDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RtlDetectorTest.java)
+
+Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a
+layout is rendered in locales where text flows from right to left. Use
+`Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity`
+and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use
+`paddingStart` and `layout_marginStart`. **NOTE**: If your
+`minSdkVersion` is less than 17, you should add **both** the older
+left/right attributes **as well as** the new start/end attributes. On
+older platforms, where RTL is not supported and the start/end attributes
+are unknown and therefore ignored, you need the older left/right
+attributes. There is a separate lint check which catches that type of
+error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these
+constants even when targeting older platforms, because the `start`
+bitmask is a superset of the `left` bitmask. Therefore, you can use
+`gravity="start"` rather than `gravity="left|start"`.)
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/rtl.xml:14:Warning: Use "start" instead of "left" to ensure
+correct behavior in right-to-left locales [RtlHardcoded]
+
+    android:layout_gravity="left"
+                            ----
+
+
+res/layout/rtl.xml:22:Warning: Use "end" instead of "right" to ensure
+correct behavior in right-to-left locales [RtlHardcoded]
+
+    android:layout_gravity="right"
+                            -----
+
+
+res/layout/rtl.xml:30:Warning: Use "end" instead of "right" to ensure
+correct behavior in right-to-left locales [RtlHardcoded]
+
+    android:gravity="right"
+                     -----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/rtl.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText" &gt;
+
+    &lt;!-- Warn: Use start instead of left --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="Button" /&gt;
+
+    &lt;!-- Warn: Use end instead of right with layout_gravity --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Button" /&gt;
+
+    &lt;!-- Warn: Use end instead of right with gravity --&gt;
+
+    &lt;TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="TextView" /&gt;
+
+    &lt;!-- OK: No warning --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="Button" /&gt;
+
+    &lt;!-- OK: No warning --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Button" /&gt;
+
+    &lt;!-- OK: No warning --&gt;
+
+    &lt;TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="TextView" /&gt;
+
+    &lt;!-- OK: Suppressed --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Button"
+        tools:ignore="RtlHardcoded" /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RtlDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RtlDetector.testTarget17WithRtl`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="RtlHardcoded"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("RtlHardcoded")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("RtlHardcoded")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection RtlHardcoded
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="RtlHardcoded" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'RtlHardcoded'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore RtlHardcoded ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

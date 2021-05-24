@@ -1,0 +1,266 @@
+<meta charset="utf-8">
+(#) WorkManager Enqueue
+
+!!! WARNING: WorkManager Enqueue
+   This is a warning.
+
+Id
+:   `EnqueueWork`
+Summary
+:   WorkManager Enqueue
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WorkManagerDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WorkManagerDetectorTest.kt)
+
+`WorkContinuations` cannot be enqueued automatically.  You must call
+`enqueue()` on a `WorkContinuation` to have it and its parent
+continuations enqueued inside `WorkManager`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/WorkManagerTest.java:15:Warning: WorkContinuation cont not
+enqueued: did you forget to call enqueue()? [EnqueueWork]
+
+    WorkContinuation cont = workManager.beginWith(workRequest1, workRequest2); // ERROR
+                            -------------------------------------------------
+
+
+src/test/pkg/WorkManagerTest.java:22:Warning: WorkContinuation not
+enqueued: did you forget to call enqueue()? [EnqueueWork]
+
+    workManager.beginWith(workRequest1, workRequest2); // ERROR
+    -------------------------------------------------
+
+
+src/test/pkg/WorkManagerTest.java:46:Warning: WorkContinuation cont2 not
+enqueued: did you forget to call enqueue()? [EnqueueWork]
+
+    WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // ERROR
+                             -------------------------------------------
+
+
+src/test/pkg/WorkManagerTest.java:47:Warning: WorkContinuation cont3 not
+enqueued: did you forget to call enqueue()? [EnqueueWork]
+
+    WorkContinuation cont3 = cont1.then(workRequest5); // ERROR
+                             ------------------------
+
+
+src/test/pkg/WorkManagerTest.java:59:Warning: WorkContinuation cont4 not
+enqueued: did you forget to call enqueue()? [EnqueueWork]
+
+    WorkContinuation cont4 = WorkContinuation.combine(workRequest6, cont2, cont3); // ERROR
+                             ----------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/WorkManagerTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import androidx.work.WorkManager;
+import androidx.work.WorkContinuation;
+import androidx.work.OneTimeWorkRequest;import java.util.Arrays;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "unused"})
+public abstract class WorkManagerTest {
+    void someWork(OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont = workManager.beginWith(workRequest1, workRequest2); // ERROR
+        doSomeOtherStuff();
+        // cont needs to be enqueued before it goes out of scope
+    }
+
+    void someWork2(OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2) {
+        WorkManager workManager = WorkManager.getInstance();
+        workManager.beginWith(workRequest1, workRequest2); // ERROR
+        doSomeOtherStuff();
+    }
+
+    void someWork3(OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont = workManager.beginWith(workRequest1, workRequest2); // OK
+        doSomeOtherStuff();
+        cont.enqueue();
+    }
+
+    void someWork4(OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont = workManager.beginWith(workRequest1, workRequest2).enqueue(); // OK
+        doSomeOtherStuff();
+        cont.enqueue();
+    }
+
+    void someHarderWork(
+            OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2,
+            OneTimeWorkRequest workRequest3, OneTimeWorkRequest workRequest4,
+            OneTimeWorkRequest workRequest5) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont1 = workManager.beginWith(workRequest1, workRequest2); // OK
+        WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // ERROR
+        WorkContinuation cont3 = cont1.then(workRequest5); // ERROR
+        // cont2 and cont3 need to be enqueued before they go out of scope; cont1 does not
+    }
+
+    void someEvenHarderWork(
+            OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2,
+            OneTimeWorkRequest workRequest3, OneTimeWorkRequest workRequest4,
+            OneTimeWorkRequest workRequest5, OneTimeWorkRequest workRequest6) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont1 = workManager.beginWith(workRequest1, workRequest2); // OK
+        WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // OK
+        WorkContinuation cont3 = cont1.then(workRequest5); // OK
+        WorkContinuation cont4 = WorkContinuation.combine(workRequest6, cont2, cont3); // ERROR
+        // Only cont4 needs to be enqueued
+    }
+
+    void someEvenHarderWorkDoneProperly(
+            OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2,
+            OneTimeWorkRequest workRequest3, OneTimeWorkRequest workRequest4,
+            OneTimeWorkRequest workRequest5, OneTimeWorkRequest workRequest6) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont1 = workManager.beginWith(workRequest1, workRequest2); // OK
+        WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // OK
+        WorkContinuation cont3 = cont1.then(workRequest5); // OK
+        WorkContinuation cont4 = WorkContinuation.combine(workRequest6, cont2, cont3); // OK
+        cont4.enqueue();
+    }
+
+    void someEvenHarderWorkWithLists1(
+            OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2,
+            OneTimeWorkRequest workRequest3, OneTimeWorkRequest workRequest4,
+            OneTimeWorkRequest workRequest5, OneTimeWorkRequest workRequest6) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont1 = workManager.beginWith(workRequest1, workRequest2); // OK
+        WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // OK
+        WorkContinuation cont3 = cont1.then(workRequest5); // OK
+        List<WorkContinuation> continuations = new ArrayList<>();
+        continuations.add(cont2);
+        continuations.add(cont3);
+        WorkContinuation cont4 = WorkContinuation.combine(workRequest6, continuations); // OK
+        cont4.enqueue();
+    }
+
+    void someEvenHarderWorkWithLists2(
+            OneTimeWorkRequest workRequest1, OneTimeWorkRequest workRequest2,
+            OneTimeWorkRequest workRequest3, OneTimeWorkRequest workRequest4,
+            OneTimeWorkRequest workRequest5, OneTimeWorkRequest workRequest6) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont1 = workManager.beginWith(workRequest1, workRequest2); // OK
+        WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // OK
+        WorkContinuation cont3 = cont1.then(workRequest5); // OK
+        List<WorkContinuation> continuations = Arrays.asList(cont2, cont3);
+        WorkContinuation cont4 = WorkContinuation.combine(workRequest6, continuations); // OK
+        cont4.enqueue();
+    }
+
+    WorkContinuation someWorkThatIsReturned(
+            OneTimeWorkRequest workRequest1,
+            OneTimeWorkRequest workRequest2) {
+        WorkManager workManager = WorkManager.getInstance();
+        WorkContinuation cont1 = workManager.beginWith(workRequest1, workRequest2); // OK
+        return cont1;
+    }
+
+    private void doSomeOtherStuff() {
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WorkManagerDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WorkManagerDetector.testJava`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("EnqueueWork")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("EnqueueWork")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection EnqueueWork
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="EnqueueWork" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'EnqueueWork'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore EnqueueWork ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

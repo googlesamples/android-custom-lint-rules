@@ -1,0 +1,158 @@
+<meta charset="utf-8">
+(#) Annotation Processor on Compile Classpath
+
+!!! WARNING: Annotation Processor on Compile Classpath
+   This is a warning.
+
+Id
+:   `AnnotationProcessorOnCompilePath`
+Summary
+:   Annotation Processor on Compile Classpath
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+
+This dependency is identified as an annotation processor. Consider
+adding it to the processor path using `annotationProcessor` instead of
+including it to the
+compile path.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:2:Warning: Add annotation processor to processor path using
+annotationProcessor instead of api [AnnotationProcessorOnCompilePath]
+
+    api 'com.jakewharton:butterknife-compiler:10.1.0'
+    ---
+
+
+build.gradle:3:Warning: Add annotation processor to processor path using
+annotationProcessor instead of implementation
+[AnnotationProcessorOnCompilePath]
+
+    implementation 'com.github.bumptech.glide:compiler:4.9.0'
+    --------------
+
+
+build.gradle:4:Warning: Add annotation processor to processor path using
+annotationProcessor instead of compile
+[AnnotationProcessorOnCompilePath]
+
+    compile "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"
+    -------
+
+
+build.gradle:5:Warning: Add annotation processor to processor path using
+testAnnotationProcessor instead of testImplementation
+[AnnotationProcessorOnCompilePath]
+
+    testImplementation "com.google.auto.value:auto-value:1.6.2"
+    ------------------
+
+
+build.gradle:6:Warning: Add annotation processor to processor path using
+androidTestAnnotationProcessor instead of androidTestCompile
+[AnnotationProcessorOnCompilePath]
+
+    androidTestCompile "org.projectlombok:lombok:1.18.8"
+    ------------------
+
+
+build.gradle:8:Warning: Add annotation processor to processor path using
+debugAnnotationProcessor instead of debugCompile
+[AnnotationProcessorOnCompilePath]
+
+    debugCompile "android.arch.persistence.room:compiler:1.1.1"
+    ------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    api 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'com.github.bumptech.glide:compiler:4.9.0'
+    compile "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"
+    testImplementation "com.google.auto.value:auto-value:1.6.2"
+    androidTestCompile "org.projectlombok:lombok:1.18.8"
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    debugCompile "android.arch.persistence.room:compiler:1.1.1"
+    implementation "com.jakewharton:butterknife:10.1.0"
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testAnnotationProcessorOnCompilePath`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AnnotationProcessorOnCompilePath
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AnnotationProcessorOnCompilePath" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AnnotationProcessorOnCompilePath'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AnnotationProcessorOnCompilePath ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

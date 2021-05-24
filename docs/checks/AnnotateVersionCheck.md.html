@@ -1,0 +1,316 @@
+<meta charset="utf-8">
+(#) Annotate SDK_INT checks
+
+!!! WARNING: Annotate SDK_INT checks
+   This is a warning.
+
+Id
+:   `AnnotateVersionCheck`
+Summary
+:   Annotate SDK_INT checks
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SdkIntDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SdkIntDetectorTest.kt)
+
+Methods which perform `SDK_INT` version checks (or field constants which
+reflect the result of a version check) in libraries should be annotated
+with `@ChecksSdkIntAtLeast`. This makes it possible for lint to
+correctly check calls into the library later to correctly understand
+that problematic code which is wrapped within a call into this library
+is safe after all.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Utils.kt:12:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=VERSION_CODES.N) [AnnotateVersionCheck]
+
+fun isNougat1(): Boolean = VERSION.SDK_INT &gt;= VERSION_CODES.N // 1: Should be annotated
+    ---------
+
+
+src/test/pkg/Utils.kt:14:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=VERSION_CODES.N) [AnnotateVersionCheck]
+
+fun isNougat2(): Boolean { // 2: Should be annotated
+    ---------
+
+
+src/test/pkg/Utils.kt:18:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(parameter=0) [AnnotateVersionCheck]
+
+fun isAtLeast2(api: Int): Boolean { // 3: Should be annotated
+    ----------
+
+
+src/test/pkg/Utils.kt:22:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(parameter=0) [AnnotateVersionCheck]
+
+fun isAtLeast2g(api: Int): Boolean = VERSION.SDK_INT &gt;= api  // 4: Should be annotated
+    -----------
+
+
+src/test/pkg/Utils.kt:25:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+[AnnotateVersionCheck]
+
+    val isIcs: Boolean // 5: Should be annotated
+        -----
+
+
+src/test/pkg/Utils.kt:27:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=Build.VERSION_CODES.GINGERBREAD)
+[AnnotateVersionCheck]
+
+    val isGingerbread: Boolean // 6: Should be annotated
+        -------------
+
+
+src/test/pkg/Utils.kt:31:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=Build.VERSION_CODES.O, lambda=1)
+[AnnotateVersionCheck]
+
+inline fun &lt;T&gt; T.applyForOreoOrAbove(block: T.() -&gt; Unit): T { // 7: Should be annotated
+                 -------------------
+
+
+src/test/pkg/Utils.kt:38:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=Build.VERSION_CODES.O, lambda=1)
+[AnnotateVersionCheck]
+
+inline fun &lt;T&gt; T.applyForOreoOrAbove2(block: T.() -&gt; Unit): Unit { // 8: Should be annotated
+                 --------------------
+
+
+src/test/pkg/Utils.kt:46:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(parameter=0, lambda=1) [AnnotateVersionCheck]
+
+inline fun &lt;T&gt; sdk(level: Int, func: () -&gt; T): T? { // 9: Should be annotated
+               ---
+
+
+src/test/pkg/Utils.kt:54:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(parameter=0, lambda=1) [AnnotateVersionCheck]
+
+inline fun &lt;T&gt; sdk2(level: Int, func: () -&gt; T): T? = // 10: Should be annotated
+               ----
+
+
+src/test/pkg/Utils.kt:61:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(parameter=0, lambda=1) [AnnotateVersionCheck]
+
+inline fun fromApi(value: Int, action: () -&gt; Unit) { // 11: Should be annotated
+           -------
+
+
+src/test/pkg/Utils.kt:67:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(parameter=0, lambda=1) [AnnotateVersionCheck]
+
+fun fromApiNonInline(value: Int, action: () -&gt; Unit) { // 12: Should be annotated
+    ----------------
+
+
+src/test/pkg/Utils.kt:79:Warning: This method should be annotated with
+@ChecksSdkIntAtLeast(api=android.os.Build.VERSION_CODES.N_MR1)
+[AnnotateVersionCheck]
+
+fun isAfterNougat(): Boolean { // 14: Should be annotated
+    -------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Utils.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+@file:Suppress("unused", "RemoveRedundantQualifierName")
+
+package test.pkg
+
+import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES
+import androidx.annotation.ChecksSdkIntAtLeast
+import androidx.core.os.BuildCompat
+
+fun isNougat1(): Boolean = VERSION.SDK_INT >= VERSION_CODES.N // 1: Should be annotated
+
+fun isNougat2(): Boolean { // 2: Should be annotated
+    return VERSION.SDK_INT >= VERSION_CODES.N
+}
+
+fun isAtLeast2(api: Int): Boolean { // 3: Should be annotated
+    return VERSION.SDK_INT >= api
+}
+
+fun isAtLeast2g(api: Int): Boolean = VERSION.SDK_INT >= api  // 4: Should be annotated
+
+private object Utils {
+    val isIcs: Boolean // 5: Should be annotated
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
+    val isGingerbread: Boolean // 6: Should be annotated
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD
+}
+
+inline fun <T> T.applyForOreoOrAbove(block: T.() -> Unit): T { // 7: Should be annotated
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        block()
+    }
+    return this
+}
+
+inline fun <T> T.applyForOreoOrAbove2(block: T.() -> Unit): Unit { // 8: Should be annotated
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        block()
+    } else {
+        error("Unexpected")
+    }
+}
+
+inline fun <T> sdk(level: Int, func: () -> T): T? { // 9: Should be annotated
+    return if (Build.VERSION.SDK_INT >= level) {
+        func()
+    } else {
+        null
+    }
+}
+
+inline fun <T> sdk2(level: Int, func: () -> T): T? = // 10: Should be annotated
+    if (Build.VERSION.SDK_INT >= level) {
+        func()
+    } else {
+        null
+    }
+
+inline fun fromApi(value: Int, action: () -> Unit) { // 11: Should be annotated
+    if (Build.VERSION.SDK_INT >= value) {
+        action()
+    }
+}
+
+fun fromApiNonInline(value: Int, action: () -> Unit) { // 12: Should be annotated
+    if (Build.VERSION.SDK_INT >= value) {
+        action()
+    }
+}
+
+inline fun notFromApi(value: Int, action: () -> Unit) { // 13: Suggest in the future?
+    if (Build.VERSION.SDK_INT < value) {
+        action()
+    }
+}
+
+fun isAfterNougat(): Boolean { // 14: Should be annotated
+    return VERSION.SDK_INT > VERSION_CODES.N
+}
+
+@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N)
+fun isNougat3(): Boolean {  // Should NOT annotate (already annotateD)
+    return VERSION.SDK_INT >= VERSION_CODES.N
+}
+
+private var unrelated: Boolean = false
+fun unrelated(): Boolean {
+    unrelated = SDK_INT > VERSION_CODES.N; return false; } // Should NOT annotate
+
+fun isAtLeastN(): Boolean { // 15: Could annotate in the future
+    return BuildCompat.isAtLeastN()
+}
+
+fun isAtLeastN2(): Boolean = BuildCompat.isAtLeastN() // 16: Could annotate in the future
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SdkIntDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SdkIntDetector.testChecksSdkIntAtLeast`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AnnotateVersionCheck")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AnnotateVersionCheck")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AnnotateVersionCheck
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AnnotateVersionCheck" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AnnotateVersionCheck'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AnnotateVersionCheck ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

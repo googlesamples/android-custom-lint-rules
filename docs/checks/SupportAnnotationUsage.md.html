@@ -1,0 +1,275 @@
+<meta charset="utf-8">
+(#) Incorrect support annotation usage
+
+!!! ERROR: Incorrect support annotation usage
+   This is an error.
+
+Id
+:   `SupportAnnotationUsage`
+Summary
+:   Incorrect support annotation usage
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+
+This lint check makes sure that the support annotations (such as
+`@IntDef` and `@ColorInt`) are used correctly. For example, it's an
+error to specify an `@IntRange` where the `from` value is higher than
+the `to` value.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/WrongUsages.java:34:Error: This annotation does not apply
+for type String; expected int or long [SupportAnnotationUsage]
+
+    @DialogStyle
+    ------------
+
+
+src/test/pkg/WrongUsages.java:39:Error: This annotation does not apply
+for type String; expected int or long [SupportAnnotationUsage]
+
+    @IntRange(from = 1, to = 0)
+    ---------------------------
+
+
+src/test/pkg/WrongUsages.java:40:Error: Invalid size range: the min
+attribute must be less than the max attribute [SupportAnnotationUsage]
+
+    @Size(min=10, max = 8)
+    ----------------------
+
+
+src/test/pkg/WrongUsages.java:45:Error: This annotation does not apply
+for type String; expected float or double [SupportAnnotationUsage]
+
+    @FloatRange(from = 1.0, to = 0.0)
+    ---------------------------------
+
+
+src/test/pkg/WrongUsages.java:46:Error: This annotation does not apply
+for type String; expected int or long [SupportAnnotationUsage]
+
+    @ColorInt
+    ---------
+
+
+src/test/pkg/WrongUsages.java:47:Error: The size multiple must be at
+least 1 [SupportAnnotationUsage]
+
+    @Size(multiple=0)
+    -----------------
+
+
+src/test/pkg/WrongUsages.java:48:Error: This annotation does not apply
+for type String; expected int or long [SupportAnnotationUsage]
+
+    @DrawableRes
+    ------------
+
+
+src/test/pkg/WrongUsages.java:53:Error: The size can't be negative
+[SupportAnnotationUsage]
+
+    @Size(-5)
+    ---------
+
+
+src/test/pkg/WrongUsages.java:58:Error: For methods, permission
+annotation should specify one of value, anyOf or allOf
+[SupportAnnotationUsage]
+
+    @RequiresPermission
+    -------------------
+
+
+src/test/pkg/WrongUsages.java:63:Error: Only specify one of value, anyOf
+or allOf [SupportAnnotationUsage]
+
+    @RequiresPermission(allOf = {"my.permission.PERM1","my.permission.PERM2"},anyOf = {"my.permission.PERM1","my.permission.PERM2"})
+    --------------------------------------------------------------------------------------------------------------------------------
+
+
+src/test/pkg/WrongUsages.java:64:Error: @CheckResult should not be
+specified on void methods [SupportAnnotationUsage]
+
+    @CheckResult // Error on void methods
+    ------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/WrongUsages.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+
+package test.pkg;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
+import android.support.annotation.FloatRange;
+import android.support.annotation.CheckResult;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Size;
+import android.support.annotation.RequiresPermission;
+import android.annotation.SuppressLint;
+import java.lang.annotation.*;
+import java.util.List;
+@SuppressLint("UnusedDeclaration")
+public class WrongUsages {
+    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface DialogStyle {}
+    public static final int STYLE_NORMAL = 0;
+    public static final int STYLE_NO_TITLE = 1;
+    public static final int STYLE_NO_FRAME = 2;
+    public static final int STYLE_NO_INPUT = 3;
+
+    @DialogStyle
+    public int okay1() {
+        return 0;
+    }
+
+    @DialogStyle
+    public long okay2() {
+        return 0;
+    }
+
+    @DialogStyle
+    public String wrong() {
+        return null;
+    }
+
+    @IntRange(from = 1, to = 0)
+    @Size(min=10, max = 8)
+    public String wrongIntRange() {
+        return null;
+    }
+
+    @FloatRange(from = 1.0, to = 0.0)
+    @ColorInt
+    @Size(multiple=0)
+    @DrawableRes
+    public String wrongFloatRange() {
+        return null;
+    }
+
+    @Size(-5)
+    public int[] wrongSize() {
+        return null;
+    }
+
+    @RequiresPermission
+    public void wrongPermission(
+        @RequiresPermission int allowed) { // OK
+    }
+
+    @RequiresPermission(allOf = {"my.permission.PERM1","my.permission.PERM2"},anyOf = {"my.permission.PERM1","my.permission.PERM2"})
+    @CheckResult // Error on void methods
+    public void wrongPermission2() {
+    }
+
+    public void autoBoxing(@DrawableRes Integer param1) { }
+    public void array(@DrawableRes int[] param1) { }
+    public void varargs(@DrawableRes int... param1) { }
+    public void varargs(@DrawableRes List<Integer> param1) { }
+
+
+    @Size(min=1)
+    public int[] okSize() {
+        return null;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AnnotationDetector.testWrongUsages`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SupportAnnotationUsage")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SupportAnnotationUsage")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SupportAnnotationUsage
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SupportAnnotationUsage" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SupportAnnotationUsage'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SupportAnnotationUsage ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

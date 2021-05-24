@@ -1,0 +1,139 @@
+<meta charset="utf-8">
+(#) Valid Network Security Config File
+
+!!! ERROR: Valid Network Security Config File
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `NetworkSecurityConfig`
+Summary
+:   Valid Network Security Config File
+Severity
+:   Fatal
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/preview/features/security-config.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/NetworkSecurityConfigDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NetworkSecurityConfigDetectorTest.java)
+
+Ensures that a `<network-security-config>` file, which is pointed to by
+an `android:networkSecurityConfig` attribute in the manifest file, is
+valid.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/xml/network_config.xml:4:Error: Unexpected element <include>
+[NetworkSecurityConfig]
+
+    &lt;include domain="file"/&gt;
+     -------
+
+
+res/xml/network_config.xml:7:Error: Nested <domain-config> elements are
+not allowed in base-config [NetworkSecurityConfig]
+
+    &lt;domain-config&gt;
+     -------------
+
+
+res/xml/network_config.xml:12:Error: No <domain> elements in
+<domain-config> [NetworkSecurityConfig]
+
+    &lt;domain-config&gt;
+     -------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/xml/network_config.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;network-security-config&gt;
+     &lt;!-- Invalid element as child. --&gt;
+     &lt;include domain="file"/&gt;
+     &lt;!-- Invalid base-config with nested domain-config element --&gt;
+     &lt;base-config&gt;
+         &lt;domain-config&gt;
+             &lt;domain&gt;android.com&lt;/domain&gt;
+         &lt;/domain-config&gt;
+     &lt;/base-config&gt;
+     &lt;!-- Invalid domain-config without domain child element --&gt;
+     &lt;domain-config&gt;
+     &lt;/domain-config&gt;
+&lt;/network-security-config&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NetworkSecurityConfigDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `NetworkSecurityConfigDetector.testInvalidElementAndMissingDomain`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="NetworkSecurityConfig"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="NetworkSecurityConfig" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'NetworkSecurityConfig'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore NetworkSecurityConfig ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

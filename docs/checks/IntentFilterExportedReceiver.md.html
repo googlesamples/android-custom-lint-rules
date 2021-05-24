@@ -1,0 +1,138 @@
+<meta charset="utf-8">
+(#) Unspecified `android:exported` in manifest
+
+!!! WARNING: Unspecified `android:exported` in manifest
+   This is a warning.
+
+Id
+:   `IntentFilterExportedReceiver`
+Summary
+:   Unspecified `android:exported` in manifest
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ExportedReceiverDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ExportedReceiverDetectorTest.kt)
+
+Apps targeting Android 12 and higher are required to specify an explicit
+value for `android:exported` when the corresponding component has an
+intent filter defined. Otherwise, installation will fail.
+
+Previously, `android:exported` for components without any intent filters
+present used to default to `false`, and when intent filters were
+present, the default was `true`. Defaults which change value based on
+other values are confusing and lead to apps accidentally exporting
+components as a side-effect of adding intent filters. This is a security
+risk, and we have made this change to avoid introducing accidental
+vulnerabilities.
+
+While the default without intent filters remains unchanged, it is now
+required to explicitly specify a value when intent filters are present.
+Any app failing to meet this requirement will fail to install on any
+Android version after Android 11.
+
+We recommend setting `android:exported` to false (even on previous
+versions of Android prior to this requirement) unless you have a good
+reason to export a particular component.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:7:Warning: When using intent filters, please specify
+android:exported as well [IntentFilterExportedReceiver]
+
+    &lt;receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver"&gt;
+     --------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"&gt;
+    &lt;uses-sdk android:minSdkVersion="30"/&gt;
+    &lt;application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" &gt;
+        &lt;receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver"&gt;
+          &lt;intent-filter&gt;
+            &lt;action android:name="com.google.android.c2dm.intent.RECEIVE"/&gt;
+            &lt;action android:name="com.google.android.c2dm.intent.REGISTRATION"/&gt;
+        &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ExportedReceiverDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ExportedReceiverDetector.testNoExportReceiver`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="IntentFilterExportedReceiver"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="IntentFilterExportedReceiver" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'IntentFilterExportedReceiver'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore IntentFilterExportedReceiver ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,166 @@
+<meta charset="utf-8">
+(#) Insecure HostnameVerifier
+
+!!! WARNING: Insecure HostnameVerifier
+   This is a warning.
+
+Id
+:   `BadHostnameVerifier`
+Summary
+:   Insecure HostnameVerifier
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/BadHostnameVerifierDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BadHostnameVerifierDetectorTest.java)
+
+This check looks for implementations of `HostnameVerifier` whose
+`verify` method always returns true (thus trusting any hostname) which
+could result in insecure network traffic caused by trusting arbitrary
+hostnames in TLS/SSL certificates presented by peers.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/InsecureHostnameVerifier.java:9:Warning: verify always
+returns true, which could cause insecure network traffic due to trusting
+TLS/SSL server certificates for wrong hostnames [BadHostnameVerifier]
+
+    public boolean verify(String hostname, SSLSession session) {
+                   ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/InsecureHostnameVerifier.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
+public abstract class InsecureHostnameVerifier  {
+    HostnameVerifier allowAll = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    };
+
+    HostnameVerifier allowAll2 = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            boolean returnValue = true;
+            if (true) {
+                int irrelevant = 5;
+                if (irrelevant > 6) {
+                    return returnValue;
+                }
+            }
+            return returnValue;
+        }
+    };
+
+    HostnameVerifier unknown = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            boolean returnValue = true;
+            if (hostname.contains("something")) {
+                returnValue = false;
+            }
+            return returnValue;
+        }
+    };
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BadHostnameVerifierDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `BadHostnameVerifierDetector.testBroken`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("BadHostnameVerifier")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("BadHostnameVerifier")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection BadHostnameVerifier
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="BadHostnameVerifier" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'BadHostnameVerifier'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore BadHostnameVerifier ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

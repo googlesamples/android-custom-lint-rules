@@ -1,0 +1,169 @@
+<meta charset="utf-8">
+(#) Using 'px' dimension
+
+!!! WARNING: Using 'px' dimension
+   This is a warning.
+
+Id
+:   `PxUsage`
+Summary
+:   Using 'px' dimension
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/practices/screens_support.html#screen-independence
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PxUsageDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PxUsageDetectorTest.java)
+
+For performance reasons and to keep the code simpler, the Android system
+uses pixels as the standard unit for expressing dimension or coordinate
+values. That means that the dimensions of a view are always expressed in
+the code using pixels, but always based on the current screen density.
+For instance, if `myView.getWidth()` returns 10, the view is 10 pixels
+wide on the current screen, but on a device with a higher density
+screen, the value returned might be 15. If you use pixel values in your
+application code to work with bitmaps that are not pre-scaled for the
+current screen density, you might need to scale the pixel values that
+you use in your code to match the un-scaled bitmap source.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/now_playing_after.xml:41:Warning: Avoid using "px" as units;
+use "dp" instead [PxUsage]
+
+    android:layout_width="2px"
+    --------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/now_playing_after.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/now_playing"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/now_playing_height"
+    android:orientation="horizontal"&gt;
+    &lt;LinearLayout
+        android:background="@color/background2"
+        android:paddingLeft="14dip"
+        android:paddingRight="14dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"&gt;
+        &lt;TextView
+            android:id="@+id/now_playing_title"
+            android:duplicateParentState="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_large"
+            android:textColor="@color/foreground1"
+            android:text="@string/now_playing_after_title"
+            android:maxLines="2"
+            android:ellipsize="end" /&gt;
+        &lt;TextView
+            android:id="@+id/now_playing_subtitle"
+            android:duplicateParentState="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dip"
+            android:textColor="@color/foreground2"
+            android:textSize="@dimen/text_size_small"
+            android:text="@string/now_playing_after_subtitle"
+            android:singleLine="true"
+            android:ellipsize="end" /&gt;
+    &lt;/LinearLayout&gt;
+    &lt;View
+        android:layout_width="2px"
+        android:layout_height="fill_parent"
+        android:background="@android:color/white" /&gt;
+    &lt;ImageButton
+        android:background="@drawable/btn_now_playing_more"
+        android:id="@+id/now_playing_more"
+        android:src="@drawable/ic_now_playing_logo"
+        android:padding="12dip"
+        android:layout_width="100mm"
+        android:layout_height="120in"
+        android:onClick="onNowPlayingLogoClick"
+        android:maxHeight="1px"
+        android:scaleType="center" /&gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PxUsageDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `PxUsageDetector.testPxWarnings`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="PxUsage"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="PxUsage" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'PxUsage'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore PxUsage ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

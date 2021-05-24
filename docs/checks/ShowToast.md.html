@@ -1,0 +1,212 @@
+<meta charset="utf-8">
+(#) Toast created but not shown
+
+!!! WARNING: Toast created but not shown
+   This is a warning.
+
+Id
+:   `ShowToast`
+Summary
+:   Toast created but not shown
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ToastDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ToastDetectorTest.kt)
+
+`Toast.makeText()` creates a `Toast` but does **not** show it. You must
+call `show()` on the resulting object to actually make the `Toast`
+appear.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/ToastTest.java:32:Warning: Toast created but not shown: did
+you forget to call show() ? [ShowToast]
+
+    Toast.makeText(context, "foo", Toast.LENGTH_LONG);
+    --------------
+
+
+src/test/pkg/ToastTest.java:33:Warning: Toast created but not shown: did
+you forget to call show() ? [ShowToast]
+
+    Toast toast = Toast.makeText(context, R.string.app_name, 5000);
+                  --------------
+
+
+src/test/pkg/ToastTest.java:39:Warning: Toast created but not shown: did
+you forget to call show() ? [ShowToast]
+
+    Toast.makeText(context, "foo", Toast.LENGTH_LONG);
+    --------------
+
+
+src/test/pkg/ToastTest.java:54:Warning: Toast created but not shown: did
+you forget to call show() ? [ShowToast]
+
+    Toast toast2 = Toast.makeText(context, "foo", Toast.LENGTH_LONG); // not shown
+                   --------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/ToastTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.widget.Toast;
+
+@SuppressWarnings("ClassNameDiffersFromFileName")
+public abstract class ToastTest extends Context {
+    private Toast createToast(Context context) {
+        // Don't warn here
+        return Toast.makeText(context, "foo", Toast.LENGTH_LONG);
+    }
+
+    private void showToast(Context context) {
+        // Don't warn here
+        Toast toast = Toast.makeText(context, "foo", Toast.LENGTH_LONG);
+        System.out.println("Other intermediate code here");
+        int temp = 5 + 2;
+        toast.show();
+    }
+
+    private void showToast2(Context context) {
+        // Don't warn here
+        int duration = Toast.LENGTH_LONG;
+        Toast.makeText(context, "foo", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, R.string.app_name, duration).show();
+    }
+
+    private void broken(Context context) {
+        // Errors
+        Toast.makeText(context, "foo", Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, R.string.app_name, 5000);
+        toast.getDuration();
+    }
+
+    // Constructor test
+    public ToastTest(Context context) {
+        Toast.makeText(context, "foo", Toast.LENGTH_LONG);
+    }
+
+    @android.annotation.SuppressLint("ShowToast")
+    private void checkSuppress1(Context context) {
+        Toast toast = Toast.makeText(this, "MyToast", Toast.LENGTH_LONG);
+    }
+
+    private void checkSuppress2(Context context) {
+        @android.annotation.SuppressLint("ShowToast")
+        Toast toast = Toast.makeText(this, "MyToast", Toast.LENGTH_LONG);
+    }
+
+    private void showToastWrongInstance(Context context) {
+        Toast toast1 = Toast.makeText(context, "foo", Toast.LENGTH_LONG); // OK
+        Toast toast2 = Toast.makeText(context, "foo", Toast.LENGTH_LONG); // not shown
+        toast1.show();
+    }
+
+    public static final class R {
+        public static final class string {
+            public static final int app_name = 0x7f0a0000;
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ToastDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ToastDetector.testJava`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ShowToast")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ShowToast")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ShowToast
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ShowToast" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ShowToast'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ShowToast ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

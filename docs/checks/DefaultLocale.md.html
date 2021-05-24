@@ -1,0 +1,242 @@
+<meta charset="utf-8">
+(#) Implied default locale in case conversion
+
+!!! WARNING: Implied default locale in case conversion
+   This is a warning.
+
+Id
+:   `DefaultLocale`
+Summary
+:   Implied default locale in case conversion
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/java/util/Locale.html#default_locale
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LocaleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LocaleDetectorTest.kt)
+
+Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying
+an explicit locale** is a common source of bugs. The reason for that is
+that those methods will use the current locale on the user's device, and
+even though the code appears to work correctly when you are developing
+the app, it will fail in some locales. For example, in the Turkish
+locale, the uppercase replacement for `i` is **not** `I`.
+
+If you want the methods to just perform ASCII replacement, for example
+to convert an enum name, call `String#toUpperCase(Locale.US)` instead.
+If you really want to use the current locale, call
+`String#toUpperCase(Locale.getDefault())` instead.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/LocaleTest.java:11:Warning: Implicitly using the default
+locale is a common source of bugs: Use toUpperCase(Locale) instead. For
+strings meant to be internal use Locale.ROOT, otherwise
+Locale.getDefault(). [DefaultLocale]
+
+    System.out.println("WRONG".toUpperCase());
+                               -----------
+
+
+src/test/pkg/LocaleTest.java:16:Warning: Implicitly using the default
+locale is a common source of bugs: Use toLowerCase(Locale) instead. For
+strings meant to be internal use Locale.ROOT, otherwise
+Locale.getDefault(). [DefaultLocale]
+
+    System.out.println("WRONG".toLowerCase());
+                               -----------
+
+
+src/test/pkg/LocaleTest.java:20:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %f", 1.0f); // Implies locale
+    --------------------------------
+
+
+src/test/pkg/LocaleTest.java:21:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %1$f", 1.0f);
+    ----------------------------------
+
+
+src/test/pkg/LocaleTest.java:22:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %e", 1.0f);
+    --------------------------------
+
+
+src/test/pkg/LocaleTest.java:23:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %d", 1.0f);
+    --------------------------------
+
+
+src/test/pkg/LocaleTest.java:24:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %g", 1.0f);
+    --------------------------------
+
+
+src/test/pkg/LocaleTest.java:25:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %g", 1.0f);
+    --------------------------------
+
+
+src/test/pkg/LocaleTest.java:26:Warning: Implicitly using the default
+locale is a common source of bugs: Use String.format(Locale, ...)
+instead [DefaultLocale]
+
+    String.format("WRONG: %1$tm %1$te,%1$tY",
+    ^
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/LocaleTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.text.*;
+import java.util.*;
+@SuppressWarnings({"ResultOfMethodCallIgnored", "MalformedFormatString", "MethodMayBeStatic", "ResultOfObjectAllocationIgnored", "SimpleDateFormatWithoutLocale", "StringToUpperCaseOrToLowerCaseWithoutLocale", "ClassNameDiffersFromFileName"})
+public class LocaleTest {
+    public void testStrings() {
+        System.out.println("OK".toUpperCase(Locale.getDefault()));
+        System.out.println("OK".toUpperCase(Locale.US));
+        System.out.println("OK".toUpperCase(Locale.CHINA));
+        System.out.println("WRONG".toUpperCase());
+
+        System.out.println("OK".toLowerCase(Locale.getDefault()));
+        System.out.println("OK".toLowerCase(Locale.US));
+        System.out.println("OK".toLowerCase(Locale.CHINA));
+        System.out.println("WRONG".toLowerCase());
+
+        String.format(Locale.getDefault(), "OK: %f", 1.0f);
+        String.format("OK: %x %A %c %b %B %h %n %%", 1, 2, 'c', true, false, 5);
+        String.format("WRONG: %f", 1.0f); // Implies locale
+        String.format("WRONG: %1$f", 1.0f);
+        String.format("WRONG: %e", 1.0f);
+        String.format("WRONG: %d", 1.0f);
+        String.format("WRONG: %g", 1.0f);
+        String.format("WRONG: %g", 1.0f);
+        String.format("WRONG: %1$tm %1$te,%1$tY",
+                new GregorianCalendar(2012, GregorianCalendar.AUGUST, 27));
+    }
+
+    @android.annotation.SuppressLint("NewApi") // DateFormatSymbols requires API 9
+    public void testSimpleDateFormat() {
+        new SimpleDateFormat(); // WRONG
+        new SimpleDateFormat("yyyy-MM-dd"); // WRONG
+        new SimpleDateFormat("yyyy-MM-dd", DateFormatSymbols.getInstance()); // WRONG
+        new SimpleDateFormat("yyyy-MM-dd", Locale.US); // OK
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LocaleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LocaleDetector.testBasic`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("DefaultLocale")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("DefaultLocale")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection DefaultLocale
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DefaultLocale" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DefaultLocale'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DefaultLocale ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

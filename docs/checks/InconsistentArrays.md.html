@@ -1,0 +1,140 @@
+<meta charset="utf-8">
+(#) Inconsistencies in array element counts
+
+!!! WARNING: Inconsistencies in array element counts
+   This is a warning.
+
+Id
+:   `InconsistentArrays`
+Summary
+:   Inconsistencies in array element counts
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ArraySizeDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ArraySizeDetectorTest.kt)
+
+When an array is translated in a different locale, it should normally
+have the same number of elements as the original array. When adding or
+removing elements to an array, it is easy to forget to update all the
+locales, and this lint warning finds inconsistencies like these.
+
+Note however that there may be cases where you really want to declare a
+different number of array items in each configuration (for example where
+the array represents available options, and those options differ for
+different layout orientations and so on), so use your own judgement to
+decide if this is really an error.
+
+You can suppress this error type if it finds false errors in your
+project.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values/arrays.xml:3:Warning: Array security_questions has an
+inconsistent number of items (3 in values-nl-rNL/arrays.xml, 4 in
+values-cs/arrays.xml) [InconsistentArrays]
+
+    &lt;string-array name="security_questions"&gt;
+    ^
+
+
+res/values/arrays.xml:10:Warning: Array signal_strength has an
+inconsistent number of items (5 in values/arrays.xml, 6 in
+values-land/arrays.xml) [InconsistentArrays]
+
+    &lt;array name="signal_strength"&gt;
+    ^
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values/arrays.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;!-- Choices for Locations in SetupWizard's Set Time and Data Activity --&gt;
+    &lt;string-array name="security_questions"&gt;
+        &lt;item&gt;Favorite food?&lt;/item&gt;
+        &lt;item&gt;City of birth?&lt;/item&gt;
+        &lt;item&gt;Best childhood friend\'s name?&lt;/item&gt;
+        &lt;item&gt;Highschool name?&lt;/item&gt;
+    &lt;/string-array&gt;
+
+    &lt;array name="signal_strength"&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_0&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_1&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_2&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_3&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_4&lt;/item&gt;
+    &lt;/array&gt;
+&lt;/resources&gt;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ArraySizeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ArraySizeDetector.testArraySizes`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="InconsistentArrays"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="InconsistentArrays" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'InconsistentArrays'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore InconsistentArrays ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

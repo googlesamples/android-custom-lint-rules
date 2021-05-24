@@ -1,0 +1,414 @@
+<meta charset="utf-8">
+(#) Likely cut & paste mistakes
+
+!!! WARNING: Likely cut & paste mistakes
+   This is a warning.
+
+Id
+:   `CutPasteId`
+Summary
+:   Likely cut & paste mistakes
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CutPasteDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CutPasteDetectorTest.java)
+
+This lint check looks for cases where you have cut & pasted calls to
+`findViewById` but have forgotten to update the R.id field. It's
+possible that your code is simply (redundantly) looking up the field
+repeatedly, but lint cannot distinguish that from a case where you for
+example want to initialize fields `prev` and `next` and you cut & pasted
+`findViewById(R.id.prev)` and forgot to update the second initialization
+to `R.id.next`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/PasteError.java:22:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    View view2 = findViewById(R.id.duplicated);
+                 -----------------------------
+
+
+src/test/pkg/PasteError.java:78:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    view2 = findViewById(R.id.duplicated);
+            -----------------------------
+
+
+src/test/pkg/PasteError.java:85:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    view2 = findViewById(R.id.duplicated);
+            -----------------------------
+
+
+src/test/pkg/PasteError.java:93:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    view2 = findViewById(R.id.duplicated);
+            -----------------------------
+
+
+src/test/pkg/PasteError.java:102:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    view2 = findViewById(R.id.duplicated);
+            -----------------------------
+
+
+src/test/pkg/PasteError.java:148:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    TextView sectionTitleView = (TextView) root.findViewById(R.id.duplicated);
+                                           ----------------------------------
+
+
+src/test/pkg/PasteError.java:162:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    TextView sectionTitleView = (TextView) root.findViewById(R.id.duplicated);
+                                           ----------------------------------
+
+
+src/test/pkg/PasteError.java:171:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    view2 = findViewById(R.id.duplicated);
+            -----------------------------
+
+
+src/test/pkg/PasteError.java:182:Warning: The id R.id.duplicated has
+already been looked up in this method; possible cut & paste error?
+[CutPasteId]
+
+    view2 = requireViewById(R.id.duplicated);
+            --------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/PasteError.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+@SuppressWarnings({"ConstantConditions", "UnnecessaryLocalVariable", "ConstantIfStatement",
+        "StatementWithEmptyBody", "FieldCanBeLocal", "unused", "UnusedAssignment"})
+public class PasteError extends Activity {
+    protected void ok() {
+        Button button1 = (Button) findViewById(R.id.textView1);
+        mView2 = findViewById(R.id.textView2);
+        View view3 = findViewById(R.id.activity_main);
+    }
+
+    protected void error() {
+        View view1 = findViewById(R.id.duplicated);
+        View view2 = findViewById(R.id.duplicated);
+        View view3 = findViewById(R.id.ok);
+    }
+
+    protected void ok2() {
+        View view1;
+        if (true) {
+            view1 = findViewById(R.id.ok);
+        } else {
+            view1 = findViewById(R.id.ok);
+        }
+    }
+
+    @SuppressLint("CutPasteId")
+    protected void suppressed() {
+        View view1 = findViewById(R.id.duplicated);
+        View view2 = findViewById(R.id.duplicated);
+    }
+
+    private void ok3() {
+        if (view == null || view.findViewById(R.id.city_name) == null) {
+            view = mInflater.inflate(R.layout.city_list_item, parent, false);
+        }
+        TextView name = (TextView) view.findViewById(R.id.city_name);
+    }
+
+    private void ok4() {
+        mPrevAlbumWrapper = mPrevTrackLayout.findViewById(R.id.album_wrapper);
+        mNextAlbumWrapper = mNextTrackLayout.findViewById(R.id.album_wrapper);
+    }
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View listItem = convertView;
+        if (getItemViewType(position) == VIEW_TYPE_HEADER) {
+            TextView header = (TextView) listItem.findViewById(R.id.name);
+        } else if (getItemViewType(position) == VIEW_TYPE_BOOLEAN) {
+            TextView filterName = (TextView) listItem.findViewById(R.id.name);
+        } else {
+            TextView filterName = (TextView) listItem.findViewById(R.id.name);
+        }
+        return null;
+    }
+
+    protected void ok_branch_1() {
+        if (true) {
+            view1 = findViewById(R.id.ok);
+        } else {
+            view2 = findViewById(R.id.ok);
+        }
+    }
+
+    protected void error_branch_1() {
+        if (true) {
+            view1 = findViewById(R.id.duplicated);
+        }
+        if (true) {
+            view2 = findViewById(R.id.duplicated);
+        }
+    }
+
+    protected void error_branch_2() {
+        view1 = findViewById(R.id.duplicated);
+        if (true) {
+            view2 = findViewById(R.id.duplicated);
+        }
+    }
+
+    protected void error_branch_3() {
+        view1 = findViewById(R.id.duplicated);
+        if (true) {
+        } else {
+            view2 = findViewById(R.id.duplicated);
+        }
+    }
+
+    protected void error_branch_4() {
+        view1 = findViewById(R.id.duplicated);
+        if (true) {
+        } else {
+            if (true) {
+                view2 = findViewById(R.id.duplicated);
+            }
+        }
+    }
+
+    protected void ok_branch_2() {
+        if (true) {
+            view1 = findViewById(R.id.ok);
+        } else {
+            if (true) {
+                view2 = findViewById(R.id.ok);
+            }
+        }
+    }
+
+    protected void ok_branch3() {
+        if (true) {
+            view1 = findViewById(R.id.ok);
+            return;
+        }
+        if (true) {
+            view2 = findViewById(R.id.ok);
+        }
+    }
+
+    public static void ok_switch(View root, int position) {
+        // mutually exclusive branches
+        switch (position) {
+            case 0: {
+                TextView titleView = (TextView) root.findViewById(R.id.ok);
+            }
+            break;
+            default: {
+                TextView sectionTitleView = (TextView) root.findViewById(R.id.ok);
+            }
+            break;
+        }
+    }
+
+    public static void error_switch_fallthrough(View root, int position) {
+        switch (position) {
+            case 0: {
+                TextView titleView = (TextView) root.findViewById(R.id.duplicated);
+                // fallthrough!
+            }
+            default: {
+                TextView sectionTitleView = (TextView) root.findViewById(R.id.duplicated);
+            }
+            break;
+        }
+    }
+
+    public static void warning_switch_to_outer(View root, int position) {
+        switch (position) {
+            case 0:
+            {
+                TextView titleView = (TextView) root.findViewById(R.id.duplicated);
+            }
+            break;
+        }
+        TextView sectionTitleView = (TextView) root.findViewById(R.id.duplicated);
+    }
+
+    public void while_loop_error(View root, int position) {
+        while (position-- > 0) { // here we can flow back
+            if (true) {
+                view1 = findViewById(R.id.duplicated);
+            } else {
+                if (true) {
+                    view2 = findViewById(R.id.duplicated);
+                }
+            }
+        }
+    }
+
+    protected void require_by_id_error_branch_1() {
+        if (true) {
+            view1 = requireViewById(R.id.duplicated);
+        }
+        if (true) {
+            view2 = requireViewById(R.id.duplicated);
+        }
+    }
+
+    public final <T extends View> T requireViewById(int id) {
+        throw new RuntimeException("Stub!");
+    }
+
+    private View view1;
+    private View mView2;
+    private View view;
+    private View view2;
+    private LayoutInflater mInflater;
+    private Object mPrevAlbumWrapper;
+    private Object mNextAlbumWrapper;
+    private Activity mPrevTrackLayout;
+    private Activity mNextTrackLayout;
+    private android.view.ViewGroup parent;
+    private static final int VIEW_TYPE_HEADER = 1;
+    private static final int VIEW_TYPE_BOOLEAN = 2;
+    private int getItemViewType(int position) {
+        return VIEW_TYPE_BOOLEAN;
+    }
+    public static final class R {
+        public static final class id {
+            public static final int ok = 0x7f0a0000;
+            public static final int duplicated = 0x7f0a0000;
+            public static final int textView1 = 0x7f0a0001;
+            public static final int textView2 = 0x7f0a0002;
+            public static final int activity_main = 0x7f0a0003;
+            public static final int album_wrapper = 0x7f0a0004;
+            public static final int city_name = 0x7f0a0005;
+            public static final int name = 0x7f0a0006;
+        }
+        public static final class layout {
+            public static final int city_list_item = 0x7f0b0000;
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CutPasteDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CutPasteDetector.test`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("CutPasteId")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("CutPasteId")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection CutPasteId
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="CutPasteId" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'CutPasteId'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore CutPasteId ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

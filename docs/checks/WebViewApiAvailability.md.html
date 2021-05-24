@@ -1,0 +1,217 @@
+<meta charset="utf-8">
+(#) WebView API Availability
+
+!!! WARNING: WebView API Availability
+   This is a warning.
+
+Id
+:   `WebViewApiAvailability`
+Summary
+:   WebView API Availability
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/androidx/webkit/package-summary
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WebViewApiAvailabilityDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WebViewApiAvailabilityDetectorTest.kt)
+
+The `androidx.webkit` library is a static library you can add to your
+Android application allowing you to use new APIs on older platform
+versions, targeting more devices.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/WebViewActivity.java:14:Warning: Consider using
+WebViewCompat.createWebMessageChannel instead which will support more
+devices. [WebViewApiAvailability]
+
+    webView.createWebMessageChannel();
+    ---------------------------------
+
+
+src/test/pkg/WebViewActivity.java:15:Warning: Consider using
+WebViewCompat.postVisualStateCallback instead which will support more
+devices. [WebViewApiAvailability]
+
+    webView.postVisualStateCallback(0, null);
+    ----------------------------------------
+
+
+src/test/pkg/WebViewActivity.java:16:Warning: Consider using
+WebViewCompat.postWebMessage instead which will support more devices.
+[WebViewApiAvailability]
+
+    webView.postWebMessage(null, null);
+    ----------------------------------
+
+
+src/test/pkg/WebViewActivity.java:17:Warning: Consider using
+WebViewCompat.getCurrentWebViewPackage instead which will support more
+devices. [WebViewApiAvailability]
+
+    WebView.getCurrentWebViewPackage();
+    ----------------------------------
+
+
+src/test/pkg/WebViewActivity.java:18:Warning: Consider using
+WebViewCompat.getWebChromeClient instead which will support more
+devices. [WebViewApiAvailability]
+
+    webView.getWebChromeClient();
+    ----------------------------
+
+
+src/test/pkg/WebViewActivity.java:19:Warning: Consider using
+WebViewCompat.getWebViewClient instead which will support more devices.
+[WebViewApiAvailability]
+
+    webView.getWebViewClient();
+    --------------------------
+
+
+src/test/pkg/WebViewActivity.java:20:Warning: Consider using
+WebViewCompat.getSafeBrowsingPrivacyPolicyUrl instead which will support
+more devices. [WebViewApiAvailability]
+
+    WebView.getSafeBrowsingPrivacyPolicyUrl();
+    -----------------------------------------
+
+
+src/test/pkg/WebViewActivity.java:21:Warning: Consider using
+WebViewCompat.setSafeBrowsingWhitelist instead which will support more
+devices. [WebViewApiAvailability]
+
+    WebView.setSafeBrowsingWhitelist(null, null);
+    --------------------------------------------
+
+
+src/test/pkg/WebViewActivity.java:22:Warning: Consider using
+WebViewCompat.startSafeBrowsing instead which will support more devices.
+[WebViewApiAvailability]
+
+    WebView.startSafeBrowsing(this, null);
+    -------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/WebViewActivity.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.os.Build;
+import android.os.Bundle;
+import android.webkit.WebView;
+
+public class WebViewActivity extends Activity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT > 28) {
+            WebView webView = findViewById(R.id.webview);
+            webView.createWebMessageChannel();
+            webView.postVisualStateCallback(0, null);
+            webView.postWebMessage(null, null);
+            WebView.getCurrentWebViewPackage();
+            webView.getWebChromeClient();
+            webView.getWebViewClient();
+            WebView.getSafeBrowsingPrivacyPolicyUrl();
+            WebView.setSafeBrowsingWhitelist(null, null);
+            WebView.startSafeBrowsing(this, null);
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WebViewApiAvailabilityDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WebViewApiAvailabilityDetector.testGuardedAndroidXAvailableMethods`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WebViewApiAvailability")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WebViewApiAvailability")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WebViewApiAvailability
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WebViewApiAvailability" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WebViewApiAvailability'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WebViewApiAvailability ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

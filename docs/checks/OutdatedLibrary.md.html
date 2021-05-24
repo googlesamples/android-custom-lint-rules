@@ -1,0 +1,207 @@
+<meta charset="utf-8">
+(#) Outdated Library
+
+!!! ERROR: Outdated Library
+   This is an error.
+
+Id
+:   `OutdatedLibrary`
+Summary
+:   Outdated Library
+Severity
+:   Error
+Category
+:   Compliance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+
+Your app is using an outdated version of a library. This may cause
+violations of Google Play policies (see
+https://play.google.com/about/monetization-ads/ads/) and/or may affect
+your app’s visibility on the Play Store.
+
+Please try updating your app with an updated version of this library, or
+remove it from your app.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:4:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 1.2.17.
+[OutdatedLibrary]
+
+    compile 'log4j:log4j:1.2.16' // ERROR
+            --------------------
+
+
+build.gradle:5:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 1.2.17.
+[OutdatedLibrary]
+
+    compile 'log4j:log4j:1.2.15' // ERROR
+            --------------------
+
+
+build.gradle:6:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 1.2.17.
+[OutdatedLibrary]
+
+    compile 'log4j:log4j:1.2.14' // ERROR
+            --------------------
+
+
+build.gradle:11:Error: This version is obsolete. Details: Library is
+obsolete. Consider switching to recommended version 1.2.17.
+[OutdatedLibrary]
+
+    compile 'log4j:log4j:0.5'    // ERROR
+            -----------------
+
+
+build.gradle:15:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 7.3.1.
+[OutdatedLibrary]
+
+    compile 'com.example.ads.thirdparty:example:7.2.1' // ERROR
+            ------------------------------------------
+
+
+build.gradle:16:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 7.3.1.
+[OutdatedLibrary]
+
+    compile 'com.example.ads.thirdparty:example:7.2.0' // ERROR
+            ------------------------------------------
+
+
+build.gradle:17:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 7.3.1.
+[OutdatedLibrary]
+
+    compile 'com.example.ads.thirdparty:example:7.1.1' // ERROR
+            ------------------------------------------
+
+
+build.gradle:18:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 7.3.1.
+[OutdatedLibrary]
+
+    compile 'com.example.ads.thirdparty:example:7.1.0' // ERROR
+            ------------------------------------------
+
+
+build.gradle:20:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 7.3.1.
+[OutdatedLibrary]
+
+    compile 'com.example.ads.thirdparty:example:7.0.0' // ERROR
+            ------------------------------------------
+
+
+build.gradle:21:Error: This version is deprecated. Details: Deprecated
+due to ANR issue. Consider switching to recommended version 7.3.1.
+[OutdatedLibrary]
+
+    compile 'com.example.ads.thirdparty:example:6.8.5' // ERROR
+            ------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    compile 'log4j:log4j:1.2.18' // OK
+    compile 'log4j:log4j:1.2.17' // OK
+    compile 'log4j:log4j:1.2.16' // ERROR
+    compile 'log4j:log4j:1.2.15' // ERROR
+    compile 'log4j:log4j:1.2.14' // ERROR
+    compile 'log4j:log4j:1.2.13' // ERROR
+    compile 'log4j:log4j:1.2.12' // ERROR
+    compile 'log4j:log4j:1.2.4'  // ERROR
+    compile 'log4j:log4j:1.2.3'  // OK (not included in range)
+    compile 'log4j:log4j:0.5'    // ERROR
+    compile 'com.example.ads.thirdparty:example:7.3.1' // OK
+    compile 'com.example.ads.thirdparty:example:8.0.0' // OK
+    compile 'com.example.ads.thirdparty:example:7.2.2' // OK
+    compile 'com.example.ads.thirdparty:example:7.2.1' // ERROR
+    compile 'com.example.ads.thirdparty:example:7.2.0' // ERROR
+    compile 'com.example.ads.thirdparty:example:7.1.1' // ERROR
+    compile 'com.example.ads.thirdparty:example:7.1.0' // ERROR
+    compile 'com.example.ads.thirdparty:example:7.0.5' // OK
+    compile 'com.example.ads.thirdparty:example:7.0.0' // ERROR
+    compile 'com.example.ads.thirdparty:example:6.8.5' // ERROR
+    compile 'com.android.volley:volley:1.1.0'   // OK
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testDeprecatedLibrary`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection OutdatedLibrary
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="OutdatedLibrary" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'OutdatedLibrary'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore OutdatedLibrary ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

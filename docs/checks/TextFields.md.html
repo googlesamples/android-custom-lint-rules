@@ -1,0 +1,200 @@
+<meta charset="utf-8">
+(#) Missing `inputType`
+
+!!! WARNING: Missing `inputType`
+   This is a warning.
+
+Id
+:   `TextFields`
+Summary
+:   Missing `inputType`
+Severity
+:   Warning
+Category
+:   Usability
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TextFieldDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TextFieldDetectorTest.java)
+
+Providing an `inputType` attribute on a text field improves usability
+because depending on the data to be input, optimized keyboards can be
+shown to the user (such as just digits and parentheses for a phone
+number). 
+
+The lint detector also looks at the `id` of the view, and if the id
+offers a hint of the purpose of the field (for example, the `id`
+contains the phrase `phone` or `email`), then lint will also ensure that
+the `inputType` contains the corresponding type attributes.
+
+If you really want to keep the text field generic, you can suppress this
+warning by setting `inputType="text"`.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/note_edit.xml:43:Warning: This text field does not specify an
+inputType [TextFields]
+
+    &lt;EditText
+     --------
+
+
+res/layout/note_edit.xml:50:Warning: This text field does not specify an
+inputType [TextFields]
+
+    &lt;EditText
+     --------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/note_edit.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"&gt;
+    &lt;include layout="@layout/colorstrip" android:layout_height="@dimen/colorstrip_height" android:layout_width="match_parent"/&gt;
+
+    &lt;LinearLayout style="@style/TitleBar" android:id="@+id/header"&gt;
+        &lt;ImageView style="@style/TitleBarLogo"
+            android:contentDescription="@string/description_logo"
+            android:src="@drawable/title_logo" /&gt;
+
+        &lt;View style="@style/TitleBarSpring" /&gt;
+
+        &lt;ImageView style="@style/TitleBarSeparator" /&gt;
+        &lt;ImageButton style="@style/TitleBarAction"
+            android:id="@+id/btn_title_refresh"
+            android:contentDescription="@string/description_refresh"
+            android:src="@drawable/ic_title_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:onClick="onRefreshClick" /&gt;
+        &lt;ProgressBar style="@style/TitleBarProgressIndicator"
+            android:id="@+id/title_refresh_progress"
+            android:layout_width="wrap_content"
+            android:visibility="visible"/&gt;
+
+        &lt;ImageView style="@style/TitleBarSeparator" /&gt;
+        &lt;ImageButton style="@style/TitleBarAction"
+            android:contentDescription="@string/description_search"
+            android:src="@drawable/ic_title_search"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:onClick="onSearchClick" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;LinearLayout
+        android:id="@+id/noteArea"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="5dip"&gt;
+        &lt;EditText
+            android:id="@android:id/text1"
+            android:layout_height="fill_parent"
+            android:hint="@string/note_hint"
+            android:freezesText="true"
+            android:gravity="top" android:layout_width="wrap_content" android:layout_weight="1"&gt;
+        &lt;/EditText&gt;
+        &lt;EditText
+            android:id="@android:id/text2"
+            android:layout_height="fill_parent"
+            android:freezesText="true"
+            android:gravity="top" android:layout_width="wrap_content" android:layout_weight="1"&gt;
+            &lt;requestFocus /&gt;
+        &lt;/EditText&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@android:style/ButtonBar"&gt;
+        &lt;Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onSaveClick"
+            android:text="@string/note_save" /&gt;
+        &lt;Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onDiscardClick"
+            android:text="@string/note_discard" /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TextFieldDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TextFieldDetector.testField`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="TextFields"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TextFields" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TextFields'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TextFields ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,121 @@
+<meta charset="utf-8">
+(#) Invalid format string
+
+!!! ERROR: Invalid format string
+   This is an error.
+
+Id
+:   `StringFormatInvalid`
+Summary
+:   Invalid format string
+Severity
+:   Error
+Category
+:   Correctness: Messages
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StringFormatDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringFormatDetectorTest.java)
+
+If a string contains a '%' character, then the string may be a
+formatting string which will be passed to `String.format` from Java code
+to replace each '%' occurrence with specific values.
+
+This lint warning checks for two related problems:
+(1) Formatting strings that are invalid, meaning that `String.format`
+will throw exceptions at runtime when attempting to use the format
+string.
+(2) Strings containing '%' that are not formatting strings getting
+passed to a `String.format` call. In this case the '%' will need to be
+escaped as '%%'.
+
+NOTE: Not all Strings which look like formatting strings are intended
+for use by `String.format`; for example, they may contain date formats
+intended for `android.text.format.Time#format()`. Lint cannot always
+figure out that a String is a date format, so you may get false warnings
+in those scenarios. See the suppress help topic for information on how
+to suppress errors in that case.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/StringFormatInvalid.java:3:Error: Format string 'no_args' is not a
+valid format string so it should not be passed to String.format
+[StringFormatInvalid]
+
+    context.getString(R.string.no_args, "first"); // ERROR
+    --------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/StringFormatInvalid.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+public class StringFormatInvalid {
+    public static void testContext(android.content.Context context) {
+        context.getString(R.string.no_args, "first"); // ERROR
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="no_args"&gt;Hello&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringFormatDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="StringFormatInvalid" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'StringFormatInvalid'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore StringFormatInvalid ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

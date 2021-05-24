@@ -1,0 +1,135 @@
+<meta charset="utf-8">
+(#) TargetSdkVersion Soon Expiring
+
+!!! ERROR: TargetSdkVersion Soon Expiring
+   This is an error.
+
+Id
+:   `ExpiringTargetSdkVersion`
+Summary
+:   TargetSdkVersion Soon Expiring
+Severity
+:   Error
+Category
+:   Compliance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://support.google.com/googleplay/android-developer/answer/113469#targetsdk
+See
+:   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+
+In the second half of 2018, Google Play will require that new apps and
+app updates target API level 26 or higher. This will be required for new
+apps in August 2018, and for updates to existing apps in November 2018.
+
+Configuring your app to target a recent API level ensures that users
+benefit from significant security and performance improvements, while
+still allowing your app to run on older Android versions (down to the
+`minSdkVersion`).
+
+This lint check starts warning you some months **before** these changes
+go into effect if your `targetSdkVersion` is 25 or lower. This is
+intended to give you a heads up to update your app, since depending on
+your current `targetSdkVersion` the work can be nontrivial.
+
+To update your `targetSdkVersion`, follow the steps from "Meeting Google
+Play requirements for target API level",
+https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:5:Error: Google Play will soon require that apps target API
+level 29 or higher. This will be required for new apps in August 2020,
+and for updates to existing apps in November 2020.
+[ExpiringTargetSdkVersion]
+
+    targetSdkVersion 28
+    -------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+apply plugin: 'com.android.application'
+
+android {
+    defaultConfig {
+        targetSdkVersion 28
+        targetSdkVersion 30 // OK
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testExpiring2`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ExpiringTargetSdkVersion
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ExpiringTargetSdkVersion" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ExpiringTargetSdkVersion'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ExpiringTargetSdkVersion ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

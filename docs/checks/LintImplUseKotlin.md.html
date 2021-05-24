@@ -1,0 +1,207 @@
+<meta charset="utf-8">
+(#) Non-Kotlin Lint Detectors
+
+!!! WARNING: Non-Kotlin Lint Detectors
+   This is a warning.
+
+Id
+:   `LintImplUseKotlin`
+Summary
+:   Non-Kotlin Lint Detectors
+Severity
+:   Warning
+Category
+:   Lint Implementation Issues
+Platform
+:   JDK
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/LintDetectorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
+
+New lint checks should be written in Kotlin; the Lint API is written in
+Kotlin and uses a number of language features that makes it beneficial
+to also write the lint checks in Kotlin. Examples include many extension
+functions (as well as in UAST), default and named parameters (for the
+Issue registration methods for example where there are methods with 12+
+parameters with only a couple of required ones), and so on.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyJavaLintDetector.java:24:Warning: New lint checks should
+be implemented in Kotlin to take advantage of a lot of Kotlin-specific
+mechanisms in the Lint API [LintImplUseKotlin]
+
+public class MyJavaLintDetector extends Detector {
+             ------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MyJavaLintDetector.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+/* Copyright (C) 2020 The Android Open Source Project */
+package test.pkg;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiCallExpression;
+import com.intellij.psi.PsiExpression;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.android.tools.lint.detector.api.Detector;
+import org.jetbrains.uast.UFile;
+import org.jetbrains.uast.UMethod;
+import org.jetbrains.uast.UField;
+import com.android.tools.lint.detector.api.Category;
+import com.android.tools.lint.detector.api.Detector;
+import com.android.tools.lint.detector.api.Implementation;
+import com.android.tools.lint.detector.api.Issue;
+import com.android.tools.lint.detector.api.JavaContext;
+import com.android.tools.lint.detector.api.Scope;
+import com.android.tools.lint.detector.api.Severity;
+import org.jetbrains.uast.UCallExpression;
+import java.util.EnumSet;
+
+@SuppressWarnings({"MethodMayBeStatic", "ClassNameDiffersFromFileName", "StatementWithEmptyBody", "deprecation"})
+public class MyJavaLintDetector extends Detector {
+    public static final Issue ISSUE =
+            Issue.create(
+                    "com.android.namespaced.lint.check.FooDetector",
+                    "Wrong use of <LinearLayout>",
+                    "As described in "
+                        + "https://code.google.com/p/android/issues/detail?id=65351 blah blah blah.",
+                    Category.A11Y,
+                    3,
+                    Severity.WARNING,
+                    new Implementation(MyJavaLintDetector.class, EnumSet.of(Scope.RESOURCE_FILE, Scope.JAVA_FILE)))
+                    .addMoreInfo("file://explanation.doc")
+                    .addMoreInfo("http://my.personal.blogger.com/aboutme.htm")
+                    .addMoreInfo("mailto:lint@example.com");
+    public void testGetBody(PsiMethod method) {
+        method.getBody(); // ERROR - must use UAST
+    }
+    public void testGetBody(UMethod method) {
+        method.getBody(); // ERROR - must use UAST
+    }
+    public void testGetContainingClass(UMethod method, UField field) {
+        method.getContainingClass(); // ERROR - must use UAST
+        field.getContainingClass(); // ERROR - must use UAST
+    }
+    public void testGetContainingClass(PsiMethod method, PsiField field) {
+        method.getContainingClass(); // OK - legitimate uses after resolve
+        field.getContainingClass(); // OK - legitimate uses after resolve
+    }
+    public void testEquals(PsiCallExpression element1, PsiExpression element2) {
+        if (element1.equals(element2)) { }
+        if (element2.equals(element1)) { }
+        if (element1 == element2) { }
+        if (element1 != element2) { }
+    }
+    public void testGetInitializer(PsiField field) {
+        field.getInitializer(); // ERROR - must use UAST
+    }
+    public void testParents(PsiField field, UMethod method) {
+        PsiElement parent = field.getParent(); // OK
+        PsiElement parent = method.getParent(); // ERROR
+        PsiTreeUtil.getParentOfType(field, PsiClass.class); // OK
+        PsiTreeUtil.getParentOfType(method, PsiClass.class); // ERROR
+    }
+
+    public void testReport(JavaContext context, UCallExpression node) {
+        context.report(ISSUE, node, context.getLocation(node),
+            "Wrong use of LinearLayout.");
+        context.report(ISSUE, node, context.getLocation(node),
+            "First problem. Second problem.");
+        context.report(ISSUE, node, context.getLocation(node),
+            "This is teh typo");
+        String message = "Welcome to Andriod";
+        context.report(ISSUE, node, context.getLocation(node), message);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LintDetectorDetector.testProblems`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LintImplUseKotlin")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LintImplUseKotlin")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LintImplUseKotlin
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LintImplUseKotlin" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LintImplUseKotlin'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LintImplUseKotlin ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,133 @@
+<meta charset="utf-8">
+(#) Unused quantity translations
+
+!!! WARNING: Unused quantity translations
+   This is a warning.
+
+Id
+:   `UnusedQuantity`
+Summary
+:   Unused quantity translations
+Severity
+:   Warning
+Category
+:   Correctness: Messages
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/topics/resources/string-resource.html#Plurals
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PluralsDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PluralsDetectorTest.java)
+
+Android defines a number of different quantity strings, such as `zero`,
+`one`, `few` and `many`. However, many languages do not distinguish
+grammatically between all these different quantities.
+
+This lint check looks at the quantity strings defined for each
+translation and flags any quantity strings that are unused (because the
+language does not make that quantity distinction, and Android will
+therefore not look it up).
+
+For example, in Chinese, only the `other` quantity is used, so even if
+you provide translations for `zero` and `one`, these strings will
+**not** be returned when `getQuantityString()` is called, even with `0`
+or `1`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values-zh-rCN/plurals3.xml:3:Warning: For language "zh" (Chinese)
+the following quantities are not relevant: one [UnusedQuantity]
+
+  &lt;plurals name="draft"&gt;
+  ^
+
+
+res/values-zh-rCN/plurals3.xml:7:Warning: For language "zh" (Chinese)
+the following quantities are not relevant: one [UnusedQuantity]
+
+  &lt;plurals name="title_day_dialog_content"&gt;
+  ^
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values-zh-rCN/plurals3.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+  &lt;plurals name="draft"&gt;
+    &lt;item quantity="one"&gt;"草稿"&lt;/item&gt;
+    &lt;item quantity="other"&gt;"草稿"&lt;/item&gt;
+  &lt;/plurals&gt;
+  &lt;plurals name="title_day_dialog_content"&gt;
+    &lt;item quantity="one"&gt;"天"&lt;/item&gt;
+    &lt;item quantity="other"&gt;"天"&lt;/item&gt;
+  &lt;/plurals&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PluralsDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `PluralsDetector.test2`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="UnusedQuantity"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnusedQuantity" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnusedQuantity'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnusedQuantity ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

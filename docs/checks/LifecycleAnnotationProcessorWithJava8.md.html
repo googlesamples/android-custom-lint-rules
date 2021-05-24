@@ -1,0 +1,127 @@
+<meta charset="utf-8">
+(#) Lifecycle Annotation Processor with Java 8 Compile Option
+
+!!! WARNING: Lifecycle Annotation Processor with Java 8 Compile Option
+   This is a warning.
+
+Id
+:   `LifecycleAnnotationProcessorWithJava8`
+Summary
+:   Lifecycle Annotation Processor with Java 8 Compile Option
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://d.android.com/r/studio-ui/lifecycle-release-notes
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+
+For faster incremental build, switch to the Lifecycle Java 8 API with
+these steps:
+
+First replace
+```gradle
+annotationProcessor "androidx.lifecycle:lifecycle-compiler:*version*"
+kapt "androidx.lifecycle:lifecycle-compiler:*version*"
+```
+with
+```gradle
+implementation "androidx.lifecycle:lifecycle-common-java8:*version*"
+```
+Then remove any `OnLifecycleEvent` annotations from `Observer` classes
+and make them implement the `DefaultLifecycleObserver` interface.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:3:Warning: Use the Lifecycle Java 8 API provided by the
+lifecycle-common-java8 library instead of Lifecycle annotations for
+faster incremental build. [LifecycleAnnotationProcessorWithJava8]
+
+  annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+                      ---------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+  implementation "android.arch.lifecycle:runtime:1.1.1"
+  annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+}android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testJava8WithLifecycleAnnotationProcessor`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LifecycleAnnotationProcessorWithJava8
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LifecycleAnnotationProcessorWithJava8" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LifecycleAnnotationProcessorWithJava8'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LifecycleAnnotationProcessorWithJava8 ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
