@@ -1,0 +1,218 @@
+<meta charset="utf-8">
+(#) Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null.
+
+!!! ERROR: Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null.
+   This is an error.
+
+Id
+:   `UseRequireInsteadOfGet`
+Summary
+:   Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null.
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.fragment.lint.fragment)
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-lint/src/main/java/androidx/fragment/lint/UseRequireInsteadOfGet.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-lint/src/test/java/androidx/fragment/lint/UseRequireInsteadOfGetTest.kt)
+
+AndroidX added new "require____()" versions of common "get___()" APIs,
+such as getContext/getActivity/getArguments/etc. Rather than wrap these
+in something like requireNotNull(), using these APIs will allow the
+underlying component to try to tell you _why_ it was null, and thus
+yield a better error message.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Test.java:10:Error: Use fragment.requireArguments() instead of
+checkNotNull(fragment.getArguments()) [UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getArguments());
+    -------------------------------------
+
+
+src/foo/Test.java:11:Error: Use fragment.requireFragmentManager()
+instead of checkNotNull(fragment.getFragmentManager())
+[UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getFragmentManager());
+    -------------------------------------------
+
+
+src/foo/Test.java:12:Error: Use fragment.requireContext() instead of
+checkNotNull(fragment.getContext()) [UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getContext());
+    -----------------------------------
+
+
+src/foo/Test.java:13:Error: Use fragment.requireActivity() instead of
+checkNotNull(fragment.getActivity()) [UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getActivity());
+    ------------------------------------
+
+
+src/foo/Test.java:14:Error: Use fragment.requireHost() instead of
+checkNotNull(fragment.getHost()) [UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getHost());
+    --------------------------------
+
+
+src/foo/Test.java:15:Error: Use fragment.requireParentFragment() instead
+of checkNotNull(fragment.getParentFragment()) [UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getParentFragment());
+    ------------------------------------------
+
+
+src/foo/Test.java:16:Error: Use fragment.requireView() instead of
+checkNotNull(fragment.getView()) [UseRequireInsteadOfGet]
+
+    checkNotNull(fragment.getView());
+    --------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Test.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+import androidx.fragment.app.Fragment;
+import static util.Preconditions.checkNotNull;
+
+class Test {
+  void test() {
+    Fragment fragment = new Fragment();
+
+    checkNotNull(fragment.getArguments());
+    checkNotNull(fragment.getFragmentManager());
+    checkNotNull(fragment.getContext());
+    checkNotNull(fragment.getActivity());
+    checkNotNull(fragment.getHost());
+    checkNotNull(fragment.getParentFragment());
+    checkNotNull(fragment.getView());
+
+    // These are redundant. Java-only really
+    checkNotNull(fragment.requireArguments());
+    checkNotNull(fragment.requireFragmentManager());
+    checkNotNull(fragment.requireContext());
+    checkNotNull(fragment.requireActivity());
+    checkNotNull(fragment.requireHost());
+    checkNotNull(fragment.requireParentFragment());
+    checkNotNull(fragment.requireView());
+
+    // These don't have errors
+    fragment.requireArguments();
+    fragment.requireFragmentManager();
+    fragment.requireContext();
+    fragment.requireActivity();
+    fragment.requireHost();
+    fragment.requireParentFragment();
+    fragment.requireView();
+
+    // These are ignored because they have custom error messages
+    checkNotNull(fragment.getArguments(), "getArguments");
+    checkNotNull(fragment.getFragmentManager(), "getFragmentManager");
+    checkNotNull(fragment.getContext(), "getContext");
+    checkNotNull(fragment.getActivity(), "getActivity");
+    checkNotNull(fragment.getHost(), "getHost");
+    checkNotNull(fragment.getParentFragment(), "getParentFragment");
+    checkNotNull(fragment.getView(), "getView");
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-lint/src/test/java/androidx/fragment/lint/UseRequireInsteadOfGetTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `UseRequireInsteadOfGet.simple java checks where the fragment is a variable`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UseRequireInsteadOfGet")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UseRequireInsteadOfGet")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UseRequireInsteadOfGet
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UseRequireInsteadOfGet" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UseRequireInsteadOfGet'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UseRequireInsteadOfGet ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

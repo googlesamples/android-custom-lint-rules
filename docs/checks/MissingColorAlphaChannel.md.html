@@ -1,0 +1,168 @@
+<meta charset="utf-8">
+(#) Missing Color alpha channel
+
+!!! WARNING: Missing Color alpha channel
+   This is a warning.
+
+Id
+:   `MissingColorAlphaChannel`
+Summary
+:   Missing Color alpha channel
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.ui.graphics.lint.uigraphics)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-graphics-lint/src/main/java/androidx/compose/ui/graphics/lint/ColorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-graphics-lint/src/test/java/androidx/compose/ui/graphics/lint/ColorDetectorTest.kt)
+
+Creating a Color with a hex value requires a 32 bit value (such as
+0xFF000000), with 8 bits being used per channel (ARGB). Not passing a
+full 32 bit value will result in channels being undefined. For example,
+passing 0xFF0000 will result in a missing alpha channel, so the color
+will not appear visible.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/test.kt:6:Warning: Missing Color alpha channel
+[MissingColorAlphaChannel]
+
+    val color = Color(0x000000)
+                      --------
+
+
+src/test/test.kt:8:Warning: Missing Color alpha channel
+[MissingColorAlphaChannel]
+
+    val color2 = Color(0xEEEEEE)
+                       --------
+
+
+src/test/test.kt:10:Warning: Missing Color alpha channel
+[MissingColorAlphaChannel]
+
+    val color3 = Color(0xeeeeee)
+                       --------
+
+
+src/test/test.kt:12:Warning: Missing Color alpha channel
+[MissingColorAlphaChannel]
+
+    val color3 = Color(0xeEeeEE)
+                       --------
+
+
+src/test/test.kt:14:Warning: Missing Color alpha channel
+[MissingColorAlphaChannel]
+
+    val color4 = Color(0x00_00_00L)
+                       -----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test
+
+import androidx.compose.ui.graphics.*
+
+val color = Color(0x000000)
+// upper case
+val color2 = Color(0xEEEEEE)
+// lower case
+val color3 = Color(0xeeeeee)
+// mixed case (?!)
+val color3 = Color(0xeEeeEE)
+// separators and L suffix
+val color4 = Color(0x00_00_00L)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-graphics-lint/src/test/java/androidx/compose/ui/graphics/lint/ColorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ColorDetector.MissingColorAlphaChannel`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("MissingColorAlphaChannel")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("MissingColorAlphaChannel")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection MissingColorAlphaChannel
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MissingColorAlphaChannel" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MissingColorAlphaChannel'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MissingColorAlphaChannel ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

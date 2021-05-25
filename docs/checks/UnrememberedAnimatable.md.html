@@ -1,0 +1,368 @@
+<meta charset="utf-8">
+(#) Creating an Animatable during composition without using `remember`
+
+!!! ERROR: Creating an Animatable during composition without using `remember`
+   This is an error.
+
+Id
+:   `UnrememberedAnimatable`
+Summary
+:   Creating an Animatable during composition without using `remember`
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.animation.core.lint.animationcore)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/main/java/androidx/compose/animation/core/lint/UnrememberedAnimatableDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/UnrememberedAnimatableDetectorTest.kt)
+
+Animatable instances created during composition need to be `remember`ed,
+otherwise they will be recreated during recomposition, and lose their
+state. Either hoist the Animatable to an object that is not created
+during composition, or wrap the Animatable in a call to `remember`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/{.kt:12:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:13:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:15:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:20:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:21:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:23:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:28:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:29:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:31:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:41:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:42:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:44:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:48:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:49:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:51:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:58:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:59:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:61:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:66:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:67:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:69:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+src/test/{.kt:77:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable = Animatable&lt;Boolean, Any&gt;(false)
+                     ----------
+
+
+src/test/{.kt:78:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable2 = Animatable(0f)
+                      ----------
+
+
+src/test/{.kt:80:Error: Creating an Animatable during composition
+without using remember [UnrememberedAnimatable]
+
+    val animatable3 = Animatable(Color.Red)
+                      ----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/{.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test
+
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.*
+
+@Composable
+fun Test() {
+    // Float function and constructor from androidx.compose.animation.core
+    val animatable = Animatable<Boolean, Any>(false)
+    val animatable2 = Animatable(0f)
+    // Color function from androidx.compose.animation
+    val animatable3 = Animatable(Color.Red)
+}
+
+val lambda = @Composable {
+    // Float function and constructor from androidx.compose.animation.core
+    val animatable = Animatable<Boolean, Any>(false)
+    val animatable2 = Animatable(0f)
+    // Color function from androidx.compose.animation
+    val animatable3 = Animatable(Color.Red)
+}
+
+val lambda2: @Composable () -> Unit = {
+    // Float function and constructor from androidx.compose.animation.core
+    val animatable = Animatable<Boolean, Any>(false)
+    val animatable2 = Animatable(0f)
+    // Color function from androidx.compose.animation
+    val animatable3 = Animatable(Color.Red)
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2() {
+    LambdaParameter(content = {
+        // Float function and constructor from androidx.compose.animation.core
+        val animatable = Animatable<Boolean, Any>(false)
+        val animatable2 = Animatable(0f)
+        // Color function from androidx.compose.animation
+        val animatable3 = Animatable(Color.Red)
+    })
+    LambdaParameter {
+        // Float function and constructor from androidx.compose.animation.core
+        val animatable = Animatable<Boolean, Any>(false)
+        val animatable2 = Animatable(0f)
+        // Color function from androidx.compose.animation
+        val animatable3 = Animatable(Color.Red)
+    }
+}
+
+fun test3() {
+    val localLambda1 = @Composable {
+        // Float function and constructor from androidx.compose.animation.core
+        val animatable = Animatable<Boolean, Any>(false)
+        val animatable2 = Animatable(0f)
+        // Color function from androidx.compose.animation
+        val animatable3 = Animatable(Color.Red)
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        // Float function and constructor from androidx.compose.animation.core
+        val animatable = Animatable<Boolean, Any>(false)
+        val animatable2 = Animatable(0f)
+        // Color function from androidx.compose.animation
+        val animatable3 = Animatable(Color.Red)
+    }
+}
+
+@Composable
+fun Test4() {
+    val localObject = object {
+        // Float function and constructor from androidx.compose.animation.core
+        val animatable = Animatable<Boolean, Any>(false)
+        val animatable2 = Animatable(0f)
+        // Color function from androidx.compose.animation
+        val animatable3 = Animatable(Color.Red)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/UnrememberedAnimatableDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `UnrememberedAnimatableDetector.notRemembered`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnrememberedAnimatable")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnrememberedAnimatable")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnrememberedAnimatable
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnrememberedAnimatable" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnrememberedAnimatable'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnrememberedAnimatable ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

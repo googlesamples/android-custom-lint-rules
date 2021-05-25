@@ -1,0 +1,201 @@
+<meta charset="utf-8">
+(#) `Saver` objects should be passed to the saver parameter, not the vararg `inputs` parameter
+
+!!! ERROR: `Saver` objects should be passed to the saver parameter, not the vararg `inputs` parameter
+   This is an error.
+
+Id
+:   `RememberSaveableSaverParameter`
+Summary
+:   `Saver` objects should be passed to the saver parameter, not the vararg `inputs` parameter
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.runtime.saveable.lint.runtimesaveable)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-saveable-lint/src/main/java/androidx/compose/runtime/saveable/lint/RememberSaveableDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-saveable-lint/src/test/java/androidx/compose/runtime/saveable/lint/RememberSaveableDetectorTest.kt)
+
+The first parameter to `rememberSaveable` is a vararg parameter for
+inputs that when changed will cause the state to reset. Passing a
+`Saver` object to this parameter is an error, as the intention is to
+pass the `Saver` object to the saver parameter. Since the saver
+parameter is not the first parameter, it must be explicitly named.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/Foo.kt:15:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val foo = rememberSaveable(FooSaver) { Foo() }
+                               --------
+
+
+src/test/Foo.kt:16:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val mutableStateFoo = rememberSaveable(FooSaver) { mutableStateOf(Foo()) }
+                                           --------
+
+
+src/test/Foo.kt:17:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val foo2 = rememberSaveable(FooSaver2()) { Foo() }
+                                -----------
+
+
+src/test/Foo.kt:18:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val mutableStateFoo2 = rememberSaveable(FooSaver2()) { mutableStateOf(Foo()) }
+                                            -----------
+
+
+src/test/Foo.kt:19:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val foo3 = rememberSaveable(fooSaver3) { Foo() }
+                                ---------
+
+
+src/test/Foo.kt:20:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val mutableStateFoo3 = rememberSaveable(fooSaver3) { mutableStateOf(Foo()) }
+                                            ---------
+
+
+src/test/Foo.kt:21:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val foo4 = rememberSaveable(fooSaver4) { Foo() }
+                                ---------
+
+
+src/test/Foo.kt:22:Error: Passing Saver instance to vararg inputs
+[RememberSaveableSaverParameter]
+
+    val mutableStateFoo4 = rememberSaveable(fooSaver4) { mutableStateOf(Foo()) }
+                                            ---------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/Foo.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test
+
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
+
+class Foo
+object FooSaver : Saver<Any, Any>
+class FooSaver2 : Saver<Any, Any>
+val fooSaver3 = object : Saver<Any, Any> {}
+val fooSaver4 = FooSaver2()
+
+@Composable
+fun Test() {
+    val foo = rememberSaveable(FooSaver) { Foo() }
+    val mutableStateFoo = rememberSaveable(FooSaver) { mutableStateOf(Foo()) }
+    val foo2 = rememberSaveable(FooSaver2()) { Foo() }
+    val mutableStateFoo2 = rememberSaveable(FooSaver2()) { mutableStateOf(Foo()) }
+    val foo3 = rememberSaveable(fooSaver3) { Foo() }
+    val mutableStateFoo3 = rememberSaveable(fooSaver3) { mutableStateOf(Foo()) }
+    val foo4 = rememberSaveable(fooSaver4) { Foo() }
+    val mutableStateFoo4 = rememberSaveable(fooSaver4) { mutableStateOf(Foo()) }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-saveable-lint/src/test/java/androidx/compose/runtime/saveable/lint/RememberSaveableDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RememberSaveableDetector.saverPassedToVarargs`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("RememberSaveableSaverParameter")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("RememberSaveableSaverParameter")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection RememberSaveableSaverParameter
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="RememberSaveableSaverParameter" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'RememberSaveableSaverParameter'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore RememberSaveableSaverParameter ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

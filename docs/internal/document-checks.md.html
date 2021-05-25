@@ -11,17 +11,22 @@ the “lint” binary, which may be more convenient.
 
 Here's the basic usage:
 ```shell
-$ $ANDROID_HOME/cmdline-tools/latest/bin/lint -generate-docs
-Usage: lint --generate-docs [flags] <output file or directory>
+Usage: lint-issue-docs-generator [flags] --output <directory or file>]
 
 Flags:
 
 --help                            This message.
+--output <dir>                    Sets the path to write the documentation to.
+                                  Normally a directory, unless --single-doc is
+                                  also specified
 --single-doc                      Instead of writing one page per issue into a
                                   directory, write a single page containing
                                   all the issues
 --md                              Write to plain Markdown (.md) files instead
                                   of Markdeep (.md.html)
+--builtins                        Generate documentation for the built-in
+                                  issues. This is implied if --lint-jars is
+                                  not specified
 --lint-jars <jar-path>            Read the lint issues from the specific path
                                   (separated by : of custom jar files
 --issues [issues]                 Limits the issues documented to the specific
@@ -36,11 +41,15 @@ Flags:
                                   tests instead. These must be named the same
                                   as the detector class, plus `Test` as a
                                   suffix.
+--no-index                        Do not include index files
 --no-suppress-info                Do not include suppression information
---no-examples                     Do not include examples pulle from unit
+--no-examples                     Do not include examples pulled from unit
                                   tests, if found
 --no-links                        Do not include hyperlinks to detector source
                                   code
+--no-severity                     Do not include the red, orange or green
+                                  informational boxes showing the severity of
+                                  each issue
 ```
 
 (If you get “`-generate-docs does not exist`” you need to use a newer
@@ -48,19 +57,19 @@ version of lint.)
 
 ## Built-in Checks
 
-Here's a sample invocation, invoked from the `tools/base` location
-in the Android Studio tree, which will generate the docs published
-to https://github.com/googlesamples/android-custom-lint-rules/tree/main/docs:
+Here's a sample invocation, where `$STUDIO` points to the root of the
+Android Studio source tree (so `$STUDIO/tools/base/lint/ is the root of
+the lint source code).
 
 ```shell
-$ lint --generate-docs \
-    --source-url \
-    https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/ \
-    lint/libs/lint-checks/src/main/java \
-    --test-url \
-    https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/ \
-    lint/libs/lint-tests/src/test/java \
-    /tmp/lint-docs/
+$ export LINT_URI_PREFIX=https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/
+
+$ lint \
+    --generate-docs \
+    --output /tmp/lint-docs/ \
+    --builtins \
+    --source-url $LINT_URI_PREFIX $STUDIO/tools/base/lint \
+    --test-url $LINT_URI_PREFIX $STUDIO/tools/base/lint
 ```
 
 Here, we use `--source-url` and `--test-url` to not only point the tool
@@ -76,11 +85,39 @@ the `lint-jars` flag to specify one or more jar file to scan for lint
 checks. If your lint check are packaged as an AAR file, you can unzip
 this file to find `lint.jar` inside.
 
+## Generating AndroidX documentation
+
+To generate the AndroidX documentation, check out the androidx
+repository into `$ANDROIDX_REPO`; then run
+
+```shell
+$ cd $ANDROIDX_REPO/frameworks/support
+$ ./gradlew createArchive
+```
+
+This will build all the lint custom checks in AndroidX. Then invoke the
+documentation generation tool like this:
+
+```shell
+$ export $ export ANDROID_URI_PREFIX=https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:
+
+$ lint \
+    --generate-docs \
+    --output /tmp/lint-docs/ \
+    --lint-jars $ANDROIDX_REPO/out \
+    --source-url $ANDROID_URI_PREFIX $ANDROIDX_REPO/frameworks/support \
+    --test-url $ANDROID_URI_PREFIX $ANDROIDX_REPO/frameworks/support
+```
+
+If you want to include all the built-in Studio checks as well into a
+documentation set containing both, merge in the `--builtins` and
+`--source-url` and `--test-url` flags from above.
+
 ## Special Conventions
 
 If you include a test URL search path (and note that the URI prefix is
 itself optional (though must be specified as an empty string), so you
-could in the built-in example above only have specified `--testurl ""
+could in the built-in example above only have specified `--testurl “”
 lint/libs/lint-tests/src/test/java`), lint will search for the
 corresponding unit tests. If found, it will try to extract “examples”
 to include in the documentation.
@@ -126,7 +163,7 @@ This requires that
     specific example, e.g. for “SdCardPath”, the test name could be
     `testDocumentationExampleSdCardPath`.
 
-  * Note also that you can include source files which are ommitted from
+  * Note also that you can include source files which are omitted from
     the example if the source contains the string
     `HIDE-FROM-DOCUMENTATION` somewhere, typically in a comment. This
     is typically only needed for things like stubs and R classes to
@@ -159,7 +196,7 @@ This requires that
   that scenario you might want to include an example.
 
 !!! Tip
-   If you are develping a new lint check and want to review the
+   If you are developing a new lint check and want to review the
    documentation that will be generated, you can also use the `--issues
    <id>` flag to limit the document generation to just a single check
    (or a comma separated list of checks).

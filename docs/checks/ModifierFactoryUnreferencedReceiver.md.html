@@ -1,0 +1,139 @@
+<meta charset="utf-8">
+(#) Modifier factory functions must use the receiver Modifier instance
+
+!!! ERROR: Modifier factory functions must use the receiver Modifier instance
+   This is an error.
+
+Id
+:   `ModifierFactoryUnreferencedReceiver`
+Summary
+:   Modifier factory functions must use the receiver Modifier instance
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.ui.lint.ui)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/main/java/androidx/compose/ui/lint/ModifierDeclarationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/ModifierDeclarationDetectorTest.kt)
+
+Modifier factory functions are fluently chained to construct a chain of
+Modifier objects that will be applied to a layout. As a result, each
+factory function *must* use the receiver `Modifier` parameter, to ensure
+that the function is returning a chain that includes previous items in
+the chain. Make sure the returned chain either explicitly includes
+`this`, such as `return this.then(MyModifier)` or implicitly by
+returning a chain that starts with an implicit call to another factory
+function, such as `return myModifier()`, where `myModifier` is defined
+as `fun Modifier.myModifier(): Modifier`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/ui/foo/TestModifier.kt:8:Error: Modifier factory
+functions must use the receiver Modifier instance
+[ModifierFactoryUnreferencedReceiver]
+
+    fun Modifier.fooModifier() = TestModifier
+                 -----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/ui/foo/TestModifier.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.ui.foo
+
+import androidx.compose.ui.Modifier
+
+object TestModifier : Modifier.Element
+
+fun Modifier.fooModifier() = TestModifier
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/ModifierDeclarationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ModifierDeclarationDetector.functionImplicitlyReturnsModifierElement`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ModifierFactoryUnreferencedReceiver")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ModifierFactoryUnreferencedReceiver")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ModifierFactoryUnreferencedReceiver
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ModifierFactoryUnreferencedReceiver" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ModifierFactoryUnreferencedReceiver'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ModifierFactoryUnreferencedReceiver ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -224,7 +224,7 @@ fun isAfterNougat(): Boolean { // 14: Should be annotated
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N)
-fun isNougat3(): Boolean {  // Should NOT annotate (already annotateD)
+fun isNougat3(): Boolean {  // Should NOT annotate (already annotated)
     return VERSION.SDK_INT >= VERSION_CODES.N
 }
 

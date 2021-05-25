@@ -276,6 +276,17 @@ registry's `maxApi`. (Both `minApi` and `maxApi` are inclusive). When
 lint loads the issue registries it will ignore registries with a range
 outside of the current API level.
 
+### Can I make my lint check “not suppressible?”
+
+In some (hopefully rare) cases, you may want your lint checks to not be
+suppressible using the normal mechanisms -- suppress annotations,
+comments, lint.xml files, baselines, and so on. The usecase for this is
+typically strict company guidelines around compliance or security and
+you want to remove the easy possibility of just silencing the check.
+
+This is possible as part of the issue registration. After creating your
+`Issue`, set the `suppressNames` property to an **empty** collection.
+
 ### How do I check out the current lint source code?
 
 ```shell

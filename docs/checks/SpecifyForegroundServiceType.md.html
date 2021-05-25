@@ -1,0 +1,106 @@
+<meta charset="utf-8">
+(#) Specify foreground service type
+
+!!! ERROR: Specify foreground service type
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `SpecifyForegroundServiceType`
+Summary
+:   Specify foreground service type
+Severity
+:   Fatal
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project (androidx.work.lint.workmanager)
+Affects
+:   Kotlin and Java files and manifest files
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/workmanager-lint/src/main/java/androidx/work/lint/SpecifyForegroundServiceTypeIssueDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/workmanager-lint/src/test/java/androidx/work/lint/SpecifyForegroundServiceTypeIssueDetectorTest.kt)
+
+When using the setForegroundAsync() API, the application must override
+<service /> entry for `SystemForegroundService` to include the
+foreground service type in the  `AndroidManifest.xml` file.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SpecifyForegroundServiceType")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SpecifyForegroundServiceType")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SpecifyForegroundServiceType
+  problematicStatement()
+  ```
+
+* Adding the suppression attribute
+  `tools:ignore="SpecifyForegroundServiceType"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SpecifyForegroundServiceType" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SpecifyForegroundServiceType'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SpecifyForegroundServiceType ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

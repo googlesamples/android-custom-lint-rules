@@ -127,8 +127,9 @@ long book, suitable for printing or reading on a tablet.
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupifaclassisasubclassofanother?" class="level3"><span class="tocNumber">8.0.13&nbsp; </span>How do I look up if a class is a subclass of another?</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoiknowwhichparameteracallargumentcorrespondsto?" class="level3"><span class="tocNumber">8.0.14&nbsp; </span>How do I know which parameter a call argument corresponds to?</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howcanmylintcheckstargettwodifferentversionsoflint?" class="level3"><span class="tocNumber">8.0.15&nbsp; </span>How can my lint checks target two different versions of lint?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?" class="level3"><span class="tocNumber">8.0.16&nbsp; </span>How do I check out the current lint source code?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//wheredoifindexamplesoflintchecks?" class="level3"><span class="tocNumber">8.0.17&nbsp; </span>Where do I find examples of lint checks?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D" class="level3"><span class="tocNumber">8.0.16&nbsp; </span>Can I make my lint check “not suppressible?”</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?" class="level3"><span class="tocNumber">8.0.17&nbsp; </span>How do I check out the current lint source code?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//wheredoifindexamplesoflintchecks?" class="level3"><span class="tocNumber">8.0.18&nbsp; </span>Where do I find examples of lint checks?</a><br>
 <a href="#appendix:recentchanges" class="level1"><span class="tocNumber">9&nbsp; </span>Appendix: Recent Changes</a><br>
 <a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">10&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
 &nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">10.1&nbsp; </span>Environment Variables</a><br>
@@ -3332,7 +3333,7 @@ analysis. However, there are a few remaining scenarios to be aware of:
   This means that instead, you need to aggregate data along the way.
   For example, the way lint handles the version check method lookup is
   to look for SDK_INT comparisons, and if found, stores a reference to
-  the method in ther partial results map which it can later consult
+  the method in the partial results map which it can later consult
   from downstream modules.
 
 </p><p>
@@ -4175,7 +4176,23 @@ lint loads the issue registries it will ignore registries with a range
 outside of the current API level.
 
 </p>
-<a class="target" name="howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="toc8.0.16">&nbsp;</a><h3>How do I check out the current lint source code?</h3>
+<a class="target" name="canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D">&nbsp;</a><a class="target" name="frequentlyaskedquestions//canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D">&nbsp;</a><a class="target" name="toc8.0.16">&nbsp;</a><h3>Can I make my lint check “not suppressible?”</h3>
+<p>
+
+
+In some (hopefully rare) cases, you may want your lint checks to not be
+suppressible using the normal mechanisms — suppress annotations,
+comments, lint.xml files, baselines, and so on. The usecase for this is
+typically strict company guidelines around compliance or security and
+you want to remove the easy possibility of just silencing the check.
+
+</p><p>
+
+This is possible as part of the issue registration. After creating your
+<code>Issue</code>, set the <code>suppressNames</code> property to an <strong class="asterisk">empty</strong> collection.
+
+</p>
+<a class="target" name="howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="toc8.0.17">&nbsp;</a><h3>How do I check out the current lint source code?</h3>
 <pre class="listing backtick"><code><span class="line"><span class="hljs-meta">$</span><span class="bash"> git <span class="hljs-built_in">clone</span> --branch=mirror-goog-studio-master-dev --single-branch \</span>
 <span class="line">   https://android.googlesource.com/platform/tools/base</span></span>
 <span class="line">Cloning into 'base'...</span>
@@ -4192,7 +4209,7 @@ outside of the current API level.
 <span class="line">.gitignore              MODULE_LICENSE_APACHE2  cli/</span>
 <span class="line"><span class="hljs-meta">$</span><span class="bash"> ls libs/</span></span>
 <span class="line">intellij-core/   kotlin-compiler/ lint-api/        lint-checks/     lint-gradle/     lint-model/      lint-tests/      uast/</span></code></pre>
-<a class="target" name="wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="toc8.0.17">&nbsp;</a><h3>Where do I find examples of lint checks?</h3>
+<a class="target" name="wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="toc8.0.18">&nbsp;</a><h3>Where do I find examples of lint checks?</h3>
 <p>
 
 
@@ -4327,6 +4344,11 @@ Guide.
 
 </p></li>
 <li class="asterisk">API documentation is now available.
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">UAST for Kotlin is now based on Kotlin 1.5.
 
 <p></p><p>
 
