@@ -16,6 +16,10 @@ Platform
 :   Android
 Vendor
 :   Android Open Source Project (androidx.appcompat.appcompat)
+Identifier
+:   androidx.appcompat.appcompat
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192731
 Affects
 :   Resource files
 Editing
@@ -35,7 +39,15 @@ You can suppress false positives using one of the following mechanisms:
   element (or one of its enclosing elements). You may also need to add
   the following namespace declaration on the root element in the XML
   file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;Switch xmlns:tools="http://schemas.android.com/tools"
+      tools:ignore="UseSwitchCompatOrMaterialXml" ...&gt;
+    ...
+  &lt;/Switch&gt;
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look
