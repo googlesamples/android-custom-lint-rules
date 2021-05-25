@@ -148,7 +148,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("RememberSaveableSaverParameter")
   fun method() {
-     problematicStatement()
+     rememberSaveable(...)
   }
   ```
 
@@ -158,7 +158,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("RememberSaveableSaverParameter")
   void method() {
-     problematicStatement();
+     rememberSaveable(...);
   }
   ```
 

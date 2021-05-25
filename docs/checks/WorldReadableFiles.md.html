@@ -145,7 +145,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("WorldReadableFiles")
   fun method() {
-     problematicStatement()
+     openFileOutput(...)
   }
   ```
 
@@ -155,7 +155,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("WorldReadableFiles")
   void method() {
-     problematicStatement();
+     openFileOutput(...);
   }
   ```
 

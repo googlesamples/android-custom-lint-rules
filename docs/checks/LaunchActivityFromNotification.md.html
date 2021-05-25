@@ -108,7 +108,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("LaunchActivityFromNotification")
   fun method() {
-     problematicStatement()
+     setContentIntent(...)
   }
   ```
 
@@ -118,7 +118,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("LaunchActivityFromNotification")
   void method() {
-     problematicStatement();
+     setContentIntent(...);
   }
   ```
 

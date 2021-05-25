@@ -159,7 +159,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("LintImplBadUrl")
   fun method() {
-     problematicStatement()
+     lint(...)
   }
   ```
 
@@ -169,7 +169,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("LintImplBadUrl")
   void method() {
-     problematicStatement();
+     lint(...);
   }
   ```
 

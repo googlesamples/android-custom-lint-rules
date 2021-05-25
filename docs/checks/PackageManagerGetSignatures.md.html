@@ -88,7 +88,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("PackageManagerGetSignatures")
   fun method() {
-     problematicStatement()
+     getPackageInfo(...)
   }
   ```
 
@@ -98,7 +98,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("PackageManagerGetSignatures")
   void method() {
-     problematicStatement();
+     getPackageInfo(...);
   }
   ```
 

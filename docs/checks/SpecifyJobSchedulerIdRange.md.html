@@ -47,7 +47,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("SpecifyJobSchedulerIdRange")
   fun method() {
-     problematicStatement()
+     setJobSchedulerJobIdRange(...)
   }
   ```
 
@@ -57,7 +57,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("SpecifyJobSchedulerIdRange")
   void method() {
-     problematicStatement();
+     setJobSchedulerJobIdRange(...);
   }
   ```
 

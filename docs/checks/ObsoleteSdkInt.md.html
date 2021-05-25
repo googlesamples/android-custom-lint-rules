@@ -46,8 +46,15 @@ Here is an example of lint warnings produced by this check:
 src/ObsoleteSdkInt.kt:4:Warning: Unnecessary; SDK_INT is always >= 23
 [ObsoleteSdkInt]
 
-    if (Build.VERSION.SDK_INT &gt;= 21) { // UNNECESSARY
+    if (Build.VERSION.SDK_INT &gt;= 21) { // UNNECESSARY, always true
         ---------------------------
+
+
+src/ObsoleteSdkInt.kt:7:Warning: Unnecessary; SDK_INT is never < 23
+[ObsoleteSdkInt]
+
+    if (Build.VERSION.SDK_INT &lt; 21) { // UNNECESSARY, never true
+        --------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,8 +74,11 @@ Here are the relevant source files:
 import android.os.Build;
 class ObsoleteSdkInt {
     fun something() {
-        if (Build.VERSION.SDK_INT >= 21) { // UNNECESSARY
-            // something
+        if (Build.VERSION.SDK_INT >= 21) { // UNNECESSARY, always true
+            // always run
+        }
+        if (Build.VERSION.SDK_INT < 21) { // UNNECESSARY, never true
+            // never run
         }
     }
 }

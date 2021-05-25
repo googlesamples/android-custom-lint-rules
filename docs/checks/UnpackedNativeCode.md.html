@@ -100,7 +100,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UnpackedNativeCode")
   fun method() {
-     problematicStatement()
+     loadLibrary(...)
   }
   ```
 
@@ -110,7 +110,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UnpackedNativeCode")
   void method() {
-     problematicStatement();
+     loadLibrary(...);
   }
   ```
 

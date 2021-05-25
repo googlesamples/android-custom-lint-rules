@@ -46,7 +46,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("WorkerHasAPublicModifier")
   fun method() {
-     problematicStatement()
+     setWorkerFactory(...)
   }
   ```
 
@@ -56,7 +56,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("WorkerHasAPublicModifier")
   void method() {
-     problematicStatement();
+     setWorkerFactory(...);
   }
   ```
 

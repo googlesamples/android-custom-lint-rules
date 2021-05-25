@@ -45,34 +45,53 @@ lint.unused-resources.exclude-tests=true.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/values/strings2.xml:3:Warning: The resource R.string.hello appears
-to be unused [UnusedResources]
+res/values/strings.xml:3:Warning: The resource R.string.some_string
+appears to be unused [UnusedResources]
 
-    &lt;string name="hello"&gt;Hello&lt;/string&gt;
-            ------------
+    &lt;string name="some_string"&gt;Some String&lt;/string&gt;
+            ------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`res/values/strings2.xml`:
+`res/layout/main.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;resources&gt;
-    &lt;string name="hello"&gt;Hello&lt;/string&gt;
-&lt;/resources&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout"&gt;
+    &lt;Button
+        android:id="@+id/button1"
+        android:text="Button" /&gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;string name="app_name"&gt;Test&lt;/string&gt;
+    &lt;string name="some_string"&gt;Some String&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/MyActivity.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+import android.app.Activity;
+import android.os.Bundle;
+
+public class MyActivity extends Activity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        String name = getString(R.string.app_name);
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UnusedResourceDetectorTest.java)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `UnusedResourceDetector.testUnused`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

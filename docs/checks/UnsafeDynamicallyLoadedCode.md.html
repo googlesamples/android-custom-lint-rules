@@ -105,7 +105,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UnsafeDynamicallyLoadedCode")
   fun method() {
-     problematicStatement()
+     load(...)
   }
   ```
 
@@ -115,7 +115,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UnsafeDynamicallyLoadedCode")
   void method() {
-     problematicStatement();
+     load(...);
   }
   ```
 

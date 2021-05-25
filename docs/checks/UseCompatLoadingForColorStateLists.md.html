@@ -40,7 +40,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UseCompatLoadingForColorStateLists")
   fun method() {
-     problematicStatement()
+     getColorStateList(...)
   }
   ```
 
@@ -50,7 +50,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UseCompatLoadingForColorStateLists")
   void method() {
-     problematicStatement();
+     getColorStateList(...);
   }
   ```
 

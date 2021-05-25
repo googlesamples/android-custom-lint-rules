@@ -55,82 +55,43 @@ rather than your manifest file's minimum SDK as the required API level.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/bar/ApiCallTest.java:33:Warning: Field requires API level 11
-(current min is 1): dalvik.bytecode.OpcodeInfo#MAXIMUM_VALUE
-[InlinedApi]
+src/test.kt:8:Warning: Field requires API level 29 (current min is 21):
+android.media.MediaFormat#MIMETYPE_AUDIO_AC4 [InlinedApi]
 
-  int field = OpcodeInfo.MAXIMUM_VALUE; // API 11
-              ------------------------
+    val format: String = MediaFormat.MIMETYPE_AUDIO_AC4
+                         ------------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`src/foo/bar/ApiCallTest.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package foo.bar;
+`src/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="30" /&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-import org.w3c.dom.DOMError;
-import org.w3c.dom.DOMErrorHandler;
-import org.w3c.dom.DOMLocator;
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import android.media.MediaFormat
 
-import android.view.ViewGroup.LayoutParams;
-import android.app.Activity;
-import android.app.ApplicationErrorReport;
-import android.app.ApplicationErrorReport.BatteryInfo;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuff.Mode;
-import android.widget.Chronometer;
-import android.widget.GridLayout;
-import dalvik.bytecode.OpcodeInfo;
-
-public class ApiCallTest extends Activity {
-	public void method(Chronometer chronometer, DOMLocator locator) {
-		// Virtual call
-		getActionBar(); // API 11
-
-		// Class references (no call or field access)
-		DOMError error = null; // API 8
-		Class<?> clz = DOMErrorHandler.class; // API 8
-
-		// Method call
-		chronometer.getOnChronometerTickListener(); // API 3 
-
-		// Inherited method call (from TextView
-		chronometer.setTextIsSelectable(true); // API 11
-
-		// Field access
-		int field = OpcodeInfo.MAXIMUM_VALUE; // API 11
-		int fillParent = LayoutParams.FILL_PARENT; // API 1
-		// This is a final int, which means it gets inlined
-		int matchParent = LayoutParams.MATCH_PARENT; // API 8
-		// Field access: non final
-		BatteryInfo batteryInfo = getReport().batteryInfo;
-
-		// Enum access
-		Mode mode = PorterDuff.Mode.OVERLAY; // API 11
-	}
-
-	// Return type
-	GridLayout getGridLayout() { // API 14
-		return null;
-	}
-
-	private ApplicationErrorReport getReport() {
-		return null;
-	}
+fun test() {
+    // This constant will be copied in by value, which means
+    // it will run without crashing on older devices. However,
+    // depending on what we *do* with the value, the code may
+    // may not work correctly.
+    val format: String = MediaFormat.MIMETYPE_AUDIO_AC4
+    encode(format) // might crash!
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ApiDetector.testApi1`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

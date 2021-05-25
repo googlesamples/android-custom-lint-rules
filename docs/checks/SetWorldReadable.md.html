@@ -130,7 +130,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("SetWorldReadable")
   fun method() {
-     problematicStatement()
+     openFileOutput(...)
   }
   ```
 
@@ -140,7 +140,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("SetWorldReadable")
   void method() {
-     problematicStatement();
+     openFileOutput(...);
   }
   ```
 

@@ -84,7 +84,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("GetLocales")
   fun method() {
-     problematicStatement()
+     getLocales(...)
   }
   ```
 
@@ -94,7 +94,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("GetLocales")
   void method() {
-     problematicStatement();
+     getLocales(...);
   }
   ```
 

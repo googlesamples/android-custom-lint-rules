@@ -126,7 +126,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("InstantApps")
   fun method() {
-     problematicStatement()
+     notify(...)
   }
   ```
 
@@ -136,7 +136,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("InstantApps")
   void method() {
-     problematicStatement();
+     notify(...);
   }
   ```
 

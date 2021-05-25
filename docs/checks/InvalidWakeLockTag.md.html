@@ -85,7 +85,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("InvalidWakeLockTag")
   fun method() {
-     problematicStatement()
+     newWakeLock(...)
   }
   ```
 
@@ -95,7 +95,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("InvalidWakeLockTag")
   void method() {
-     problematicStatement();
+     newWakeLock(...);
   }
   ```
 

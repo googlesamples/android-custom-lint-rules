@@ -167,7 +167,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("QueryPermissionsNeeded")
   fun method() {
-     problematicStatement()
+     getInstalledPackages(...)
   }
   ```
 
@@ -177,7 +177,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("QueryPermissionsNeeded")
   void method() {
-     problematicStatement();
+     getInstalledPackages(...);
   }
   ```
 

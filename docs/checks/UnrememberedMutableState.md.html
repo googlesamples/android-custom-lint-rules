@@ -296,7 +296,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UnrememberedMutableState")
   fun method() {
-     problematicStatement()
+     mutableStateOf(...)
   }
   ```
 
@@ -306,7 +306,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UnrememberedMutableState")
   void method() {
-     problematicStatement();
+     mutableStateOf(...);
   }
   ```
 

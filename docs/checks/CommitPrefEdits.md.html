@@ -157,7 +157,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("CommitPrefEdits")
   fun method() {
-     problematicStatement()
+     beginTransaction(...)
   }
   ```
 
@@ -167,7 +167,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("CommitPrefEdits")
   void method() {
-     problematicStatement();
+     beginTransaction(...);
   }
   ```
 

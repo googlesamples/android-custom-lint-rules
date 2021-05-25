@@ -136,7 +136,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("JavascriptInterface")
   fun method() {
-     problematicStatement()
+     addJavascriptInterface(...)
   }
   ```
 
@@ -146,7 +146,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("JavascriptInterface")
   void method() {
-     problematicStatement();
+     addJavascriptInterface(...);
   }
   ```
 

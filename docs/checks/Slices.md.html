@@ -139,7 +139,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("Slices")
   fun method() {
-     problematicStatement()
+     ListBuilder(...)
   }
   ```
 
@@ -149,7 +149,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("Slices")
   void method() {
-     problematicStatement();
+     new ListBuilder(...);
   }
   ```
 

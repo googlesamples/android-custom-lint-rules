@@ -222,7 +222,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("RecyclerView")
   fun method() {
-     problematicStatement()
+     notifyDataSetChanged(...)
   }
   ```
 
@@ -232,7 +232,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("RecyclerView")
   void method() {
-     problematicStatement();
+     notifyDataSetChanged(...);
   }
   ```
 

@@ -106,7 +106,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("SSLCertificateSocketFactoryGetInsecure")
   fun method() {
-     problematicStatement()
+     createSocket(...)
   }
   ```
 
@@ -116,7 +116,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("SSLCertificateSocketFactoryGetInsecure")
   void method() {
-     problematicStatement();
+     createSocket(...);
   }
   ```
 

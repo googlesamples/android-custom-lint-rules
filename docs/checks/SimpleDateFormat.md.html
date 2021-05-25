@@ -138,7 +138,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("SimpleDateFormat")
   fun method() {
-     problematicStatement()
+     ofPattern(...)
   }
   ```
 
@@ -148,7 +148,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("SimpleDateFormat")
   void method() {
-     problematicStatement();
+     ofPattern(...);
   }
   ```
 

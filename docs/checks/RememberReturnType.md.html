@@ -203,7 +203,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("RememberReturnType")
   fun method() {
-     problematicStatement()
+     remember(...)
   }
   ```
 
@@ -213,7 +213,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("RememberReturnType")
   void method() {
-     problematicStatement();
+     remember(...);
   }
   ```
 

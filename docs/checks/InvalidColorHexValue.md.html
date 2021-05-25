@@ -93,7 +93,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("InvalidColorHexValue")
   fun method() {
-     problematicStatement()
+     Color(...)
   }
   ```
 
@@ -103,7 +103,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("InvalidColorHexValue")
   void method() {
-     problematicStatement();
+     Color(...);
   }
   ```
 

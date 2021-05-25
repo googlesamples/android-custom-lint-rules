@@ -46,7 +46,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("InvalidSetHasFixedSize")
   fun method() {
-     problematicStatement()
+     setHasFixedSize(...)
   }
   ```
 
@@ -56,7 +56,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("InvalidSetHasFixedSize")
   void method() {
-     problematicStatement();
+     setHasFixedSize(...);
   }
   ```
 
