@@ -1,0 +1,158 @@
+<meta charset="utf-8">
+(#) Proceeds with the HTTPS connection despite SSL errors
+
+!!! WARNING: Proceeds with the HTTPS connection despite SSL errors
+   This is a warning.
+
+Id
+:   `WebViewClientOnReceivedSslError`
+Summary
+:   Proceeds with the HTTPS connection despite SSL errors
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WebViewClientDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WebViewClientDetectorTest.kt)
+
+This check looks for `onReceivedSslError` implementations that invoke
+`SslErrorHandler#proceed`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MainActivity.java:25:Warning: Permitting connections with
+SSL-related errors could allow eavesdroppers to intercept data sent by
+your app, which impacts the privacy of your users. Consider canceling
+the connections by invoking SslErrorHandler#cancel().
+[WebViewClientOnReceivedSslError]
+
+    handler.proceed();
+    -----------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MainActivity.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.net.http.SslError;
+import android.os.Bundle;
+import android.util.Log;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import androidx.annotation.Nullable;
+
+public class MainActivity extends Activity {
+    protected void loadWebpage(Webview webView, String url) {
+        WebView webView = (WebView) findViewById(R.id.webview);
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.loadUrl(url);
+    }
+
+    public static class MyWebViewClient extends WebViewClient {
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            Log.d("MainActivity", "Bad SSL cert happened!");
+            if (error.getPrimaryError() != SslError.SSL_UNTRUSTED) {
+                handler.proceed();
+            }
+            proceed();
+        }
+        private void proceed() {}
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WebViewClientDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WebViewClientDetector.testOnReceivedSslError_expectWarnings`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WebViewClientOnReceivedSslError")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WebViewClientOnReceivedSslError")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WebViewClientOnReceivedSslError
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WebViewClientOnReceivedSslError" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WebViewClientOnReceivedSslError'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WebViewClientOnReceivedSslError ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

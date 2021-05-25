@@ -1,0 +1,106 @@
+<meta charset="utf-8">
+(#) Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method
+
+!!! ERROR: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method
+   This is an error.
+
+Id
+:   `UnsafeLifecycleWhenUsage`
+Summary
+:   Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project (androidx.lifecycle.lint.lifecycleruntime)
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-runtime-ktx-lint/src/main/java/androidx/lifecycle/lint/LifecycleWhenChecks.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-runtime-ktx-lint/src/test/java/androidx/lifecycle/lint/LifecycleWhenChecksTest.kt)
+
+If the `Lifecycle` is destroyed within the block of                    
+`Lifecycle.whenStarted` or any similar `Lifecycle.when` method is
+suspended,                     the block will be cancelled, which will
+also cancel any child coroutine                     launched inside the
+block. As as a result, If you have a try finally block                  
+  in your code, the finally might run after the Lifecycle moves outside 
+                   the desired state. It is recommended to check the
+`Lifecycle.isAtLeast`                     before accessing UI in finally
+block. Similarly,                     if you have a catch statement that
+might catch `CancellationException`,                     you should
+check the `Lifecycle.isAtLeast` before accessing the UI. See            
+        documentation of `Lifecycle.whenStateAtLeast` for more details.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnsafeLifecycleWhenUsage")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnsafeLifecycleWhenUsage")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnsafeLifecycleWhenUsage
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnsafeLifecycleWhenUsage" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnsafeLifecycleWhenUsage'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnsafeLifecycleWhenUsage ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

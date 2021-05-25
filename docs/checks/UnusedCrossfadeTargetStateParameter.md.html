@@ -1,0 +1,180 @@
+<meta charset="utf-8">
+(#) Crossfade calls should use the provided `T` parameter in the content lambda
+
+!!! ERROR: Crossfade calls should use the provided `T` parameter in the content lambda
+   This is an error.
+
+Id
+:   `UnusedCrossfadeTargetStateParameter`
+Summary
+:   Crossfade calls should use the provided `T` parameter in the content lambda
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.animation.lint.animation)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/main/java/androidx/compose/animation/lint/CrossfadeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/CrossfadeDetectorTest.kt)
+
+`content` lambda in Crossfade works as a lookup function that returns
+the corresponding content based on the parameter (a state of type `T`).
+It is important for this lambda to return content *specific* to the
+input parameter, so that the different contents can be properly
+crossfaded. Not using the input parameter to the content lambda will
+result in the same content for different input (i.e. target state) and
+therefore an erroneous crossfade between the exact same content.`
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/test.kt:11:Error: Target state parameter it is not used
+[UnusedCrossfadeTargetStateParameter]
+
+    Crossfade(foo) { if (foo) { /**/ } else { /**/ } }
+                   -----------------------------------
+
+
+src/foo/test.kt:12:Error: Target state parameter it is not used
+[UnusedCrossfadeTargetStateParameter]
+
+    Crossfade(foo, content = { if (foo) { /**/ } else { /**/ } })
+                             -----------------------------------
+
+
+src/foo/test.kt:13:Error: Target state parameter param is not used
+[UnusedCrossfadeTargetStateParameter]
+
+    Crossfade(foo) { param -&gt; if (foo) { /**/ } else { /**/ } }
+                     -----
+
+
+src/foo/test.kt:14:Error: Target state parameter param is not used
+[UnusedCrossfadeTargetStateParameter]
+
+    Crossfade(foo, content = { param -&gt; if (foo) { /**/ } else { /**/ } })
+                               -----
+
+
+src/foo/test.kt:15:Error: Target state parameter _ is not used
+[UnusedCrossfadeTargetStateParameter]
+
+    Crossfade(foo) { _ -&gt; if (foo) { /**/ } else { /**/ } }
+                     -
+
+
+src/foo/test.kt:16:Error: Target state parameter _ is not used
+[UnusedCrossfadeTargetStateParameter]
+
+    Crossfade(foo, content = { _ -&gt; if (foo) { /**/ } else { /**/ } })
+                               -
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import androidx.compose.animation.*
+import androidx.compose.runtime.*
+
+val foo = false
+
+@Composable
+fun Test() {
+    Crossfade(foo) { if (foo) { /**/ } else { /**/ } }
+    Crossfade(foo, content = { if (foo) { /**/ } else { /**/ } })
+    Crossfade(foo) { param -> if (foo) { /**/ } else { /**/ } }
+    Crossfade(foo, content = { param -> if (foo) { /**/ } else { /**/ } })
+    Crossfade(foo) { _ -> if (foo) { /**/ } else { /**/ } }
+    Crossfade(foo, content = { _ -> if (foo) { /**/ } else { /**/ } })
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/CrossfadeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CrossfadeDetector.unreferencedParameters`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnusedCrossfadeTargetStateParameter")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnusedCrossfadeTargetStateParameter")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnusedCrossfadeTargetStateParameter
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnusedCrossfadeTargetStateParameter" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnusedCrossfadeTargetStateParameter'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnusedCrossfadeTargetStateParameter ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

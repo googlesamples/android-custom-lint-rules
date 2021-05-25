@@ -1,0 +1,349 @@
+<meta charset="utf-8">
+(#) Creating a state object during composition without using `remember`
+
+!!! ERROR: Creating a state object during composition without using `remember`
+   This is an error.
+
+Id
+:   `UnrememberedMutableState`
+Summary
+:   Creating a state object during composition without using `remember`
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.runtime.lint.runtime)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/UnrememberedMutableStateDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/UnrememberedMutableStateDetectorTest.kt)
+
+State objects created during composition need to be `remember`ed,
+otherwise they will be recreated during recomposition, and lose their
+state. Either hoist the state to an object that is not created during
+composition, or wrap the state in a call to `remember`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/runtime/foo/{.kt:8:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:9:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:10:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:14:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:15:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:16:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:20:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:21:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:22:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:31:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:32:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:33:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:36:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:37:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:38:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:44:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:45:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:46:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:50:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:51:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:52:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+src/androidx/compose/runtime/foo/{.kt:59:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val foo = mutableStateOf(0)
+              --------------
+
+
+src/androidx/compose/runtime/foo/{.kt:60:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val bar = mutableStateListOf&lt;Int&gt;()
+              ------------------
+
+
+src/androidx/compose/runtime/foo/{.kt:61:Error: Creating a state object
+during composition without using remember [UnrememberedMutableState]
+
+    val baz = mutableStateMapOf&lt;Int, Float&gt;()
+              -----------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/runtime/foo/{.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.runtime.foo
+
+import androidx.compose.runtime.*
+
+@Composable
+fun Test() {
+    val foo = mutableStateOf(0)
+    val bar = mutableStateListOf<Int>()
+    val baz = mutableStateMapOf<Int, Float>()
+}
+
+val lambda = @Composable {
+    val foo = mutableStateOf(0)
+    val bar = mutableStateListOf<Int>()
+    val baz = mutableStateMapOf<Int, Float>()
+}
+
+val lambda2: @Composable () -> Unit = {
+    val foo = mutableStateOf(0)
+    val bar = mutableStateListOf<Int>()
+    val baz = mutableStateMapOf<Int, Float>()
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2() {
+    LambdaParameter(content = {
+        val foo = mutableStateOf(0)
+        val bar = mutableStateListOf<Int>()
+        val baz = mutableStateMapOf<Int, Float>()
+    })
+    LambdaParameter {
+        val foo = mutableStateOf(0)
+        val bar = mutableStateListOf<Int>()
+        val baz = mutableStateMapOf<Int, Float>()
+    }
+}
+
+fun test3() {
+    val localLambda1 = @Composable {
+        val foo = mutableStateOf(0)
+        val bar = mutableStateListOf<Int>()
+        val baz = mutableStateMapOf<Int, Float>()
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        val foo = mutableStateOf(0)
+        val bar = mutableStateListOf<Int>()
+        val baz = mutableStateMapOf<Int, Float>()
+    }
+}
+
+@Composable
+fun Test4() {
+    val localObject = object {
+        val foo = mutableStateOf(0)
+        val bar = mutableStateListOf<Int>()
+        val baz = mutableStateMapOf<Int, Float>()
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/UnrememberedMutableStateDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `UnrememberedMutableStateDetector.notRemembered`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnrememberedMutableState")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnrememberedMutableState")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnrememberedMutableState
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnrememberedMutableState" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnrememberedMutableState'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnrememberedMutableState ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

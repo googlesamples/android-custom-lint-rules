@@ -1,0 +1,136 @@
+<meta charset="utf-8">
+(#) Update to Fragment 1.3.0 to use ActivityResult APIs
+
+!!! ERROR: Update to Fragment 1.3.0 to use ActivityResult APIs
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
+
+Id
+:   `InvalidFragmentVersionForActivityResult`
+Summary
+:   Update to Fragment 1.3.0 to use ActivityResult APIs
+Severity
+:   Fatal
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.activity.lint.activity)
+Affects
+:   Gradle build files and Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/training/permissions/requesting#make-the-request
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/main/java/androidx/activity/lint/ActivityResultFragmentVersionDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/test/java/androidx/activity/lint/ActivityResultFragmentVersionDetectorTest.kt)
+
+In order to use the ActivityResult APIs you must upgrade your           
+     Fragment version to 1.3.0. Previous versions of FragmentActivity   
+             failed to call super.onRequestPermissionsResult() and used
+invalid request codes.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/main/kotlin/com/example/test.kt:6:Error: Upgrade Fragment version to
+at least . [InvalidFragmentVersionForActivityResult]
+
+val launcher = ActivityResultCaller().registerForActivityResult(ActivityResultContract())
+               --------------------------------------------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/main/kotlin/com/example/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.contract.ActivityResultContract
+
+val launcher = ActivityResultCaller().registerForActivityResult(ActivityResultContract())
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/test/java/androidx/activity/lint/ActivityResultFragmentVersionDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ActivityResultFragmentVersionDetector.expectFailRegisterForActivityResult`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("InvalidFragmentVersionForActivityResult")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("InvalidFragmentVersionForActivityResult")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection InvalidFragmentVersionForActivityResult
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="InvalidFragmentVersionForActivityResult" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'InvalidFragmentVersionForActivityResult'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore InvalidFragmentVersionForActivityResult ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

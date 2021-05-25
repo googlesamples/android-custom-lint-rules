@@ -1,0 +1,282 @@
+<meta charset="utf-8">
+(#) Calls to `async` or `launch` should happen inside a LaunchedEffect and not composition
+
+!!! ERROR: Calls to `async` or `launch` should happen inside a LaunchedEffect and not composition
+   This is an error.
+
+Id
+:   `CoroutineCreationDuringComposition`
+Summary
+:   Calls to `async` or `launch` should happen inside a LaunchedEffect and not composition
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.runtime.lint.runtime)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/ComposableCoroutineCreationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/ComposableCoroutineCreationDetectorTest.kt)
+
+Creating a coroutine with `async` or `launch` during composition is
+often incorrect - this means that a coroutine will be created even if
+the composition fails / is rolled back, and it also means that multiple
+coroutines could end up mutating the same state, causing inconsistent
+results. Instead, use `LaunchedEffect` and create coroutines inside the
+suspending block. The block will only run after a successful
+composition, and will cancel existing coroutines when `key` changes,
+allowing correct cleanup.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/runtime/foo/test.kt:9:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:10:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+src/androidx/compose/runtime/foo/test.kt:14:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:15:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+src/androidx/compose/runtime/foo/test.kt:19:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:20:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+src/androidx/compose/runtime/foo/test.kt:29:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:30:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+src/androidx/compose/runtime/foo/test.kt:33:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:34:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+src/androidx/compose/runtime/foo/test.kt:40:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:41:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+src/androidx/compose/runtime/foo/test.kt:45:Error: Calls to async should
+happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.async {}
+                   -----
+
+
+src/androidx/compose/runtime/foo/test.kt:46:Error: Calls to launch
+should happen inside a LaunchedEffect and not composition
+[CoroutineCreationDuringComposition]
+
+    CoroutineScope.launch {}
+                   ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/runtime/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.runtime.foo
+
+import androidx.compose.runtime.Composable
+import kotlinx.coroutines.*
+
+@Composable
+fun Test() {
+    CoroutineScope.async {}
+    CoroutineScope.launch {}
+}
+
+val lambda = @Composable {
+    CoroutineScope.async {}
+    CoroutineScope.launch {}
+}
+
+val lambda2: @Composable () -> Unit = {
+    CoroutineScope.async {}
+    CoroutineScope.launch {}
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2() {
+    LambdaParameter(content = {
+        CoroutineScope.async {}
+        CoroutineScope.launch {}
+    })
+    LambdaParameter {
+        CoroutineScope.async {}
+        CoroutineScope.launch {}
+    }
+}
+
+fun test3() {
+    val localLambda1 = @Composable {
+        CoroutineScope.async {}
+        CoroutineScope.launch {}
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        CoroutineScope.async {}
+        CoroutineScope.launch {}
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/ComposableCoroutineCreationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ComposableCoroutineCreationDetector.errors`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("CoroutineCreationDuringComposition")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("CoroutineCreationDuringComposition")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection CoroutineCreationDuringComposition
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="CoroutineCreationDuringComposition" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'CoroutineCreationDuringComposition'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore CoroutineCreationDuringComposition ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

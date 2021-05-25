@@ -1,0 +1,183 @@
+<meta charset="utf-8">
+(#) Transition.animate* calls should use the provided targetState when defining values
+
+!!! ERROR: Transition.animate* calls should use the provided targetState when defining values
+   This is an error.
+
+Id
+:   `UnusedTransitionTargetStateParameter`
+Summary
+:   Transition.animate* calls should use the provided targetState when defining values
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.animation.core.lint.animationcore)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/main/java/androidx/compose/animation/core/lint/TransitionDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/TransitionDetectorTest.kt)
+
+Transition.animate* functions provide a target state parameter in the
+lambda that will be used to calculate the value for a given state. This
+target state parameter in the lambda may or may not be the same as the
+actual state, as the animation system occasionally needs to look up
+target values for other states to do proper seeking/tooling preview.
+Relying on other state than the provided `targetState` could also result
+in unnecessary recompositions. Therefore, it is generally considered an
+error if this `targetState` parameter is not used.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/test.kt:13:Error: Target state parameter it is not used
+[UnusedTransitionTargetStateParameter]
+
+    transition.animateFloat { if (foo) 1f else 0f }
+                            -----------------------
+
+
+src/foo/test.kt:14:Error: Target state parameter it is not used
+[UnusedTransitionTargetStateParameter]
+
+    transition.animateFloat(targetValueByState = { if (foo) 1f else 0f })
+                                                 -----------------------
+
+
+src/foo/test.kt:15:Error: Target state parameter param is not used
+[UnusedTransitionTargetStateParameter]
+
+    transition.animateFloat { param -&gt; if (foo) 1f else 0f }
+                              -----
+
+
+src/foo/test.kt:16:Error: Target state parameter param is not used
+[UnusedTransitionTargetStateParameter]
+
+    transition.animateFloat(targetValueByState = { param -&gt; if (foo) 1f else 0f })
+                                                   -----
+
+
+src/foo/test.kt:17:Error: Target state parameter _ is not used
+[UnusedTransitionTargetStateParameter]
+
+    transition.animateFloat { _ -&gt; if (foo) 1f else 0f }
+                              -
+
+
+src/foo/test.kt:18:Error: Target state parameter _ is not used
+[UnusedTransitionTargetStateParameter]
+
+    transition.animateFloat(targetValueByState = { _ -&gt; if (foo) 1f else 0f })
+                                                   -
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import androidx.compose.animation.core.*
+import androidx.compose.runtime.*
+
+val transition = Transition<Boolean>()
+
+var foo = false
+
+@Composable
+fun Test() {
+    transition.animateFloat { if (foo) 1f else 0f }
+    transition.animateFloat(targetValueByState = { if (foo) 1f else 0f })
+    transition.animateFloat { param -> if (foo) 1f else 0f }
+    transition.animateFloat(targetValueByState = { param -> if (foo) 1f else 0f })
+    transition.animateFloat { _ -> if (foo) 1f else 0f }
+    transition.animateFloat(targetValueByState = { _ -> if (foo) 1f else 0f })
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/TransitionDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TransitionDetector.unreferencedParameters`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnusedTransitionTargetStateParameter")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnusedTransitionTargetStateParameter")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnusedTransitionTargetStateParameter
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnusedTransitionTargetStateParameter" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnusedTransitionTargetStateParameter'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnusedTransitionTargetStateParameter ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

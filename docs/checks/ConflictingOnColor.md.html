@@ -1,0 +1,263 @@
+<meta charset="utf-8">
+(#) Background colors with the same value should have the same 'on' color
+
+!!! ERROR: Background colors with the same value should have the same 'on' color
+   This is an error.
+
+Id
+:   `ConflictingOnColor`
+Summary
+:   Background colors with the same value should have the same 'on' color
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project (androidx.compose.material.lint.material)
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/material/material-lint/src/main/java/androidx/compose/material/lint/ColorsDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/material/material-lint/src/test/java/androidx/compose/material/lint/ColorsDetectorTest.kt)
+
+In the Material color system background colors have a corresponding 'on'
+color which is used for the content color inside a component. For
+example, a button colored `primary` will have `onPrimary` text. Because
+of this, it is important that there is only one possible `onColor` for a
+given color value, otherwise there is no way to know which 'on' color
+should be used inside a component. To fix this either use the same 'on'
+color for identical background colors, or use a different background
+color for each 'on' color.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/material/foo/test.kt:15:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.White,
+    -----------
+
+
+src/androidx/compose/material/foo/test.kt:16:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.White,
+    -----------
+
+
+src/androidx/compose/material/foo/test.kt:17:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.White,
+    -----------
+
+
+src/androidx/compose/material/foo/test.kt:18:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.White,
+    -----------
+
+
+src/androidx/compose/material/foo/test.kt:19:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.Red,
+    ---------
+
+
+src/androidx/compose/material/foo/test.kt:31:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.White,
+    -----------
+
+
+src/androidx/compose/material/foo/test.kt:32:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.Blue,
+    ----------
+
+
+src/androidx/compose/material/foo/test.kt:34:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    onSurface = Color.White,
+                -----------
+
+
+src/androidx/compose/material/foo/test.kt:51:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.White,
+    -----------
+
+
+src/androidx/compose/material/foo/test.kt:52:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    yellow400,
+    ---------
+
+
+src/androidx/compose/material/foo/test.kt:53:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    Color.Blue,
+    ----------
+
+
+src/androidx/compose/material/foo/test.kt:55:Error: Conflicting 'on'
+color for a given background [ConflictingOnColor]
+
+    yellow500,
+    ---------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/material/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.material.foo
+
+import androidx.compose.material.*
+import androidx.compose.ui.graphics.*
+
+val colors = Colors(
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    Color.Red,
+    false
+)
+
+val colors2 = Colors(
+    primary = Color.White,
+    Color.White,
+    Color.White,
+    Color.White,
+    background = Color.Blue,
+    Color.White,
+    Color.Green,
+    Color.White,
+    Color.Blue,
+    onBackground = Color.White,
+    onSurface = Color.White,
+    onError = Color.Red,
+    isLight = false
+)
+
+val yellow200 = Color(0xffffeb46)
+val yellow400 = Color(0xffffc000)
+val yellow500 = Color(0xffffde03)
+
+val colors3 = Colors(
+    yellow200,
+    yellow400,
+    yellow200,
+    secondaryVariant = yellow200,
+    Color.White,
+    surface = Color.Blue,
+    Color.White,
+    Color.White,
+    yellow400,
+    Color.Blue,
+    onSurface = Color(0xFFFFBBCC),
+    yellow500,
+    false
+)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/material/material-lint/src/test/java/androidx/compose/material/lint/ColorsDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ColorsDetector.constructorErrors`.
+To report a problem with this extracted sample, visit
+https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ConflictingOnColor")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ConflictingOnColor")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ConflictingOnColor
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ConflictingOnColor" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ConflictingOnColor'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ConflictingOnColor ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
