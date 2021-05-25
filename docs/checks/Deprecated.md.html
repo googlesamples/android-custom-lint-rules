@@ -175,7 +175,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("Deprecated")
   fun method() {
-     problematicStatement()
+     getInstance(...)
   }
   ```
 
@@ -185,7 +185,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("Deprecated")
   void method() {
-     problematicStatement();
+     getInstance(...);
   }
   ```
 

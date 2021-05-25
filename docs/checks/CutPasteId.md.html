@@ -359,7 +359,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("CutPasteId")
   fun method() {
-     problematicStatement()
+     findViewById(...)
   }
   ```
 
@@ -369,7 +369,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("CutPasteId")
   void method() {
-     problematicStatement();
+     findViewById(...);
   }
   ```
 

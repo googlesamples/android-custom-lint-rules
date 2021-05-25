@@ -165,7 +165,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("LintImplTrimIndent")
   fun method() {
-     problematicStatement()
+     lint(...)
   }
   ```
 
@@ -175,7 +175,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("LintImplTrimIndent")
   void method() {
-     problematicStatement();
+     lint(...);
   }
   ```
 

@@ -99,7 +99,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("WakelockTimeout")
   fun method() {
-     problematicStatement()
+     acquire(...)
   }
   ```
 
@@ -109,7 +109,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("WakelockTimeout")
   void method() {
-     problematicStatement();
+     acquire(...);
   }
   ```
 

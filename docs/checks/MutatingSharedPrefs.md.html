@@ -96,7 +96,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("MutatingSharedPrefs")
   fun method() {
-     problematicStatement()
+     getStringSet(...)
   }
   ```
 
@@ -106,7 +106,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("MutatingSharedPrefs")
   void method() {
-     problematicStatement();
+     getStringSet(...);
   }
   ```
 

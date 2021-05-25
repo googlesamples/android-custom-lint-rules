@@ -322,7 +322,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("Recycle")
   fun method() {
-     problematicStatement()
+     beginTransaction(...)
   }
   ```
 
@@ -332,7 +332,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("Recycle")
   void method() {
-     problematicStatement();
+     beginTransaction(...);
   }
   ```
 

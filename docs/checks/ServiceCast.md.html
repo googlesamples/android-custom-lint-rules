@@ -118,7 +118,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("ServiceCast")
   fun method() {
-     problematicStatement()
+     getSystemService(...)
   }
   ```
 
@@ -128,7 +128,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("ServiceCast")
   void method() {
-     problematicStatement();
+     getSystemService(...);
   }
   ```
 

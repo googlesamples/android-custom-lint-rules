@@ -43,7 +43,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UnsafeRepeatOnLifecycleDetector")
   fun method() {
-     problematicStatement()
+     repeatOnLifecycle(...)
   }
   ```
 
@@ -53,7 +53,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UnsafeRepeatOnLifecycleDetector")
   void method() {
-     problematicStatement();
+     repeatOnLifecycle(...);
   }
   ```
 

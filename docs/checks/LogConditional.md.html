@@ -213,7 +213,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("LogConditional")
   fun method() {
-     problematicStatement()
+     d(...)
   }
   ```
 
@@ -223,7 +223,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("LogConditional")
   void method() {
-     problematicStatement();
+     d(...);
   }
   ```
 

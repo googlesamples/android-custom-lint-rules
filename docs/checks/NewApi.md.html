@@ -59,89 +59,43 @@ that the element will only be inflated in an adequate context.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/layout/layout.xml:9:Error: View requires API level 5 (current min is
-1): <QuickContactBadge> [NewApi]
+src/test.kt:5:Error: Call requires API level 23 (current min is 21):
+android.net.ConnectivityManager#getActiveNetwork [NewApi]
 
-    &lt;QuickContactBadge
-     -----------------
-
-
-res/layout/layout.xml:15:Error: View requires API level 11 (current min
-is 1): <CalendarView> [NewApi]
-
-    &lt;CalendarView
-     ------------
-
-
-res/layout/layout.xml:21:Error: View requires API level 14 (current min
-is 1): <GridLayout> [NewApi]
-
-    &lt;GridLayout
-     ----------
-
-
-res/layout/layout.xml:22:Error: @android:attr/actionBarSplitStyle
-requires API level 14 (current min is 1) [NewApi]
-
-    foo="@android:attr/actionBarSplitStyle"
-    ---------------------------------------
-
-
-res/layout/layout.xml:23:Error: @android:color/holo_red_light requires
-API level 14 (current min is 1) [NewApi]
-
-    bar="@android:color/holo_red_light"
-    -----------------------------------
+    val network = cm.activeNetwork // Error: Requires API 23
+                     -------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`res/layout/layout.xml`:
+`src/AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" &gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="30" /&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    &lt;!-- Requires API 5 --&gt;
-
-    &lt;QuickContactBadge
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" /&gt;
-
-    &lt;!-- Requires API 11 --&gt;
-
-    &lt;CalendarView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" /&gt;
-
-    &lt;!-- Requires API 14 --&gt;
-
-    &lt;GridLayout
-        foo="@android:attr/actionBarSplitStyle"
-        bar="@android:color/holo_red_light"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" &gt;
-
-        &lt;Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" /&gt;
-    &lt;/GridLayout&gt;
-
-&lt;/LinearLayout&gt;
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import android.content.Context
+import android.net.ConnectivityManager
+import android.os.Build
+fun test(context: Context) {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = cm.activeNetwork // Error: Requires API 23
+    if (Build.VERSION.SDK_INT >= 23) {
+        val network2 = cm.activeNetwork // OK
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ApiDetector.testXmlApi1`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

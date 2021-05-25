@@ -45,7 +45,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("InvalidPeriodicWorkRequestInterval")
   fun method() {
-     problematicStatement()
+     Builder(...)
   }
   ```
 
@@ -55,7 +55,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("InvalidPeriodicWorkRequestInterval")
   void method() {
-     problematicStatement();
+     new Builder(...);
   }
   ```
 

@@ -140,7 +140,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("SQLiteString")
   fun method() {
-     problematicStatement()
+     execSQL(...)
   }
   ```
 
@@ -150,7 +150,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("SQLiteString")
   void method() {
-     problematicStatement();
+     execSQL(...);
   }
   ```
 

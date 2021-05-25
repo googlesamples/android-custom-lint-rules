@@ -211,7 +211,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("SecureRandom")
   fun method() {
-     problematicStatement()
+     setSeed(...)
   }
   ```
 
@@ -221,7 +221,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("SecureRandom")
   void method() {
-     problematicStatement();
+     setSeed(...);
   }
   ```
 

@@ -43,7 +43,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("IdleBatteryChargingConstraints")
   fun method() {
-     problematicStatement()
+     setRequiresDeviceIdle(...)
   }
   ```
 
@@ -53,7 +53,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("IdleBatteryChargingConstraints")
   void method() {
-     problematicStatement();
+     setRequiresDeviceIdle(...);
   }
   ```
 

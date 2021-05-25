@@ -94,7 +94,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("ClickableViewAccessibility")
   fun method() {
-     problematicStatement()
+     setOnTouchListener(...)
   }
   ```
 
@@ -104,7 +104,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("ClickableViewAccessibility")
   void method() {
-     problematicStatement();
+     setOnTouchListener(...);
   }
   ```
 

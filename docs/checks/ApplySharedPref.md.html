@@ -152,7 +152,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("ApplySharedPref")
   fun method() {
-     problematicStatement()
+     beginTransaction(...)
   }
   ```
 
@@ -162,7 +162,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("ApplySharedPref")
   void method() {
-     problematicStatement();
+     beginTransaction(...);
   }
   ```
 

@@ -129,7 +129,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("NotificationTrampoline")
   fun method() {
-     problematicStatement()
+     setContentIntent(...)
   }
   ```
 
@@ -139,7 +139,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("NotificationTrampoline")
   void method() {
-     problematicStatement();
+     setContentIntent(...);
   }
   ```
 

@@ -97,7 +97,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UnsupportedChromeOsCameraSystemFeature")
   fun method() {
-     problematicStatement()
+     setRequestedOrientation(...)
   }
   ```
 
@@ -107,7 +107,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UnsupportedChromeOsCameraSystemFeature")
   void method() {
-     problematicStatement();
+     setRequestedOrientation(...);
   }
   ```
 

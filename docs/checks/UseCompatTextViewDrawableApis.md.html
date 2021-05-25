@@ -40,7 +40,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UseCompatTextViewDrawableApis")
   fun method() {
-     problematicStatement()
+     setCompoundDrawableTintList(...)
   }
   ```
 
@@ -50,7 +50,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UseCompatTextViewDrawableApis")
   void method() {
-     problematicStatement();
+     setCompoundDrawableTintList(...);
   }
   ```
 

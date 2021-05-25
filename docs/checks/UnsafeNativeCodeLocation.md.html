@@ -48,7 +48,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UnsafeNativeCodeLocation")
   fun method() {
-     problematicStatement()
+     load(...)
   }
   ```
 
@@ -58,7 +58,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UnsafeNativeCodeLocation")
   void method() {
-     problematicStatement();
+     load(...);
   }
   ```
 

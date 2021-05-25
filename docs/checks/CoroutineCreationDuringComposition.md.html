@@ -229,7 +229,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("CoroutineCreationDuringComposition")
   fun method() {
-     problematicStatement()
+     async(...)
   }
   ```
 
@@ -239,7 +239,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("CoroutineCreationDuringComposition")
   void method() {
-     problematicStatement();
+     async(...);
   }
   ```
 

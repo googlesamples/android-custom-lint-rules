@@ -103,7 +103,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("PrivateApi")
   fun method() {
-     problematicStatement()
+     forName(...)
   }
   ```
 
@@ -113,7 +113,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("PrivateApi")
   void method() {
-     problematicStatement();
+     forName(...);
   }
   ```
 

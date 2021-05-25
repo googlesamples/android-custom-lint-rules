@@ -112,7 +112,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("DeletedProvider")
   fun method() {
-     problematicStatement()
+     getInstance(...)
   }
   ```
 
@@ -122,7 +122,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("DeletedProvider")
   void method() {
-     problematicStatement();
+     getInstance(...);
   }
   ```
 

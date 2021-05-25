@@ -116,7 +116,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("JobSchedulerService")
   fun method() {
-     problematicStatement()
+     Builder(...)
   }
   ```
 
@@ -126,7 +126,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("JobSchedulerService")
   void method() {
-     problematicStatement();
+     new Builder(...);
   }
   ```
 

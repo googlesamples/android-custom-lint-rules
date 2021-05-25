@@ -236,7 +236,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("WifiManagerLeak")
   fun method() {
-     problematicStatement()
+     getSystemService(...)
   }
   ```
 
@@ -246,7 +246,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("WifiManagerLeak")
   void method() {
-     problematicStatement();
+     getSystemService(...);
   }
   ```
 

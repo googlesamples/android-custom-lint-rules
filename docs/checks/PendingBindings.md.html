@@ -284,7 +284,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("PendingBindings")
   fun method() {
-     problematicStatement()
+     notifyDataSetChanged(...)
   }
   ```
 
@@ -294,7 +294,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("PendingBindings")
   void method() {
-     problematicStatement();
+     notifyDataSetChanged(...);
   }
   ```
 

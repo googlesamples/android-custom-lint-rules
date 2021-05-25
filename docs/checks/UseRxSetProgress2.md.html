@@ -48,7 +48,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("UseRxSetProgress2")
   fun method() {
-     problematicStatement()
+     setProgress(...)
   }
   ```
 
@@ -58,7 +58,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("UseRxSetProgress2")
   void method() {
-     problematicStatement();
+     setProgress(...);
   }
   ```
 

@@ -127,7 +127,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("FindViewByIdCast")
   fun method() {
-     problematicStatement()
+     findViewById(...)
   }
   ```
 
@@ -137,7 +137,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("FindViewByIdCast")
   void method() {
-     problematicStatement();
+     findViewById(...);
   }
   ```
 

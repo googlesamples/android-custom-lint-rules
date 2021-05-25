@@ -81,7 +81,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("GetInstance")
   fun method() {
-     problematicStatement()
+     getInstance(...)
   }
   ```
 
@@ -91,7 +91,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("GetInstance")
   void method() {
-     problematicStatement();
+     getInstance(...);
   }
   ```
 

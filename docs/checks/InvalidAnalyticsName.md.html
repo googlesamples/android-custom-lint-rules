@@ -80,7 +80,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("InvalidAnalyticsName")
   fun method() {
-     problematicStatement()
+     logEvent(...)
   }
   ```
 
@@ -90,7 +90,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("InvalidAnalyticsName")
   void method() {
-     problematicStatement();
+     logEvent(...);
   }
   ```
 

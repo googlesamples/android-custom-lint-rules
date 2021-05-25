@@ -261,7 +261,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("AnnotateVersionCheck")
   fun method() {
-     problematicStatement()
+     getBuildSdkInt(...)
   }
   ```
 
@@ -271,7 +271,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("AnnotateVersionCheck")
   void method() {
-     problematicStatement();
+     getBuildSdkInt(...);
   }
   ```
 

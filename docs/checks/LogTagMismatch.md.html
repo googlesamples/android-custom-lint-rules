@@ -222,7 +222,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("LogTagMismatch")
   fun method() {
-     problematicStatement()
+     d(...)
   }
   ```
 
@@ -232,7 +232,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("LogTagMismatch")
   void method() {
-     problematicStatement();
+     d(...);
   }
   ```
 

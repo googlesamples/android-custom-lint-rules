@@ -134,7 +134,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("LintImplDollarEscapes")
   fun method() {
-     problematicStatement()
+     lint(...)
   }
   ```
 
@@ -144,7 +144,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("LintImplDollarEscapes")
   void method() {
-     problematicStatement();
+     lint(...);
   }
   ```
 
