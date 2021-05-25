@@ -16,6 +16,10 @@ Platform
 :   Android
 Vendor
 :   Android Open Source Project (androidx.fragment.lint.fragment)
+Identifier
+:   androidx.fragment.lint.fragment
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192731
 Affects
 :   Resource files
 Editing
@@ -69,7 +73,7 @@ for the unit tests for this check to see additional scenarios.
 The above example was automatically extracted from the first unit test
 found for this lint check, `FragmentTagDetector.expectFail`.
 To report a problem with this extracted sample, visit
-https://developer.android.com/jetpack/androidx/releases/appcompat#feedback.
+https://issuetracker.google.com/issues/new?component=192731.
 
 (##) Suppressing
 
@@ -79,7 +83,15 @@ You can suppress false positives using one of the following mechanisms:
   on the problematic XML element (or one of its enclosing elements).
   You may also need to add the following namespace declaration on the
   root element in the XML file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;fragment xmlns:tools="http://schemas.android.com/tools"
+      tools:ignore="FragmentTagUsage" ...&gt;
+    ...
+  &lt;/fragment&gt;
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look
