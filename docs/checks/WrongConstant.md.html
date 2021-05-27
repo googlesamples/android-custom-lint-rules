@@ -34,274 +34,60 @@ constants, calls obey those rules.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/IntDefTest.java:31:Error: Must be one of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+src/DetailInfoTab.kt:9:Error: Must be one of: View.LAYOUT_DIRECTION_LTR,
+View.LAYOUT_DIRECTION_RTL, View.LAYOUT_DIRECTION_INHERIT,
+View.LAYOUT_DIRECTION_LOCALE [WrongConstant]
 
-    setStyle(0, 0); // ERROR
-             -
-
-
-src/test/pkg/IntDefTest.java:32:Error: Must be one of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setStyle(-1, 0); // ERROR
-             --
+    view.layoutDirection = View.TEXT_ALIGNMENT_TEXT_START // ERROR - not one of the allowed values
+                           ------------------------------
 
 
-src/test/pkg/IntDefTest.java:33:Error: Must be one of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
+src/DetailInfoTab.kt:28:Error: Must be one of: DetailInfoTabKt.CONST_1,
+DetailInfoTabKt.CONST_2, DetailInfoTabKt.CONST_3 [WrongConstant]
 
-    setStyle(UNRELATED, 0); // ERROR
-             ---------
-
-
-src/test/pkg/IntDefTest.java:34:Error: Must be one of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setStyle(IntDefTest.UNRELATED, 0); // ERROR
-             --------------------
-
-
-src/test/pkg/IntDefTest.java:35:Error: Flag not allowed here
-[WrongConstant]
-
-    setStyle(IntDefTest.STYLE_NORMAL|STYLE_NO_FRAME, 0); // ERROR: Not a flag
-             --------------------------------------
-
-
-src/test/pkg/IntDefTest.java:36:Error: Flag not allowed here
-[WrongConstant]
-
-    setStyle(~STYLE_NO_FRAME, 0); // ERROR: Not a flag
-             ---------------
-
-
-src/test/pkg/IntDefTest.java:55:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", UNRELATED); // ERROR
-                 ---------
-
-
-src/test/pkg/IntDefTest.java:56:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", UNRELATED|STYLE_NO_TITLE); // ERROR
-                 ---------
-
-
-src/test/pkg/IntDefTest.java:57:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", STYLE_NORMAL|STYLE_NO_TITLE|UNRELATED); // ERROR
-                                             ---------
-
-
-src/test/pkg/IntDefTest.java:58:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", 1); // ERROR
-                 -
-
-
-src/test/pkg/IntDefTest.java:59:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", arg &lt; 0 ? STYLE_NORMAL : UNRELATED); // ERROR
-                                          ---------
-
-
-src/test/pkg/IntDefTest.java:60:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", arg &lt; 0 ? UNRELATED : STYLE_NORMAL); // ERROR
-                           ---------
-
-
-src/test/pkg/IntDefTest.java:79:Error: Must be one of:
-IntDefTest.TYPE_1, IntDefTest.TYPE_2 [WrongConstant]
-
-    setTitle("", UNRELATED_TYPE); // ERROR
-                 --------------
-
-
-src/test/pkg/IntDefTest.java:80:Error: Must be one of:
-IntDefTest.TYPE_1, IntDefTest.TYPE_2 [WrongConstant]
-
-    setTitle("", "type2"); // ERROR
-                 -------
-
-
-src/test/pkg/IntDefTest.java:87:Error: Must be one of:
-IntDefTest.TYPE_1, IntDefTest.TYPE_2 [WrongConstant]
-
-    setTitle("", type); // ERROR
-                 ----
-
-
-src/test/pkg/IntDefTest.java:92:Error: Must be one or more of:
-IntDefTest.STYLE_NORMAL, IntDefTest.STYLE_NO_TITLE,
-IntDefTest.STYLE_NO_FRAME, IntDefTest.STYLE_NO_INPUT [WrongConstant]
-
-    setFlags("", flag); // ERROR
-                 ----
-
-
-src/test/pkg/IntDefTest.java:99:Error: Must be one of:
-View.LAYOUT_DIRECTION_LTR, View.LAYOUT_DIRECTION_RTL,
-View.LAYOUT_DIRECTION_INHERIT, View.LAYOUT_DIRECTION_LOCALE
-[WrongConstant]
-
-    view.setLayoutDirection(View.TEXT_DIRECTION_LTR); // ERROR
-                            -----------------------
-
-
-src/test/pkg/IntDefTest.java:100:Error: Must be one of:
-View.LAYOUT_DIRECTION_LTR, View.LAYOUT_DIRECTION_RTL,
-View.LAYOUT_DIRECTION_INHERIT, View.LAYOUT_DIRECTION_LOCALE
-[WrongConstant]
-
-    view.setLayoutDirection(0); // ERROR
-                            -
-
-
-src/test/pkg/IntDefTest.java:101:Error: Flag not allowed here
-[WrongConstant]
-
-    view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR|View.LAYOUT_DIRECTION_RTL); // ERROR
-                            ---------------------------------------------------
+    test(UNRELATED) // ERROR - not part of the @DetailsInfoTab list
+         ---------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/IntDefTest.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.pkg;
+`src/DetailInfoTab.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import android.view.View
+import androidx.annotation.IntDef
 
-import android.content.Context;
-import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
-import android.view.View;
+// Example of using Android API already annotated with @IntDef:
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+fun setAlignment(view: View) {
+    view.layoutDirection = View.LAYOUT_DIRECTION_RTL // OK
+    view.layoutDirection = View.TEXT_ALIGNMENT_TEXT_START // ERROR - not one of the allowed values
+}
 
-@SuppressWarnings("UnusedDeclaration")
-public class IntDefTest {
-    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface DialogStyle {}
+// Custom example creating your own typedef:
 
-    public static final int STYLE_NORMAL = 0;
-    public static final int STYLE_NO_TITLE = 1;
-    public static final int STYLE_NO_FRAME = 2;
-    public static final int STYLE_NO_INPUT = 3;
-    public static final int UNRELATED = 3;
+const val CONST_1 = -1
+const val CONST_2 = 2
+const val CONST_3 = 0
+const val UNRELATED = 1
 
-    public void setStyle(@DialogStyle int style, int theme) {
-    }
+@IntDef(CONST_1, CONST_2, CONST_3)
+@Retention(AnnotationRetention.SOURCE)
+annotation class DetailInfoTab
 
-    public void testIntDef(int arg) {
-        setStyle(STYLE_NORMAL, 0); // OK
-        setStyle(IntDefTest.STYLE_NORMAL, 0); // OK
-        setStyle(arg, 0); // OK (not sure)
+fun test(@DetailInfoTab tab: Int) {
+}
 
-        setStyle(0, 0); // ERROR
-        setStyle(-1, 0); // ERROR
-        setStyle(UNRELATED, 0); // ERROR
-        setStyle(IntDefTest.UNRELATED, 0); // ERROR
-        setStyle(IntDefTest.STYLE_NORMAL|STYLE_NO_FRAME, 0); // ERROR: Not a flag
-        setStyle(~STYLE_NO_FRAME, 0); // ERROR: Not a flag
-    }
-    @IntDef(value = {STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT}, flag=true)
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface DialogFlags {}
-
-    public void setFlags(Object first, @DialogFlags int flags) {
-    }
-
-    public void testFlags(int arg) {
-        setFlags("", -1); // OK
-        setFlags("", 0); // OK
-        setFlags("", STYLE_NORMAL); // OK
-        setFlags(arg, 0); // OK (not sure)
-        setFlags("", IntDefTest.STYLE_NORMAL); // OK
-        setFlags("", STYLE_NORMAL|STYLE_NO_TITLE); // OK
-        setFlags("", STYLE_NORMAL|STYLE_NO_TITLE|STYLE_NO_INPUT); // OK
-        setFlags("", arg < 0 ? STYLE_NORMAL : STYLE_NO_TITLE); // OK
-
-        setFlags("", UNRELATED); // ERROR
-        setFlags("", UNRELATED|STYLE_NO_TITLE); // ERROR
-        setFlags("", STYLE_NORMAL|STYLE_NO_TITLE|UNRELATED); // ERROR
-        setFlags("", 1); // ERROR
-        setFlags("", arg < 0 ? STYLE_NORMAL : UNRELATED); // ERROR
-        setFlags("", arg < 0 ? UNRELATED : STYLE_NORMAL); // ERROR
-    }
-
-    public static final String TYPE_1 = "type1";
-    public static final String TYPE_2 = "type2";
-    public static final String UNRELATED_TYPE = "other";
-
-    @StringDef({TYPE_1, TYPE_2})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface DialogType {}
-
-    public void setTitle(String title, @DialogType String type) {
-    }
-
-    public void testStringDef(String typeArg) {
-        setTitle("", TYPE_1); // OK
-        setTitle("", TYPE_2); // OK
-        setTitle("", null); // OK
-        setTitle("", typeArg); // OK (unknown)
-        setTitle("", UNRELATED_TYPE); // ERROR
-        setTitle("", "type2"); // ERROR
-    }
-
-    public void testFlow() {
-        String type = TYPE_1;
-        setTitle("", type); // OK
-        type = UNRELATED_TYPE;
-        setTitle("", type); // ERROR
-        int flag = 0;
-        flag |= STYLE_NORMAL;
-        setFlags("", flag); // OK
-        flag = UNRELATED;
-        setFlags("", flag); // ERROR
-    }
-
-    public void testExternalAnnotations(View view, Context context) {
-        view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR); // OK
-        context.getSystemService(Context.ALARM_SERVICE); // OK
-
-        view.setLayoutDirection(View.TEXT_DIRECTION_LTR); // ERROR
-        view.setLayoutDirection(0); // ERROR
-        view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR|View.LAYOUT_DIRECTION_RTL); // ERROR
-        //context.getSystemService(TYPE_1); // ERROR
-    }
+fun test() {
+    test(CONST_1) // OK
+    test(UNRELATED) // ERROR - not part of the @DetailsInfoTab list
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TypedefDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `TypedefDetector.testTypeDef`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

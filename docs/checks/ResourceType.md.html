@@ -34,66 +34,33 @@ example, calling `Resources.getColor(R.string.name)` is wrong.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/WrongColor.java:20:Error: Expected resource of type color
-[ResourceType]
+src/test.kt:9:Error: Expected resource of type string [ResourceType]
 
-    foo1(0xffff0000);
-         ----------
+    setLabels(iconId) // bug: should have passed descId. Both are ints but of wrong type.
+              ------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/WrongColor.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.pkg;
-import android.app.Activity;
-import android.graphics.Paint;
-import android.widget.TextView;
-@SuppressWarnings("ClassNameDiffersFromFileName")
-public class WrongColor extends Activity {
-    public void foo(TextView textView, int foo) {
-        Paint paint2 = new Paint();
-        paint2.setColor(R.color.blue);
-        // Wrong
-        textView.setTextColor(R.color.red);
-        textView.setTextColor(android.R.color.black);
-        textView.setTextColor(foo > 0 ? R.color.green : R.color.blue);
-        // OK
-        textView.setTextColor(getResources().getColor(R.color.red));
-        // OK
-        foo1(R.color.blue);
-        foo2(0xffff0000);
-        // Wrong
-        foo1(0xffff0000);
-        foo2(R.color.blue);
-    }
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
-    private void foo1(@android.support.annotation.ColorRes int c) {
-    }
+fun setLabels(@StringRes titleId: Int) {
+    // ...
+}
 
-    private void foo2(@android.support.annotation.ColorInt int c) {
-    }
-
-    private static class R {
-        private static class color {
-            public static final int red=0x7f060000;
-            public static final int green=0x7f060001;
-            public static final int blue=0x7f060002;
-        }
-    }
+fun setIcon(@DrawableRes iconId: Int, @StringRes descId: Int) {
+    setLabels(iconId) // bug: should have passed descId. Both are ints but of wrong type.
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ResourceTypeDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ResourceTypeDetector.testColorInt`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 
