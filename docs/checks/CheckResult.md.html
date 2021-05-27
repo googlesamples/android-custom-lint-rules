@@ -37,64 +37,36 @@ something without the result is suspicious.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/CheckPermissions.java:22:Warning: The result of
-extractAlpha is not used [CheckResult]
+src/test/pkg/test.kt:10:Warning: The result of double is not used
+[CheckResult]
 
-    bitmap.extractAlpha(); // WARNING
-    ---------------------
+    score.double()
+    --------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/CheckPermissions.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.pkg;
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+`src/test/pkg/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
 
-@SuppressWarnings("ClassNameDiffersFromFileName")
-public class CheckPermissions {
-    private void foo(Context context) {
-        context.checkCallingOrSelfPermission(Manifest.permission.INTERNET); // WRONG
-        context.checkPermission(Manifest.permission.INTERNET, 1, 1);
-        check(context.checkCallingOrSelfPermission(Manifest.permission.INTERNET)); // OK
-        int check = context.checkCallingOrSelfPermission(Manifest.permission.INTERNET); // OK
-        if (context.checkCallingOrSelfPermission(Manifest.permission.INTERNET) // OK
-                != PackageManager.PERMISSION_GRANTED) {
-            showAlert(context, "Error",
-                    "Application requires permission to access the Internet");
-        }
-    }
+import androidx.annotation.CheckResult
+import java.math.BigDecimal
 
-    private Bitmap checkResult(Bitmap bitmap) {
-        bitmap.extractAlpha(); // WARNING
-        Bitmap bitmap2 = bitmap.extractAlpha(); // OK
-        call(bitmap.extractAlpha()); // OK
-        return bitmap.extractAlpha(); // OK
-    }
+@CheckResult
+fun BigDecimal.double() = this + this
 
-    private void showAlert(Context context, String error, String s) {
-    }
-
-    private void check(int i) {
-    }
-    private void call(Bitmap bitmap) {
-    }
+fun test(score: BigDecimal): BigDecimal {
+    score.double()
+    return score
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CheckResultDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `CheckResultDetector.testCheckResult`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

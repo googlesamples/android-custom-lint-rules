@@ -53,7 +53,7 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package test.pkg
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 
 private val diffCallback = object : DiffUtil.ItemCallback<Cheese>() {
     override fun areItemsTheSame(oldItem: Cheese, newItem: Cheese): Boolean =

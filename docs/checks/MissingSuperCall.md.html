@@ -37,139 +37,31 @@ call the super implementation as part of your method.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/CallSuperTest.java:11:Error: Overriding method should call
-super.test1 [MissingSuperCall]
+src/ParentClass.kt:11:Error: Overriding method should call
+super.someMethod [MissingSuperCall]
 
-    protected void test1() { // ERROR
-                   -----
-
-
-src/test/pkg/CallSuperTest.java:14:Error: Overriding method should call
-super.test2 [MissingSuperCall]
-
-    protected void test2() { // ERROR
-                   -----
-
-
-src/test/pkg/CallSuperTest.java:17:Error: Overriding method should call
-super.test3 [MissingSuperCall]
-
-    protected void test3() { // ERROR
-                   -----
-
-
-src/test/pkg/CallSuperTest.java:20:Error: Overriding method should call
-super.test4 [MissingSuperCall]
-
-    protected void test4(int arg) { // ERROR
-                   -----
-
-
-src/test/pkg/CallSuperTest.java:26:Error: Overriding method should call
-super.test5 [MissingSuperCall]
-
-    protected void test5(int arg1, boolean arg2, Map&lt;List&lt;String&gt;,?&gt; arg3,  // ERROR
-                   -----
-
-
-src/test/pkg/CallSuperTest.java:30:Error: Overriding method should call
-super.test5 [MissingSuperCall]
-
-    protected void test5() { // ERROR
-                   -----
+    override fun someMethod(arg: Int) {
+                 ----------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/CallSuperTest.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.pkg;
+`src/ParentClass.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.annotation.CallSuper
 
-import android.support.annotation.CallSuper;
-
-import java.util.List;
-import java.util.Map;
-
-@SuppressWarnings("UnusedDeclaration")
-public class CallSuperTest {
-    private static class Child extends Parent {
-        protected void test1() { // ERROR
-        }
-
-        protected void test2() { // ERROR
-        }
-
-        protected void test3() { // ERROR
-        }
-
-        protected void test4(int arg) { // ERROR
-        }
-
-        protected void test4(String arg) { // OK
-        }
-
-        protected void test5(int arg1, boolean arg2, Map<List<String>,?> arg3,  // ERROR
-                             int[][] arg4, int... arg5) {
-        }
-
-        protected void test5() { // ERROR
-            super.test6(); // (wrong super)
-        }
-
-        protected void test6() { // OK
-            int x = 5;
-            super.test6();
-            System.out.println(x);
-        }
+open class ParentClass {
+    @CallSuper
+    open fun someMethod(arg: Int) {
+        // ...
     }
+}
 
-    private static class Parent extends ParentParent {
-        @CallSuper
-        protected void test1() {
-        }
-
-        protected void test3() {
-            super.test3();
-        }
-
-        @CallSuper
-        protected void test4(int arg) {
-        }
-
-        protected void test4(String arg) {
-        }
-
-        @CallSuper
-        protected void test5() {
-        }
-
-        @CallSuper
-        protected void test5(int arg1, boolean arg2, Map<List<String>,?> arg3,
-                             int[][] arg4, int... arg5) {
-        }
-    }
-
-    private static class ParentParent extends ParentParentParent {
-        @CallSuper
-        protected void test2() {
-        }
-
-        @CallSuper
-        protected void test3() {
-        }
-
-        @CallSuper
-        protected void test6() {
-        }
-
-        @CallSuper
-        protected void test7() {
-        }
-    }
-
-    private static class ParentParentParent {
+class MyClass : ParentClass() {
+    override fun someMethod(arg: Int) {
+        // Bug: required to call super.someMethod(arg)
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,11 +69,6 @@ public class CallSuperTest {
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CallSuperDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `CallSuperDetector.testCallSuper`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

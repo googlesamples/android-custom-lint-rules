@@ -117,7 +117,7 @@ public class CommitTest extends Activity {
 
     // Support library
 
-    private android.support.v4.app.FragmentManager getSupportFragmentManager() {
+    private androidx.fragment.app.FragmentManager getSupportFragmentManager() {
         return null;
     }
 
@@ -125,8 +125,8 @@ public class CommitTest extends Activity {
         getSupportFragmentManager().beginTransaction().commit();
     }
 
-    public void ok6(android.support.v4.app.FragmentManager manager, String tag) {
-        android.support.v4.app.FragmentTransaction ft = manager.beginTransaction();
+    public void ok6(androidx.fragment.app.FragmentManager manager, String tag) {
+        androidx.fragment.app.FragmentTransaction ft = manager.beginTransaction();
         ft.add(null, tag);
         ft.commit();
     }
@@ -135,7 +135,7 @@ public class CommitTest extends Activity {
         getSupportFragmentManager().beginTransaction();
     }
 
-    android.support.v4.app.Fragment mFragment1 = null;
+    androidx.fragment.app.Fragment mFragment1 = null;
     Fragment mFragment2 = null;
 
     public void ok7() {

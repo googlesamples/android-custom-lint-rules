@@ -39,45 +39,22 @@ production visibility.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/otherpkg/OtherPkg.java:8:Warning: This method should only be
-accessed from tests or within protected scope [VisibleForTests]
+src/Code.kt:4:Warning: This method should only be accessed from tests or
+within private scope [VisibleForTests]
 
-    new ProductionCode().testHelper3(); // ERROR
-                         -----------
-
-
-src/test/otherpkg/OtherPkg.java:9:Warning: This method should only be
-accessed from tests or within private scope [VisibleForTests]
-
-    new ProductionCode().testHelper4(); // ERROR
-                         -----------
-
-
-src/test/otherpkg/OtherPkg.java:10:Warning: This method should only be
-accessed from tests or within package private scope [VisibleForTests]
-
-    new ProductionCode().testHelper5(); // ERROR
-                         -----------
+    ProductionCode().initialize() // Not allowed; this method is intended to be private
+                     ----------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/otherpkg/OtherPkg.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.otherpkg;
-import android.support.annotation.VisibleForTesting;
-import test.pkg.ProductionCode;
-
-@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
-public class OtherPkg {
-    public void test() {
-        new ProductionCode().testHelper3(); // ERROR
-        new ProductionCode().testHelper4(); // ERROR
-        new ProductionCode().testHelper5(); // ERROR
-        new ProductionCode().testHelper6(); // ERROR
-
+`src/Code.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+class Code {
+    fun test() {
+        ProductionCode().initialize() // Not allowed; this method is intended to be private
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,7 +64,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `RestrictToDetector.testVisibleForTesting`.
+found for this lint check, `RestrictToDetector.testDocumentationExampleVisibleForTesting`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 
