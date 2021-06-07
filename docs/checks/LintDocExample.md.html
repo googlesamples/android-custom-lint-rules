@@ -1,15 +1,17 @@
 <meta charset="utf-8">
-(#) Using Dollar Escapes
+(#) Missing Documentation Example
 
-!!! ERROR: Using Dollar Escapes
-   This is an error.
+!!! WARNING: Missing Documentation Example
+   This is a warning.
 
 Id
-:   `LintImplDollarEscapes`
+:   `LintDocExample`
 Summary
-:   Using Dollar Escapes
+:   Missing Documentation Example
+Note
+:   **This issue is disabled by default**; use `--enable LintDocExample`
 Severity
-:   Error
+:   Warning
 Category
 :   Lint Implementation Issues
 Platform
@@ -27,33 +29,29 @@ Implementation
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LintDetectorDetectorTest.kt)
 
-Instead of putting `${"$"}` in your Kotlin raw string literals you can
-simply use ＄. This looks like the dollar sign but is instead the full
-width dollar sign, U+FF04. And this character does not need to be
-escaped in Kotlin raw strings, since it does not start a string
-template.
+Lint's tool for generating documentation for each issue has special
+support for including a code example which shows how to trigger the
+report. It will pick the first unit test it can find and pick out the
+source file referenced from the error message, but you can instead
+designate a unit test to be the documentation example, and in that case,
+all the files are included.
 
-Lint will automatically convert references to ＄ in unit test files into
-a real dollar sign, and when pulling results and error messages out of
-lint, the dollar sign back into the full width dollar sign.
-
-That means you can use ＄ everywhere instead of `${"$"}`, which makes the
-test strings more readable -- especially `$`-heavy code such as
-references to inner classes.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
+To designate a unit test as the documentation example for an issue, name
+the test `testDocumentationExample`, or if your detector reports
+multiple issues, `testDocumentationExample`<Id>, such as
+`testDocumentationExampleMyId`.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/MyKotlinLintDetectorTest.kt:22:Error: In unit tests, use
-the fullwidth dollar sign, $, instead of $, to avoid having to use
-cumbersome escapes. Lint will treat a $ as a $. [LintImplDollarEscapes]
+src/test/pkg/MyKotlinLintDetectorTest.kt:10:Warning: Expected to also
+find a documentation example test (testDocumentationExample) which shows
+a simple, typical scenario which triggers the test, and which will be
+extracted into lint's per-issue documentation pages [LintDocExample]
 
-    println("Value=${"$"}")
-                   ------
+    fun testBasic() {
+    ^
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,7 +130,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```kt
   // Kotlin
-  @Suppress("LintImplDollarEscapes")
+  @Suppress("LintDocExample")
   fun method() {
      expect(...)
   }
@@ -142,7 +140,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```java
   // Java
-  @SuppressWarnings("LintImplDollarEscapes")
+  @SuppressWarnings("LintDocExample")
   void method() {
      expect(...);
   }
@@ -151,7 +149,7 @@ You can suppress false positives using one of the following mechanisms:
 * Using a suppression comment like this on the line above:
 
   ```kt
-  //noinspection LintImplDollarEscapes
+  //noinspection LintDocExample
   problematicStatement()
   ```
 
@@ -161,7 +159,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="LintImplDollarEscapes" severity="ignore" /&gt;
+      &lt;issue id="LintDocExample" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -174,7 +172,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'LintImplDollarEscapes'
+      disable 'LintDocExample'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -182,7 +180,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore LintImplDollarEscapes ...`
+  $ lint --ignore LintDocExample ...`
   ```
 
 * Last, but not least, using baselines, as discussed
