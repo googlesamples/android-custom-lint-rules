@@ -290,6 +290,41 @@ And now, all the other unit tests simply include `recyclerViewStub`
 as one of the test files. For a larger example, see
 [this test](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SliceDetectorTest.kt).
 
+!!! Tip
+   In recent versions of lint, the unit testing library will do some
+   basic checking to make sure that important symbols *do* resolve
+   correctly. It doesn't check everything (since it's common for unit
+   tests to contain snippets from copy paste that aren't relevant to
+   the test), but it does check all classes and methods referenced via
+   import statements, and any calls or references in the test files
+   that match any of the names returned from
+   `getApplicableMethodNames()` or `getApplicableReferenceNames()`
+   respectively.
+
+Here's an example of a test failure for an unresolved import:
+
+```
+java.lang.IllegalStateException:
+app/src/com/example/MyDiffUtilCallbackJava.java:4: Error:
+Couldn't resolve this import [LintError]
+import androidx.recyclerview.widget.DiffUtil;
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This usually means that the unit test needs to declare a stub file or
+placeholder with the expected signature such that type resolving works.
+
+If this import is immaterial to the test, either delete it, or mark
+this unit test as allowing resolution errors by setting
+`allowCompilationErrors()`.
+
+(This check only enforces import references, not all references, so if
+it doesn't matter to the detector, you can just remove the import but
+leave references to the class in the code.)
+
+For more information, see the "Library Dependencies and Stubs" section in
+https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/docs/api-guide/unit-testing.md.html
+```
+
 ## Binary and Compiled Source Files
 
 If you need to use binaries in your unit tests, there is

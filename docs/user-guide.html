@@ -29,31 +29,43 @@ counter-increment: h6;margin-right:10px}
 <span class="md"><p><title>Android User Guide</title></p><div class="title"> Android User Guide </div>
 
 <div class="afterTitles"></div><div class="mediumTOC"><center><b>Contents</b></center><p><a href="#" class="tocTop">(Top)</a><br>
-<a href="#baselines" class="level1"><span class="tocNumber">1&nbsp; </span>Baselines</a><br>
-<a href="#creatingabaseline" class="level1"><span class="tocNumber">2&nbsp; </span>Creating a Baseline</a><br>
-&nbsp;&nbsp;<a href="#creatingabaseline/customizethebaseline" class="level2"><span class="tocNumber">2.1&nbsp; </span>Customize the baseline</a><br>
-&nbsp;&nbsp;<a href="#creatingabaseline/baselinewarning" class="level2"><span class="tocNumber">2.2&nbsp; </span>Baseline warning</a><br>
-<a href="#performancetuning" class="level1"><span class="tocNumber">3&nbsp; </span>Performance Tuning</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/use7.0andincrementallint" class="level2"><span class="tocNumber">3.1&nbsp; </span>Use 7.0 and Incremental Lint</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/usethelintdebugtarget,notlint" class="level2"><span class="tocNumber">3.2&nbsp; </span>Use the <code>lintDebug</code> target, not <code>lint</code></a><br>
-&nbsp;&nbsp;<a href="#performancetuning/onlyanalyzeapp/leafmodules" class="level2"><span class="tocNumber">3.3&nbsp; </span>Only analyze app/leaf modules</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/don'tanalyzetestsources" class="level2"><span class="tocNumber">3.4&nbsp; </span>Don't analyze test sources</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/don'tusecheckallwarnings" class="level2"><span class="tocNumber">3.5&nbsp; </span>Don't use checkAllWarnings</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/uselatestversion" class="level2"><span class="tocNumber">3.6&nbsp; </span>Use latest version</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/givelintalotofram" class="level2"><span class="tocNumber">3.7&nbsp; </span>Give lint a lot of RAM</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/findingslowlintchecks" class="level2"><span class="tocNumber">3.8&nbsp; </span>Finding Slow Lint Checks</a><br>
-<a href="#suppressinglintchecks" class="level1"><span class="tocNumber">4&nbsp; </span>Suppressing Lint Checks</a><br>
-<a href="#configuringusinglint.xmlfiles" class="level1"><span class="tocNumber">5&nbsp; </span>Configuring Using lint.xml Files</a><br>
-&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/xmlsyntax" class="level2"><span class="tocNumber">5.1&nbsp; </span>XML Syntax</a><br>
-&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/nesting&amp;precedence" class="level2"><span class="tocNumber">5.2&nbsp; </span>Nesting &amp; Precedence</a><br>
-&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/samplelint.xmlfile" class="level2"><span class="tocNumber">5.3&nbsp; </span>Sample lint.xml file</a><br>
-<a href="#appendix:recentchanges" class="level1"><span class="tocNumber">6&nbsp; </span>Appendix: Recent Changes</a><br>
-<a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">7&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
-&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">7.1&nbsp; </span>Environment Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables" class="level3"><span class="tocNumber">7.1.1&nbsp; </span>Detector Configuration Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables" class="level3"><span class="tocNumber">7.1.2&nbsp; </span>Lint Configuration Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables" class="level3"><span class="tocNumber">7.1.3&nbsp; </span>Lint Development Variables</a><br>
-&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/systemproperties" class="level2"><span class="tocNumber">7.2&nbsp; </span>System Properties</a><br>
+<a href="#lintcommandlintflags" class="level1"><span class="tocNumber">1&nbsp; </span>Lint Command Lint Flags</a><br>
+&nbsp;&nbsp;<a href="#lintcommandlintflags/general" class="level2"><span class="tocNumber">1.1&nbsp; </span>General</a><br>
+&nbsp;&nbsp;<a href="#lintcommandlintflags/enabledchecks" class="level2"><span class="tocNumber">1.2&nbsp; </span>Enabled Checks</a><br>
+&nbsp;&nbsp;<a href="#lintcommandlintflags/outputoptions" class="level2"><span class="tocNumber">1.3&nbsp; </span>Output Options</a><br>
+&nbsp;&nbsp;<a href="#lintcommandlintflags/projectoptions" class="level2"><span class="tocNumber">1.4&nbsp; </span>Project Options</a><br>
+&nbsp;&nbsp;<a href="#lintcommandlintflags/advancedoptions(forbuildsystemintegration)" class="level2"><span class="tocNumber">1.5&nbsp; </span>Advanced Options (for build system integration)</a><br>
+&nbsp;&nbsp;<a href="#lintcommandlintflags/exitstatus" class="level2"><span class="tocNumber">1.6&nbsp; </span>Exit Status</a><br>
+<a href="#lintgradleplugindsl" class="level1"><span class="tocNumber">2&nbsp; </span>Lint Gradle Plugin DSL</a><br>
+&nbsp;&nbsp;<a href="#lintgradleplugindsl/configuringissuesandseverity" class="level2"><span class="tocNumber">2.1&nbsp; </span>Configuring Issues and Severity</a><br>
+&nbsp;&nbsp;<a href="#lintgradleplugindsl/configuringoutputandreports" class="level2"><span class="tocNumber">2.2&nbsp; </span>Configuring Output and Reports</a><br>
+&nbsp;&nbsp;<a href="#lintgradleplugindsl/filestoinclude" class="level2"><span class="tocNumber">2.3&nbsp; </span>Files to Include</a><br>
+&nbsp;&nbsp;<a href="#lintgradleplugindsl/other" class="level2"><span class="tocNumber">2.4&nbsp; </span>Other</a><br>
+<a href="#baselines" class="level1"><span class="tocNumber">3&nbsp; </span>Baselines</a><br>
+<a href="#creatingabaseline" class="level1"><span class="tocNumber">4&nbsp; </span>Creating a Baseline</a><br>
+&nbsp;&nbsp;<a href="#creatingabaseline/customizethebaseline" class="level2"><span class="tocNumber">4.1&nbsp; </span>Customize the baseline</a><br>
+&nbsp;&nbsp;<a href="#creatingabaseline/baselinewarning" class="level2"><span class="tocNumber">4.2&nbsp; </span>Baseline warning</a><br>
+<a href="#performancetuning" class="level1"><span class="tocNumber">5&nbsp; </span>Performance Tuning</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/use7.0andincrementallint" class="level2"><span class="tocNumber">5.1&nbsp; </span>Use 7.0 and Incremental Lint</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/usethelintdebugtarget,notlint" class="level2"><span class="tocNumber">5.2&nbsp; </span>Use the <code>lintDebug</code> target, not <code>lint</code></a><br>
+&nbsp;&nbsp;<a href="#performancetuning/onlyanalyzeapp/leafmodules" class="level2"><span class="tocNumber">5.3&nbsp; </span>Only analyze app/leaf modules</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/don'tanalyzetestsources" class="level2"><span class="tocNumber">5.4&nbsp; </span>Don't analyze test sources</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/don'tusecheckallwarnings" class="level2"><span class="tocNumber">5.5&nbsp; </span>Don't use checkAllWarnings</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/uselatestversion" class="level2"><span class="tocNumber">5.6&nbsp; </span>Use latest version</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/givelintalotofram" class="level2"><span class="tocNumber">5.7&nbsp; </span>Give lint a lot of RAM</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/findingslowlintchecks" class="level2"><span class="tocNumber">5.8&nbsp; </span>Finding Slow Lint Checks</a><br>
+<a href="#suppressinglintchecks" class="level1"><span class="tocNumber">6&nbsp; </span>Suppressing Lint Checks</a><br>
+<a href="#configuringusinglint.xmlfiles" class="level1"><span class="tocNumber">7&nbsp; </span>Configuring Using lint.xml Files</a><br>
+&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/xmlsyntax" class="level2"><span class="tocNumber">7.1&nbsp; </span>XML Syntax</a><br>
+&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/nesting&amp;precedence" class="level2"><span class="tocNumber">7.2&nbsp; </span>Nesting &amp; Precedence</a><br>
+&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/samplelint.xmlfile" class="level2"><span class="tocNumber">7.3&nbsp; </span>Sample lint.xml file</a><br>
+<a href="#appendix:recentchanges" class="level1"><span class="tocNumber">8&nbsp; </span>Appendix: Recent Changes</a><br>
+<a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">9&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
+&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">9.1&nbsp; </span>Environment Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables" class="level3"><span class="tocNumber">9.1.1&nbsp; </span>Detector Configuration Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables" class="level3"><span class="tocNumber">9.1.2&nbsp; </span>Lint Configuration Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables" class="level3"><span class="tocNumber">9.1.3&nbsp; </span>Lint Development Variables</a><br>
+&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/systemproperties" class="level2"><span class="tocNumber">9.2&nbsp; </span>System Properties</a><br>
 </p></div>
 
 <p></p><p>
@@ -98,6 +110,7 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>TrustAllX509TrustManager</code> </td><td style="text-align:left"> Insecure TLS/SSL trust manager </td></tr>
 <tr><td style="text-align:left"> <code>UnspecifiedImmutableFlag</code> </td><td style="text-align:left"> Missing <code>PendingIntent</code> mutability flag </td></tr>
 <tr><td style="text-align:left"> <code>WatchFaceEditor</code> </td><td style="text-align:left"> Watch face editor must use launchMode=“standard” </td></tr>
+<tr><td style="text-align:left"> <code>WebViewClientOnReceivedSslError</code> </td><td style="text-align:left"> Proceeds with the HTTPS connection despite SSL errors </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -107,6 +120,16 @@ lint check authors, see the API Guide.
   lint check came from, such as which library artifact provided it.
   This should make it easier to request enhancements or file bugs
   around false positives or false negatives.
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">The Gradle plugin now maps the <code>lint</code> task to the default variant's
+  lint task instead of running it across all variants and accumulating
+  results. This is much faster, is usually what you want, and now the
+  target name will not change based on whether the project has product
+  flavors, so you can start just running <code>./gradlew:app:lint</code> instead
+  of <code>./gradlew :app:lintDebug</code> or <code>:app:lintProDebug</code> etc.
 
 <p></p><p>
 
@@ -145,9 +168,458 @@ lint check authors, see the API Guide.
   visualized in a unified way on CI servers.</li></ul>
 
 <p></p>
-<a class="target" name="baselines">&nbsp;</a><a class="target" name="baselines">&nbsp;</a><a class="target" name="toc1">&nbsp;</a><h1>Baselines</h1>
+<a class="target" name="lintcommandlintflags">&nbsp;</a><a class="target" name="lintcommandlintflags">&nbsp;</a><a class="target" name="toc1">&nbsp;</a><h1>Lint Command Lint Flags</h1>
+<p>
 
-<a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="toc2">&nbsp;</a><h1>Creating a Baseline</h1>
+
+Usage: <code>lint</code> <em class="asterisk">flags</em>
+
+</p><p>
+
+When using lint from within Gradle, see the <a href="#lintgradleplugindsl">Lint Gradle Plugin
+DSL</a> options instead.
+
+</p>
+<a class="target" name="general">&nbsp;</a><a class="target" name="lintcommandlintflags/general">&nbsp;</a><a class="target" name="toc1.1">&nbsp;</a><h2>General</h2>
+<p>
+
+
+</p><dl><dt><code>--help</code></dt><dd><p>  This message.
+
+</p></dd><dt><code>--help</code> <em class="asterisk">topic</em></dt><dd><p>  Help on the given topic, such as “suppress”.
+
+</p></dd><dt><code>--list</code></dt><dd><p>  List the available issue id's and exit.
+
+</p></dd><dt><code>--version</code></dt><dd><p>  Output version information and exit.
+
+</p></dd><dt><code>--exitcode</code></dt><dd><p>  Set the exit code to 1 if errors are found.
+
+</p></dd><dt><code>--show</code></dt><dd><p>  List available issues along with full explanations.
+
+</p></dd><dt><code>--show</code> <em class="asterisk">ids</em></dt><dd><p>  Show full explanations for the given list of issue id's.
+
+</p></dd><dt><code>--generate-docs</code></dt><dd><p>  Generates documentation for all the lint checks. This flag cannot be
+  combined with other lint flags, and it has its own sub-flags. Invoke
+  on its own to see what they are.
+
+</p></dd><dt><code>--fatalOnly</code></dt><dd><p>  Only check for fatal severity issues
+
+</p></dd><dt><code>--apply-suggestions</code></dt><dd><p>  Apply suggestions to the source code (for safe fixes)
+
+</p></dd><dt><code>--abort-if-suggestions-applied</code></dt><dd><p>  Set the exit code to an error if any fixes are applied
+
+</p></dd><dt><em class="asterisk">directories</em></dt><dd><p>  You can also pass in directories for files to be analyzed. This
+  was common many years ago when project metadata tended to be stored
+  in simple <code>.classpath</code> files from Eclipse; these days, you typically
+  will pass it a <code>--lint-model</code> or <code>--project</code> description instead.
+
+</p></dd></dl><p></p>
+<a class="target" name="enabledchecks">&nbsp;</a><a class="target" name="lintcommandlintflags/enabledchecks">&nbsp;</a><a class="target" name="toc1.2">&nbsp;</a><h2>Enabled Checks</h2>
+<p>
+
+
+</p><dl><dt><code>--disable</code> <em class="asterisk">list</em></dt><dd><p>  Disable the list of categories or specific issue id's. The list
+  should be a comma-separated list of issue id's or categories.
+
+</p></dd><dt><code>--enable</code> <em class="asterisk">list</em></dt><dd><p>  Enable the specific list of issues. This checks all the default
+  issues plus the specifically enabled issues. The list should be a
+  comma-separated list of issue id's or categories.
+
+</p></dd><dt><code>--check</code> <em class="asterisk">list</em></dt><dd><p>  Only check the specific list of issues. This will disable everything
+  and re-enable the given list of issues. The list should be a
+  comma-separated list of issue id's or categories.
+
+</p></dd><dt><code>--fatal</code> <em class="asterisk">list</em></dt><dd><p>  Sets the default severity of the given issue to fatal
+
+</p></dd><dt><code>--error</code> <em class="asterisk">list</em></dt><dd><p>  Sets the default severity of the given issue to error
+
+</p></dd><dt><code>--warning</code> <em class="asterisk">list</em></dt><dd><p>  Sets the default severity of the given issue to warning
+
+</p></dd><dt><code>--info</code> <em class="asterisk">list</em></dt><dd><p>  Sets the default severity of the given issue to info
+
+</p></dd><dt><code>-w,</code> —nowarn</dt><dd><p>  Only check for errors (ignore warnings)
+
+</p></dd><dt><code>-Wall</code></dt><dd><p>  Check all warnings, including those off by default
+
+</p></dd><dt><code>-Werror</code></dt><dd><p>  Treat all warnings as errors
+
+</p></dd><dt><code>--config</code> <em class="asterisk">filename</em></dt><dd><p>  Use the given configuration file to determine whether issues are
+  enabled or disabled. If a project contains a lint.xml file, then
+  this config file will be used as a fallback.
+
+</p></dd><dt><code>--override-config</code> <em class="asterisk">filename</em></dt><dd><p>  Like —config, but instead of being a fallback, this configuration
+  overrides any local configuration files
+
+</p></dd><dt><code>--baseline</code></dt><dd><p>  Use (or create) the given baseline file to filter out known issues.
+
+</p></dd><dt><code>--update-baseline</code></dt><dd><p>  Updates the baselines even if they already exist
+
+</p></dd><dt><code>--remove-fixed</code></dt><dd><p>  Rewrite the baseline files to remove any issues that have been
+  fixed
+
+</p></dd><dt><code>--allow-suppress</code></dt><dd><p>  Whether to allow suppressing issues that have been explicitly
+  registered as not suppressible.
+
+</p></dd><dt><code>--restrict-suppress</code></dt><dd><p>  Opposite of —allow-suppress: do not allow suppressing restricted
+  issues
+
+</p></dd></dl><p></p>
+<a class="target" name="outputoptions">&nbsp;</a><a class="target" name="lintcommandlintflags/outputoptions">&nbsp;</a><a class="target" name="toc1.3">&nbsp;</a><h2>Output Options</h2>
+<p>
+
+
+</p><dl><dt><code>--quiet</code></dt><dd><p>  Don't show progress.
+
+</p></dd><dt><code>--stacktrace</code></dt><dd><p>  Print full stacktrace for internal errors.
+
+</p></dd><dt><code>--fullpath</code></dt><dd><p>  Use full paths in the error output.
+
+</p></dd><dt><code>--showall</code></dt><dd><p>  Do not truncate long messages, lists of alternate locations, etc.
+
+</p></dd><dt><code>--nolines</code></dt><dd><p>  Do not include the source file lines with errors in the output. By
+  default, the error output includes snippets of source code on the
+  line containing the error, but this flag turns it off.
+
+</p></dd><dt><code>--html</code> <em class="asterisk">filename</em></dt><dd><p>  Create an HTML report instead. If the filename is a directory (or a
+  new filename without an extension), lint will create a separate
+  report for each scanned project.
+
+</p></dd><dt><code>--url</code> filepath=url</dt><dd><p>  Add links to HTML report, replacing local path prefixes with url
+  prefix. The mapping can be a comma-separated list of path prefixes
+  to corresponding URL prefixes, such as
+  C:\temp\Proj1=<a href="http://buildserver/sources/temp/Proj1" class="url">http://buildserver/sources/temp/Proj1</a>.  To turn off
+  linking to files, use —url none
+
+</p></dd><dt><code>--xml</code> <em class="asterisk">filename</em></dt><dd><p>  Create an XML report instead.
+
+</p></dd><dt><code>--sarif</code> <em class="asterisk">filename</em></dt><dd><p>  Create a SARIF report instead.
+
+</p></dd><dt><code>--text</code> <em class="asterisk">filename</em></dt><dd><p>  Write a text report to the given file. If the filename is just
+  <code>stdout</code> (short for standard out), the report is written to the
+  console.
+
+</p></dd></dl><p></p>
+<a class="target" name="projectoptions">&nbsp;</a><a class="target" name="lintcommandlintflags/projectoptions">&nbsp;</a><a class="target" name="toc1.4">&nbsp;</a><h2>Project Options</h2>
+<p>
+
+
+</p><dl><table><tbody><tr valign="top"><td><dt><code>--resources</code> <em class="asterisk">dir</em></dt></td><td><dd><p>  Add the given folder (or path) as a resource directory for the
+  project. Only valid when running lint on a single project.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--sources</code> <em class="asterisk">dir</em></dt></td><td><dd><p>  Add the given folder (or path) as a source directory for the
+  project. Only valid when running lint on a single project.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--classpath</code> <em class="asterisk">dir</em></dt></td><td><dd><p>  Add the given folder (or jar file, or path) as a class directory for
+  the project. Only valid when running lint on a single project.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--libraries</code> <em class="asterisk">dir</em></dt></td><td><dd><p>  Add the given folder (or jar file, or path) as a class library for
+  the project. Only valid when running lint on a single project.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--compile-sdk-version</code> <em class="asterisk">version</em></dt></td><td><dd><p>  Use the given compileSdkVersion to pick an SDK target to resolve
+  Android API call to
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--sdk-home</code> <em class="asterisk">dir</em></dt></td><td><dd><p>  Use the given SDK instead of attempting to find it relative to the
+  lint installation or via $ANDROID_SDK_ROOT
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--jdk-home</code> <em class="asterisk">dir</em></dt></td><td><dd><p>  Use the given JDK instead of attempting to find it via $JAVA_HOME or
+  java.home
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--java-language-level</code> <em class="asterisk">level</em></dt></td><td><dd><p>  Use the given version of the Java programming language
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>--kotlin-language-level</code> <em class="asterisk">level</em></dt></td><td><dd><p>  Use the given version of the Kotlin programming language
+
+</p></dd></td></tr></tbody></table></dl><p></p>
+<a class="target" name="advancedoptions(forbuildsystemintegration)">&nbsp;</a><a class="target" name="lintcommandlintflags/advancedoptions(forbuildsystemintegration)">&nbsp;</a><a class="target" name="toc1.5">&nbsp;</a><h2>Advanced Options (for build system integration)</h2>
+<p>
+
+
+</p><dl><dt><code>--project</code> <em class="asterisk">file</em></dt><dd><p>  Use the given project layout descriptor file to describe the set of
+  available sources, resources and libraries. Used to drive lint with
+  build systems not natively integrated with lint.
+
+</p></dd><dt><code>--lint-model</code> <em class="asterisk">path</em></dt><dd><p>  Alternative to —project which defines the project layout
+
+</p></dd><dt><code>--variant</code> <em class="asterisk">name</em></dt><dd><p>  The name of the variant from the lint model to use for analysis
+
+</p></dd><dt><code>--lint-rule-jars</code> <em class="asterisk">path</em></dt><dd><p>  One or more .jar files to load additional lint checks from
+
+</p></dd><dt><code>--analyze-only</code></dt><dd><p>  Perform only analysis, not reporting, of the given lint model
+
+</p></dd><dt><code>--report-only</code></dt><dd><p>  Perform only reporting of previous analysis results
+
+</p></dd><dt><code>--path-variables</code> <em class="asterisk">variables</em></dt><dd><p>  Path variables to use in internal persistence files to make lint
+  results cacheable. Use a semi-colon separated list of name=path
+  pairs.
+
+</p></dd><dt><code>--describe-suggestions</code> <em class="asterisk">file</em></dt><dd><p>  Describes all the quickfixes in an XML file expressed as document
+  edits — insert, replace, delete
+
+</p></dd><dt><code>--stacktrace</code></dt><dd><p>  Dump exceptions from detectors to the console
+
+</p></dd></dl><p></p>
+<a class="target" name="exitstatus">&nbsp;</a><a class="target" name="lintcommandlintflags/exitstatus">&nbsp;</a><a class="target" name="toc1.6">&nbsp;</a><h2>Exit Status</h2>
+<p>
+
+
+</p><dl><table><tbody><tr valign="top"><td><dt><code>0</code></dt></td><td><dd><p>  Success.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>1</code></dt></td><td><dd><p>  Lint errors detected.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>2</code></dt></td><td><dd><p>  Lint usage.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>3</code></dt></td><td><dd><p>  Cannot clobber existing file.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>4</code></dt></td><td><dd><p>  Lint help.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>5</code></dt></td><td><dd><p>  Invalid command-line argument.
+
+</p></dd></td></tr></tbody></table></dl><p></p>
+<a class="target" name="lintgradleplugindsl">&nbsp;</a><a class="target" name="lintgradleplugindsl">&nbsp;</a><a class="target" name="toc2">&nbsp;</a><h1>Lint Gradle Plugin DSL</h1>
+<p>
+
+
+Lint is integrated into three Gradle plugins:
+
+</p><p>
+
+The <code>com.android.lint</code> plugin is the “standalone” lint Gradle plugin
+which can be applied to any Kotlin or Java Gradle project. To configure
+this project, use a <code>lintOptions</code> block to configure it, like this:
+
+</p><pre class="listing tilde"><code><span class="line">apply plugin: 'kotlin'</span>
+<span class="line">apply plugin: 'com.android.lint'</span>
+<span class="line"></span>
+<span class="line">lintOptions {</span>
+<span class="line">    htmlOutput file("lint-report.html")</span>
+<span class="line">    textReport true</span>
+<span class="line">}</span></code></pre><p>
+
+The <code>com.android.library</code> and <code>com.android.application</code> plugins for
+Android development bundles in the lint support. They register a lint
+task for each variant, as well as a task named <code>lint</code> which runs the
+default variant's lint task.
+
+</p><p>
+
+To configure lint for Android, place the <code>lintOptions</code> block within the
+<code>android</code> block:
+
+</p><pre class="listing tilde"><code><span class="line">android {</span>
+<span class="line">    lintOptions {</span>
+<span class="line">        htmlOutput file("lint-report.html")</span>
+<span class="line">        textReport true</span>
+<span class="line">    }</span>
+<span class="line">}</span></code></pre>
+<a class="target" name="configuringissuesandseverity">&nbsp;</a><a class="target" name="lintgradleplugindsl/configuringissuesandseverity">&nbsp;</a><a class="target" name="toc2.1">&nbsp;</a><h2>Configuring Issues and Severity</h2>
+<p>
+
+
+</p><dl><dt><code>ignoreWarnings</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should only report errors. False by default.
+
+</p></dd><dt><code>checkAllWarnings</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should check all issues, including those that are marked
+  off by default. <em class="asterisk">False by default.</em>
+
+</p></dd><dt><code>warningsAsErrors</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should treat all warnings as errors. False by default.
+
+</p></dd><dt><code>disable</code> <em class="asterisk">issue-list</em></dt><dd><p>  List of issue id's that lint should ignore.
+
+</p><p>
+
+  Example: <code>disable 'TypographyFractions','TypographyQuotes'</code>.
+
+</p></dd><dt><code>enable</code> <em class="asterisk">issue-list</em></dt><dd><p>  List of issues disabled by default that lint should enable.
+
+</p><p>
+
+  Example: <code>enable 'RtlHardcoded','RtlCompat', 'RtlEnabled'</code>.
+
+</p></dd><dt><code>checkOnly</code> <em class="asterisk">issue-list</em></dt><dd><p>  If any issues are listed as <code>checkOnly</code>, then <strong class="asterisk">all</strong> other issues
+  are disabled and only those specific issues will be analyzed.
+
+</p><p>
+
+  Example: <code>checkOnly 'NewApi', 'InlinedApi'</code>.
+
+</p></dd><dt><code>fatal</code> issue-list</dt><dd><p>  Sets the severity of the given issues to “fatal” (which means they
+  will be checked during release builds (even if the lint target is not
+  included).
+
+</p><p>
+
+  Example: <code>fatal 'NewApi', 'InlineApi'</code>
+
+</p></dd><dt><code>error</code> issue-list</dt><dd><p>  Sets the severity of the given issues to error.
+
+</p><p>
+
+  Example: <code>error 'Wakelock', 'TextViewEdits'</code>
+
+</p></dd><dt><code>warning</code> issue-list</dt><dd><p>  Sets the severity of the given issues to warning.
+
+</p><p>
+
+  Example: <code>warning 'ResourceAsColor'</code>
+
+</p></dd><dt><code>ignore</code> issue-list</dt><dd><p>  Sets the severity of the given issues to ignore (same as disabling
+  the check).
+
+</p><p>
+
+  Example: <code>ignore 'ResourceAsColor'</code>
+
+</p></dd><dt><code>informational</code> issue-list</dt><dd><p>  Sets the severity of the given issues to informational, which is
+  basically a tip.
+
+</p><p>
+
+  Example: <code>informational 'StopShip'</code>
+
+</p></dd></dl><p></p>
+<a class="target" name="configuringoutputandreports">&nbsp;</a><a class="target" name="lintgradleplugindsl/configuringoutputandreports">&nbsp;</a><a class="target" name="toc2.2">&nbsp;</a><h2>Configuring Output and Reports</h2>
+<p>
+
+
+</p><dl><dt><code>absolutePaths</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should include full paths to files in the error reports.
+  If false, paths will be made relative to each module directory.
+  <em class="asterisk">True by default.</em>
+
+</p></dd><dt><code>noLines</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should include showing snippets of the source code along
+  with underlines to show the line of code containing the problem.
+  <em class="asterisk">False by default (note the negated name of the flag).</em>
+
+</p></dd><dt><code>showAll</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should show <strong class="asterisk">all</strong> locations (for issues that have
+  multiple locations, such as showing each duplicate declaration of a
+  resources), whether it should not truncate lists, etc.
+
+</p></dd><dt><code>explainIssues</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should include a full issue explanations paragraphs in
+  the text error output. Note that this only applies for text reports;
+  HTML and XML reports will always contain explanations.
+  <em class="asterisk">False by default.</em>
+
+</p></dd><dt><code>textReport</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should generate a text report. If you don't specify a
+  location using <code>textOutput</code>, lint will default to
+  <code>lint-results-</code><em class="asterisk">$variant</em><code>.txt</code> in $module<code>/build/reports/, such as
+  </code>app/build/reports/lint-results-debug.txt`.
+
+</p></dd><dt><code>textOutput</code> file or <code>'stdout'</code> or <code>'stderr'</code></dt><dd><p>  Where lint should write its text output; either a file, or one of
+  the two magic strings <code>stdout</code> or <code>stderr</code>, which writes to the
+  standard output or standard error streams respectively. In recent
+  versions of lint, this will also imply <code>textReport true</code>.
+
+</p><p>
+
+  Example: <code>textOutput file(“$reportsDir/lint-results.txt”)</code>
+
+</p></dd><dt><code>xmlReport</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should generate an XML report. If you don't specify a
+  location using <code>xmlOutput</code>, lint will default to
+  <code>lint-results-</code><em class="asterisk">$variant</em><code>.xml</code> in $module<code>/build/reports/, such as
+  </code>app/build/reports/lint-results-debug.xml`.
+
+</p></dd><dt><code>xmlOutput file("$reportsDir/lint-report.xml")</code></dt><dd><p>  Where lint should write its XML report. In recent versions of lint,
+  this will also imply <code>xmlReport true</code>.
+
+</p><p>
+
+  Example: <code>xmlOutput file("$reportsDir/lint-results.xml")</code>
+
+</p></dd><dt><code>htmlReport</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should generate an HTML report, with issue explanations,
+  code snippets, etc. If you don't specify a location using
+  <code>htmlOutput</code>, lint will default to <code>lint-results-</code><em class="asterisk">$variant</em><code>.html</code>
+  in $module<code>/build/reports/, such as
+  </code>app/build/reports/lint-results-debug.html`.
+
+</p></dd><dt><code>htmlOutput</code> file</dt><dd><p>  Where lint should write its HTML report;. In recent versions of lint,
+  this will also imply <code>htmlReport true</code>. See also the <a href="#appendix:environmentvariablesandsystemproperties">variables
+  chapter</a> for some flags to configure the HTML
+  report.
+
+</p><p>
+
+  Example: <code>htmlOutput file(“$reportsDir/lint-results.html”)</code>
+
+</p></dd><dt><code>sarifReport</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should generate a
+  <a href="https://docs.oasis-open.org/sarif/sarif/v2.0/sarif-v2.0.html">SARIF</a>
+  report for use by for example GitHub. If you don't specify a location
+  using <code>sarifOutput</code>, lint will default to
+  <code>lint-results-</code><em class="asterisk">$variant</em><code>.sarif</code> in $module<code>/build/reports/, such as
+  </code>app/build/reports/lint-results-debug.sarif`.
+
+</p></dd><dt><code>sarifOutput</code> file</dt><dd><p>  Where lint should write its HTML SARIF. In recent versions of lint,
+  this will also imply <code>sarifReport true</code>.
+
+</p><p>
+
+  Example: <code>sarifOutput file("$reportsDir/lint-report.sarif.json")</code>
+
+</p></dd><dt><code>quiet</code> <em class="asterisk">true or false</em></dt><dd><p>  Whether lint should limit its diagnostic output. <em class="asterisk">False by default.</em>
+
+</p></dd></dl><p></p>
+<a class="target" name="filestoinclude">&nbsp;</a><a class="target" name="lintgradleplugindsl/filestoinclude">&nbsp;</a><a class="target" name="toc2.3">&nbsp;</a><h2>Files to Include</h2>
+<p>
+
+
+</p><dl><dt><code>checkGeneratedSources</code> <em class="asterisk">true or false</em></dt><dd><p>  Normally lint will skip generated sources, but you can turn it on
+  with this flag. <em class="asterisk">False by default.</em>
+
+</p></dd><dt><code>checkTestSources</code> <em class="asterisk">true or false</em></dt><dd><p>  Normally most lint checks are not run on test sources (except the
+  checks dedicated to looking for mistakes in unit or instrumentation
+  tests, unless ignoreTestSources is true). You can turn on normal lint
+  checking in all sources with this flag. <em class="asterisk">False by default.</em>
+
+</p></dd><dt><code>ignoreTestSources</code> <em class="asterisk">true or false</em></dt><dd><p>  Like <code>checkTestSources</code>, but tells lint to always skip analyzing
+  tests — meaning that it also ignores checks that have explicitly
+  asked to look at test sources, such as the unused resource check.
+  <em class="asterisk">False by default.</em>
+
+</p></dd><dt><code>checkDependencies</code> <em class="asterisk">true or false</em></dt><dd><p>  Normally lint will analyze all dependencies along with each module;
+  this ensures that lint can correctly (for example) determine if a
+  resource declared in a library is unused; checking only the library
+  in isolation would not be able to identify this problem. It also
+  gives you a single cumulative report for the entire project, which is
+  easier to digest. However, in older versions of lint this led to
+  performance problems. <em class="asterisk">False by default, but will soon switch to true
+  by default.</em>
+
+</p></dd></dl><p></p>
+<a class="target" name="other">&nbsp;</a><a class="target" name="lintgradleplugindsl/other">&nbsp;</a><a class="target" name="toc2.4">&nbsp;</a><h2>Other</h2>
+<p>
+
+
+</p><dl><dt><code>baseline</code> file</dt><dd><p>  Configures a <a href="#baselines">baseline</a>. The first time lint is
+  run, and the baseline file does not exist, it will record all the
+  current violations into this file (which can be checked into version
+  control). On subsequent runs, only newly introduced issues (not found
+  in the baseline) will be reported.
+
+</p><p>
+
+  Example: <code>baseline file("lint-baseline.xml")</code>
+
+</p></dd><dt><code>lintConfig </code> <em class="asterisk">file</em></dt><dd><p>  Sets a <a href="#configuringusinglint.xmlfiles">lint XML file</a> to use as a fallback
+  configuration. Avoid calling this file <code>lint.xml</code> to avoid
+  ambiguity, since those files are automatically loaded.
+
+</p><p>
+
+  Example: <code>lintConfig file("default-lint.xml")</code>
+
+</p></dd><dt><code>abortOnError</code> <em class="asterisk">true or false</em></dt><dd><p>  If true, stops the Gradle build if one or more errors are found.
+  <em class="asterisk">True by default.</em>
+
+</p></dd><dt><code>checkReleaseBuilds</code> <em class="asterisk">true or false</em></dt><dd><p>  If true, include lint analysis in release builds (such as
+  <code>assembleRelease</code>), but limited to issues with severity configured to
+  be <code>fatal</code>, and abort the build if any fatal issues are found (unless
+  <code>abortOnError</code> is set to false). <em class="asterisk">True by default.</em>
+
+</p></dd></dl><div class="admonition tip">The <code>DataFlowAnalyzer</code> received a number of really important fixes
+   in 7.0, so if you are testing with older versions of lint, some of
+   the features described above (such as proper support for Kotlin
+   scoping functions) will not work correctly.</div>
+
+<p></p>
+<a class="target" name="baselines">&nbsp;</a><a class="target" name="baselines">&nbsp;</a><a class="target" name="toc3">&nbsp;</a><h1>Baselines</h1>
+
+<a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="toc4">&nbsp;</a><h1>Creating a Baseline</h1>
 <p>
 
 
@@ -191,7 +663,7 @@ baseline, and you can check the lint-baseline.xml file into version
 control if you want to share it with others.
 
 </p>
-<a class="target" name="customizethebaseline">&nbsp;</a><a class="target" name="creatingabaseline/customizethebaseline">&nbsp;</a><a class="target" name="toc2.1">&nbsp;</a><h2>Customize the baseline</h2>
+<a class="target" name="customizethebaseline">&nbsp;</a><a class="target" name="creatingabaseline/customizethebaseline">&nbsp;</a><a class="target" name="toc4.1">&nbsp;</a><h2>Customize the baseline</h2>
 <p>
 
 
@@ -210,7 +682,7 @@ After you create the baseline, if you add any new warnings to the
 codebase, lint lists only the newly introduced bugs.
 
 </p>
-<a class="target" name="baselinewarning">&nbsp;</a><a class="target" name="creatingabaseline/baselinewarning">&nbsp;</a><a class="target" name="toc2.2">&nbsp;</a><h2>Baseline warning</h2>
+<a class="target" name="baselinewarning">&nbsp;</a><a class="target" name="creatingabaseline/baselinewarning">&nbsp;</a><a class="target" name="toc4.2">&nbsp;</a><h2>Baseline warning</h2>
 <p>
 
 
@@ -245,7 +717,7 @@ the baseline to prevent the error from coming back undetected.
 <a href="https://developer.android.com/studio/write/lint#snapshot">Official documentation</a>
 
 </p>
-<a class="target" name="performancetuning">&nbsp;</a><a class="target" name="performancetuning">&nbsp;</a><a class="target" name="toc3">&nbsp;</a><h1>Performance Tuning</h1>
+<a class="target" name="performancetuning">&nbsp;</a><a class="target" name="performancetuning">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Performance Tuning</h1>
 <p>
 
 
@@ -270,7 +742,7 @@ lint on CI servers.
    change is an improvement.</div>
 
 <p></p>
-<a class="target" name="use7.0andincrementallint">&nbsp;</a><a class="target" name="performancetuning/use7.0andincrementallint">&nbsp;</a><a class="target" name="toc3.1">&nbsp;</a><h2>Use 7.0 and Incremental Lint</h2>
+<a class="target" name="use7.0andincrementallint">&nbsp;</a><a class="target" name="performancetuning/use7.0andincrementallint">&nbsp;</a><a class="target" name="toc5.1">&nbsp;</a><h2>Use 7.0 and Incremental Lint</h2>
 <p>
 
 
@@ -302,7 +774,7 @@ relative such that this facility will also work for Gradle's remote
 cache; once that's done, this will work for clean builds as well.
 
 </p>
-<a class="target" name="usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="performancetuning/usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="toc3.2">&nbsp;</a><h2>Use the <code>lintDebug</code> target, not <code>lint</code></h2>
+<a class="target" name="usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="performancetuning/usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="toc5.2">&nbsp;</a><h2>Use the <code>lintDebug</code> target, not <code>lint</code></h2>
 <p>
 
 
@@ -369,7 +841,7 @@ minor caching)
    update to 7.0 this is no longer a problem.</div>
 
 <p></p>
-<a class="target" name="onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="performancetuning/onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="toc3.3">&nbsp;</a><h2>Only analyze app/leaf modules</h2>
+<a class="target" name="onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="performancetuning/onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="toc5.3">&nbsp;</a><h2>Only analyze app/leaf modules</h2>
 <p>
 
 
@@ -447,7 +919,7 @@ one separately.
    problems, so we will most likely turn this mode back on by default.</div>
 
 <p></p>
-<a class="target" name="don'tanalyzetestsources">&nbsp;</a><a class="target" name="performancetuning/don'tanalyzetestsources">&nbsp;</a><a class="target" name="toc3.4">&nbsp;</a><h2>Don't analyze test sources</h2>
+<a class="target" name="don'tanalyzetestsources">&nbsp;</a><a class="target" name="performancetuning/don'tanalyzetestsources">&nbsp;</a><a class="target" name="toc5.4">&nbsp;</a><h2>Don't analyze test sources</h2>
 <p>
 
 
@@ -483,7 +955,7 @@ analysis and type resolution:
 <span class="line">        <span class="hljs-string">...</span></span>
 <span class="line">    }</span>
 <span class="line">}</span></code></pre>
-<a class="target" name="don'tusecheckallwarnings">&nbsp;</a><a class="target" name="performancetuning/don'tusecheckallwarnings">&nbsp;</a><a class="target" name="toc3.5">&nbsp;</a><h2>Don't use checkAllWarnings</h2>
+<a class="target" name="don'tusecheckallwarnings">&nbsp;</a><a class="target" name="performancetuning/don'tusecheckallwarnings">&nbsp;</a><a class="target" name="toc5.5">&nbsp;</a><h2>Don't use checkAllWarnings</h2>
 <p>
 
 
@@ -503,7 +975,7 @@ though in recent versions we've specifically exempted this check from
 <code>checkAllWarnings</code>.)
 
 </p>
-<a class="target" name="uselatestversion">&nbsp;</a><a class="target" name="performancetuning/uselatestversion">&nbsp;</a><a class="target" name="toc3.6">&nbsp;</a><h2>Use latest version</h2>
+<a class="target" name="uselatestversion">&nbsp;</a><a class="target" name="performancetuning/uselatestversion">&nbsp;</a><a class="target" name="toc5.6">&nbsp;</a><h2>Use latest version</h2>
 <p>
 
 
@@ -517,7 +989,7 @@ happen and canaries go through less testing, but in general lint has
 really good coverage so regressions do not happen very often.)
 
 </p>
-<a class="target" name="givelintalotofram">&nbsp;</a><a class="target" name="performancetuning/givelintalotofram">&nbsp;</a><a class="target" name="toc3.7">&nbsp;</a><h2>Give lint a lot of RAM</h2>
+<a class="target" name="givelintalotofram">&nbsp;</a><a class="target" name="performancetuning/givelintalotofram">&nbsp;</a><a class="target" name="toc5.7">&nbsp;</a><h2>Give lint a lot of RAM</h2>
 <p>
 
 
@@ -554,7 +1026,7 @@ One user reported this result:
  <code>./gradlew -Dorg.gradle.jvmargs=-Xmx8g app:lintDebug</code> takes 8m 57s!</p></blockquote>
 
 <p></p>
-<a class="target" name="findingslowlintchecks">&nbsp;</a><a class="target" name="performancetuning/findingslowlintchecks">&nbsp;</a><a class="target" name="toc3.8">&nbsp;</a><h2>Finding Slow Lint Checks</h2>
+<a class="target" name="findingslowlintchecks">&nbsp;</a><a class="target" name="performancetuning/findingslowlintchecks">&nbsp;</a><a class="target" name="toc5.8">&nbsp;</a><h2>Finding Slow Lint Checks</h2>
 <p>
 
 
@@ -612,7 +1084,7 @@ don't forget to also report the bug to the lint check author!
    behaviors.</div>
 
 <p></p>
-<a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="toc4">&nbsp;</a><h1>Suppressing Lint Checks</h1>
+<a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="toc6">&nbsp;</a><h1>Suppressing Lint Checks</h1>
 <p>
 
 
@@ -689,7 +1161,7 @@ of <code>disable</code> to change the severity of issues.
 
 To suppress lint warnings with a configuration XML file,
 create a file named <code>lint.xml</code>. See the
-<a href="#configuringusinglintxmlfiles">lint.xml configuration</a> document
+<a href="#configuringusinglint.xmlfiles">lint.xml configuration</a> document
 for more details.
 
 </p><p>
@@ -703,7 +1175,7 @@ For more information, see
 <a href="https://developer.android.com/studio/write/lint.html#config" class="url">https://developer.android.com/studio/write/lint.html#config</a>
 
 </p>
-<a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Configuring Using lint.xml Files</h1>
+<a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="toc7">&nbsp;</a><h1>Configuring Using lint.xml Files</h1>
 <p>
 
 
@@ -723,7 +1195,7 @@ warning.
 This chapter describes the syntax of <code>lint.xml</code> files.
 
 </p>
-<a class="target" name="xmlsyntax">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/xmlsyntax">&nbsp;</a><a class="target" name="toc5.1">&nbsp;</a><h2>XML Syntax</h2>
+<a class="target" name="xmlsyntax">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/xmlsyntax">&nbsp;</a><a class="target" name="toc7.1">&nbsp;</a><h2>XML Syntax</h2>
 <p>
 
 
@@ -771,7 +1243,7 @@ flags like warningsAsErrors, checkTestSources, etc (matching most
 of the flags offered via the lintOptions block in Gradle files.)
 
 </lint></p>
-<a class="target" name="nesting&amp;precedence">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/nesting&amp;precedence">&nbsp;</a><a class="target" name="toc5.2">&nbsp;</a><h2>Nesting &amp; Precedence</h2>
+<a class="target" name="nesting&amp;precedence">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/nesting&amp;precedence">&nbsp;</a><a class="target" name="toc7.2">&nbsp;</a><h2>Nesting &amp; Precedence</h2>
 <p>
 
 
@@ -813,7 +1285,7 @@ in this order:
    ”!gradle“, this will match after the other attempts.</li></ol>
 
 <p></p>
-<a class="target" name="samplelint.xmlfile">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/samplelint.xmlfile">&nbsp;</a><a class="target" name="toc5.3">&nbsp;</a><h2>Sample lint.xml file</h2>
+<a class="target" name="samplelint.xmlfile">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/samplelint.xmlfile">&nbsp;</a><a class="target" name="toc7.3">&nbsp;</a><h2>Sample lint.xml file</h2>
 <p>
 
 
@@ -859,7 +1331,7 @@ so if you're going to copy/paste go to the source file.)
 
 
 </p>
-<a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="toc6">&nbsp;</a><h1>Appendix: Recent Changes</h1>
+<a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="toc8">&nbsp;</a><h1>Appendix: Recent Changes</h1>
 <p>
 
            
@@ -898,6 +1370,7 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>TrustAllX509TrustManager</code> </td><td style="text-align:left"> Insecure TLS/SSL trust manager </td></tr>
 <tr><td style="text-align:left"> <code>UnspecifiedImmutableFlag</code> </td><td style="text-align:left"> Missing <code>PendingIntent</code> mutability flag </td></tr>
 <tr><td style="text-align:left"> <code>WatchFaceEditor</code> </td><td style="text-align:left"> Watch face editor must use launchMode=“standard” </td></tr>
+<tr><td style="text-align:left"> <code>WebViewClientOnReceivedSslError</code> </td><td style="text-align:left"> Proceeds with the HTTPS connection despite SSL errors </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -907,6 +1380,16 @@ lint check authors, see the API Guide.
   lint check came from, such as which library artifact provided it.
   This should make it easier to request enhancements or file bugs
   around false positives or false negatives.
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">The Gradle plugin now maps the <code>lint</code> task to the default variant's
+  lint task instead of running it across all variants and accumulating
+  results. This is much faster, is usually what you want, and now the
+  target name will not change based on whether the project has product
+  flavors, so you can start just running <code>./gradlew:app:lint</code> instead
+  of <code>./gradlew :app:lintDebug</code> or <code>:app:lintProDebug</code> etc.
 
 <p></p><p>
 
@@ -945,7 +1428,7 @@ lint check authors, see the API Guide.
   visualized in a unified way on CI servers.</li></ul>
 
 <p></p>
-<a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc7">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
+<a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc9">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
 <p>
 
 
@@ -955,9 +1438,9 @@ be used or guaranteed to be supported in the future, but documenting
 what they are seems useful.
 
 </p>
-<a class="target" name="environmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables">&nbsp;</a><a class="target" name="toc7.1">&nbsp;</a><h2>Environment Variables</h2>
+<a class="target" name="environmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables">&nbsp;</a><a class="target" name="toc9.1">&nbsp;</a><h2>Environment Variables</h2>
 
-<a class="target" name="detectorconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables">&nbsp;</a><a class="target" name="toc7.1.1">&nbsp;</a><h3>Detector Configuration Variables</h3>
+<a class="target" name="detectorconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables">&nbsp;</a><a class="target" name="toc9.1.1">&nbsp;</a><h3>Detector Configuration Variables</h3>
 <p>
 
 
@@ -983,7 +1466,7 @@ what they are seems useful.
   Corresponding system property: <code>lint.nullness.ignore-deprecated</code>
 
 </p></dd></dl><p></p>
-<a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc7.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>
+<a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc9.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>
 <p>
 
 
@@ -1030,7 +1513,7 @@ what they are seems useful.
   normally used <code>$SDK/platforms/android-?/data/api-versions.xml</code> file.
 
 </p></dd></dl><p></p>
-<a class="target" name="lintdevelopmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables">&nbsp;</a><a class="target" name="toc7.1.3">&nbsp;</a><h3>Lint Development Variables</h3>
+<a class="target" name="lintdevelopmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables">&nbsp;</a><a class="target" name="toc9.1.3">&nbsp;</a><h3>Lint Development Variables</h3>
 <p>
 
 
@@ -1056,7 +1539,7 @@ what they are seems useful.
   server or by the rest of the development team.
 
 </p></dd></dl><p></p>
-<a class="target" name="systemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/systemproperties">&nbsp;</a><a class="target" name="toc7.2">&nbsp;</a><h2>System Properties</h2>
+<a class="target" name="systemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/systemproperties">&nbsp;</a><a class="target" name="toc9.2">&nbsp;</a><h2>System Properties</h2>
 <p>
 
 

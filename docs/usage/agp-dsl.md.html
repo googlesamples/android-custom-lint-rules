@@ -1,0 +1,238 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Lint Gradle Plugin DSL
+
+Lint is integrated into three Gradle plugins:
+
+The `com.android.lint` plugin is the “standalone” lint Gradle plugin
+which can be applied to any Kotlin or Java Gradle project. To configure
+this project, use a `lintOptions` block to configure it, like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy
+apply plugin: 'kotlin'
+apply plugin: 'com.android.lint'
+
+lintOptions {
+    htmlOutput file("lint-report.html")
+    textReport true
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `com.android.library` and `com.android.application` plugins for
+Android development bundles in the lint support. They register a lint
+task for each variant, as well as a task named `lint` which runs the
+default variant's lint task.
+
+To configure lint for Android, place the `lintOptions` block within the
+`android` block:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy
+android {
+    lintOptions {
+        htmlOutput file("lint-report.html")
+        textReport true
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Configuring Issues and Severity
+
+`ignoreWarnings` *true or false*
+: Whether lint should only report errors. False by default.
+
+`checkAllWarnings` *true or false*
+: Whether lint should check all issues, including those that are marked
+  off by default. *False by default.*
+
+`warningsAsErrors` *true or false*
+: Whether lint should treat all warnings as errors. False by default.
+
+`disable` *issue-list*
+: List of issue id's that lint should ignore.
+
+  Example: `disable 'TypographyFractions','TypographyQuotes'`.
+
+`enable` *issue-list*
+: List of issues disabled by default that lint should enable.
+
+  Example: `enable 'RtlHardcoded','RtlCompat', 'RtlEnabled'`.
+
+`checkOnly` *issue-list*
+: If any issues are listed as `checkOnly`, then **all** other issues
+  are disabled and only those specific issues will be analyzed.
+
+  Example: `checkOnly 'NewApi', 'InlinedApi'`.
+
+`fatal` issue-list
+: Sets the severity of the given issues to “fatal” (which means they
+  will be checked during release builds (even if the lint target is not
+  included).
+
+  Example: `fatal 'NewApi', 'InlineApi'`
+
+`error` issue-list
+: Sets the severity of the given issues to error.
+
+  Example: `error 'Wakelock', 'TextViewEdits'`
+
+`warning` issue-list
+: Sets the severity of the given issues to warning.
+
+  Example: `warning 'ResourceAsColor'`
+
+`ignore` issue-list
+: Sets the severity of the given issues to ignore (same as disabling
+  the check).
+
+  Example: `ignore 'ResourceAsColor'`
+
+`informational` issue-list
+: Sets the severity of the given issues to informational, which is
+  basically a tip.
+
+  Example: `informational 'StopShip'`
+
+## Configuring Output and Reports
+
+`absolutePaths` *true or false*
+: Whether lint should include full paths to files in the error reports.
+  If false, paths will be made relative to each module directory.
+  *True by default.*
+
+`noLines` *true or false*
+: Whether lint should include showing snippets of the source code along
+  with underlines to show the line of code containing the problem.
+  *False by default (note the negated name of the flag).*
+
+`showAll` *true or false*
+: Whether lint should show **all** locations (for issues that have
+  multiple locations, such as showing each duplicate declaration of a
+  resources), whether it should not truncate lists, etc.
+
+`explainIssues` *true or false*
+: Whether lint should include a full issue explanations paragraphs in
+  the text error output. Note that this only applies for text reports;
+  HTML and XML reports will always contain explanations.
+  *False by default.*
+
+`textReport` *true or false*
+: Whether lint should generate a text report. If you don't specify a
+  location using `textOutput`, lint will default to
+  `lint-results-`*$variant*`.txt` in $module`/build/reports/, such as
+  `app/build/reports/lint-results-debug.txt`.
+
+`textOutput` file or `'stdout'` or `'stderr'`
+: Where lint should write its text output; either a file, or one of
+  the two magic strings `stdout` or `stderr`, which writes to the
+  standard output or standard error streams respectively. In recent
+  versions of lint, this will also imply `textReport true`.
+
+  Example: `textOutput file(“$reportsDir/lint-results.txt”)`
+
+`xmlReport` *true or false*
+: Whether lint should generate an XML report. If you don't specify a
+  location using `xmlOutput`, lint will default to
+  `lint-results-`*$variant*`.xml` in $module`/build/reports/, such as
+  `app/build/reports/lint-results-debug.xml`.
+
+`xmlOutput file("$reportsDir/lint-report.xml")`
+: Where lint should write its XML report. In recent versions of lint,
+  this will also imply `xmlReport true`.
+
+  Example: `xmlOutput file("$reportsDir/lint-results.xml")`
+
+`htmlReport` *true or false*
+: Whether lint should generate an HTML report, with issue explanations,
+  code snippets, etc. If you don't specify a location using
+  `htmlOutput`, lint will default to `lint-results-`*$variant*`.html`
+  in $module`/build/reports/, such as
+  `app/build/reports/lint-results-debug.html`.
+
+`htmlOutput` file
+: Where lint should write its HTML report;. In recent versions of lint,
+  this will also imply `htmlReport true`. See also the [variables
+  chapter](variables.md.html) for some flags to configure the HTML
+  report.
+
+  Example: `htmlOutput file(“$reportsDir/lint-results.html”)`
+
+`sarifReport` *true or false*
+: Whether lint should generate a
+  [SARIF](https://docs.oasis-open.org/sarif/sarif/v2.0/sarif-v2.0.html)
+  report for use by for example GitHub. If you don't specify a location
+  using `sarifOutput`, lint will default to
+  `lint-results-`*$variant*`.sarif` in $module`/build/reports/, such as
+  `app/build/reports/lint-results-debug.sarif`.
+
+`sarifOutput` file
+: Where lint should write its HTML SARIF. In recent versions of lint,
+  this will also imply `sarifReport true`.
+
+  Example: `sarifOutput file("$reportsDir/lint-report.sarif.json")`
+
+`quiet` *true or false*
+: Whether lint should limit its diagnostic output. *False by default.*
+
+## Files to Include
+
+`checkGeneratedSources` *true or false*
+: Normally lint will skip generated sources, but you can turn it on
+  with this flag. *False by default.*
+
+`checkTestSources` *true or false*
+: Normally most lint checks are not run on test sources (except the
+  checks dedicated to looking for mistakes in unit or instrumentation
+  tests, unless ignoreTestSources is true). You can turn on normal lint
+  checking in all sources with this flag. *False by default.*
+
+`ignoreTestSources` *true or false*
+: Like `checkTestSources`, but tells lint to always skip analyzing
+  tests -- meaning that it also ignores checks that have explicitly
+  asked to look at test sources, such as the unused resource check.
+  *False by default.*
+
+`checkDependencies` *true or false*
+: Normally lint will analyze all dependencies along with each module;
+  this ensures that lint can correctly (for example) determine if a
+  resource declared in a library is unused; checking only the library
+  in isolation would not be able to identify this problem. It also
+  gives you a single cumulative report for the entire project, which is
+  easier to digest. However, in older versions of lint this led to
+  performance problems. *False by default, but will soon switch to true
+  by default.*
+
+## Other
+
+`baseline` file
+: Configures a [baseline](baselines.md.html). The first time lint is
+  run, and the baseline file does not exist, it will record all the
+  current violations into this file (which can be checked into version
+  control). On subsequent runs, only newly introduced issues (not found
+  in the baseline) will be reported.
+
+  Example: `baseline file("lint-baseline.xml")`
+
+`lintConfig ` *file*
+: Sets a [lint XML file](lintxml.md.html) to use as a fallback
+  configuration. Avoid calling this file `lint.xml` to avoid
+  ambiguity, since those files are automatically loaded.
+
+  Example: `lintConfig file("default-lint.xml")`
+
+`abortOnError` *true or false*
+: If true, stops the Gradle build if one or more errors are found.
+  *True by default.*
+
+`checkReleaseBuilds` *true or false*
+: If true, include lint analysis in release builds (such as
+  `assembleRelease`), but limited to issues with severity configured to
+  be `fatal`, and abort the build if any fatal issues are found (unless
+  `abortOnError` is set to false). *True by default.*
+
+!!! Tip
+   The `DataFlowAnalyzer` received a number of really important fixes
+   in 7.0, so if you are testing with older versions of lint, some of
+   the features described above (such as proper support for Kotlin
+   scoping functions) will not work correctly.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

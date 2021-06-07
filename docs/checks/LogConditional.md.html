@@ -48,8 +48,8 @@ src/LogExample.kt:7:Warning: The log call Log.i(...) should be
 conditional: surround with if (Log.isLoggable(...)) or if
 (BuildConfig.DEBUG) { ... } [LogConditional]
 
-    Log.i(TAG, "message$m") // string is not constant; computed each time
-    -----------------------
+    Log.i(TAG, "message" + m) // string is not constant; computed each time
+    -------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,7 +64,7 @@ const val TAG = "tag1"
 
 class LogExample {
     fun test(m: String) {
-        Log.i(TAG, "message$m") // string is not constant; computed each time
+        Log.i(TAG, "message" + m) // string is not constant; computed each time
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

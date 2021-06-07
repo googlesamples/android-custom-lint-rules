@@ -103,4 +103,21 @@ Guide.
 * For quickfixes, the `independent` property had inverted logic;
   this has now been reversed to follow the meaning of the name.
 
+* The location range returned when looking up the location for a call
+  will now include arguments outside of the call range itself. This is
+  important when the code is using Kotlin's assignment syntax for
+  calling methods as if they are properties.
+
+* Lint's unit testing framework now checks all `import` statements in
+  test files to make sure that they resolve. This will help catch
+  common bugs and misunderstandings where tests reference frameworks
+  that aren't available to lint in the unit test, and where you need to
+  either add the library or more commonly just add some simple stubs.
+  If the import statements do not matter to the test, you can just mark
+  the test as allowing compilation errors, using
+  `.allowCompilationErrors()` on the `lint()` task.
+
+* The [data flow analyzer](dataflow-analyzer.md.html) has been
+  significantly improved, particularly around Kotlin scoping functions.
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

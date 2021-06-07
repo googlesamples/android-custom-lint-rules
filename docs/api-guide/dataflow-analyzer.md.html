@@ -1,0 +1,350 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Data Flow Analyzer
+
+The dataflow analyzer is a helper in lint which makes writing certain
+kinds of lint checks a lot easier.
+
+Let's say you have an API which creates an object, and then you want to
+make sure that at some point a particular method is called on the same
+instance.
+
+There are a lot of scenarios like this;
+
+* Calling `show` on a message in a Toast or Snackbar
+* Calling `commit` or `apply` on a transaction
+* Calling `recycle` on a TypedArray
+* Calling `enqueue` on a newly created work request
+
+and so on. I didn't include calling close on a file object since you
+typically use try-with-resources for those.
+
+Here are some examples:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+getFragmentManager().beginTransaction().commit() // OK
+val t1 = getFragmentManager().beginTransaction() // NEVER COMMITTED
+val t2 = getFragmentManager().beginTransaction() // OK
+t2.commit()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here we are creating 3 transactions. The first one is committed
+immediately. The second one is never committed. And the third one
+is.
+
+This example shows us creating multiple transactions, and that
+demonstrates that solving this problem isn't as simple as just visiting
+the method and seeing if the code invokes `Transaction#commit`
+anywhere; we have to make sure that it's invoked on all the instances
+we care about.
+
+## Usage
+
+To use the dataflow analyzer, you basically extend the
+`DataFlowAnalyzer` class, and override one or more of its callbacks,
+and then tell it to analyze a method scope.
+
+For the above transaction scenario, it might look like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+override fun getApplicableMethodNames(): List<String> =
+    listOf("beginTransaction")
+
+override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
+    val containingClass = method.containingClass
+    val evaluator = context.evaluator
+
+    if (evaluator.extendsClass(containingClass, "android.app.FragmentManager", false)) {
+        // node is a call to FragmentManager.beginTransaction(),
+        // so this expression will evaluate to an instance of
+        // a Transaction. We want to track this instance to see
+        // if we eventually call commit on it.
+        var foundCommit = false
+        val visitor = object : DataFlowAnalyzer(setOf(node)) {
+            override fun receiver(call: UCallExpression) {
+                if (call.methodName == "commit") {
+                    foundCommit = true
+                }
+            }
+        }
+        val method = node.getParentOfType(UMethod::class.java)
+        method?.accept(visitor)
+        if (!foundCommit) {
+            context.report(Incident(...))
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Aas you can see, the `DataFlowAnalyzer` is a visitor, so when we find a
+call we're interested in, we construct a `DataFlowAnalyzer` and
+initialize it with the instance we want to track, and then we visit the
+surrounding method with this visitor.
+
+The visitor will invoke the `receiver` method whenever the instance is
+invoked as the receiver of a method call; this is the case with
+`t2.commit()` in the above example; here “t2” is the receiver, and
+`commit` is the method call name.
+
+With the above setup, basic value tracking is working; e.g. it will
+correctly handle the following case:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+val t = getFragmentManager().beginTransaction().commit()
+val t2 = t
+val t3 = t2
+t3.commit()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+However, there's a lot that can go wrong, which we'll need to deal with. This is explained in the following sections
+
+## Self-referencing Calls
+
+The Transaction API has a number of utility methods; here's a partial
+list:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+public abstract class FragmentTransaction {
+    public abstract int commit();
+    public abstract int commitAllowingStateLoss();
+    public abstract FragmentTransaction show(Fragment fragment);
+    public abstract FragmentTransaction hide(Fragment fragment);
+    public abstract FragmentTransaction attach(Fragment fragment);
+    public abstract FragmentTransaction detach(Fragment fragment);
+    public abstract FragmentTransaction add(int containerViewId, Fragment fragment);
+    public abstract FragmentTransaction add(Fragment fragment, String tag);
+    public abstract FragmentTransaction addToBackStack(String name);
+    ...
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The reason all these methods return a `FragmentTransaction` is to make it easy to chain calls; e.g.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+final int id = getFragmentManager().beginTransaction()
+        .add(new Fragment(), null)
+        .addToBackStack(null)
+        .commit();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to correctly analyze this, we'd need to know what the implementation of `add` and `addToBackStack` return. If we know that they simply return “this”, then it's easy; we can transfer the instance through the call.
+
+And this is what the `DataFlowAnalyzer` will try to do by default. When
+it encounters a call on our tracked receivers, it will try to guess
+whether that method is returning itself. It has several heuristics for
+this:
+
+* The return type is the same as its surrounding class, or a subtype of
+  it
+* It's an extension method returning the same type
+* It's not named something which indicates a new instance (such as
+  clone, copy, or to*X*), unless `ignoreCopies()` is overridden to
+  return false
+
+In our example, the above heuristics work, so out of the box, the lint check would correctly handle this scenario.
+
+But there may be cases where you either don't want these heuristics, or you want to add your own. In these cases, you would override the `returnsSelf` method on the flow analyzer and apply your own logic:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+val visitor = object : DataFlowAnalyzer(setOf(node)) {
+    override fun returnsSelf(call: UCallExpression): Boolean {
+        return super.returnsSelf(call) || call.methodName == "copy"
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Kotlin Scoping Functions
+
+With this in place, lint will track the flow through the method.
+This includes handling Kotlin's scoping functions as well. For
+example, it will automatically handle scenarios like the
+following:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+transaction1.let { it.commit() }
+transaction2.apply { commit() }
+with (transaction3) { commit() }
+transaction4.also { it.commit() }
+
+getFragmentManager.let {
+    it.beginTransaction()
+}.commit()
+
+// complex (contrived and unrealistic) example:
+transaction5.let {
+    it.also {
+        it.apply {
+            with(this) {
+                commit()
+            }
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Limitations
+
+It doesn't try to “execute”, constant evaluation (maybe)
+if/else
+
+## Escaping Values
+
+What if your check gets invoked on a code snippet like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun createTransaction(): FragmentTransaction =
+    getFragmentManager().beginTransaction().add(new Fragment(), null)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here, we're not calling `commit`, so our lint check would issue a
+warning. However, it's quite possible and likely that elsewhere,
+there's code using it, like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+val transaction = createTransaction()
+...
+transaction.commit()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ideally, we'd perform global analysis to handle this, but that's not
+currently possible. However, we *can* analyze some additional non-local
+scenarios, and more importantly, we need to ensure that we don't offer false positive warnings in the above scenario.
+
+### Returns
+
+In the above case, our tracked transaction “escapes” the method that
+we're analyzing through either an implicit return as in the above
+Kotlin code or via an explicit return.
+
+The analyzer has a callback method to let us know when this is happening. We can override that callback to remember that the value escapes, and if so, ignore the missing commit:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+var foundCommit = false
+var escapes = false
+val visitor = object : DataFlowAnalyzer(setOf(node)) {
+    override fun returns(expression: UReturnExpression) {
+        escapes = true
+    }
+
+    override fun argument(call: UCallExpression, reference: UElement) {
+        super.argument(call, reference)
+    }
+
+    override fun field(field: UElement) {
+        super.field(field)
+    }
+}
+node.getParentOfType(UMethod::class.java)?.accept(visitor)
+if (!escapes && !foundCommit) {
+    context.report(Incident(...))
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Parameters
+
+Another way our transaction can “escape” out of the method such that we
+no longer know for certain whether it gets committed is via a method
+call.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun test) {
+     val transaction = getFragmentManager().beginTransaction()
+    process(transaction)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here, it's possible that the `process` method will proceed to actually
+commit the transaction.
+
+If we have source, we could resolve the call and take a look at the
+method implementation (see the “Non Local Analysis” section below), but
+in the general case, if a value escapes, we'll want to do something similar to a returned value. The analyzer has a callback for this, `argument`, which is invoked whenever our tracked value is passed into a method as an argument. The callback gives us both the argument and the call in case we want to handle conditional logic based on the specific method call.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+var escapes = false
+val visitor = object : DataFlowAnalyzer(setOf(node)) {
+    ...
+    override fun argument(call: UCallExpression, reference: UElement) {
+        escapes = true
+    }
+    ...
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(By default, the analyzer will ignore calls that look like logging calls since those are probably safe and not true escapes; you can
+customize this by overriding `ignoreArgument()`.)
+
+### Fields
+
+Finally, a value may escape a local method context if it gets stored
+into a field:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun initialize() {
+    this.transaction = createTransaction()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As with returns and method calls, the analyzer has a callback to make
+it easy to handle when this is the case:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+var escapes = false
+val visitor = object : DataFlowAnalyzer(setOf(node)) {
+    ...
+    override fun field(field: UElement) {
+        escapes = true
+    }
+    ...
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you can see, it's passing in the field that is being stored to, in
+case you want to perform additional analysis to track field values; see
+the next section.
+
+## Non Local Analysis
+
+In the above examples, if we found that the value escaped via a return
+or method call or storage in a field, we simply gave up. In some cases
+we can do better than that.
+
+* If the field we stored it into is a private field, we can visit
+  the surrounding class, and check each reference to the field. If we
+  can see that the field never escapes the class, we can perform the
+  same analysis (using the data flow analyzer!) on each method where
+  it's referenced.
+
+* Similarly, if the method which returns the value is private, we can
+  visit the surrounding class and see how the method is invoked, and
+  track the value returned from it in each usage.
+
+* Finally, if the value escapes as an argument to a call, we can
+  resolve that call, and if it's to a method we have source for (which
+  doesn't have to be in the same class, as long as it's in the same
+  module), we can perform the analysis in that method as well, even
+  reusing the same flow analyzer!
+
+Complications: - storing in a field, returning, intermediate variables, self-referencing methods, scoping functions,
+
+## Examples
+
+Here are some existing usages of the data flow analyzer in lint's
+built-in rules.
+
+### Simple Example
+
+For WorkManager, ensure that newly created work tasks eventually
+get enqueued:
+
+[Source](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WorkManagerDetector.kt)
+[Test](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WorkManagerDetectorTest.kt)
+
+### Complex Example
+
+For the Slices API, apply a number of checks on chained calls constructing slices, checking that you only specify a single timestamp, that you don't mix icons and actions, etc etc.
+
+[Source](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SliceDetector.kt)
+[Test](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SliceDetectorTest.kt)
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

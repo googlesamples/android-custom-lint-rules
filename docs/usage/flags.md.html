@@ -1,0 +1,249 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Lint Command Lint Flags
+
+Usage: `lint` *flags*
+
+When using lint from within Gradle, see the [Lint Gradle Plugin
+DSL](agp-dsl.md.html) options instead.
+
+## General
+
+`--help`
+: This message.
+
+`--help` *topic*
+: Help on the given topic, such as “suppress”.
+
+`--list`
+: List the available issue id's and exit.
+
+`--version`
+: Output version information and exit.
+
+`--exitcode`
+: Set the exit code to 1 if errors are found.
+
+`--show`
+: List available issues along with full explanations.
+
+`--show` *ids*
+: Show full explanations for the given list of issue id's.
+
+`--generate-docs`
+: Generates documentation for all the lint checks. This flag cannot be
+  combined with other lint flags, and it has its own sub-flags. Invoke
+  on its own to see what they are.
+
+`--fatalOnly`
+: Only check for fatal severity issues
+
+`--apply-suggestions`
+: Apply suggestions to the source code (for safe fixes)
+
+`--abort-if-suggestions-applied`
+: Set the exit code to an error if any fixes are applied
+
+*directories*
+: You can also pass in directories for files to be analyzed. This
+  was common many years ago when project metadata tended to be stored
+  in simple `.classpath` files from Eclipse; these days, you typically
+  will pass it a `--lint-model` or `--project` description instead.
+
+## Enabled Checks
+
+`--disable` *list*
+: Disable the list of categories or specific issue id's. The list
+  should be a comma-separated list of issue id's or categories.
+
+`--enable` *list*
+: Enable the specific list of issues. This checks all the default
+  issues plus the specifically enabled issues. The list should be a
+  comma-separated list of issue id's or categories.
+
+`--check` *list*
+: Only check the specific list of issues. This will disable everything
+  and re-enable the given list of issues. The list should be a
+  comma-separated list of issue id's or categories.
+
+`--fatal` *list*
+: Sets the default severity of the given issue to fatal
+
+`--error` *list*
+: Sets the default severity of the given issue to error
+
+`--warning` *list*
+: Sets the default severity of the given issue to warning
+
+`--info` *list*
+: Sets the default severity of the given issue to info
+
+`-w,` --nowarn
+: Only check for errors (ignore warnings)
+
+`-Wall`
+: Check all warnings, including those off by default
+
+`-Werror`
+: Treat all warnings as errors
+
+`--config` *filename*
+: Use the given configuration file to determine whether issues are
+  enabled or disabled. If a project contains a lint.xml file, then
+  this config file will be used as a fallback.
+
+`--override-config` *filename*
+: Like --config, but instead of being a fallback, this configuration
+  overrides any local configuration files
+
+`--baseline`
+: Use (or create) the given baseline file to filter out known issues.
+
+`--update-baseline`
+: Updates the baselines even if they already exist
+
+`--remove-fixed`
+: Rewrite the baseline files to remove any issues that have been
+  fixed
+
+`--allow-suppress`
+: Whether to allow suppressing issues that have been explicitly
+  registered as not suppressible.
+
+`--restrict-suppress`
+: Opposite of --allow-suppress: do not allow suppressing restricted
+  issues
+
+## Output Options
+
+`--quiet`
+: Don't show progress.
+
+`--stacktrace`
+: Print full stacktrace for internal errors.
+
+`--fullpath`
+: Use full paths in the error output.
+
+`--showall`
+: Do not truncate long messages, lists of alternate locations, etc.
+
+`--nolines`
+: Do not include the source file lines with errors in the output. By
+  default, the error output includes snippets of source code on the
+  line containing the error, but this flag turns it off.
+
+`--html` *filename*
+: Create an HTML report instead. If the filename is a directory (or a
+  new filename without an extension), lint will create a separate
+  report for each scanned project.
+
+`--url` filepath=url
+: Add links to HTML report, replacing local path prefixes with url
+  prefix. The mapping can be a comma-separated list of path prefixes
+  to corresponding URL prefixes, such as
+  C:\temp\Proj1=http://buildserver/sources/temp/Proj1.  To turn off
+  linking to files, use --url none
+
+`--xml` *filename*
+: Create an XML report instead.
+
+`--sarif` *filename*
+: Create a SARIF report instead.
+
+`--text` *filename*
+: Write a text report to the given file. If the filename is just
+  `stdout` (short for standard out), the report is written to the
+  console.
+
+## Project Options
+
+`--resources` *dir*
+: Add the given folder (or path) as a resource directory for the
+  project. Only valid when running lint on a single project.
+
+`--sources` *dir*
+: Add the given folder (or path) as a source directory for the
+  project. Only valid when running lint on a single project.
+
+`--classpath` *dir*
+: Add the given folder (or jar file, or path) as a class directory for
+  the project. Only valid when running lint on a single project.
+
+`--libraries` *dir*
+: Add the given folder (or jar file, or path) as a class library for
+  the project. Only valid when running lint on a single project.
+
+`--compile-sdk-version` *version*
+: Use the given compileSdkVersion to pick an SDK target to resolve
+  Android API call to
+
+`--sdk-home` *dir*
+: Use the given SDK instead of attempting to find it relative to the
+  lint installation or via $ANDROID_SDK_ROOT
+
+`--jdk-home` *dir*
+: Use the given JDK instead of attempting to find it via $JAVA_HOME or
+  java.home
+
+`--java-language-level` *level*
+: Use the given version of the Java programming language
+
+`--kotlin-language-level` *level*
+: Use the given version of the Kotlin programming language
+
+## Advanced Options (for build system integration)
+
+`--project` *file*
+: Use the given project layout descriptor file to describe the set of
+  available sources, resources and libraries. Used to drive lint with
+  build systems not natively integrated with lint.
+
+`--lint-model` *path*
+: Alternative to --project which defines the project layout
+
+`--variant` *name*
+: The name of the variant from the lint model to use for analysis
+
+`--lint-rule-jars` *path*
+: One or more .jar files to load additional lint checks from
+
+`--analyze-only`
+: Perform only analysis, not reporting, of the given lint model
+
+`--report-only`
+: Perform only reporting of previous analysis results
+
+`--path-variables` *variables*
+: Path variables to use in internal persistence files to make lint
+  results cacheable. Use a semi-colon separated list of name=path
+  pairs.
+
+`--describe-suggestions` *file*
+: Describes all the quickfixes in an XML file expressed as document
+  edits -- insert, replace, delete
+
+`--stacktrace`
+: Dump exceptions from detectors to the console
+
+## Exit Status
+
+`0`
+: Success.
+
+`1`
+: Lint errors detected.
+
+`2`
+: Lint usage.
+
+`3`
+: Cannot clobber existing file.
+
+`4`
+: Lint help.
+
+`5`
+: Invalid command-line argument.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
