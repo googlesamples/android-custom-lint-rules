@@ -25,11 +25,19 @@ lint check authors, see the API Guide.
   `TrustAllX509TrustManager`       | Insecure TLS/SSL trust manager
   `UnspecifiedImmutableFlag`       | Missing `PendingIntent` mutability flag
   `WatchFaceEditor`                | Watch face editor must use launchMode=“standard”
+  `WebViewClientOnReceivedSslError`| Proceeds with the HTTPS connection despite SSL errors
 
 * Lint checks now include information for reported incidents where the
   lint check came from, such as which library artifact provided it.
   This should make it easier to request enhancements or file bugs
   around false positives or false negatives.
+
+* The Gradle plugin now maps the `lint` task to the default variant's
+  lint task instead of running it across all variants and accumulating
+  results. This is much faster, is usually what you want, and now the
+  target name will not change based on whether the project has product
+  flavors, so you can start just running `./gradlew:app:lint` instead
+  of `./gradlew :app:lintDebug` or `:app:lintProDebug` etc.
 
 * Lint “partial analysis” mode is now integrated in lint. It is
   enabled by default, but you can disable it by modifying

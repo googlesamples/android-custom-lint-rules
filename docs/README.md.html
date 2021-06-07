@@ -17,12 +17,15 @@ Available documentation:
 * Documents for users of lint, in the `usage` folder:
   - [Complete Book](user-guide.md.html), containing all of the below
     documents as chapters, suitable for offline reading
-  - [Issue documentation](checks/index.md.html) which lists all the
-    available checks and provides documentation for each one.
+  - [Issue documentation](https://googlesamples.github.io/android-custom-lint-rules/checks/index.md.html)
+    which lists all the available checks and provides documentation
+    for each one.
   - [Performance Tuning Tips](usage/performance-tuning.md.html)
   - [How to suppress incidents](usage/suppressing.md.html)
   - [How to use baselines](usage/baselines.md.html)
   - [How to use `lint.xml` files](usage/lintxml.md.html)
+  - [Gradle plugin DSL](usage/agp-dsl.md.html)
+  - [Lint command line](usage/flags.md.html)
   - [Environment variables and properties](usage/variables.md.html)
 * Documents for authors of additional lint checks, in the
   `api-guide` folder:
@@ -30,6 +33,7 @@ Available documentation:
     documents as chapters, suitable for offline reading
   - [Basics](api-guide/basics.md.html)
   - [A Sample Lint Check](api-guide/example.md.html)
+  - [Analyzing data flow](api-guide/dataflow-analyzer.md.html)
   - [Publishing a Lint check](api-guide/publishing.md.html)
   - [Unit Testing](api-guide/unit-testing.md.html)
   - [Adding Quick Fixes](api-guide/quickfixes.md.html)
@@ -44,7 +48,11 @@ Available documentation:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Documentation History:
-* May 2021: Adding documentation for individual lint issues
+* June 2021: Added documentation for the
+  [dataflow analyzer](api-guide/dataflow-analyzer.md.html),
+  [Lint Gradle DSL](usage/agp-dsl.md.html) and
+  [command line flags](usage/flags.md.html).
+* May 2021: Added documentation for individual lint issues
 * March 2021: Initial version
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
