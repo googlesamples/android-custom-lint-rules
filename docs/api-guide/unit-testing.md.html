@@ -384,6 +384,33 @@ this to test some additional scenarios (for example, in a multi- module
 project it will only provide the binaries, not the sources, for
 upstream modules.)
 
+## Test Modes
+
+"Describing” your source inputs using `TestFile` objects like this
+instead of just checking in your test files as real `.kt` and `.java`
+has a number of advantages:
+
+* It's really easy to see what a test is doing; all the test files are
+  placed right next to each other, with full syntax highlighting if you
+  open the test cases in IntelliJ; example:
+
+  ![Figure [screen]: Nested syntax highlighting](nested-test-files.png)
+
+* You can test handling broken sources (which is relevant when lint is
+  running on the fly inside the IDE editor).
+
+* You can test running in single-file mode, which is how lint is run
+  on the fly in the editor.
+
+* You can create test files programmatically if you want to cover
+  a number of repetitive scenarios
+
+* Finally, but most importantly, with the descriptors of your test
+  scenarios, lint can re-run your tests under a number of different
+  scenarios, including modifying your source files and project layout.
+  This concept is documented in more detail in the [test
+  modes](test-modes.md.html) chapter.
+
 ## My Detector Isn't Invoked From a Test!
 
 One common question we hear is
