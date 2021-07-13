@@ -1,0 +1,444 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Test Modes
+
+Lint's unit testing machinery has special support for “test modes”,
+where it repeats a unit test under different conditions and makes sure
+the test continues to pass with the same test results -- the same
+warnings in the same test files.
+
+There are a number of built-in test modes:
+
+* Test modes which makes small tweaks to the source files which
+  should be compatible, such as
+  * Inserting unnecessary parentheses
+  * Replacing imported symbols with fully qualified names
+  * Replacing imported symbols with Kotlin import aliases
+  * Replacing types with typealiases
+  * Reordering Kotlin named arguments
+  * Replacing simple functions with Kotlin expression bodies
+  * etc
+* A test mode which changes that detectors are correctly handling
+  Kotlin literal expressions by running them both with and without
+  the upcoming UiInjectionHost mode which will change the
+  representation of strings in an upcoming Kotlin version
+* A partial analysis test mode which runs the tests in “partial
+  analysis” mode; two phases, analysis and reporting, with
+  minSdkVersion set to 1 during analysis and set to the true test
+  value during reporting etc.
+* Bytecode Only: Any test files that specify both source and bytecode
+  will only use the bytecode
+* Source Only: Any test files that specify both source and bytecode
+  will only use the source code
+
+These are built-in test modes which will be applied to all detector
+tests, but you can opt out of any test modes by invoking the
+`skipTestModes` DSL method, as described below.
+
+You can also add in your own test modes. For example, lint adds its own
+internal test mode for making sure the built-in annotation checks works
+with Android platform annotations in the following test mode:
+
+[](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidPlatformAnnotationsTestMode.kt)
+
+## How to debug
+
+Let's say you have a test failure in a particular test mode, such
+as `TestMode.PARENTHESIZED` which inserts unnecessary parentheses
+into the source code to make sure detectors are properly skipping
+through `UParenthesizedExpression` nodes.
+
+If you just run this under the debugger, lint will run through
+all the test modes as usual, which means you'll need to skip
+through a lot of intermediate breakpoint hits.
+
+For these scenarios, it's helpful to limit the test run to **only** the
+target test mode. To do this, go and specify that specific test mode as
+part of the run setup by adding the following method declaration into
+your detector class:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+override fun lint(): TestLintTask {
+    return super.lint().testModes(TestMode.PARENTHESIZED)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now when you run your test, it will run *only* this test mode, so you
+can set breakpoints and start debugging through the scenario without
+having to figure out which mode you're currently being invoked in.
+
+!!! Warning
+   Don't forget to remove that override when you're done!
+
+## Handling Intentional Failures
+
+There are cases where your lint check is doing something very
+particular related to the changes made by the test mode which means
+that the test mode doesn't really apply. For example, there is a test
+mode which adds unnecessary parentheses, to make sure that the detector
+is properly handling the case where there are intermediate parenthesis
+nodes in the AST. Normally, every lint check should behave the same
+whether or not optional parentheses are present. But, if the lint check
+you are writing is actually parenthesis specific, such as suggesting
+removal of optional parentheses, then obviously in that case you don't
+want to apply this test mode.
+
+To do this, there's a special test DSL method you can add,
+`skipTestModes`. Adding a comment for why that particular mode is
+skipped is useful as well.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+lint().files(...)
+    .allowCompilationErrors()
+    // When running multiple passes of lint each pass will warn
+    // about the obsolete lint checks; that's fine
+    .skipTestModes(TestMode.PARTIAL)
+    .run()
+    .expectClean()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Source-Modifying Test Modes
+
+The most powerful test modes are those that make some deliberate
+transformations to your source code, to test variations of the code
+patterns that may appear in the wild. Examples of this include having
+optional parentheses, or fully qualified names.
+
+Lint will make these transformations, then run your tests on the
+modified sources, and make sure the results are the same -- except for
+the part of the output which shows the relevant source code, since that
+part is expected to differ due to the modifications.
+
+When lint finds a failure, it will abort with a diff that includes not
+just the different error output between the default mode and the source
+modifying mode, but the source files as well; that makes it easier to
+spot what the difference is.
+
+In the following screenshot for example we've run a failing test inside
+IntelliJ, and have then clicked on the Show Difference link in the test
+output window (Ctrl+D or Cmd-D) which shows the test failure diff
+nicely:
+
+![Figure [fqn]: Screenshot of test failure](fully-qualified-error.png)
+
+This is a test mode which converts all symbols to fully qualified
+names; in addition to the labeled output at the top we can see the
+diffs in the test case files below the error output diff. The test
+files include line numbers to help make it easy to correlate extra or
+missing warnings with their line numbers to the changed source code.
+
+### Fully Qualified Names
+
+The `TestMode.FULLY_QUALIFIED` test mode will rewrite the source files
+such that all symbols that it can resolve are replaced with fully
+qualified names.
+
+For example, this mode will convert the following code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+import android.widget.RemoteViews
+
+fun test(packageName: String, other: Any) {
+    val rv = RemoteViews(packageName, R.layout.test)
+    val ov = other as RemoteViews
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+import android.widget.RemoteViews
+
+fun test(packageName: String, other: Any) {
+    val rv = android.widget.RemoteViews(packageName, R.layout.test)
+    val ov = other as android.widget.RemoteViews
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This makes sure that your detector handles not only the case where a
+symbol appears in its normal imported state, but also when it is fully
+qualified in the code, perhaps because there is a different competing
+class of the same name.
+
+This will typically catch cases where the code is incorrectly just
+comparing the identifier at the call node instead of the fully
+qualified name.
+
+For example, one detector's tests failed in this mode because
+it was looking to identify references to an `EnumSet`,
+and the code looked like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+private fun checkEnumSet(node: UCallExpression) {
+    val receiver = node.receiver
+    if (receiver is USimpleNameReferenceExpression &&
+        receiver.identifier == "EnumSet"
+    ) {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+which will work for code such as `EnumSet.of()` but not
+`java.util.EnumSet.of()`.
+
+Instead, use something like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+private fun checkEnumSet(node: UCallExpression) {
+    val targetClass = node.resolve()?.containingClass?.qualifiedName
+        ?: return
+    if (targetClass == "java.util.EnumSet") {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As with all the source transforming test modes, there are cases where
+it doesn't apply. For example, lint had a built-in check for camera
+EXIF metadata, encouraging you to import the androidx version of the
+library instead of using the built-in version. If it sees you using the
+platform one it will normally encourage you to import the androidx one
+instead:
+
+```
+src/test/pkg/ExifUsage.java:9: Warning: Avoid using android.media.ExifInterface; use androidx.media.ExifInterface instead [ExifInterface]
+        android.media.ExifInterface exif = new android.media.ExifInterface(path);
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+However, if you explicitly (via fully qualified imports) reference the
+platform one, in that case the lint check does not issue any warnings
+since it figures you're deliberately trying to use the older version.
+And in this test mode, the results between the two obviously differ,
+and that's fine; as usual we'll deliberately turn off the check in this
+detector:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java @Override
+protected TestLintTask lint() {
+    // This lint check deliberately treats fully qualified imports
+    // differently (they are interpreted as a deliberate usage of
+    // the discouraged API) so the fully qualified equivalence test
+    // does not apply:
+    return super.lint().skipTestModes(TestMode.FULLY_QUALIFIED);
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!!! Tip
+   In Kotlin code, you may have code that checks to see if a node is a
+   `UCallExpression`. But note that if a call is fully qualified, the
+   node will be a `UQualifiedReferenceExpression` instead, and you'll
+   need to look at its selector. So watch out for code which does
+   something like `node as? UCallExpression`.
+
+### Import Aliasing
+
+In Kotlin, you can create an import alias, which lets you refer to
+the imported class using an entirely different name.
+
+This test mode will create import aliases for all the import statements
+in the file and will replace all the references to the import aliases
+instead. This makes sure that the detector handles the equivalent Kotlin
+code.
+
+For example, this mode will convert the following code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+import android.widget.RemoteViews
+
+fun test(packageName: String, other: Any) {
+    val rv = RemoteViews(packageName, R.layout.test)
+    val ov = other as RemoteViews
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+import android.widget.RemoteViews as IMPORT_ALIAS_1_REMOTEVIEWS
+
+fun test(packageName: String, other: Any) {
+    val rv = IMPORT_ALIAS_1_REMOTEVIEWS(packageName, R.layout.test)
+    val ov = other as IMPORT_ALIAS_1_REMOTEVIEWS
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Type Aliasing
+
+Kotlin also lets you alias types using the `typealias` keyword.
+This test mode is similar to import aliasing, but applied to all
+types. In addition to the different AST representations of import
+aliases and type aliases, they apply to different things.
+
+For example, if we import TreeMap, and we have a code reference such as
+`TreeMap<String>`, then the import alias will alias the tree map class
+itself, and the reference would look like `IMPORT_ALIAS_1<String>`,
+whereas for type aliases, the alias would be for the whole
+`TreeMap<String>`, and the code reference would be `TYPE_ALIAS_1`.
+
+Also, import aliases will only apply to the explicitly imported
+classes, whereas type aliases will apply to all types, including Int,
+Boolean, List<String>, etc.
+
+For example, this mode will convert the following code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+import android.widget.RemoteViews
+
+fun test(packageName: String, other: Any) {
+    val rv = RemoteViews(packageName, R.layout.test)
+    val ov = other as RemoteViews
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+import android.widget.RemoteViews
+
+fun test(packageName: TYPE_ALIAS_1, other: TYPE_ALIAS_2) {
+    val rv = RemoteViews(packageName, R.layout.test)
+    val ov = other as TYPE_ALIAS_3
+}
+typealias TYPE_ALIAS_1 = String
+typealias TYPE_ALIAS_2 = Any
+typealias TYPE_ALIAS_3 = RemoteViews
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Parenthesis Mode
+
+Kotlin and Java code is allowed to contain extra clarifying
+parentheses. Sometimes these are leftovers from earlier more
+complicated expressions where when the expression was simplified the
+parentheses were left in place.
+
+In UAST, parentheses are represented in the AST (via a
+`UParenthesizedExpression` node). While this is good since it allows
+you to for example write lint checks which identifies unnecessary
+parentheses, it introduces a complication: you can't just look at a
+node's parent to for example see if it's a `UQualifiedExpression`; you
+have to be prepared to look “through” it such that if it's a
+`UParenthesizedExpression` node, you instead look at its parent in
+turn. (And programmers can of course put as (((many unnecessary)))
+parentheses as they want, so you may have to skip through repeated
+nodes.)
+
+Note also that this isn't just for looking upwards or outwards at
+parents. Let's say you're looking at a call and you want to see if the
+last argument is a literal expression such as a number or a String. You
+*can't* just use `if (call.valueArguments.lastOrNull() is
+ULiteralExpression)`, because that first argument could be a
+`UParenthesizedExpression`, as in `call(1, true, ("hello")), so you'd
+need to look inside the parentheses.
+
+UAST comes with two functions to help you handle this correctly:
+
+* Whenever you look at the parent, make sure you surround the call with
+  `skipParenthesizedExprUp(UExpression)`.
+
+* If you are looking at a child node, use the method
+  `skipParenthesizedExprDown`, an extension method on UExpression (and
+  from Java import it from UastUtils).
+
+To help catch these bugs, lint has a special test mode where it inserts
+various redundant parentheses in your test code, and then makes sure
+that the same errors are reported. The error output will of course
+potentially vary slightly (since the source code snippets shown will
+contain extra parentheses), but the test will ignore these differences
+and only fail if it sees new errors reported or expected errors not
+reported.
+
+In the unlikely event that your lint check is actually doing something
+parenthesis specific, you can turn off this test mode using
+`.skipTestModes(TestMode.PARENTHESIZED)`.
+
+For example, this mode will convert the following code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+(t as? String)?.plus("other")?.get(0)?.dec()?.inc()
+"foo".chars().allMatch { it.dec() > 0 }.toString()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+(((((t as? String))?.plus("other"))?.get(0))?.dec())?.inc()
+(("foo".chars()).allMatch { (it.dec() > 0) }).toString()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default the parenthesis mode limits itself to "likely" unnecessary
+parentheses; in particular, it won't put extra parenthesis around
+simple literals, like (1) or (false). You can explicitly construct
+`ParenthesizedTestMode(includeUnlikely=true)` if you want additional
+parentheses.
+
+### Argument Reordering
+
+In Kotlin, with named parameters you're allowed to pass in the
+arguments in any order. To handle this correctly, detectors should
+never just line up parameters and arguments and match them by index;
+instead, there's a `computeArgumentMapping` method on `JavaEvaluator`
+which returns a map from argument to parameter.
+
+The argument-reordering test mode will locate all calls to Kotlin
+methods, and it will then first add argument names to any parameter not
+already specifying a name, and then it will shift all the arguments
+around, then repeat the test. This will catch any detectors which were
+incorrectly making assumptions about argument order.
+
+(Note that the test mode will not touch methods that have vararg
+parameters for now.)
+
+For example, this mode will convert the following code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+test("test", 5, true)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+test(n = 5, z = true, s = "test")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Body Removal
+
+In Kotlin, you can replace
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+fun test(): List<String> {
+    return if (true) listOf("hello") else emptyList()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+with
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+fun test(): List<String> = if (true) listOf("hello") else emptyList()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note that these two ASTs do not look the same; we'll only have an
+`UReturnExpression` node in the first case. Therefore, you have to be
+careful if your detector is just visiting `UReturnExpression`s in order
+to find exit points.
+
+The body removal test mode will identify all scenarios where it can
+replace a simple function declaration with an expression body, and
+will make sure that the test results are the same, to make sure detectors are handling both AST variations.
+
+It also does one more thing: it toggled optional braces from if
+expressions -- converting
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (x < y) { test(x+1) } else test(x+2)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (x < y) test(x+1) else { test(x+2) }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(Here it has removed the braces around the if-then body since they are
+optional, and it has added braces around the if-else body since it did
+not have optional braces.)
+
+The purpose of these tweaks are similar to the expression body change:
+making sure that detectors are properly handling the presence of
+absence of `UBlockExpression` around the child nodes.
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -4,6 +4,36 @@ This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
+**7.1**
+
+* New built-in lint checks:
+
+  Issue ID                         | Summary
+  ---------------------------------|-----------------------------------
+  `FileEndsWithExt`                | Flags suspicious usages of File.endsWith(extension)
+
+* Updated lint checks:
+
+  Issue ID             | Summary
+  ---------------------|--------------------------
+  `MissingTranslation` | Now checks for missing translations of plurals
+  `WrongConstant`      | Now has quickfixes to replace with constants
+
+* The `com.android.application` Gradle plugin now sets
+  `checkDependencies` to true by default. This means that when lint
+  runs on an app module, the report will include not only the issues
+  found in that module but also the issues found in its library
+  dependencies. This means that you can run `./gradlew :app:lint` and
+  see a single report instead of having to navigate to the individual
+  reports for each of the included libraries. It also makes the
+  analysis more accurate; for example, unused resources only make
+  sense with checkDependencies on, such that lint can consider
+  resource declarations and usages across module boundaries.
+
+  With this change, if your project consists of a number of libraries
+  and a consuming app module, consider running just
+  `./gradle :app:lint` instead of `./gradlew lint`.
+
 **7.0**
 
 * New built-in lint checks:
@@ -36,7 +66,7 @@ lint check authors, see the API Guide.
   lint task instead of running it across all variants and accumulating
   results. This is much faster, is usually what you want, and now the
   target name will not change based on whether the project has product
-  flavors, so you can start just running `./gradlew:app:lint` instead
+  flavors, so you can start just running `./gradlew :app:lint` instead
   of `./gradlew :app:lintDebug` or `:app:lintProDebug` etc.
 
 * Lint “partial analysis” mode is now integrated in lint. It is

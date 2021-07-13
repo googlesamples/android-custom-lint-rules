@@ -89,39 +89,39 @@ HTML version of this isn't properly handling empty elements,
 so if you're going to copy/paste go to the source file.)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<?xml version="1.0" encoding="UTF-8"?>
-<lint lintJars="../checks/local.jar;../checks/custom.jar">
-    <!-- The special id "all" matches all issues but is only consulted
-         if there is no specific match -->
-    <issue id="all" severity="ignore" />
-    <!-- Possible severities: ignore, information, warning, error, fatal -->
-    <issue id="ValidActionsXml" severity="error" />
-    <issue id="ObsoleteLayoutParam">
-        <!-- The <ignore> tag has two possible attributes: path and regexp (see below) -->
-        <ignore path="res/layout-xlarge/activation.xml" />
-        <!-- You can use globbing patterns in the path strings -->
-        <ignore path="**/layout-x*/onclick.xml" />
-        <ignore path="res/**/activation.xml" />
-    </issue>
-    <issue id="NewApi">
-        <!-- You can also ignore via a regular expression, this is not only
-            matched against the path but also the error message -->
-        <ignore regexp="st.*gs" />
-    </issue>
-    <!-- The "in" attribute lets you specify that the element only
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;lint lintJars="../checks/local.jar;../checks/custom.jar"&gt;
+    &lt;!-- The special id "all" matches all issues but is only consulted
+         if there is no specific match --&gt;
+    &lt;issue id="all" severity="ignore" /&gt;
+    &lt;!-- Possible severities: ignore, information, warning, error, fatal --&gt;
+    &lt;issue id="ValidActionsXml" severity="error" /&gt;
+    &lt;issue id="ObsoleteLayoutParam"&gt;
+        &lt;!-- The &lt;ignore&gt; tag has two possible attributes: path and regexp (see below) --&gt;
+        &lt;ignore path="res/layout-xlarge/activation.xml" /&gt;
+        &lt;!-- You can use globbing patterns in the path strings --&gt;
+        &lt;ignore path="**/layout-x*/onclick.xml" /&gt;
+        &lt;ignore path="res/**/activation.xml" /&gt;
+    &lt;/issue&gt;
+    &lt;issue id="NewApi"&gt;
+        &lt;!-- You can also ignore via a regular expression, this is not only
+            matched against the path but also the error message --&gt;
+        &lt;ignore regexp="st.*gs" /&gt;
+    &lt;/issue&gt;
+    &lt;!-- The "in" attribute lets you specify that the element only
          applies in a particular tools, such as gradle, studio, etc; this
-         can be a comma separated list -->
-    <issue in="studio" id="NewerVersionAvailable" severity="error" />
-    <!-- You can also use ! to specify that it does not apply in a tool  -->
-    <issue in="!gradle" id="TrulyRandom" severity="error" />
-    <issue id="UnknownNullness">
-        <!-- For detectors that support it, you can also specify option values -->
-        <option name="ignore-deprecated" value="true" />
-    </issue>
-    <issue id="TooManyViews">
-        <option name="maxCount" value="20" />
-    </issue>
-</lint>
+         can be a comma separated list --&gt;
+    &lt;issue in="studio" id="NewerVersionAvailable" severity="error" /&gt;
+    &lt;!-- You can also use ! to specify that it does not apply in a tool  --&gt;
+    &lt;issue in="!gradle" id="TrulyRandom" severity="error" /&gt;
+    &lt;issue id="UnknownNullness"&gt;
+        &lt;!-- For detectors that support it, you can also specify option values --&gt;
+        &lt;option name="ignore-deprecated" value="true" /&gt;
+    &lt;/issue&gt;
+    &lt;issue id="TooManyViews"&gt;
+        &lt;option name="maxCount" value="20" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,87 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Combining AGP With Newer Lint
+
+Lint is integrated with the Android Gradle plugin; when you run lint
+from the command line or on your CI server, it will first build all the
+necessary artifacts, which involves running various optional Gradle
+plugins, and so on.
+
+Updating the Gradle plugin that you're using to build your project is
+not always possible:
+
+* For production apps you probably want to limit your builds to using
+  the stable version of AGP
+
+* For older projects not in active development that you're only
+  building to make small maintenance updates, updating the build files
+  may not be worth the effort.
+
+* You may be stuck on an older version temporarily because you're using
+  some third party Gradle plugin which is not yet compatible with the
+  latest Gradle or AGP versions.
+
+However, lint is in active development, with new checks being added,
+existing checks being enhanced and extended, and false positive and
+false negative bugs getting fixed. You'll almost always be better off
+running the latest version of lint, *including preview versions*.
+
+As of AGP 7.0, it's possible to use a newer version of lint in
+conjunction with AGP. The way this works is that you tell AGP which
+version of lint you want to run, and when you run the `lint` target, it
+will first build all the necessary artifacts using the current version
+of AGP and build scripts. Then it will invoke the newer version of
+lint, passing in a bunch of state for lints purposes, and the newer
+lint will then analyze the code and produce its report.
+
+## Configuring the Lint Version
+
+In `gradle.properties`, add a property declaration like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~properties
+android.experimental.lint.version = 7.1.0-beta01
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!!! Warning
+   This feature flag is experimental and will change once the flag is
+   promoted.
+
+That's all there is to it. Now running `./gradlew :app:lint` will build
+the codebase using your AGP version configured in `build.gradle`, such
+as 7.0.0, and then the lint analysis and reporting will use version
+7.1.0-beta01.
+
+!!! Note
+   This will only work with AGP 7.0.0-beta05 later. Note also that
+   while running a more recent version is supported, you cannot run an
+   older version of lint than AGP. This is usually not what you want
+   anyway.
+
+## Updating Lint
+
+Provided the `GradleDependency` issue is enabled, lint will check your
+`gradle.properties` file and warn you if there is a newer version of
+lint available than the one you're pointing to:
+
+```text
+gradle.properties:2: Warning: Newer version of lint available: 7.1.0-alpha04 [GradleDependency]
+android.experimental.lint.version = 7.0.0-rc01
+                                    ~~~~~~~~~~~~~
+0 errors, 1 warnings
+```
+
+There is also a quickfix in the IDE to perform this update.
+
+Normally, the `GradleDependency` warning will only suggest updating to
+a newer version that is a preview if the current dependency is a
+preview. However, for using the unbundled lint version, lint will
+always suggest using previews. If you for some reason want to limit
+yourself to stable versions, such as 8.0.0 while still building with
+7.0.0, you can suppress the warning like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~properties
+#noinspection GradleDependency
+android.experimental.lint.version=8.0.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

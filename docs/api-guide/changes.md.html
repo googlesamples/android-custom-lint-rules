@@ -5,6 +5,16 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**7.1**
+
+* Source-modifying test modes. Lint's testing library now runs your
+  unit tests through a number of additional paces: it will try
+  inserting unnecessary parentheses, it will try replacing all
+  imported symbols with fully qualified names, it will try adding
+  argument names and reordering arguments to Kotlin calls, etc, and
+  making sure the same results are reported. More information about
+  this is available in [](test-modes.md.html).
+
 **7.0**
 
 * The API level has bumped to 10.
