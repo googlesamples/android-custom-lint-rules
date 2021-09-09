@@ -1006,6 +1006,72 @@ PSI element to try to convert it to UAST if source is available.
    local stubs. See the [unit testing](unit-testing.md.html) chapter
    for more details about this.
 
+### Implicit Calls
+
+Kotlin supports operator overloading for a number of built-in
+operators. For example, if you have the following code,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fun test(n1: BigDecimal, n2: BigDecimal) {
+    // Here, this is really an infix call to BigDecimal#compareTo
+    if (n1 < n2) {
+        ...
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+the `<` here is actually a function call (which you can verify by
+invoking Go To Declaration over the symbol in the IDE). This is not
+something that is built specially for the `BigDecimal` class; this
+works on any of your Java classes as well, and Kotlin if you put the
+`operator` modifier as part of the function declaration.
+
+However, note that in the abstract syntax tree, this is **not**
+represented as a `UCallExpression`; here we'll have a
+`UBinaryExpression` with left operand `n1`, right operand `n2` and
+operator `UastBinaryOperator.LESS`. This means that if your lint check
+is specifically looking at `compareTo` calls, you can't just visit
+every `UCallExpression`; you *also* have to visit every
+`UBinaryExpression`, and check whether it's invoking a `compareTo`
+method.
+
+This is not just specific to binary operators; it also applies to unary
+operators (such as `!`, `-`, `++`, and so on), as well as even array
+accesses; an array access can map to a `get` call or a `set` call
+depending on how it's used.
+
+Lint has some special support to help handle these situations.
+
+First, the built-in support for call callbacks (where you register an
+interest in call names by returning names from the
+`getApplicableMethodNames` and then responding in the `visitMethodCall`
+callback) already handles this automatically. If you register for
+example an interest in method calls to `compareTo`, it will invoke your
+callback for the binary operator scenario shown above as well, passing
+you a call which has the right value arguments, method name, and so on.
+
+The way this works is that lint can create a ”wrapper“ class which
+presents the underlying `UBinaryExpression` (or
+`UArrayAccessExpression` and so on) as a `UCallExpression`. In the case
+of a binary operator, the value parameter list will be the left and
+right operands. This means that your code can just process this as if
+the code had written as an explicit call instead of using the operator
+syntax. You can also directly look for this wrapper class,
+`UImplicitCallExpression`, which has an accessor method for looking up
+the original or underlying element. And you can construct these
+wrappers yourself, via `UBinaryExpression.asCall()`,
+`UUnaryExpression.asCall()`, and `UArrayAccessExpression.asCall()`.
+
+There is also a visitor you can use to visit call calls --
+`UastCallVisitor`, which will visit all calls, including those from
+array accesses and unary operators and binary operators.
+
+This support is particularly useful for array accesses, since unlike
+the operator expression, there is no `resolveOperator` method on
+`UArrayExpression`. There is an open request for that in the UAST issue
+tracker (KTIJ-18765), but for now, lint has a workaround to handle the
+resolve on its own.
+
 ### PSI
 
 PSI is short for ”Program Structure Interface“, and is IntelliJ's AST

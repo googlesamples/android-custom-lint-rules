@@ -1,0 +1,413 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Annotations
+
+Annotations allow API authors to express constraints that tools can
+enforce. There are many examples of these, along with existing lint
+checks:
+
+* `@VisibleForTesting`: this private API should only be accessed
+  from outside this package from unit tests
+* `@CheckResult`: anyone calling this method is expected to do
+  something with the return value
+* `@CallSuper`: anyone overriding this method must also invoke `super`
+* `@UiThread`: anyone calling this method must be calling from the UI thread
+* `@Size`: the size of the annotated array or collection must be
+    of a particular size
+* `@IntRange`: the annotated integer must have a value in the given range
+
+...and so on. Lint has built-in checks to enforce these, along with
+infrastructure to make them easy to write, and to share analysis such
+that improvements to one helps them all. This means that you can easily
+write your own annotations-based checks as well.
+
+!!! Tip
+   Note that the annotation support helps you write checks where you
+   check *usages* of annotated elements, not usages of the annotations
+   themselves. If you simply want to look at actual annotations,
+   override `getApplicableUastTypes` to return
+   `listOf(UAnnotation::class.java)`, and override `createUastHandler`
+   to return an `object : UElementHandler` which simply overrides
+   `visitAnnotation`.
+
+## Basics
+
+To create a basic annotation checker, there are two required steps:
+
+1. Register the fully qualified name (or names) of the annotation
+   classes you want to analyze, and
+2. Implement the `visitAnnotationUsage` callback for handling each
+   occurrence.
+
+Here's a basic example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+override fun applicableAnnotations(): List<String> {
+    return listOf("my.pkg.MyAnnotation")
+}
+
+override fun visitAnnotationUsage(
+    context: JavaContext,
+    element: UElement,
+    annotationInfo: AnnotationInfo,
+    usageInfo: AnnotationUsageInfo
+) {
+    val name = annotationInfo.qualifiedName.substringAfterLast('.')
+    val message = "`${usageInfo.type.name}` usage associated with " +
+                  "`@$name` on ${annotationInfo.origin}"
+    val location = context.getLocation(element)
+    context.report(TEST_ISSUE, element, location, message)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+All this simple detector does is flag any usage associated with the
+given annotation, including some information about the usage.
+
+If we for example have the following annotated API:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+annotation class MyAnnotation
+abstract class Book {
+    operator fun contains(@MyAnnotation word: String): Boolean = TODO()
+    fun length(): Int = TODO()
+    @MyAnnotation fun close() = TODO()
+}
+operator fun Book.get(@MyAnnotation index: Int): Int = TODO()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+...and we then run the above detector on the following test case:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+fun test(book: Book) {
+    val found = "lint" in book
+    val firstWord = book[0]
+    book.close()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+we get the following output:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/book.kt:14: Error: METHOD_CALL_PARAMETER usage associated with @MyAnnotation on PARAMETER
+    val found = "lint" in book
+                 ----
+src/book.kt:15: Error: METHOD_CALL_PARAMETER usage associated with @MyAnnotation on PARAMETER
+    val firstWord = book[0]
+                         -
+src/book.kt:16: Error: METHOD_CALL usage associated with @MyAnnotation on METHOD
+    book.close()
+         -------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the first case, the infix operator “in” will call `contains` under
+the hood, and here we've annotated the parameter, so lint visits the
+argument corresponding to that parameter (the literal string “lint”).
+
+The second case shows a similar situation where the array syntax will
+end up calling our extension method, `get()`.
+
+And the third case shows the most common scenario: a straight forward
+method call to an annotated method.
+
+In many cases, the above detector implementation is nearly all you have
+to do to enforce an annotation constraint. For example, in the
+`@CheckResult` detector, we want to make sure that anyone calling a
+method annotated with `@CheckResult` will not ignore the method return
+value. All the lint check has to do is register an interest in
+*`androidx.annotation.CheckResult`*, and lint will invoke
+`visitAnnotationUsage` for each method call to the annotated method.
+Then we just check the method call to make sure that its return value
+isn't ignored, e.g. that it's stored into a variable or passed into
+another method call.
+
+## Annotation Usage Types and isApplicableAnnotationUsage
+
+### Method Override
+
+In the detector above, we're including the “usage type” in the error
+message. The usage type tells you something about how the annotation is
+associated with the usage element -- and in the above, the first two
+cases have a usage type of “parameter” because the visited element
+corresponds to a parameter annotation, and the third one a method
+annotation.
+
+There are many other usage types. For example, if we add the following
+to the API:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+open class Paperback : Book() {
+    override fun close() { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+then the detector will emit the following incident since the new method
+overrides another method that was annotated:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/book.kt:14: Error: METHOD_OVERRIDE usage associated with @MyAnnotation on METHOD
+    override fun close() { }
+                 -----
+1 errors, 0 warnings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Overriding an annotated element is how the `@CallSuper` detector is
+implemented, which makes sure that any method which overrides a method
+annotated with `@CallSuper` is invoking `super` on the overridden
+method somewhere in the method body.
+
+### Method Return
+
+Here's another example, where we have annotated the return value
+with @MyAnnotation:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+open class Paperback : Book() {
+    fun getDefaultCaption(): String = TODO()
+    @MyAnnotation
+    fun getCaption(imageId: Int): String {
+        if (imageId == 5) {
+            return "Blah blah blah"
+        } else {
+            return getDefaultCaption()
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here, lint will flag the various exit points from the method
+associated with the annotation:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/book.kt:18: Error: METHOD_RETURN usage associated with @MyAnnotation on METHOD
+            return "Blah blah blah"
+                    --------------
+src/book.kt:20: Error: METHOD_RETURN usage associated with @MyAnnotation on METHOD
+            return getDefaultCaption()
+                   -------------------
+2 errors, 0 warnings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note also that this would have worked if the annotation had been
+inherited from a super method instead of being explicitly set here.
+
+Lint uses this mechanism for example for its resource type lint check
+which makes sure that if a method has been annotated with say
+`@DrawableRes`, that any return values are not of some incompatible
+esource type (such as `@StringRes`).
+
+### Handling Usage Types
+
+As you can see, your callback will be invoked for a wide variety of
+usage types, and sometimes, they don't apply to the scenario that your
+detector is interested in. Consider the `@CheckResult` detector again,
+which makes sure that any calls to a given method will look at the
+return value. From the “method override” section above, you can see
+that lint would *also* notify your detector for any method that is
+*overriding* (rather than calling) a method annotated with
+`@CheckResult`. We don't want to report those.
+
+There are two ways to handle this. The first one is to check whether
+the usage element is a `UMethod`, which it will be in the overriding
+case, and return early in that case.
+
+The recommended approach, which `CheckResultDetector` uses, is to
+override the `isApplicableAnnotationUsage` method:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+override fun isApplicableAnnotationUsage(type: AnnotationUsageType): Boolean {
+    return type != AnnotationUsageType.METHOD_OVERRIDE &&
+            super.isApplicableAnnotationUsage(type)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!!! Tip
+   Notice how we are also calling `super` here and combining the result
+   instead of just using a hardcoded list of expected usage types. This
+   is because, as discussed below, lint already filters out some usage
+   types by default in the super implementation.
+
+### Usage Types Filtered By Default
+
+The default implementation of `Detector.isApplicableAnnotationUsage`
+looks like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+open fun isApplicableAnnotationUsage(type: AnnotationUsageType): Boolean {
+    return type != AnnotationUsageType.BINARY &&
+           type != AnnotationUsageType.EQUALITY
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These usage types apply to cases where annotated elements are
+compared for equality or using other binary operators. Initially
+introducing this support led to a lot of noise and false positives;
+most of the existing lint checks do not want this, so they're opt-in.
+
+An example of a lint check which *does* enforce this is the
+`@HalfFloat` lint check. In Android, a
+[HalfFloat](https://developer.android.com/reference/androidx/annotation/
+ HalfFloat) is a representation of a floating point value (with less
+precision than a `float`) which is stored in a `short`, normally an
+integer primitive value. If you annotate a `short` with `@HalfFloat`,
+including in APIs, lint can help catch cases where you are making
+mistakes -- such as accidentally widening the value to an int, and so
+on. Here are some example error messages from lint's unit tests for the
+half float check:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/HalfFloatTest.java:23: Error: Expected a half float here, not a resource id [HalfFloat]
+        method1(getDimension1()); // ERROR
+                ---------------
+src/test/pkg/HalfFloatTest.java:43: Error: Half-float type in expression widened to int [HalfFloat]
+        int result3 = float1 + 1; // error: widening
+                      ------
+src/test/pkg/HalfFloatTest.java:50: Error: Half-float type in expression widened to int [HalfFloat]
+        Math.round(float1); // Error: should use Half.round
+                   ------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Scopes
+
+Many annotations apply not just to methods or fields but to classes and
+even packages, with the idea that the annotation applies to everything
+within the package.
+
+For example, if we have this annotated API:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+annotation class ThreadSafe
+annotation class NotThreadSafe
+
+@ThreadSafe
+abstract class Stack<T> {
+    abstract fun size(): Int
+    abstract fun push(item: T)
+    abstract fun pop(): String
+    @NotThreadSafe fun save() { }
+
+    @NotThreadSafe
+    abstract class FileStack<T> : Stack<T>() {
+        abstract override fun pop(): String
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+And the following test case:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun test(stack: Stack<String>, fileStack: Stack<String>) {
+    stack.push("Hello")
+    stack.pop()
+    fileStack.push("Hello")
+    fileStack.pop()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here, `stack.push` call on line 2 resolves to the API method on line 7.
+That method is not annotated, but it's inside a class that is annotated
+with `@ThreadSafe`. Similarly for the `pop()` call on line 3.
+
+The `fileStack.push` call on line 4 also resolves to the same method
+as the call on line 2 (even though the concrete type is a `FileStack`
+instead of a `Stack), so like on line 2, this call is taken to be
+thread safe.
+
+However, the `fileStack.pop` call on line 6 resolves to the API method
+on line 14. That method is not annotated, but it's inside a class
+annotated with `@NotThreadSafe`, which in turn is inside an outer class
+annotated with `@ThreadSafe`. The intent here is clearly that that
+method should be considered not thread safe.
+
+To help with scenarios like this, lint will provide *all* the
+annotations (well, all annotations that any lint checks have registered
+interest in via `getApplicableAnnotations`; it will not include
+annotations like `java.lang.SuppressWarnings` and so on unless a lint
+check asks for it).
+
+This is provided in the `AnnotationUsageInfo` passed to the
+`visitAnnotationUsage` parameters. The `annotations` list will include
+all relevant annotations, **in scope order**. That means that for the
+above `pop` call on line 5, it will point to first the annotations on
+the `pop` method (and here there are none), then the `@NotThreadSafe`
+annotation on the surrounding class, and then the `@ThreadSafe`
+annotation on the outer class, and then annotations on the file itself
+and the package.
+
+The `index` points to the annotation we're analyzing. If for example
+our detector had registered an interest in `@ThreadSafe`, it would be
+called for the second `pop` call as well, since it calls a method
+inside a `@ThreadSafe` annotation (on the outer class), but the `index`
+would be 1. The lint check can check all the annotations earlier than
+the one at the index to see if they "counteract" the annotation, which
+of course the `@NotThreadSafe` annotation does.
+
+Lint uses this mechanism for example for the `@CheckResult` annotation,
+since some APIs are annotated with `@CheckResult` for whole packages
+(as an API convention), and then there are explicit exceptions carved
+out using `@CanIgnoreReturnValue`. There is a method on the
+`AnnotationUsageInfo`, `anyCloser`, which makes this check easy:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (usageInfo.anyCloser { it.qualifiedName ==
+     "com.google.errorprone.annotations.CanIgnoreReturnValue" }) {
+    // There's a closer @CanIgnoreReturnValue which cancels the
+    // outer @CheckReturnValue annotation we're analyzing here
+    return
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!!! Tip
+   You only have to worry about this when there are different
+   annotations that interact with each other. If the same annotation is
+   found in multiple nested contexts, lint *will* include all the
+   annotations in the `AnnotationUsageInfo`, but it will not invoke
+   your callback for any outer occurrences; only the closest one. This
+   is usually what detectors expect: the innermost one "overrides" the
+   outer ones, so lint omits these to help avoid false positives where
+   a lint check author forgot to handle and test this scenario. A good
+   example of this situation is with the `@RequiresApi` annotation; a
+   class may be annotated as requiring a particular API level, but a
+   specific inner class or method within the class can have a more
+   specific `@RequiresApi` annotation, and we only want the detector to
+   be invoked for the innermost one. If for some reason your detector
+   *does need* to handle all of the repeated outer occurrences, note
+   that they're all there in the `annotations` list for the
+   `AnnotationUsageInfo` so you can look for them and handle them when
+   you are invoked for the innermost one.
+
+### Inherited Annotations
+
+As we saw in the method overrides section, lint will include
+annotations in the hierarchy: annotations specified not just on a
+specific method but super implementations and so on.
+
+This is normally what you want -- for example, if a method is annotated
+with `@CheckResult` (such as `String.trim()`, where it's important to
+understand that you're not changing the string in place, there's a new
+string returned so it's probably a mistake to not use it), you probably
+want any overriding implementations to have the same semantics.
+
+However, there are exceptions to this. For example,
+`@VisibleForTesting`. Perhaps a super class made a method public only
+for testing purposes, but you have a concrete subclass where you are
+deliberately supporting the operation, not just from tests. If
+annotations were always inherited, you would have to create some sort
+of annotation to "revert" the semantics, e.g.
+`@VisibleNotJustForTesting`, which would be ... anoying.
+
+Lint let's you choose what the semantics are for each annotation. For
+example, the lint check which enforces the `@VisibleForTesting` and
+`@RestrictTo` annotations handles it like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+override fun inheritAnnotation(annotation: String): Boolean {
+    // Require restriction annotations to be annotated everywhere
+    return false
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(Note that the API passes in the fully qualified name of the annotation
+in question so you can control this behavior individually for each
+annotation when your detector applies to multiple annotations.)
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

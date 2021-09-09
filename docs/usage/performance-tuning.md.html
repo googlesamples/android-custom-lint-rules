@@ -218,8 +218,10 @@ full ASTs with whitespace and comments etc). Explore bumping up the
 memory given to the Gradle daemon significantly to see if it helps
 bring down the overall analysis time.
 
-This is *especially* important if your build happens to run many lint
-jobs in parallel! I've seen various thread dumps from users asking
+This is *especially* important if you happen to run many lint jobs in
+parallel! If you follow the advice above (where you're running a single
+lint job with recursive dependencies on the app module) this is less
+likely to happen, but I've seen various thread dumps from users asking
 about performance where there was 16-20 concurrent separate lint jobs
 running in the Gradle daemon, and each one requires a lot of memory;
 these separate lint job threads are not sharing data.

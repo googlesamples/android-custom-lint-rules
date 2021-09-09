@@ -7,6 +7,17 @@ Guide.
 
 **7.1**
 
+* The default behaviour of ResourceXmlDetector will change.
+  It will skip res/raw folder and you have to override appliesTo method
+  if you want your Lint checks to run there.
+
+* The computation of checksums for binary test files (e.g. `compiled`
+  and `bytecode`) unfortunately had to change; the old mechamism was
+  not stable. This means that after updating some of the test files
+  will show as having wrong checksums (e.g. “The checksum does not
+  match for test.kt; expected 0x26e3997d but was 0xb76b5946”). In these
+  cases, just drop in the new checksum.
+
 * Source-modifying test modes. Lint's testing library now runs your
   unit tests through a number of additional paces: it will try
   inserting unnecessary parentheses, it will try replacing all
@@ -14,6 +25,74 @@ Guide.
   argument names and reordering arguments to Kotlin calls, etc, and
   making sure the same results are reported. More information about
   this is available in [](test-modes.md.html).
+
+* The support for Kotlin's overloaded operators is significantly
+  improved. While these are method calls, in the AST they do not show
+  up as `UCallExpressions` (instead, you'll find them as
+  `UBinaryExpression`, `UPrefixExpression`, `UArrayAccessExpression`
+  and so on), which meant various call-specific checks ignored them.
+
+  Now, in addition to the built-in checks all applying to these
+  implicit calls as well, lint can present these expressions as call
+  expressions. This means that the `getApplicableMethodNames` machinery
+  for call callbacks will now also work for overloaded functions, and
+  code which is iterating through calls can use the new
+  `UastCallVisitor` (or directly construct `UImplicitCallExpression`
+  wrappers) to simplify processing of all these types of calls.
+
+  Finally, lint now provides a way to resolve operators for array
+  access expressions (which is missing in UAST) via the
+  UArrayAccessExpression.resolveOperator extension method, which is
+  also used by the above machinery.
+
+* The annotation support (where a detector callback is invoked when
+  elements are combined with annotated elements) has been significantly
+  reworked (and the detector API changed). It now supports visiting
+  the following additional scenarios:
+
+  * Fields in annotated classes and packages
+  * Fields and methods in annotated outerclasses
+  * Class and object literals
+  * Overridden methods
+  * File level annotations (from Kotlin)
+
+  It also offers better control for handling scopes -- providing all
+  relevant annotations in the hierarchy at the same time such that a
+  lint check for example can easily determine whether an outer
+  annotation like `@Immutable` is canceled by a closer @Mutable`
+  annotation.
+
+  There are some new annotation usage type enum constants which let
+  your lint checks treat these differently. For example, the lint check
+  which makes sure that calls to methods annotated with `@CheckResult`
+  started flagging overrides of these methods. The fix was to add the
+  following override to the `CheckResultDetector`:
+
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+  override fun isApplicableAnnotationUsage(type: AnnotationUsageType): Boolean {
+    return type != AnnotationUsageType.METHOD_OVERRIDE &&
+        super.isApplicableAnnotationUsage(type)
+  }
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  (Using this new API constant will make your lint check only work with
+  the new version of lint. An alternative fix is to check that the
+  `usage` parameter is not a `UMethod`.)
+
+  For more, see the [new documentation](annotations.md.html) for
+  how to handle annotations from detectors.
+
+* The lint testing library now contains a new test file type, `rClass`,
+  which lets you easily construct Android `R` classes with resource
+  declarations (which are needed in tests that reference the R fields
+  to ensure that symbol resolution works.)
+
+* When you call `context.getLocation(UMethod)`, lint will now default
+  this method to be equivalent to `context.getNameLocation(UMethod)`
+  instead, which will highlight the method name. This might surface
+  itself as unit test failures where the location range moves from a
+  single `^` into a `~~~~~` range. This is because the location printer
+  uses `^` to just indicate the start offset when a range is multi-line.
 
 **7.0**
 

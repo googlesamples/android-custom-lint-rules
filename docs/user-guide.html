@@ -93,12 +93,24 @@ lint check authors, see the API Guide.
 </p><p>
 
 </p><ul>
+<li class="asterisk">The various annotation-based checks now perform additional checks for
+  overloaded Kotlin operators, as well as additional scenarios where
+  the annotation is inherited from outer classes, super methods, and in
+  the case of fields, containing classes and packages (this was already
+  the case for methods). This may show up as new violations in your
+  codebase, such as the <code>VisibleForTests</code> check flagging additional
+  usages of test-only APIs outside of tests.
+
+<p></p><p>
+
+</p></li>
 <li class="asterisk">New built-in lint checks:</li></ul>
 
 <p></p><p>
 
 </p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
 <tr><td style="text-align:left"> <code>FileEndsWithExt</code> </td><td style="text-align:left"> Flags suspicious usages of File.endsWith(extension) </td></tr>
+<tr><td style="text-align:left"> <code>DataExtractionRules</code> </td><td style="text-align:left"> Missing data extraction rules </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -111,27 +123,8 @@ lint check authors, see the API Guide.
 </p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
 <tr><td style="text-align:left"> <code>MissingTranslation</code> </td><td style="text-align:left"> Now checks for missing translations of plurals </td></tr>
 <tr><td style="text-align:left"> <code>WrongConstant</code> </td><td style="text-align:left"> Now has quickfixes to replace with constants </td></tr>
+<tr><td style="text-align:left"> <code>CheckResult</code> </td><td style="text-align:left"> Now also runs in unit tests </td></tr>
 </tbody></table></div>
-
-<p></p><p>
-
-</p><ul>
-<li class="asterisk">The <code>com.android.application</code> Gradle plugin now sets
-  <code>checkDependencies</code> to true by default. This means that when lint
-  runs on an app module, the report will include not only the issues
-  found in that module but also the issues found in its library
-  dependencies. This means that you can run <code>./gradlew :app:lint</code> and
-  see a single report instead of having to navigate to the individual
-  reports for each of the included libraries. It also makes the
-  analysis more accurate; for example, unused resources only make
-  sense with checkDependencies on, such that lint can consider
-  resource declarations and usages across module boundaries.
-
-<p></p><p>
-
-  With this change, if your project consists of a number of libraries
-  and a consuming app module, consider running just
-  <code>./gradle :app:lint</code> instead of <code>./gradlew lint</code>.</p></li></ul>
 
 <p></p><p>
 
@@ -178,8 +171,10 @@ lint check authors, see the API Guide.
   lint task instead of running it across all variants and accumulating
   results. This is much faster, is usually what you want, and now the
   target name will not change based on whether the project has product
-  flavors, so you can start just running <code>./gradlew :app:lint</code> instead
+  flavors, so you can start just running <code>./gradlew:app:lint</code> instead
   of <code>./gradlew :app:lintDebug</code> or <code>:app:lintProDebug</code> etc.
+  Furthermore, the <code>lintOptions</code> block is now just named <code>lint</code>
+  instead.
 
 <p></p><p>
 
@@ -434,15 +429,26 @@ Lint is integrated into three Gradle plugins:
 
 The <code>com.android.lint</code> plugin is the “standalone” lint Gradle plugin
 which can be applied to any Kotlin or Java Gradle project. To configure
-this project, use a <code>lintOptions</code> block to configure it, like this:
+this project, use a <code>lint</code> block to configure it, like this:
 
-</p><pre class="listing tilde"><code><span class="line">apply plugin: 'kotlin'</span>
-<span class="line">apply plugin: 'com.android.lint'</span>
+</p><pre class="listing tilde"><code><span class="line"></span>apply plugin: 'kotlin'
+<span class="line"></span>apply plugin: 'com.android.lint'
 <span class="line"></span>
-<span class="line">lintOptions {</span>
-<span class="line">    htmlOutput file("lint-report.html")</span>
-<span class="line">    textReport true</span>
-<span class="line">}</span></code></pre><p>
+<span class="line"></span>lint {
+<span class="line"></span>    htmlOutput = file("lint-report.html")
+<span class="line"></span>    textReport = true
+<span class="line"></span>}</code></pre><p>
+
+
+
+</p><div class="admonition tip">The lint options block was called <code>lintOptions</code> until 7.0. You can
+   still refer to it as <code>lintOptions</code>, but this was cleaned up as part
+   of the Android Gradle Plugin's overhaul of its DSL in 7.0. Another
+   7.0 change is that the <code>lint</code> task no longer runs lint on all
+   variants, but just the default variant — so you no longer have to
+   run <code>:app:lintDebug</code> for example — you can simply run <code>:app:lint</code>.</div>
+
+<p></p><p>
 
 The <code>com.android.library</code> and <code>com.android.application</code> plugins for
 Android development bundles in the lint support. They register a lint
@@ -451,15 +457,15 @@ default variant's lint task.
 
 </p><p>
 
-To configure lint for Android, place the <code>lintOptions</code> block within the
+To configure lint for Android, place the <code>lint</code> block within the
 <code>android</code> block:
 
-</p><pre class="listing tilde"><code><span class="line">android {</span>
-<span class="line">    lintOptions {</span>
-<span class="line">        htmlOutput file("lint-report.html")</span>
-<span class="line">        textReport true</span>
-<span class="line">    }</span>
-<span class="line">}</span></code></pre>
+</p><pre class="listing tilde"><code><span class="line"></span>android {
+<span class="line"></span>    lint {
+<span class="line"></span>        htmlOutput = file("lint-report.html")
+<span class="line"></span>        textReport = true
+<span class="line"></span>    }
+<span class="line"></span>}</code></pre>
 <a class="target" name="configuringissuesandseverity">&nbsp;</a><a class="target" name="lintgradleplugindsl/configuringissuesandseverity">&nbsp;</a><a class="target" name="toc2.1">&nbsp;</a><h2>Configuring Issues and Severity</h2>
 <p>
 
@@ -627,8 +633,8 @@ To configure lint for Android, place the <code>lintOptions</code> block within t
   in isolation would not be able to identify this problem. It also
   gives you a single cumulative report for the entire project, which is
   easier to digest. However, in older versions of lint this led to
-  performance problems. <em class="asterisk">True by default for application modules
-  since AGP 7.1.0-alpha04; false by default otherwise.</em>
+  performance problems. <em class="asterisk">False by default, but will soon switch to true
+  by default.</em>
 
 </p></dd></dl><p></p>
 <a class="target" name="other">&nbsp;</a><a class="target" name="lintgradleplugindsl/other">&nbsp;</a><a class="target" name="toc2.4">&nbsp;</a><h2>Other</h2>
@@ -725,7 +731,7 @@ lint will then analyze the code and produce its report.
 
 In <code>gradle.properties</code>, add a property declaration like this:
 
-</p><pre class="listing tilde"><code><span class="line">android.experimental.lint.version = 7.1.0-beta01</span></code></pre><p>
+</p><pre class="listing tilde"><code><span class="line"></span>android.experimental.lint.version = 7.1.0-beta01</code></pre><p>
 
 
 
@@ -755,10 +761,10 @@ Provided the <code>GradleDependency</code> issue is enabled, lint will check you
 <code>gradle.properties</code> file and warn you if there is a newer version of
 lint available than the one you're pointing to:
 
-</p><pre class="listing backtick"><code><span class="line">gradle.properties:2: Warning: Newer version of lint available: 7.1.0-alpha04 [GradleDependency]</span>
-<span class="line">android.experimental.lint.version = 7.0.0-rc01</span>
-<span class="line">                                    ~~~~~~~~~~~~~</span>
-<span class="line">0 errors, 1 warnings</span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span>gradle.properties:2: Warning: Newer version of lint available: 7.1.0-alpha04 [GradleDependency]
+<span class="line"></span>android.experimental.lint.version = 7.0.0-rc01
+<span class="line"></span>                                    ~~~~~~~~~~~~~
+<span class="line"></span>0 errors, 1 warnings</code></pre><p>
 
 There is also a quickfix in the IDE to perform this update.
 
@@ -771,8 +777,8 @@ always suggest using previews. If you for some reason want to limit
 yourself to stable versions, such as 8.0.0 while still building with
 7.0.0, you can suppress the warning like this:
 
-</p><pre class="listing tilde"><code><span class="line">#noinspection GradleDependency</span>
-<span class="line">android.experimental.lint.version=8.0.0</span></code></pre>
+</p><pre class="listing tilde"><code><span class="line"></span>#noinspection GradleDependency
+<span class="line"></span>android.experimental.lint.version=8.0.0</code></pre>
 <a class="target" name="baselines">&nbsp;</a><a class="target" name="baselines">&nbsp;</a><a class="target" name="toc4">&nbsp;</a><h1>Baselines</h1>
 
 <a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Creating a Baseline</h1>
@@ -790,11 +796,11 @@ address all existing issues first.
 To create a baseline snapshot, modify your project's <code>build.gradle</code>``
 file as follows.
 
-</p><pre class="listing tilde"><code><span class="line">android {</span>
-<span class="line">  lintOptions {</span>
-<span class="line">    baseline file(<span class="hljs-string">"lint-baseline.xml"</span>)</span>
-<span class="line">  }</span>
-<span class="line">}</span></code></pre><p>
+</p><pre class="listing tilde"><code><span class="line"></span>android {
+<span class="line"></span>  lintOptions {
+<span class="line"></span>    baseline file(<span class="hljs-string">"lint-baseline.xml"</span>)
+<span class="line"></span>  }
+<span class="line"></span>}</code></pre><p>
 
 When you first add this line, the <code>lint-baseline.xml</code> file is
 created to establish your baseline. From then on, the tools only
@@ -808,10 +814,10 @@ the command line as follows. The output prints the location of the
 lint-baseline.xml file. The file location for your setup might be
 different from what is shown here.
 
-</p><pre class="listing backtick"><code><span class="line">    $ ./gradlew lintDebug</span>
-<span class="line">    ...</span>
-<span class="line">    Wrote XML report to file:///app/lint-baseline.xml</span>
-<span class="line">    Created baseline file /app/lint-baseline.xml</span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span>    $ ./gradlew lintDebug
+<span class="line"></span>    ...
+<span class="line"></span>    Wrote XML report to file:///app/lint-baseline.xml
+<span class="line"></span>    Created baseline file /app/lint-baseline.xml</code></pre><p>
 
 Running lint records all of the current issues in the
 <code>lint-baseline.xml</code> file. The set of current issues is called the
@@ -827,12 +833,12 @@ If you want to add some issue types to the baseline, but not all of
 them, you can specify the issues to add by editing your project's
 build.gradle, as follows.
 
-</p><pre class="listing tilde"><code><span class="line">android {</span>
-<span class="line">  lintOptions {</span>
-<span class="line">    check <span class="hljs-string">'NewApi'</span>, <span class="hljs-string">'HandlerLeak'</span></span>
-<span class="line">    baseline file(<span class="hljs-string">"lint-baseline.xml"</span>)</span>
-<span class="line">  }</span>
-<span class="line">}</span></code></pre><p>
+</p><pre class="listing tilde"><code><span class="line"></span>android {
+<span class="line"></span>  lintOptions {
+<span class="line"></span>    check <span class="hljs-string">'NewApi'</span>, <span class="hljs-string">'HandlerLeak'</span>
+<span class="line"></span>    baseline file(<span class="hljs-string">"lint-baseline.xml"</span>)
+<span class="line"></span>  }
+<span class="line"></span>}</code></pre><p>
 
 After you create the baseline, if you add any new warnings to the
 codebase, lint lists only the newly introduced bugs.
@@ -1019,14 +1025,14 @@ of libraries and just a couple of app modules, it's much better to
 
 To do this, first add this to your app module's build.gradle file:
 
-</p><pre class="listing backtick"><code><span class="line"><span class="hljs-string">android</span> {</span>
-<span class="line">    <span class="hljs-string">...</span></span>
-<span class="line">    <span class="hljs-string">lintOptions</span> {</span>
-<span class="line">        <span class="hljs-string">...</span></span>
-<span class="line">        <span class="hljs-string">checkDependencies</span> <span class="hljs-literal">true</span></span>
-<span class="line">        <span class="hljs-string">...</span></span>
-<span class="line">    }</span>
-<span class="line">}</span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span><span class="hljs-string">android</span> {
+<span class="line"></span>    <span class="hljs-string">...</span>
+<span class="line"></span>    <span class="hljs-string">lintOptions</span> {
+<span class="line"></span>        <span class="hljs-string">...</span>
+<span class="line"></span>        <span class="hljs-string">checkDependencies</span> <span class="hljs-literal">true</span>
+<span class="line"></span>        <span class="hljs-string">...</span>
+<span class="line"></span>    }
+<span class="line"></span>}</code></pre><p>
 
 Then instead of running <code>./gradlew lintDebug</code>, run <code>./gradlew
 :app:lintDebug</code>.
@@ -1103,14 +1109,14 @@ to completely ignore your test sources, which should help lint run
 faster since (for well tested code) this can help skip a lot of code
 analysis and type resolution:
 
-</p><pre class="listing backtick"><code><span class="line"><span class="hljs-string">android</span> {</span>
-<span class="line">    <span class="hljs-string">...</span></span>
-<span class="line">    <span class="hljs-string">lintOptions</span> {</span>
-<span class="line">        <span class="hljs-string">...</span></span>
-<span class="line">        <span class="hljs-string">ignoreTestSources</span> <span class="hljs-literal">true</span></span>
-<span class="line">        <span class="hljs-string">...</span></span>
-<span class="line">    }</span>
-<span class="line">}</span></code></pre>
+</p><pre class="listing backtick"><code><span class="line"></span><span class="hljs-string">android</span> {
+<span class="line"></span>    <span class="hljs-string">...</span>
+<span class="line"></span>    <span class="hljs-string">lintOptions</span> {
+<span class="line"></span>        <span class="hljs-string">...</span>
+<span class="line"></span>        <span class="hljs-string">ignoreTestSources</span> <span class="hljs-literal">true</span>
+<span class="line"></span>        <span class="hljs-string">...</span>
+<span class="line"></span>    }
+<span class="line"></span>}</code></pre>
 <a class="target" name="don'tusecheckallwarnings">&nbsp;</a><a class="target" name="performancetuning/don'tusecheckallwarnings">&nbsp;</a><a class="target" name="toc6.5">&nbsp;</a><h2>Don't use checkAllWarnings</h2>
 <p>
 
@@ -1158,8 +1164,10 @@ bring down the overall analysis time.
 
 </p><p>
 
-This is <em class="asterisk">especially</em> important if your build happens to run many lint
-jobs in parallel! I've seen various thread dumps from users asking
+This is <em class="asterisk">especially</em> important if you happen to run many lint jobs in
+parallel! If you follow the advice above (where you're running a single
+lint job with recursive dependencies on the app module) this is less
+likely to happen, but I've seen various thread dumps from users asking
 about performance where there was 16-20 concurrent separate lint jobs
 running in the Gradle daemon, and each one requires a lot of memory;
 these separate lint job threads are not sharing data.
@@ -1189,24 +1197,24 @@ analysis to individual lint checks. When analysis is taking longer
 than expected, we run this tool to see if any of the lint checks
 are misbehaving. Here's some sample output:
 
-</p><pre class="listing backtick"><code><span class="line"><span class="hljs-string">$</span> <span class="hljs-string">./gradlew</span> <span class="hljs-string">lintDebug</span> <span class="hljs-string">-no-daemon</span> <span class="hljs-string">-Dorg.gradle.jvmargs="..."</span></span>
+</p><pre class="listing backtick"><code><span class="line"></span><span class="hljs-string">$</span> <span class="hljs-string">./gradlew</span> <span class="hljs-string">lintDebug</span> <span class="hljs-string">-no-daemon</span> <span class="hljs-string">-Dorg.gradle.jvmargs="..."</span>
 <span class="line"></span>
-<span class="line"><span class="hljs-string">BUILD</span> <span class="hljs-string">SUCCESSFUL</span> <span class="hljs-string">in</span> <span class="hljs-string">10s</span></span>
-<span class="line"><span class="hljs-attr">15 actionable tasks:</span> <span class="hljs-number">1</span> <span class="hljs-string">executed,</span> <span class="hljs-number">14</span> <span class="hljs-string">up-to-date</span></span>
+<span class="line"></span><span class="hljs-string">BUILD</span> <span class="hljs-string">SUCCESSFUL</span> <span class="hljs-string">in</span> <span class="hljs-string">10s</span>
+<span class="line"></span><span class="hljs-attr">15 actionable tasks:</span> <span class="hljs-number">1</span> <span class="hljs-string">executed,</span> <span class="hljs-number">14</span> <span class="hljs-string">up-to-date</span>
 <span class="line"></span>
-<span class="line"><span class="hljs-attr">Lint detector performance stats:</span></span>
-<span class="line">                                     <span class="hljs-string">total</span>           <span class="hljs-string">self</span>          <span class="hljs-string">calls</span></span>
-<span class="line">                 <span class="hljs-string">LintDriver</span>        <span class="hljs-number">3709 </span><span class="hljs-string">ms</span>        <span class="hljs-number">1302 </span><span class="hljs-string">ms</span>           <span class="hljs-number">2821</span></span>
-<span class="line"><span class="hljs-string">TopDownAnalyzerFacadeForJVM</span>        <span class="hljs-number">2121 </span><span class="hljs-string">ms</span>        <span class="hljs-number">2121 </span><span class="hljs-string">ms</span>              <span class="hljs-number">6</span></span>
-<span class="line">               <span class="hljs-string">IconDetector</span>          <span class="hljs-number">81</span> <span class="hljs-string">ms</span>          <span class="hljs-number">81</span> <span class="hljs-string">ms</span>            <span class="hljs-number">257</span></span>
-<span class="line">           <span class="hljs-string">OverdrawDetector</span>          <span class="hljs-number">51</span> <span class="hljs-string">ms</span>          <span class="hljs-number">51</span> <span class="hljs-string">ms</span>             <span class="hljs-number">36</span></span>
-<span class="line">     <span class="hljs-string">InvalidPackageDetector</span>          <span class="hljs-number">34</span> <span class="hljs-string">ms</span>          <span class="hljs-number">34</span> <span class="hljs-string">ms</span>          <span class="hljs-number">51744</span></span>
-<span class="line">             <span class="hljs-string">GradleDetector</span>          <span class="hljs-number">20</span> <span class="hljs-string">ms</span>          <span class="hljs-number">20</span> <span class="hljs-string">ms</span>             <span class="hljs-number">94</span></span>
-<span class="line">       <span class="hljs-string">LocaleFolderDetector</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>            <span class="hljs-number">986</span></span>
-<span class="line">         <span class="hljs-string">RestrictToDetector</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>             <span class="hljs-number">19</span></span>
-<span class="line">                <span class="hljs-string">ApiDetector</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>           <span class="hljs-number">1255</span></span>
-<span class="line">    <span class="hljs-string">PrivateResourceDetector</span>          <span class="hljs-number">10</span> <span class="hljs-string">ms</span>          <span class="hljs-number">10</span> <span class="hljs-string">ms</span>            <span class="hljs-number">422</span></span>
-<span class="line">                      [<span class="hljs-string">...</span>]</span></code></pre><p>
+<span class="line"></span><span class="hljs-attr">Lint detector performance stats:</span>
+<span class="line"></span>                                     <span class="hljs-string">total</span>           <span class="hljs-string">self</span>          <span class="hljs-string">calls</span>
+<span class="line"></span>                 <span class="hljs-string">LintDriver</span>        <span class="hljs-number">3709 </span><span class="hljs-string">ms</span>        <span class="hljs-number">1302 </span><span class="hljs-string">ms</span>           <span class="hljs-number">2821</span>
+<span class="line"></span><span class="hljs-string">TopDownAnalyzerFacadeForJVM</span>        <span class="hljs-number">2121 </span><span class="hljs-string">ms</span>        <span class="hljs-number">2121 </span><span class="hljs-string">ms</span>              <span class="hljs-number">6</span>
+<span class="line"></span>               <span class="hljs-string">IconDetector</span>          <span class="hljs-number">81</span> <span class="hljs-string">ms</span>          <span class="hljs-number">81</span> <span class="hljs-string">ms</span>            <span class="hljs-number">257</span>
+<span class="line"></span>           <span class="hljs-string">OverdrawDetector</span>          <span class="hljs-number">51</span> <span class="hljs-string">ms</span>          <span class="hljs-number">51</span> <span class="hljs-string">ms</span>             <span class="hljs-number">36</span>
+<span class="line"></span>     <span class="hljs-string">InvalidPackageDetector</span>          <span class="hljs-number">34</span> <span class="hljs-string">ms</span>          <span class="hljs-number">34</span> <span class="hljs-string">ms</span>          <span class="hljs-number">51744</span>
+<span class="line"></span>             <span class="hljs-string">GradleDetector</span>          <span class="hljs-number">20</span> <span class="hljs-string">ms</span>          <span class="hljs-number">20</span> <span class="hljs-string">ms</span>             <span class="hljs-number">94</span>
+<span class="line"></span>       <span class="hljs-string">LocaleFolderDetector</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>            <span class="hljs-number">986</span>
+<span class="line"></span>         <span class="hljs-string">RestrictToDetector</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>             <span class="hljs-number">19</span>
+<span class="line"></span>                <span class="hljs-string">ApiDetector</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>          <span class="hljs-number">11</span> <span class="hljs-string">ms</span>           <span class="hljs-number">1255</span>
+<span class="line"></span>    <span class="hljs-string">PrivateResourceDetector</span>          <span class="hljs-number">10</span> <span class="hljs-string">ms</span>          <span class="hljs-number">10</span> <span class="hljs-string">ms</span>            <span class="hljs-number">422</span>
+<span class="line"></span>                      [<span class="hljs-string">...</span>]</code></pre><p>
 Here you can see that <code>InvalidPackageDetector</code> is taking up an
 unreasonable amount of time. And this is actually real output from an
 earlier version of lint where we tracked down a real problem in that
@@ -1301,11 +1309,11 @@ declaration:
 To suppress a lint warning in a <code>build.gradle</code> file, add a
 section like this:
 
-</p><pre class="listing backtick"><code><span class="line">android {</span>
-<span class="line">    lintOptions {</span>
-<span class="line">        disable 'TypographyFractions','TypographyQuotes'</span>
-<span class="line">    }</span>
-<span class="line">}</span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span>android {
+<span class="line"></span>    lintOptions {
+<span class="line"></span>        disable 'TypographyFractions','TypographyQuotes'
+<span class="line"></span>    }
+<span class="line"></span>}</code></pre><p>
 
 Here we specify a comma separated list of issue id's after the
 disable command. You can also use <code>warning</code> or <code>error</code> instead
@@ -1323,7 +1331,7 @@ for more details.
 To suppress lint checks from the command line, pass the
 <code>--ignore</code> flag with a comma separated list of ids to be suppressed, such as:
 
-</p><pre class="listing backtick"><code><span class="line"><span class="hljs-meta">$</span><span class="bash"> lint --ignore UnusedResources,UselessLeaf /my/project/path</span></span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span><span class="hljs-meta">$</span><span class="bash"> lint --ignore UnusedResources,UselessLeaf /my/project/path</span></code></pre><p>
 
 For more information, see
 <a href="https://developer.android.com/studio/write/lint.html#config" class="url">https://developer.android.com/studio/write/lint.html#config</a>
@@ -1448,39 +1456,39 @@ one which uses most of the available features. (Note: the
 HTML version of this isn't properly handling empty elements,
 so if you're going to copy/paste go to the source file.)
 
-</p><pre class="listing tilde"><code><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span>
-<span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">lint</span> <span class="hljs-attr">lintJars</span>=<span class="hljs-string">"../checks/local.jar;../checks/custom.jar"</span>&gt;</span></span>
-<span class="line">    <span class="hljs-comment">&lt;!-- The special id "all" matches all issues but is only consulted</span>
-<span class="line">         if there is no specific match --&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"all"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"ignore"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-comment">&lt;!-- Possible severities: ignore, information, warning, error, fatal --&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"ValidActionsXml"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"error"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"ObsoleteLayoutParam"</span>&gt;</span></span>
-<span class="line">        <span class="hljs-comment">&lt;!-- The &lt;ignore&gt; tag has two possible attributes: path and regexp (see below) --&gt;</span></span>
-<span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"res/layout-xlarge/activation.xml"</span> /&gt;</span></span>
-<span class="line">        <span class="hljs-comment">&lt;!-- You can use globbing patterns in the path strings --&gt;</span></span>
-<span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"**/layout-x*/onclick.xml"</span> /&gt;</span></span>
-<span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"res/**/activation.xml"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"NewApi"</span>&gt;</span></span>
-<span class="line">        <span class="hljs-comment">&lt;!-- You can also ignore via a regular expression, this is not only</span>
-<span class="line">            matched against the path but also the error message --&gt;</span></span>
-<span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">regexp</span>=<span class="hljs-string">"st.*gs"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span></span>
-<span class="line">    <span class="hljs-comment">&lt;!-- The "in" attribute lets you specify that the element only</span>
-<span class="line">         applies in a particular tools, such as gradle, studio, etc; this</span>
-<span class="line">         can be a comma separated list --&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">in</span>=<span class="hljs-string">"studio"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"NewerVersionAvailable"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"error"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-comment">&lt;!-- You can also use ! to specify that it does not apply in a tool  --&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">in</span>=<span class="hljs-string">"!gradle"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"TrulyRandom"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"error"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"UnknownNullness"</span>&gt;</span></span>
-<span class="line">        <span class="hljs-comment">&lt;!-- For detectors that support it, you can also specify option values --&gt;</span></span>
-<span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"ignore-deprecated"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"true"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"TooManyViews"</span>&gt;</span></span>
-<span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"maxCount"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"20"</span> /&gt;</span></span>
-<span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span></span>
-<span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">lint</span>&gt;</span></span></code></pre><p>
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="line"></span><span class="hljs-tag">&lt;<span class="hljs-name">lint</span> <span class="hljs-attr">lintJars</span>=<span class="hljs-string">"../checks/local.jar;../checks/custom.jar"</span>&gt;</span>
+<span class="line"></span>    <span class="hljs-comment">&lt;!-- The special id "all" matches all issues but is only consulted
+<span class="line"></span>         if there is no specific match --&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"all"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"ignore"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-comment">&lt;!-- Possible severities: ignore, information, warning, error, fatal --&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"ValidActionsXml"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"error"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"ObsoleteLayoutParam"</span>&gt;</span>
+<span class="line"></span>        <span class="hljs-comment">&lt;!-- The &lt;ignore&gt; tag has two possible attributes: path and regexp (see below) --&gt;</span>
+<span class="line"></span>        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"res/layout-xlarge/activation.xml"</span> /&gt;</span>
+<span class="line"></span>        <span class="hljs-comment">&lt;!-- You can use globbing patterns in the path strings --&gt;</span>
+<span class="line"></span>        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"**/layout-x*/onclick.xml"</span> /&gt;</span>
+<span class="line"></span>        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">path</span>=<span class="hljs-string">"res/**/activation.xml"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"NewApi"</span>&gt;</span>
+<span class="line"></span>        <span class="hljs-comment">&lt;!-- You can also ignore via a regular expression, this is not only
+<span class="line"></span>            matched against the path but also the error message --&gt;</span>
+<span class="line"></span>        <span class="hljs-tag">&lt;<span class="hljs-name">ignore</span> <span class="hljs-attr">regexp</span>=<span class="hljs-string">"st.*gs"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span>
+<span class="line"></span>    <span class="hljs-comment">&lt;!-- The "in" attribute lets you specify that the element only
+<span class="line"></span>         applies in a particular tools, such as gradle, studio, etc; this
+<span class="line"></span>         can be a comma separated list --&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">in</span>=<span class="hljs-string">"studio"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"NewerVersionAvailable"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"error"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-comment">&lt;!-- You can also use ! to specify that it does not apply in a tool  --&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">in</span>=<span class="hljs-string">"!gradle"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"TrulyRandom"</span> <span class="hljs-attr">severity</span>=<span class="hljs-string">"error"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"UnknownNullness"</span>&gt;</span>
+<span class="line"></span>        <span class="hljs-comment">&lt;!-- For detectors that support it, you can also specify option values --&gt;</span>
+<span class="line"></span>        <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"ignore-deprecated"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"true"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;<span class="hljs-name">issue</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"TooManyViews"</span>&gt;</span>
+<span class="line"></span>        <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"maxCount"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"20"</span> /&gt;</span>
+<span class="line"></span>    <span class="hljs-tag">&lt;/<span class="hljs-name">issue</span>&gt;</span>
+<span class="line"></span><span class="hljs-tag">&lt;/<span class="hljs-name">lint</span>&gt;</span></code></pre><p>
 
 
 
@@ -1504,12 +1512,24 @@ lint check authors, see the API Guide.
 </p><p>
 
 </p><ul>
+<li class="asterisk">The various annotation-based checks now perform additional checks for
+  overloaded Kotlin operators, as well as additional scenarios where
+  the annotation is inherited from outer classes, super methods, and in
+  the case of fields, containing classes and packages (this was already
+  the case for methods). This may show up as new violations in your
+  codebase, such as the <code>VisibleForTests</code> check flagging additional
+  usages of test-only APIs outside of tests.
+
+<p></p><p>
+
+</p></li>
 <li class="asterisk">New built-in lint checks:</li></ul>
 
 <p></p><p>
 
 </p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
 <tr><td style="text-align:left"> <code>FileEndsWithExt</code> </td><td style="text-align:left"> Flags suspicious usages of File.endsWith(extension) </td></tr>
+<tr><td style="text-align:left"> <code>DataExtractionRules</code> </td><td style="text-align:left"> Missing data extraction rules </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -1522,27 +1542,8 @@ lint check authors, see the API Guide.
 </p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
 <tr><td style="text-align:left"> <code>MissingTranslation</code> </td><td style="text-align:left"> Now checks for missing translations of plurals </td></tr>
 <tr><td style="text-align:left"> <code>WrongConstant</code> </td><td style="text-align:left"> Now has quickfixes to replace with constants </td></tr>
+<tr><td style="text-align:left"> <code>CheckResult</code> </td><td style="text-align:left"> Now also runs in unit tests </td></tr>
 </tbody></table></div>
-
-<p></p><p>
-
-</p><ul>
-<li class="asterisk">The <code>com.android.application</code> Gradle plugin now sets
-  <code>checkDependencies</code> to true by default. This means that when lint
-  runs on an app module, the report will include not only the issues
-  found in that module but also the issues found in its library
-  dependencies. This means that you can run <code>./gradlew :app:lint</code> and
-  see a single report instead of having to navigate to the individual
-  reports for each of the included libraries. It also makes the
-  analysis more accurate; for example, unused resources only make
-  sense with checkDependencies on, such that lint can consider
-  resource declarations and usages across module boundaries.
-
-<p></p><p>
-
-  With this change, if your project consists of a number of libraries
-  and a consuming app module, consider running just
-  <code>./gradle :app:lint</code> instead of <code>./gradlew lint</code>.</p></li></ul>
 
 <p></p><p>
 
@@ -1589,8 +1590,10 @@ lint check authors, see the API Guide.
   lint task instead of running it across all variants and accumulating
   results. This is much faster, is usually what you want, and now the
   target name will not change based on whether the project has product
-  flavors, so you can start just running <code>./gradlew :app:lint</code> instead
+  flavors, so you can start just running <code>./gradlew:app:lint</code> instead
   of <code>./gradlew :app:lintDebug</code> or <code>:app:lintProDebug</code> etc.
+  Furthermore, the <code>lintOptions</code> block is now just named <code>lint</code>
+  instead.
 
 <p></p><p>
 

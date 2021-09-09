@@ -287,10 +287,18 @@ you want to remove the easy possibility of just silencing the check.
 This is possible as part of the issue registration. After creating your
 `Issue`, set the `suppressNames` property to an **empty** collection.
 
+### Why are overloaded operators not handled?
+
+Kotlin supports overloaded operators, but these are not handled as
+calls in the AST - instead, an implicit `get` or `set` method from an
+array access will show up as a `UArrayAccessExpression`. Lint has
+specific support to help handling these scenarios; see the “Implicit
+Calls” section in the [basics chapter](basics.md.html).
+
 ### How do I check out the current lint source code?
 
 ```shell
-$ git clone --branch=mirror-goog-studio-master-dev --single-branch \
+$ git clone --branch=mirror-goog-studio-main --single-branch \
    https://android.googlesource.com/platform/tools/base
 Cloning into 'base'...
 remote: Total 648820 (delta 325442), reused 635137 (delta 325442)
@@ -314,6 +322,6 @@ The built-in lint checks are a good source. Check out the source code
 as shown above and look in
 `lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/` or
 browse sources online:
-[](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/)
+[](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/)
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

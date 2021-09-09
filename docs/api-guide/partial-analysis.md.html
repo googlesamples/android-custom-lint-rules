@@ -494,7 +494,7 @@ The last (and most involved) scenario for partial analysis is one where
 you cannot just create incidents and filter or customize them later.
 
 The most complicated example of this is lint's built-in
-[UnusedResourceDetector](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnusedResourceDetector.java), which locates unused resources. This “requires”
+[UnusedResourceDetector](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnusedResourceDetector.java), which locates unused resources. This “requires”
 global analysis, since we want to include all resources in the entire
 project. We also cannot just store lists of “resources declared” and
 "resources referenced“ since we really want to treat this as a graph.

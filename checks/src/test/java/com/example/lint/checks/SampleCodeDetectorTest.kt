@@ -39,7 +39,7 @@ class SampleCodeDetectorTest {
             .run()
             .expect(
                 """
-                    src/test/pkg/TestClass1.java:5: Warning: This code mentions lint: Congratulations [ShortUniqueId]
+                    src/test/pkg/TestClass1.java:5: Warning: This code mentions lint: Congratulations [SampleId]
                         private static String s2 = "Let's say it: lint";
                                                    ~~~~~~~~~~~~~~~~~~~~
                     0 errors, 1 warnings

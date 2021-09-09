@@ -222,7 +222,7 @@ class SampleCodeDetector : Detector(), UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
-            id = "ShortUniqueId",
+            id = "SampleId",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
             briefDescription = "Lint Mentions",
@@ -336,7 +336,7 @@ class SampleCodeDetectorTest {
         .run()
         .expect(
             """
-            src/test/pkg/TestClass1.java:5: Warning: This code mentions lint: Congratulations [ShortUniqueId]
+            src/test/pkg/TestClass1.java:5: Warning: This code mentions lint: Congratulations [SampleId]
                 private static String s2 = "Let's say it: lint";
                                            ∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼
             0 errors, 1 warnings

@@ -6,11 +6,20 @@ lint check authors, see the API Guide.
 
 **7.1**
 
+* The various annotation-based checks now perform additional checks for
+  overloaded Kotlin operators, as well as additional scenarios where
+  the annotation is inherited from outer classes, super methods, and in
+  the case of fields, containing classes and packages (this was already
+  the case for methods). This may show up as new violations in your
+  codebase, such as the `VisibleForTests` check flagging additional
+  usages of test-only APIs outside of tests.
+
 * New built-in lint checks:
 
   Issue ID                         | Summary
   ---------------------------------|-----------------------------------
   `FileEndsWithExt`                | Flags suspicious usages of File.endsWith(extension)
+  `DataExtractionRules`            | Missing data extraction rules
 
 * Updated lint checks:
 
@@ -18,21 +27,7 @@ lint check authors, see the API Guide.
   ---------------------|--------------------------
   `MissingTranslation` | Now checks for missing translations of plurals
   `WrongConstant`      | Now has quickfixes to replace with constants
-
-* The `com.android.application` Gradle plugin now sets
-  `checkDependencies` to true by default. This means that when lint
-  runs on an app module, the report will include not only the issues
-  found in that module but also the issues found in its library
-  dependencies. This means that you can run `./gradlew :app:lint` and
-  see a single report instead of having to navigate to the individual
-  reports for each of the included libraries. It also makes the
-  analysis more accurate; for example, unused resources only make
-  sense with checkDependencies on, such that lint can consider
-  resource declarations and usages across module boundaries.
-
-  With this change, if your project consists of a number of libraries
-  and a consuming app module, consider running just
-  `./gradle :app:lint` instead of `./gradlew lint`.
+  `CheckResult`        | Now also runs in unit tests
 
 **7.0**
 
@@ -66,8 +61,10 @@ lint check authors, see the API Guide.
   lint task instead of running it across all variants and accumulating
   results. This is much faster, is usually what you want, and now the
   target name will not change based on whether the project has product
-  flavors, so you can start just running `./gradlew :app:lint` instead
+  flavors, so you can start just running `./gradlew:app:lint` instead
   of `./gradlew :app:lintDebug` or `:app:lintProDebug` etc.
+  Furthermore, the `lintOptions` block is now just named `lint`
+  instead.
 
 * Lint “partial analysis” mode is now integrated in lint. It is
   enabled by default, but you can disable it by modifying

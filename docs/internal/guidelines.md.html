@@ -36,22 +36,18 @@ android.experimental.runLintInProcess=true
 
 # Debugging lint in the IDE
 
-When debugging lint running in the IDE, machinery the IDE has
-to avoid UI freezes involves throwing exceptions if read operations
-are taking too long -- and then the editor restarting highlighting
-at a later time. This makes debugging tricky. There are probably
-better ways to do this (I remember an IntelliJ registry key to set
-that I can't find now), but what I do is open `LintIdeClient` and
-in the `runReadAction` method, I change
-
+By default the IDE cancels certain operations if they take too long,
+including Lint. This makes debugging tricky. To disable this behavior,
+start the IDE with
 ```
-if (application.isUnitTestMode()) {
-```
+-Didea.ProcessCanceledException=disabled
+````
 
-to
-
+Alternatively, you can use the internal action
+"Disable ProcessCanceledException". Note, to use internal actions
+you must first go to `Help > Edit Custom Properties` and add
 ```
-if (true || application.isUnitTestMode()) {
+idea.is.internal=true
 ```
 
 # Updating Baselines
@@ -76,6 +72,25 @@ this, open the `tools/adt/idea` project and run the
 `LintInspectionRegistrationTest` test. To have your sources updated in
 place, either set `$ADT_SOURCE_TREE` or edit the test first to point
 the `sourceTree` var to point to your checkout.
+
+# Deprecating and Removing APIs
+
+If we have to remove methods (such as `UastContext`, which is slated
+for removal from UAST in the next version of IntelliJ), just
+deprecating doesn't seem to be enough; a lot of existing lint checks
+will use APIs if the code continues to compile and run. We are guilty
+of this ourselves; lint itself is still referencing a lot of deprecated
+APIs.
+
+However, if we just delete APIs, that will break existing lint checks
+in the field. Therefore, to deprecate APIs, we should be using Kotlin's
+special support for marking deprecated methods hidden (the
+`DeprecationLevel` attribute in a `Deprecated` annotation). This will
+keep the method in the runtime jar file, and older lint checks will be
+able to invoke it -- but it's removed from compilation, therefore
+forcing lint checks to update before we actually remove the API for
+good. (This support is one of the reasons why we want all new APIs in
+lint to be implemented in Kotlin.)
 
 # Issue Granularity
 
@@ -123,7 +138,7 @@ For simple discouraged APIs, we have several approaches:
    https://source.corp.google.com/android/tools/base/lint/studio-checks/src/main/java/com/android/tools/lint/checks/studio/ForbiddenStudioCallDetector.kt
 
    In lint itself, there is a similar check, dedicated to deprecations:
-   https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DeprecationDetector.kt;l=1?q=DeprecationDetector.kt
+   https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DeprecationDetector.kt;l=1?q=DeprecationDetector.kt
 
    The DeprecationDetector is used to flag APIs that are discouraged.
    It was initially written to let us deprecate things in XML files
