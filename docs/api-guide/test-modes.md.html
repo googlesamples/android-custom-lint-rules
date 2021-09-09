@@ -208,8 +208,8 @@ And in this test mode, the results between the two obviously differ,
 and that's fine; as usual we'll deliberately turn off the check in this
 detector:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java @Override
-protected TestLintTask lint() {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java
+@Override protected TestLintTask lint() {
     // This lint check deliberately treats fully qualified imports
     // differently (they are interpreted as a deliberate usage of
     // the discouraged API) so the fully qualified equivalence test
@@ -440,5 +440,48 @@ not have optional braces.)
 The purpose of these tweaks are similar to the expression body change:
 making sure that detectors are properly handling the presence of
 absence of `UBlockExpression` around the child nodes.
+
+### If to When Replacement
+
+In Kotlin, you can replace a series of `if`/`else` statements with a
+single `when` block. These two alternative do not look the same in the
+AST; `if` expressions show up as `UIfExpression`, and `when`
+expressions show up as `USwitchExpression`.
+
+The if-to-when test mode will change all the `if` statements in Kotlin
+lint tests with the corresponding when statement, and makes sure that
+the test results remain the same. This ensures that detectors are
+properly looking for both `UIfExpression` and `USwitchExpression` and
+handling each. When this test mode was introduced, around 12 unit tests
+in lint's built-in checks (spread across 5 detectors) needed some
+tweaks.
+
+### Whitespace Mode
+
+This test mode inserts a number of "unnecessary" whitespace characters
+in valid places in the source code.
+
+This helps catch bugs where lint checks are improperly making
+assumptions about whitespace in the source file, particularly in
+quickfix implementations, or when for example looking up a qualified
+expression and just taking the `asSourceString()` or `text` property of
+a PSI element or PSI type and checking it for equality with something
+like `java.util.List<String>`.
+
+For example, some of the built-in checks which performed quickfix
+string replacements based on regular expression matching had to be
+updated to be prepared for whitespace characters:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~diff
++++ b/lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WakelockDetector.java
+@@ -454,7 +454,7 @@ public class WakelockDetector extends Detector implements ClassScanner, SourceCo
+     LintFix fix =
+             fix().name("Set timeout to 10 minutes")
+                     .replace()
+-                    .pattern("acquire\\(()\\)")
++                    .pattern("acquire\\s*\\(()\\s*\\)")
+                     .with("10*60*1000L /*10 minutes*/")
+                     .build();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

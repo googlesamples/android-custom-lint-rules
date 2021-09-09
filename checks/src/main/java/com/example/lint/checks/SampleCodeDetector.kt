@@ -68,7 +68,7 @@ class SampleCodeDetector : Detector(), UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
-            id = "ShortUniqueId",
+            id = "SampleId",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
             briefDescription = "Lint Mentions",

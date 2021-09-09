@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.android.example.lint_usage"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
     }
@@ -22,6 +22,7 @@ android {
         jvmTarget = '1.8'
     }
     lintOptions {
+        checkDependencies true
         textReport true
 
         // Produce report for CI:

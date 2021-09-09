@@ -113,11 +113,11 @@ Scanning app: ...
 Wrote HTML report to file:///demo/android-custom-lint-rules/app/build/reports/lint-results-debug.html
 Wrote SARIF report to file:///demo/android-custom-lint-rules/app/build/reports/lint-results-debug.sarif
 
-/demo/android-custom-lint-rules/app/src/main/java/com/android/example/Test.kt:8: Warning: This code mentions lint: Congratulations [ShortUniqueId]
+/demo/android-custom-lint-rules/app/src/main/java/com/android/example/Test.kt:8: Warning: This code mentions lint: Congratulations [SampleId]
     val s = "lint"
              ~~~~
 
-   Explanation for issues of type "ShortUniqueId":
+   Explanation for issues of type "SampleId":
    This check highlights string literals in code which mentions the word lint.
    Blah blah blah.
 

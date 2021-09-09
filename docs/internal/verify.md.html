@@ -1,0 +1,194 @@
+<meta charset="utf-8">
+
+**Testing Development Builds**
+
+This document describes how to run your development version of lint
+against some large projects to look for false positives, false
+negatives and other issues after making nontrivial changes.
+
+## Conventions
+
+In the following, `$SRC` refers to your checkout of the lint
+development branch, normally `studio-main`, and the lint source code is
+found in `$SRC/tools/base/lint/`.
+
+## Testing against AndroidX
+
+To run a development version of lint against the AndroidX tree, first
+check out AndroidX into `$ANDROIDX`. For checkout instructions, see
+[their
+README](https://android.googlesource.com/platform/frameworks/support/+/a
+ndroidx-main/README.md).
+
+Then, build lint into AGP:
+
+```ksh
+cd $SRC/tools
+./gradlew pL
+```
+
+(`pL` is short for publishLocal; Gradle allows abbreviations. After
+making changes to lint only, you can run just `./gradlew pAGL` which is
+quite a bit faster because it skips some targets that have to be built
+once but aren't affected by lint-only changes.)
+
+We'll need to know the version number of AGP that was built; as of
+this writing it's 7.1.0-dev, but that will change multiple times a year so you can consult the actual version with something like this:
+
+```ksh
+$ grep buildVersion $SRC/tools/buildSrc/base/version.properties
+buildVersion = 7.1.0-dev
+```
+
+We'll need to supply a number of override properties, so it's helpful
+to place this into a shell function:
+
+```ksh
+runGradleForAndroidX() {
+    CUSTOM_REPO=$ADT_SOURCE_TREE/out/repo \
+    GRADLE_PLUGIN_VERSION=7.1.0-dev \
+    GRADLE_PLUGIN_REPO=$ADT_SOURCE_TREE/out/repo:$ADT_SOURCE_TREE/prebuilts/tools/common/m2/repository \
+    $ADT_SOURCE_TREE/tools/gradlew --parallel ${@}
+}
+alias gwx=runGradleForAndroidX
+```
+
+Now you can go to `$ANDROIDX` and run all the lint targets (one for
+each library):
+
+```ksh
+gwx lint
+```
+
+If you want to debug a particular scenario, replace the `--parallel`
+flag with `--no-daemon -Dorg.gradle.debug=true`, run the build, and
+create a Remote configuration in IntelliJ and use it to attach.
+
+## Testing against Android Platform
+
+Lint is run as part of the Android platform builds, including a number of custom lint checks specific to the platform.
+
+The following will refer to the directory containing the Android
+platform source code as `$ANDROID_SRC`.
+
+First, checkout the AOSP platform into `$ANDROID_SRC`:
+
+```ksh
+mkdir $ANDROID_SRC && cd $ANDROID_SRC
+repo init -u https://android.googlesource.com/platform/manifest -b master
+```
+
+Then create a new branch for testing:
+
+```ksh
+repo start testing123 .
+```
+
+Next, build a development version of lint packaged into a commandline
+tools component:
+
+```ksh
+cd $SRC/tools/base
+export DIST_DIR=/tmp/dist && mkdir -p $DIST_DIR
+../buildSrc/servers/build_tools.sh
+```
+
+After this step, we'll have `/tmp/dist/commandlinetools_linux.zip`
+which we now need to insert into the Android platform, with some tweaks:
+
+```ksh
+cd $ANDROID_SRC/prebuilts/cmdline-tools/
+git rm -rf tools
+unzip /tmp/dist/commandlinetools_linux.zip
+mv cmdline-tools tools
+git add tools
+```
+
+There is one deliberate change to the tools for platform usage that we need to preserve, so back out any changes to `tools/bin/lint`:
+
+```ksh
+git reset tools/bin/lint && git restore tools/bin/lint
+```
+
+That's it. If you don't have a full Android build environment up and
+running (or enough diskspace!) you can upload this to gerrit and have
+the presubmit machinery do a test run: git commit, repo upload, and
+then mark the CL Presubmit-Ready.
+
+Here's an example of a trial balloon CL:
+ [](https://android-review.googlesource.com/c/platform/prebuilts/cmdline-tools/+/1769725)
+
+And here's a sample CL of a real lint upgrade which shows some of the
+other CLs in the topic that were necessary -- updating baselines etc:
+
+[](https://android-review.googlesource.com/c/platform/prebuilts/cmdline-tools/+/1746780)
+
+If you **do** have an Android build environment, which is helpful if
+you actually need to debug to figure out why something is going on, run
+the following target to check lint:
+
+```ksh
+m lint-check
+```
+
+As usual you'll want to run `. build/envsetup.sh` and `lunch sdk-eng`
+first.
+
+If there's a failure, you can look at `out/error.log` where you'll find
+something like this:
+
+```
+...
+The failing command was run inside an sbox sandbox in temporary directory
+out/soong/.temp/sbox/aaa65d9ed8eca15675a35eeb74818d9864690068
+The failing command line was:
+rm -rf ./out/srcjars && mkdir -p ./out/srcjars && ./tools/out/bin/zipsync -d ./out/srcjars -l ./out/srcjars/list -f "*.java" ./out/.intermediates/packages/modules/Permission/PermissionController/PermissionController/android_common_GooglePermissionController_apex30/gen/proto/proto0.srcjar ./out/.intermediates/packages/modules/Permission/PermissionController/PermissionController/android_common_GooglePermissionController_apex30/gen/android/R.srcjar ./out/.intermediates/packages/modules/Permission/PermissionController/PermissionController/android_common_GooglePermissionController_apex30/kapt/kapt-sources.jar
+...truncated...
+```
+
+Note that the real lint command is prefixed by a few other commands on
+the same line so search forwards through `&&` until you get to the line
+which starts with `JAVA_OPTS=` (and lop off the rest after the next
+`&&` or '||').
+
+Here's a typical invocation that we're left with:
+
+```
+JAVA_OPTS="-Xmx3072m --add-opens java.base/java.util=ALL-UNNAMED"
+ANDROID_SDK_HOME=out/soong/.intermediates/packages/modules/Permission/Pe
+rmissionController/PermissionController/android_common/lint/home
+SDK_ANNOTATIONS=./out/lint/annotations.zip
+LINT_OPTS=-DLINT_API_DATABASE=./out/lint/api_versions.xml
+./tools/out/bin/lint --quiet --project ./out/project.xml --config
+./out/lint.xml --html ./out/lint-report.html --text
+./out/lint-report.txt --xml ./out/lint-report.xml --compile-sdk-version
+T --java-language-level 1.9 --kotlin-language-level 1.3 --url
+.=.,out/soong=out --exitcode
+```
+
+This means that you can `cd` to the sandbox directory and rerun the
+given command to repeat just the failing lint invocation, adding some
+debugging flags and attaching with a debugger as necessary.
+
+You can also convert this to a runconfig in IntelliJ for running the
+lint Main class with the right pwd, environment variables and arguments
+inside the IDE.
+
+### New Check Fails
+
+The platform obviously isn't a real Android app, and some of the checks
+which apply for apps (such as flagging an import of `android.R` as
+suspicious) do not apply in platform code.
+
+If you've added a new lint check and it's finding false positives in
+the platform, you may consider just adding it to the exclude list in
+`build/soong/java/lint_defaults.txt`.
+
+## Other Projects
+
+For other projects built with Gradle, you can add a property in your
+root `gradle.properties` to redirect AGP to use your custom version of
+lint instead. This is described in more detail in
+[](../usage/newer-lint.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -6,31 +6,39 @@ Lint is integrated into three Gradle plugins:
 
 The `com.android.lint` plugin is the “standalone” lint Gradle plugin
 which can be applied to any Kotlin or Java Gradle project. To configure
-this project, use a `lintOptions` block to configure it, like this:
+this project, use a `lint` block to configure it, like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy
 apply plugin: 'kotlin'
 apply plugin: 'com.android.lint'
 
-lintOptions {
-    htmlOutput file("lint-report.html")
-    textReport true
+lint {
+    htmlOutput = file("lint-report.html")
+    textReport = true
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!!! Tip
+   The lint options block was called `lintOptions` until 7.0. You can
+   still refer to it as `lintOptions`, but this was cleaned up as part
+   of the Android Gradle Plugin's overhaul of its DSL in 7.0. Another
+   7.0 change is that the `lint` task no longer runs lint on all
+   variants, but just the default variant -- so you no longer have to
+   run `:app:lintDebug` for example -- you can simply run `:app:lint`.
 
 The `com.android.library` and `com.android.application` plugins for
 Android development bundles in the lint support. They register a lint
 task for each variant, as well as a task named `lint` which runs the
 default variant's lint task.
 
-To configure lint for Android, place the `lintOptions` block within the
+To configure lint for Android, place the `lint` block within the
 `android` block:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy
 android {
-    lintOptions {
-        htmlOutput file("lint-report.html")
-        textReport true
+    lint {
+        htmlOutput = file("lint-report.html")
+        textReport = true
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -198,8 +206,8 @@ android {
   in isolation would not be able to identify this problem. It also
   gives you a single cumulative report for the entire project, which is
   easier to digest. However, in older versions of lint this led to
-  performance problems. *True by default for application modules
-  since AGP 7.1.0-alpha04; false by default otherwise.*
+  performance problems. *False by default, but will soon switch to true
+  by default.*
 
 ## Other
 
