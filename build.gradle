@@ -6,8 +6,8 @@ buildscript {
         lintVersion = '30.0.2'
 
         // Upcoming lint target: Bumble Bee / AGP 7.1
-        gradlePluginVersion = '7.1.0-alpha11'
-        lintVersion = '30.1.0-alpha11'
+        gradlePluginVersion = '7.1.0-alpha12'
+        lintVersion = '30.1.0-alpha12'
     }
 
     repositories {
