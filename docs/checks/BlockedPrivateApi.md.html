@@ -41,11 +41,11 @@ to facilitate future app compatibility.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/TestReflection.java:12:Error: Reflective access to
-NETWORK_SELECTION_MODE_MANUAL is forbidden when targeting API 28 and
-above [BlockedPrivateApi]
+NETWORK_TYPES is forbidden when targeting API 28 and above
+[BlockedPrivateApi]
 
-    Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_SELECTION_MODE_MANUAL"); // ERROR 1
-                        ------------------------------------------------------------------------
+    Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_TYPES"); // ERROR 1
+                        --------------------------------------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,9 +65,9 @@ public class TestReflection {
     public void test(Context context, int subId) {
         try {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_SELECTION_MODE_MANUAL"); // ERROR 1
+            Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_TYPES"); // ERROR 1
             Object o1 = deniedField.get(tm);
-            Field allowedField = TelephonyManager.class.getDeclaredField("PHONE_TYPE_CDMA"); // OK
+            Field allowedField = TelephonyManager.class.getDeclaredField("NETWORK_SELECTION_MODE_MANUAL"); // OK
             Object o2 = allowedField.get(tm);
             Field maybeField = TelephonyManager.class.getDeclaredField("OTASP_NEEDED"); // ERROR 2
             Object o3 = maybeField.get(tm);

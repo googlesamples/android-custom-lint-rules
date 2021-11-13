@@ -28,8 +28,6 @@ Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-livedata-core-ktx-lint/src/main/java/androidx/lifecycle/lint/NonNullableMutableLiveDataDetector.kt)
-Tests
-:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-livedata-core-ktx-lint/src/test/java/androidx/lifecycle/lint/NonNullableMutableLiveDataDetectorTest.kt)
 
 This check ensures that LiveData values are not null when explicitly    
             declared as non-nullable.
@@ -41,9 +39,6 @@ parameters. Since LiveData is a Java class its value can always
 non-nullable. This can lead                 to runtime exceptions from
 reading a null LiveData value that is assumed to be                
 non-nullable.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
 
 (##) Suppressing
 

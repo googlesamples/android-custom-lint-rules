@@ -1,0 +1,106 @@
+<meta charset="utf-8">
+(#) Separate attach() and detach() into separate FragmentTransactions
+
+!!! WARNING: Separate attach() and detach() into separate FragmentTransactions
+   This is a warning.
+
+Id
+:   `DetachAndAttachSameFragment`
+Summary
+:   Separate attach() and detach() into separate FragmentTransactions
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project (androidx.fragment.lint.fragment)
+Identifier
+:   androidx.fragment.lint.fragment
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192731
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-lint/src/main/java/androidx/fragment/lint/AttachAndDetachInSameTransactionDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-lint/src/test/java/androidx/fragment/lint/AttachAndDetachInSameTransactionDetectorTest.kt)
+
+When doing a FragmentTransaction that includes both attach()            
+    and detach() operations being committed on the same fragment
+instance, it is a                 no-op. The reason for this is that the
+FragmentManager optimizes all operations                 within a single
+transaction so the attach() and detach() cancel each other out          
+      and neither is actually executed. To get the desired behavior, you
+should separate                 the attach() and detach() calls into
+separate FragmentTransactions.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("DetachAndAttachSameFragment")
+  fun method() {
+     beginTransaction(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("DetachAndAttachSameFragment")
+  void method() {
+     beginTransaction(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection DetachAndAttachSameFragment
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DetachAndAttachSameFragment" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DetachAndAttachSameFragment'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DetachAndAttachSameFragment ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

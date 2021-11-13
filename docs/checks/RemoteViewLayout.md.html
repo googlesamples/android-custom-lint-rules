@@ -36,8 +36,8 @@ In a `RemoteView`, only some layouts and views are allowed.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/test.kt:5:Error: @layout/test includes views not allowed in
-a RemoteView: DatePicker, androidx.appcompat.widget.AppCompatTextView
-[RemoteViewLayout]
+a RemoteView: CheckBox, DatePicker, RadioButton, RadioGroup, Switch,
+androidx.appcompat.widget.AppCompatTextView [RemoteViewLayout]
 
     val remoteView = RemoteViews(packageName, R.layout.test)
                      ---------------------------------------

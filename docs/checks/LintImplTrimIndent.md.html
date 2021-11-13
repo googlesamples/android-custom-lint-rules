@@ -19,7 +19,7 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Kotlin and Java files
+:   Kotlin and Java files and test sources
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
@@ -141,6 +141,21 @@ class MyKotlinLintDetector : Detector() {
             .addMoreInfo("http://issuetracker.google.com/issues/37335487") // ERROR - http instead of https
             .addMoreInfo("https://b.corp.google.com/issues/139153781") // ERROR - don't point to buganizer with internal link
             .addMoreInfo("https://goo.gle/policy-storage-help") // OK - regression test for goo.gle
+    }
+
+    override fun visitAnnotationUsage(
+        context: JavaContext,
+        element: org.jetbrains.uast.UElement.UElement,
+        annotationInfo: com.android.tools.lint.detector.api.AnnotationInfo,
+        usageInfo: com.android.tools.lint.detector.api.AnnotationUsageInfo
+    ) {
+        // Invalid recursion!
+        super.visitAnnotationUsage(context, element, annotationInfo, usageInfo)
+    }
+
+    fun misc() {
+        System.out.print("Debugging")
+        println("Debugging code")
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

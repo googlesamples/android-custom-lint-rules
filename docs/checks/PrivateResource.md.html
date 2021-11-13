@@ -25,7 +25,7 @@ Editing
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PrivateResourceDetector.java)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PrivateResourceDetectorTest.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PrivateResourceDetectorTest.kt)
 
 Private resources should not be referenced; the may not be present
 everywhere, and even where they are they may disappear without notice.
@@ -36,7 +36,7 @@ To fix this, copy the resource into your own project instead.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/main/res/layout/private.xml:11:Warning: The resource
+src/main/res/layout/private.xml:10:Warning: The resource
 @string/my_private_string is marked as private in
 com.android.tools:test-library:1.0.0 [PrivateResource]
 
@@ -50,7 +50,6 @@ Here is the source file referenced above:
 
 `src/main/res/layout/private.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/newlinear"
               android:orientation="vertical"
@@ -70,7 +69,7 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PrivateResourceDetectorTest.java)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PrivateResourceDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

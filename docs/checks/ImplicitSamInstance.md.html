@@ -115,7 +115,12 @@ fun test(handler: MyHandler, list: List<MyInterface>) {
     var lambda2: () -> Unit
     lambda2 = { println("hello") }
     handler.stash(lambda2, list) // WARN
+
+    handler.act({ println("hello") }) // OK
+    handler.act(::callback) // OK
 }
+
+fun callback() {}
 
 fun viewpost(view: android.view.View) {
     view.postDelayed({ println ("Hello") }, 50)

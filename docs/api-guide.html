@@ -90,8 +90,7 @@ long book, suitable for printing or reading on a tablet.
 &nbsp;&nbsp;<a href="#lintcheckunittesting/quickfixes" class="level2"><span class="tocNumber">5.6&nbsp; </span>Quickfixes</a><br>
 &nbsp;&nbsp;<a href="#lintcheckunittesting/librarydependenciesandstubs" class="level2"><span class="tocNumber">5.7&nbsp; </span>Library Dependencies and Stubs</a><br>
 &nbsp;&nbsp;<a href="#lintcheckunittesting/binaryandcompiledsourcefiles" class="level2"><span class="tocNumber">5.8&nbsp; </span>Binary and Compiled Source Files</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/testmodes" class="level2"><span class="tocNumber">5.9&nbsp; </span>Test Modes</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/mydetectorisn'tinvokedfromatest!" class="level2"><span class="tocNumber">5.10&nbsp; </span>My Detector Isn't Invoked From a Test!</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/mydetectorisn'tinvokedfromatest!" class="level2"><span class="tocNumber">5.9&nbsp; </span>My Detector Isn't Invoked From a Test!</a><br>
 <a href="#testmodes" class="level1"><span class="tocNumber">6&nbsp; </span>Test Modes</a><br>
 &nbsp;&nbsp;<a href="#testmodes/howtodebug" class="level2"><span class="tocNumber">6.1&nbsp; </span>How to debug</a><br>
 &nbsp;&nbsp;<a href="#testmodes/handlingintentionalfailures" class="level2"><span class="tocNumber">6.2&nbsp; </span>Handling Intentional Failures</a><br>
@@ -2451,8 +2450,9 @@ Kotlin files, manifest files, icons, property files, and so on.
 
 </p><p>
 
-Using test file descriptors like this has a number of advantages
-over the traditional approach of checking in test files as sources:
+Using test file descriptors like this to <strong class="asterisk">describe</strong> an input file has
+a number of advantages over the traditional approach of checking in
+test files as sources:
 
 </p><p>
 
@@ -2462,6 +2462,10 @@ over the traditional approach of checking in test files as sources:
   particularly important for complex lint checks which test a lot of
   scenarios. As of this writing, <code>ApiDetectorTest</code> has 157 individual
   unit tests.
+
+<p></p><p>
+
+  </p><center><div class="image" style=""><a href="api-guide/nested-test-files.png" target="_blank"><img class="markdeep" src="api-guide/nested-test-files.png"></a><center><span class="imagecaption">Multiple test files shown inline</span></center></div></center>
 
 <p></p><p>
 
@@ -2491,17 +2495,25 @@ over the traditional approach of checking in test files as sources:
 <p></p><p>
 
 </p></li>
-<li class="asterisk">We can easily “parameterize” our test files. For example, if you
-  want to run your unit test against a 100K json file, you can
-  construct it programmatically; you don't have to check one in.
+<li class="asterisk">We can easily “parameterize” our test files. For example, if you want
+  to run your unit test against a 100K json file, you can construct it
+  programmatically; you don't have to check one in. As another example
+  you can programmatically create a number of repetitive scenarios.
 
 <p></p><p>
 
 </p></li>
-<li class="asterisk">Since test sources often (deliberately!) have errors in them, this
-  sometimes causes problems with the tooling; for example, some code
-  review tools will flag “disallowed” constructs or things like tabs or
-  trailing spaces, which may be deliberate in a lint unit test.
+<li class="asterisk">Since test sources often (deliberately!) have errors in them (which
+  is relevant when lint is unning on the fly inside the IDE editor),
+  this sometimes causes problems with the tooling; for example, some
+  code review tools will flag “disallowed” constructs or things like
+  tabs or trailing spaces, which may be deliberate in a lint unit test.
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">You can test running in single-file mode, which is how lint is run
+  on the fly in the editor.
 
 <p></p><p>
 
@@ -2521,7 +2533,16 @@ over the traditional approach of checking in test files as sources:
 
 <p></p><p>
 
-  </p><center><div class="image" style=""><a href="api-guide/nested-syntax-highlighting.png" target="_blank"><img class="markdeep" src="api-guide/nested-syntax-highlighting.png"></a><center><span class="imagecaption">Screenshot of nested highlighting</span></center></div></center></li></ul>
+  </p><center><div class="image" style=""><a href="api-guide/nested-syntax-highlighting.png" target="_blank"><img class="markdeep" src="api-guide/nested-syntax-highlighting.png"></a><center><span class="imagecaption">Screenshot of nested highlighting</span></center></div></center>
+
+<p></p><p>
+
+</p></li>
+<li class="asterisk">Finally, but most importantly, with the descriptors of your test
+  scenarios, lint can re-run your tests under a number of different
+  scenarios, including modifying your source files and project layout.
+  This concept is documented in more detail in the <a href="#testmodes">test
+  modes</a> chapter.</li></ul>
 
 <p></p>
 <a class="target" name="trimmingindents?">&nbsp;</a><a class="target" name="lintcheckunittesting/trimmingindents?">&nbsp;</a><a class="target" name="toc5.4">&nbsp;</a><h2>Trimming indents?</h2>
@@ -2695,24 +2716,24 @@ as one of the test files. For a larger example, see
 Here's an example of a test failure for an unresolved import:
 
 </p><pre class="listing backtick"><code><span class="line"></span>java.lang.IllegalStateException:
-<span class="line"></span>app/src/com/example/MyDiffUtilCallbackJava.java:<span class="hljs-number">4</span>: Error:
-<span class="line"></span>Couldn<span class="hljs-number">'</span>t resolve <span class="hljs-keyword">this</span> <span class="hljs-keyword">import</span> [LintError]
-<span class="line"></span><span class="hljs-keyword">import</span> androidx.recyclerview.widget.DiffUtil;
+<span class="line"></span>app/src/com/example/MyDiffUtilCallbackJava.java:4: Error:
+<span class="line"></span>Couldn't resolve this import [LintError]
+<span class="line"></span>import androidx.recyclerview.widget.DiffUtil;
 <span class="line"></span>       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <span class="line"></span>
-<span class="line"></span>This usually means that the unit test needs to declare a stub file <span class="hljs-keyword">or</span>
+<span class="line"></span>This usually means that the unit test needs to declare a stub file or
 <span class="line"></span>placeholder with the expected signature such that type resolving works.
 <span class="line"></span>
-<span class="line"></span>If <span class="hljs-keyword">this</span> <span class="hljs-keyword">import</span> is immaterial to the test, either <span class="hljs-keyword">delete</span> it, <span class="hljs-keyword">or</span> mark
-<span class="line"></span><span class="hljs-keyword">this</span> unit test as allowing resolution errors by setting
+<span class="line"></span>If this import is immaterial to the test, either delete it, or mark
+<span class="line"></span>this unit test as allowing resolution errors by setting
 <span class="line"></span>`allowCompilationErrors()`.
 <span class="line"></span>
-<span class="line"></span>(This check only enforces <span class="hljs-keyword">import</span> references, <span class="hljs-keyword">not</span> all references, so <span class="hljs-keyword">if</span>
-<span class="line"></span>it doesn<span class="hljs-number">'</span>t matter to the detector, you can just remove the <span class="hljs-keyword">import</span> but
+<span class="line"></span>(This check only enforces import references, not all references, so if
+<span class="line"></span>it doesn't matter to the detector, you can just remove the import but
 <span class="line"></span>leave references to the class in the code.)
 <span class="line"></span>
-<span class="line"></span>For more information, see the <span class="hljs-string">"Library Dependencies and Stubs"</span> section in
-<span class="line"></span>https:<span class="hljs-comment">//cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/docs/api-guide/unit-testing.md.html</span></code></pre>
+<span class="line"></span>For more information, see the "Library Dependencies and Stubs" section in
+<span class="line"></span>https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/docs/api-guide/unit-testing.md.html</code></pre>
 <a class="target" name="binaryandcompiledsourcefiles">&nbsp;</a><a class="target" name="lintcheckunittesting/binaryandcompiledsourcefiles">&nbsp;</a><a class="target" name="toc5.8">&nbsp;</a><h2>Binary and Compiled Source Files</h2>
 <p>
 
@@ -2769,6 +2790,12 @@ for Kotlin, some META-INF data).
 
 </p><p>
 
+Here's an example of a lint test which is using <code>bytecode(...)</code> to
+describe binary files:
+<a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/client/api/JarFileIssueRegistryTest.kt?q=testNewerLintBroken"></a><a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/client/api/JarFileIssueRegistryTest.kt?q=testNewerLintBroken" class="url">https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/client/api/JarFileIssueRegistryTest.kt?q=testNewerLintBroken</a>
+
+</p><p>
+
 Initially, you just specify the sources, and when no binary data
 has been provided, lint will instead attempt to compile the sources
 and emit the full test file registration.
@@ -2781,54 +2808,7 @@ project it will only provide the binaries, not the sources, for
 upstream modules.)
 
 </p>
-<a class="target" name="testmodes">&nbsp;</a><a class="target" name="lintcheckunittesting/testmodes">&nbsp;</a><a class="target" name="toc5.9">&nbsp;</a><h2>Test Modes</h2>
-<p>
-
-
-“Describing” your source inputs using <code>TestFile</code> objects like this
-instead of just checking in your test files as real <code>.kt</code> and <code>.java</code>
-has a number of advantages:
-
-</p><p>
-
-</p><ul>
-<li class="asterisk">It's really easy to see what a test is doing; all the test files are
-  placed right next to each other, with full syntax highlighting if you
-  open the test cases in IntelliJ; example:
-
-<p></p><p>
-
-  </p><center><div class="image" style=""><a href="api-guide/nested-test-files.png" target="_blank"><img class="markdeep" src="api-guide/nested-test-files.png"></a><center><span class="imagecaption"><a class="target" name="figure_screen">&nbsp;</a><b style="font-style:normal;">Figure&nbsp;1:</b> Nested syntax highlighting</span></center></div></center>
-
-<p></p><p>
-
-</p></li>
-<li class="asterisk">You can test handling broken sources (which is relevant when lint is
-  running on the fly inside the IDE editor).
-
-<p></p><p>
-
-</p></li>
-<li class="asterisk">You can test running in single-file mode, which is how lint is run
-  on the fly in the editor.
-
-<p></p><p>
-
-</p></li>
-<li class="asterisk">You can create test files programmatically if you want to cover
-  a number of repetitive scenarios
-
-<p></p><p>
-
-</p></li>
-<li class="asterisk">Finally, but most importantly, with the descriptors of your test
-  scenarios, lint can re-run your tests under a number of different
-  scenarios, including modifying your source files and project layout.
-  This concept is documented in more detail in the <a href="#testmodes">test
-  modes</a> chapter.</li></ul>
-
-<p></p>
-<a class="target" name="mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="lintcheckunittesting/mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="toc5.10">&nbsp;</a><h2>My Detector Isn't Invoked From a Test!</h2>
+<a class="target" name="mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="lintcheckunittesting/mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="toc5.9">&nbsp;</a><h2>My Detector Isn't Invoked From a Test!</h2>
 <p>
 
 
@@ -3010,7 +2990,7 @@ nicely:
 
 </p><p>
 
-</p><center><div class="image" style=""><a href="api-guide/fully-qualified-error.png" target="_blank"><img class="markdeep" src="api-guide/fully-qualified-error.png"></a><center><span class="imagecaption"><a class="target" name="figure_fqn">&nbsp;</a><b style="font-style:normal;">Figure&nbsp;2:</b> Screenshot of test failure</span></center></div></center>
+</p><center><div class="image" style=""><a href="api-guide/fully-qualified-error.png" target="_blank"><img class="markdeep" src="api-guide/fully-qualified-error.png"></a><center><span class="imagecaption"><a class="target" name="figure_fqn">&nbsp;</a><b style="font-style:normal;">Figure&nbsp;1:</b> Screenshot of test failure</span></center></div></center>
 
 <p></p><p>
 
@@ -5038,8 +5018,8 @@ checks:
 </p><p>
 
 </p><ul>
-<li class="asterisk"><code>@VisibleForTesting</code>: this private API should only be accessed
-  from outside this package from unit tests
+<li class="asterisk"><code>@VisibleForTesting</code>: this API is considered private, and has been
+   exposed only for unit testing purposes
 </li>
 <li class="asterisk"><code>@CheckResult</code>: anyone calling this method is expected to do
   something with the return value
@@ -5241,10 +5221,11 @@ inherited from a super method instead of being explicitly set here.
 
 </p><p>
 
-Lint uses this mechanism for example for its resource type lint check
-which makes sure that if a method has been annotated with say
-<code>@DrawableRes</code>, that any return values are not of some incompatible
-esource type (such as <code>@StringRes</code>).
+One usage of this mechanism in Lint is the enforcement of return values
+in methods. For example, if a method has been marked with
+<code>@DrawableRes</code>, Lint will make sure that the returned value of that
+method will not be of an incompatible resource type (such as
+<code>@StringRes</code>).
 
 </p>
 <a class="target" name="handlingusagetypes">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/handlingusagetypes">&nbsp;</a><a class="target" name="toc10.2.3">&nbsp;</a><h3>Handling Usage Types</h3>
@@ -5467,13 +5448,14 @@ for testing purposes, but you have a concrete subclass where you are
 deliberately supporting the operation, not just from tests. If
 annotations were always inherited, you would have to create some sort
 of annotation to “revert” the semantics, e.g.
-<code>@VisibleNotJustForTesting</code>, which would be ... anoying.
+<code>@VisibleNotJustForTesting</code>, which would require a lot of noisy
+annotations.
 
 </p><p>
 
-Lint let's you choose what the semantics are for each annotation. For
-example, the lint check which enforces the <code>@VisibleForTesting</code> and
-<code>@RestrictTo</code> annotations handles it like this:
+Lint lets you specify the inheritance behavior of individual
+annotations. For example, the lint check which enforces the
+<code>@VisibleForTesting</code> and <code>@RestrictTo</code> annotations handles it like this:
 
 </p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">inheritAnnotation</span><span class="hljs-params">(<span class="hljs-keyword">annotation</span>: <span class="hljs-type">String</span>)</span></span>: <span class="hljs-built_in">Boolean</span> {
 <span class="line"></span>    <span class="hljs-comment">// Require restriction annotations to be annotated everywhere</span>
@@ -5892,6 +5874,14 @@ Guide.
 </p><p>
 
 </p><ul>
+<li class="asterisk">Lint now bundles IntelliJ version 2021.1 and Kotlin compiler version 1.5.30.
+  You may see minor API changes in these dependencies. For example,
+  the Kotlin UAST class <code>KotlinUMethod</code> changed packages from
+  <code>org.jetbrains.uast.kotlin.declarations</code> to <code>org.jetbrains.uast.kotlin</code>.
+
+<p></p><p>
+
+</p></li>
 <li class="asterisk">The default behaviour of ResourceXmlDetector will change.
   It will skip res/raw folder and you have to override appliesTo method
   if you want your Lint checks to run there.
@@ -6028,23 +6018,9 @@ Guide.
 <li class="asterisk">Partial analysis. Lint's architecture has changed to support better
   scalability across large projects, where module results can be
   cached, etc. See the api-guide's dedicated chapter for more details.
-  It is enabled by default starting in AGP 7.0.0-alpha13, but you can
-  disable it by adding
+  It is enabled by default starting in AGP 7.0.0-alpha13.
 
 <p></p><p>
-
-      <code>android.enableParallelLint=false</code>
-
-</p><p>
-
-  to your <code>gradle.properties</code> file. If you want to debug your lint check
-  you may want to also set
-
-</p><p>
-
-      <code>android.experimental.runLintInProcess=true</code>
-
-</p><p>
 
 </p></li>
 <li class="asterisk">Issue registration now takes an optional <code>Vendor</code> property, where you

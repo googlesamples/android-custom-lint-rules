@@ -15,11 +15,11 @@ Category
 Platform
 :   Any
 Vendor
-:   Android Open Source Project (androidx.compose.runtime.lint.runtime)
+:   Jetpack Compose
 Identifier
-:   androidx.compose.runtime.lint.runtime
+:   androidx.compose.runtime
 Feedback
-:   https://issuetracker.google.com/issues/new?component=192731
+:   https://issuetracker.google.com/issues/new?component=612128
 Affects
 :   Kotlin and Java files and test sources
 Editing
@@ -77,35 +77,35 @@ must not return Unit [RememberReturnType]
     --------
 
 
-src/androidx/compose/runtime/foo/FooState.kt:39:Error: remember calls
+src/androidx/compose/runtime/foo/FooState.kt:40:Error: remember calls
 must not return Unit [RememberReturnType]
 
     val unit = remember(number1, number2) {
                --------
 
 
-src/androidx/compose/runtime/foo/FooState.kt:47:Error: remember calls
+src/androidx/compose/runtime/foo/FooState.kt:49:Error: remember calls
 must not return Unit [RememberReturnType]
 
     remember(number1, number2, number3) {
     --------
 
 
-src/androidx/compose/runtime/foo/FooState.kt:50:Error: remember calls
+src/androidx/compose/runtime/foo/FooState.kt:54:Error: remember calls
 must not return Unit [RememberReturnType]
 
     val unit = remember(number1, number2, number3) {
                --------
 
 
-src/androidx/compose/runtime/foo/FooState.kt:58:Error: remember calls
+src/androidx/compose/runtime/foo/FooState.kt:64:Error: remember calls
 must not return Unit [RememberReturnType]
 
     remember(number1, number2, number3, flag) {
     --------
 
 
-src/androidx/compose/runtime/foo/FooState.kt:61:Error: remember calls
+src/androidx/compose/runtime/foo/FooState.kt:69:Error: remember calls
 must not return Unit [RememberReturnType]
 
     val unit = remember(number1, number2, number3, flag) {
@@ -153,10 +153,12 @@ fun Test(number: Int) {
 fun Test(number1: Int, number2: Int) {
     val state = remember { FooState() }
     remember(number1, number2) {
-        state.update(number)
+        state.update(number1)
+        state.update(number2)
     }
     val unit = remember(number1, number2) {
-        state.update(number)
+        state.update(number1)
+        state.update(number2)
     }
 }
 
@@ -164,10 +166,14 @@ fun Test(number1: Int, number2: Int) {
 fun Test(number1: Int, number2: Int, number3: Int) {
     val state = remember { FooState() }
     remember(number1, number2, number3) {
-        state.update(number)
+        state.update(number1)
+        state.update(number2)
+        state.update(number3)
     }
     val unit = remember(number1, number2, number3) {
-        state.update(number)
+        state.update(number1)
+        state.update(number2)
+        state.update(number3)
     }
 }
 
@@ -175,10 +181,14 @@ fun Test(number1: Int, number2: Int, number3: Int) {
 fun Test(number1: Int, number2: Int, number3: Int, flag: Boolean) {
     val state = remember { FooState() }
     remember(number1, number2, number3, flag) {
-        state.update(number)
+        state.update(number1)
+        state.update(number2)
+        state.update(number3)
     }
     val unit = remember(number1, number2, number3, flag) {
-        state.update(number)
+        state.update(number1)
+        state.update(number2)
+        state.update(number3)
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,7 +200,7 @@ for the unit tests for this check to see additional scenarios.
 The above example was automatically extracted from the first unit test
 found for this lint check, `RememberDetector.returnsUnit`.
 To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192731.
+https://issuetracker.google.com/issues/new?component=612128.
 
 (##) Suppressing
 

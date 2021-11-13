@@ -23,7 +23,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
 
@@ -37,7 +37,8 @@ the `to` value.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/WrongUsages.java:34:Error: This annotation does not apply
-for type String; expected int or long [SupportAnnotationUsage]
+for type String; expected int. Should @DialogStyle be annotated with
+@StringDef instead? [SupportAnnotationUsage]
 
     @DialogStyle
     ------------
@@ -111,6 +112,14 @@ src/test/pkg/WrongUsages.java:64:Error: @CheckResult should not be
 specified on void methods [SupportAnnotationUsage]
 
     @CheckResult // Error on void methods
+    ------------
+
+
+src/test/pkg/WrongUsages.java:82:Error: This annotation does not apply
+for type java.util.List<java.lang.String>; expected int
+[SupportAnnotationUsage]
+
+    @DialogStyle public List&lt;String&gt; getFlags2() { return null; } // ERROR
     ------------
 
 
@@ -196,6 +205,23 @@ public class WrongUsages {
     @Size(min=1)
     public int[] okSize() {
         return null;
+    }
+
+    @DialogStyle public Pair<Integer, Integer> getFlags1() { return null; } // OK
+    @DialogStyle public List<Integer> getFlags2() { return null; } // OK
+    @DialogStyle public java.util.Map<Integer, String> getFlags2() { return null; } // OK
+    @DialogStyle public List<String> getFlags2() { return null; } // ERROR
+
+    private class Pair<S,T> { }
+
+
+    @androidx.annotation.LongDef({1L,2L,3L})
+    @Retention(RetentionPolicy.SOURCE)
+    private @interface LongDialogStyle {}
+
+    @LongDialogStyle // OK
+    public int okWithLong() {
+        return 0;
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

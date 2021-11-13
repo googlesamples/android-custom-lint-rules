@@ -6,8 +6,8 @@ Annotations allow API authors to express constraints that tools can
 enforce. There are many examples of these, along with existing lint
 checks:
 
-* `@VisibleForTesting`: this private API should only be accessed
-  from outside this package from unit tests
+* `@VisibleForTesting`: this API is considered private, and has been
+   exposed only for unit testing purposes
 * `@CheckResult`: anyone calling this method is expected to do
   something with the return value
 * `@CallSuper`: anyone overriding this method must also invoke `super`
@@ -190,10 +190,11 @@ src/book.kt:20: Error: METHOD_RETURN usage associated with @MyAnnotation on METH
 Note also that this would have worked if the annotation had been
 inherited from a super method instead of being explicitly set here.
 
-Lint uses this mechanism for example for its resource type lint check
-which makes sure that if a method has been annotated with say
-`@DrawableRes`, that any return values are not of some incompatible
-esource type (such as `@StringRes`).
+One usage of this mechanism in Lint is the enforcement of return values
+in methods. For example, if a method has been marked with
+`@DrawableRes`, Lint will make sure that the returned value of that
+method will not be of an incompatible resource type (such as
+`@StringRes`).
 
 ### Handling Usage Types
 
@@ -393,11 +394,12 @@ for testing purposes, but you have a concrete subclass where you are
 deliberately supporting the operation, not just from tests. If
 annotations were always inherited, you would have to create some sort
 of annotation to "revert" the semantics, e.g.
-`@VisibleNotJustForTesting`, which would be ... anoying.
+`@VisibleNotJustForTesting`, which would require a lot of noisy
+annotations.
 
-Lint let's you choose what the semantics are for each annotation. For
-example, the lint check which enforces the `@VisibleForTesting` and
-`@RestrictTo` annotations handles it like this:
+Lint lets you specify the inheritance behavior of individual
+annotations. For example, the lint check which enforces the
+`@VisibleForTesting` and `@RestrictTo` annotations handles it like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 override fun inheritAnnotation(annotation: String): Boolean {

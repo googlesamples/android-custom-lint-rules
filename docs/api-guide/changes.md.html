@@ -7,6 +7,11 @@ Guide.
 
 **7.1**
 
+* Lint now bundles IntelliJ version 2021.1 and Kotlin compiler version 1.5.30.
+  You may see minor API changes in these dependencies. For example,
+  the Kotlin UAST class `KotlinUMethod` changed packages from
+  `org.jetbrains.uast.kotlin.declarations` to `org.jetbrains.uast.kotlin`.
+
 * The default behaviour of ResourceXmlDetector will change.
   It will skip res/raw folder and you have to override appliesTo method
   if you want your Lint checks to run there.
@@ -101,15 +106,7 @@ Guide.
 * Partial analysis. Lint's architecture has changed to support better
   scalability across large projects, where module results can be
   cached, etc. See the api-guide's dedicated chapter for more details.
-  It is enabled by default starting in AGP 7.0.0-alpha13, but you can
-  disable it by adding
-
-      `android.enableParallelLint=false`
-
-  to your `gradle.properties` file. If you want to debug your lint check
-  you may want to also set
-
-      `android.experimental.runLintInProcess=true`
+  It is enabled by default starting in AGP 7.0.0-alpha13.
 
 * Issue registration now takes an optional `Vendor` property, where you
   can specify information about which company or team provided this

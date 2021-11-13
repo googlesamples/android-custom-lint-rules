@@ -29,7 +29,10 @@ Tests
 
 Apps targeting Android 12 and higher are required to specify an explicit
 value for `android:exported` when the corresponding component has an
-intent filter defined. Otherwise, installation will fail.
+intent filter defined. Otherwise, installation will fail. Set it to
+`true` to make this activity accessible to other apps, and `false` to
+limit it to be used only by this app or the OS. For launch activities,
+this should be set to true; otherwise, the app will fail to launch.
 
 Previously, `android:exported` for components without any intent filters
 present used to default to `false`, and when intent filters were
@@ -55,8 +58,9 @@ reason to export a particular component.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:7:Warning: When using intent filters, please specify
-android:exported as well [IntentFilterExportedReceiver]
+AndroidManifest.xml:7:Warning: As of Android 12, android:exported must
+be set; use true to make the activity available to other apps, and false
+otherwise. [IntentFilterExportedReceiver]
 
     &lt;receiver android:name="com.google.android.c2dm.C2DMBroadcastReceiver"&gt;
      --------

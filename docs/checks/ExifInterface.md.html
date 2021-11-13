@@ -47,8 +47,16 @@ src/test/pkg/ExifUsage.java:13:Warning: Avoid using
 android.media.ExifInterface; use androidx.media.ExifInterface instead
 [ExifInterface]
 
-    android.media.ExifInterface exif2 = new android.media.ExifInterface(path);
-                                            ---------------------------
+    android.media.ExifInterface exif2 =
+    ---------------------------
+
+
+src/test/pkg/ExifUsage.java:14:Warning: Avoid using
+android.media.ExifInterface; use androidx.media.ExifInterface instead
+[ExifInterface]
+
+    new android.media.ExifInterface(path);
+        ---------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +77,8 @@ public class ExifUsage {
         exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, lat);
         exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, lon);
         exif.saveAttributes();
-        android.media.ExifInterface exif2 = new android.media.ExifInterface(path);
+        android.media.ExifInterface exif2 =
+            new android.media.ExifInterface(path);
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

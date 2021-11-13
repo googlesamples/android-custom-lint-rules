@@ -99,7 +99,7 @@ which we now need to insert into the Android platform, with some tweaks:
 ```ksh
 cd $ANDROID_SRC/prebuilts/cmdline-tools/
 git rm -rf tools
-unzip /tmp/dist/commandlinetools_linux.zip
+unzip $DIST_DIR/commandlinetools_linux.zip
 mv cmdline-tools tools
 git add tools
 ```
@@ -107,7 +107,7 @@ git add tools
 There is one deliberate change to the tools for platform usage that we need to preserve, so back out any changes to `tools/bin/lint`:
 
 ```ksh
-git reset tools/bin/lint && git restore tools/bin/lint
+cd tools/bin && git reset lint && git restore lint
 ```
 
 That's it. If you don't have a full Android build environment up and

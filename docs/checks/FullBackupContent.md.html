@@ -27,19 +27,26 @@ Editing
 See
 :   https://android-developers.googleblog.com/2015/07/auto-backup-for-apps-made-simple.html
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/FullBackupContentDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/FullBackupContentDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FullBackupContentDetectorTest.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FullBackupContentDetectorTest.kt)
 
-Ensures that a `<full-backup-content>` file, which is pointed to by a
-`android:fullBackupContent attribute` in the manifest file, is valid.
+Ensures that `<data-extraction-rules`> and `<full-backup-content>`
+files, which configure backup options, are valid.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/xml/backup.xml:6:Error: foo.xml is not in an included path
-[FullBackupContent]
+res/xml/data_extraction_rules.xml:6:Error: foo.xml is not in an included
+path [FullBackupContent]
+
+    &lt;exclude domain="sharedpref" path="foo.xml"/&gt;
+                                       -------
+
+
+res/xml/full_backup_content.xml:5:Error: foo.xml is not in an included
+path [FullBackupContent]
 
     &lt;exclude domain="sharedpref" path="foo.xml"/&gt;
                                        -------
@@ -47,11 +54,39 @@ res/xml/backup.xml:6:Error: foo.xml is not in an included path
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`res/xml/backup.xml`:
+`src/AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android" package="my.pkg" &gt;
+    &lt;application
+        android:fullBackupContent="@xml/full_backup_content"&gt;
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:label="@string/app_name"&gt;
+        ...
+    &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml/data_extraction_rules.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;data-extraction-rules&gt;
+    &lt;cloud-backup&gt;
+        &lt;include domain="file" path="dd"/&gt;
+        &lt;exclude domain="file" path="dd/fo3o.txt"/&gt;
+        &lt;exclude domain="file" path="dd/ss/foo.txt"/&gt;
+        &lt;exclude domain="sharedpref" path="foo.xml"/&gt;
+    &lt;/cloud-backup&gt;
+    &lt;device-transfer&gt;
+        &lt;include domain="file"/&gt;
+        &lt;exclude domain="file" path="dd/fo3o.txt"/&gt;
+        &lt;include domain="sharedpref" path="something"/&gt;
+    &lt;/device-transfer&gt;
+&lt;/data-extraction-rules&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml/full_backup_content.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
 &lt;full-backup-content&gt;
      &lt;include domain="file" path="dd"/&gt;
      &lt;exclude domain="file" path="dd/fo3o.txt"/&gt;
@@ -61,13 +96,8 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FullBackupContentDetectorTest.java)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FullBackupContentDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `FullBackupContentDetector.test20890435`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

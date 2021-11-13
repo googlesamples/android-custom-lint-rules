@@ -1,0 +1,142 @@
+<meta charset="utf-8">
+(#) Building navigation graph in compose scope
+
+!!! ERROR: Building navigation graph in compose scope
+   This is an error.
+
+Id
+:   `ComposableNavGraphInComposeScope`
+Summary
+:   Building navigation graph in compose scope
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Navigation Compose
+Identifier
+:   androidx.navigation.compose
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-compose-lint/src/main/java/androidx/navigation/compose/lint/ComposableDestinationInComposeScopeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-compose-lint/src/test/java/androidx/navigation/compose/lint/ComposableDestinationInComposeScopeDetectorTest.kt)
+
+Composable destinations should only be constructed directly within a
+NavGraphBuilder scope.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/com/example/test.kt:14:Error: Using navigation inside of a compose
+scope [ComposableNavGraphInComposeScope]
+
+    navigation("wrong") { }
+    ----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/com/example/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.compose.runtime.*
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.NavHost
+import androidx.navigation.NavGraphBuilder
+
+@Composable
+fun Test() {
+    NavHost("host") {
+        composable("right") {
+            navigation("wrong") { }
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-compose-lint/src/test/java/androidx/navigation/compose/lint/ComposableDestinationInComposeScopeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ComposableDestinationInComposeScopeDetector.navigationBuilderInsideComposable`.
+To report a problem with this extracted sample, contact
+Jetpack Navigation Compose.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ComposableNavGraphInComposeScope")
+  fun method() {
+     composable(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ComposableNavGraphInComposeScope")
+  void method() {
+     composable(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ComposableNavGraphInComposeScope
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ComposableNavGraphInComposeScope" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ComposableNavGraphInComposeScope'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ComposableNavGraphInComposeScope ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
