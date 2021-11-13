@@ -1,0 +1,244 @@
+<meta charset="utf-8">
+(#) Assertions with Side Effects
+
+!!! WARNING: Assertions with Side Effects
+   This is a warning.
+
+Id
+:   `AssertionSideEffect`
+Summary
+:   Assertions with Side Effects
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AssertDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AssertDetectorTest.kt)
+
+Assertion conditions can have side effects. This is risky because the
+behavior depends on whether assertions are on or off. This is usually
+not intentional, and can lead to bugs where the production version
+differs from the version tested during development.
+
+Generally, you'll want to perform the operation with the side effect
+before the assertion, and then assert that the result was what you
+expected.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:4:Warning: Assertion condition has a side effect: i++
+[AssertionSideEffect]
+
+    assert(i++ &lt; 5) // WARN 1
+           ---
+
+
+src/test.kt:5:Warning: Assertion condition has a side effect: x++
+[AssertionSideEffect]
+
+    assert(method1() &gt; 5) // WARN 2
+           ---------
+
+
+src/test.kt:6:Warning: Assertion condition has a side effect: x++
+[AssertionSideEffect]
+
+    assert(method2() &gt; 5) // WARN 3
+           ---------
+
+
+src/test.kt:7:Warning: Assertion condition has a side effect: x = 0
+[AssertionSideEffect]
+
+    assert(method3()) // WARN 4
+           ---------
+
+
+src/test.kt:9:Warning: Assertion condition has a side effect: delete()
+[AssertionSideEffect]
+
+    assert(file.delete()) // WARN 5
+           -------------
+
+
+src/test.kt:10:Warning: Assertion condition has a side effect: mkdirs()
+[AssertionSideEffect]
+
+    assert(file.mkdirs()) // WARN 6
+           -------------
+
+
+src/test.kt:11:Warning: Assertion condition has a side effect:
+add("test") [AssertionSideEffect]
+
+    assert(list.add("test")) // WARN 7
+           ----------------
+
+
+src/test.kt:12:Warning: Assertion condition has a side effect:
+setExecutable(true) [AssertionSideEffect]
+
+    assert(file.setExecutable(true)) // WARN 8
+           ------------------------
+
+
+src/test.kt:14:Warning: Assertion condition has a side effect: x++
+[AssertionSideEffect]
+
+    assert(method5()) // WARN 9
+           ---------
+
+
+src/test.kt:15:Warning: Assertion condition has a side effect: x++
+[AssertionSideEffect]
+
+    assert(method6()) // WARN 10
+           ---------
+
+
+src/test.kt:16:Warning: Assertion condition has a side effect: x++
+[AssertionSideEffect]
+
+    assert(method7()) // WARN 11
+           ---------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+var x: Int = 0
+fun test(file: java.io.File, list: java.util.List<String>) {
+    var i = 0
+    assert(i++ < 5) // WARN 1
+    assert(method1() > 5) // WARN 2
+    assert(method2() > 5) // WARN 3
+    assert(method3()) // WARN 4
+    assert(method4()) // OK 1
+    assert(file.delete()) // WARN 5
+    assert(file.mkdirs()) // WARN 6
+    assert(list.add("test")) // WARN 7
+    assert(file.setExecutable(true)) // WARN 8
+    assert(list.contains("test")) // OK 2
+    assert(method5()) // WARN 9
+    assert(method6()) // WARN 10
+    assert(method7()) // WARN 11
+}
+
+fun method1(): Int = x++ // side effect
+fun method2(): Int = method1() // indirect side effect
+fun method3(): Boolean {
+    x = 0 // side effect
+    return true
+}
+fun method4(): Boolean {
+    val x: Int
+    x = 0 // not a side effect
+    x++ // not a side effect
+    return true
+}
+fun method5(v: Int): Boolean {
+    if (v > 5) { } else { x++ }
+    return true
+}
+fun method6(v: Int): Boolean {
+    for (i in 0 until v) x++
+    return true
+}
+fun method7(v: Int): Boolean {
+    try { println(v) } finally { x++ }
+    return true
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AssertDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AssertDetector.testSideEffects`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AssertionSideEffect")
+  fun method() {
+     assert(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AssertionSideEffect")
+  void method() {
+     assert(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AssertionSideEffect
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AssertionSideEffect" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AssertionSideEffect'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AssertionSideEffect ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

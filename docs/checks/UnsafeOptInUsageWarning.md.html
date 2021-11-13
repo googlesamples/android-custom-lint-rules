@@ -35,10 +35,23 @@ Any declaration annotated with this marker is considered part of an
 unstable or
 otherwise non-standard API surface and its call sites should accept the
 opt-in
-aspect of it either by using `@OptIn` or by being annotated with that
-marker
-themselves, effectively causing further propagation of the opt-in
-aspect.
+aspect of it by using the `@OptIn` annotation, using the marker
+annotation --
+effectively causing further propagation of the opt-in aspect -- or
+configuring
+the `UnsafeOptInUsageWarning` check's options for project-wide opt-in.
+
+To configure project-wide opt-in, specify the `opt-in` option value in
+`lint.xml`
+as a comma-delimited list of opted-in annotations:
+
+```
+<lint>
+    <issue id="UnsafeOptInUsageWarning">
+        <option name="opt-in" value="com.foo.ExperimentalBarAnnotation" />
+    </issue>
+</lint>
+```
 
 (##) Suppressing
 

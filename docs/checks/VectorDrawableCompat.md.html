@@ -27,49 +27,15 @@ See
 See
 :   https://medium.com/androiddevelopers/using-vector-assets-in-android-apps-4318fd662eb9
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/VectorDrawableCompatDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/VectorDrawableCompatDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDrawableCompatDetectorTest.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDrawableCompatDetectorTest.kt)
 
 To use VectorDrawableCompat, you need to make two modifications to your
 project. First, set
 `android.defaultConfig.vectorDrawables.useSupportLibrary = true` in your
 `build.gradle` file, and second, use `app:srcCompat` instead of
 `android:src` to refer to vector drawables.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/main/res/layout/main_activity.xml:3:Error: To use
-VectorDrawableCompat, you need to set
-android.defaultConfig.vectorDrawables.useSupportLibrary = true in
-test_project/build.gradle [VectorDrawableCompat]
-
-    &lt;ImageView app:srcCompat="@drawable/foo" /&gt;
-               -------------
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`src/main/res/layout/main_activity.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"&gt;
-    &lt;ImageView app:srcCompat="@drawable/foo" /&gt;
-&lt;/RelativeLayout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDrawableCompatDetectorTest.java)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `VectorDrawableCompatDetector.testSrcCompat`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

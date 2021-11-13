@@ -88,6 +88,24 @@ lint check authors, see the API Guide.
 
 </p><p>
 
+<strong class="asterisk">7.2</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>AssertionSideEffect</code> </td><td style="text-align:left"> Assertions that have side effects </td></tr>
+<tr><td style="text-align:left"> <code>BidiSpoofing</code> </td><td style="text-align:left"> Misleading bidirectional Unicode strings </td></tr>
+<tr><td style="text-align:left"> <code>MotionLayoutMissingId</code> </td><td style="text-align:left"> Views inside MotionLayout require an id </td></tr>
+<tr><td style="text-align:left"> <code>UastImplementation</code> </td><td style="text-align:left"> Avoid UAST implementation classes </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
 <strong class="asterisk">7.1</strong>
 
 </p><p>
@@ -111,6 +129,10 @@ lint check authors, see the API Guide.
 </p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
 <tr><td style="text-align:left"> <code>FileEndsWithExt</code> </td><td style="text-align:left"> Flags suspicious usages of File.endsWith(extension) </td></tr>
 <tr><td style="text-align:left"> <code>DataExtractionRules</code> </td><td style="text-align:left"> Missing data extraction rules </td></tr>
+<tr><td style="text-align:left"> <code>RedundantLabel</code> </td><td style="text-align:left"> Redundant label on activity in manifest </td></tr>
+<tr><td style="text-align:left"> <code>DiscouragedApi</code> </td><td style="text-align:left"> Using APIs annotated with @Discouraged </td></tr>
+<tr><td style="text-align:left"> <code>ViewBindingType</code> </td><td style="text-align:left"> Validation for <code>tools:viewBindingType</code> </td></tr>
+<tr><td style="text-align:left"> <code>AppBundleLocaleChanges</code> </td><td style="text-align:left"> Handling runtime locale changes </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -125,6 +147,12 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>WrongConstant</code> </td><td style="text-align:left"> Now has quickfixes to replace with constants </td></tr>
 <tr><td style="text-align:left"> <code>CheckResult</code> </td><td style="text-align:left"> Now also runs in unit tests </td></tr>
 </tbody></table></div>
+
+<p></p><p>
+
+</p><ul>
+<li class="asterisk">Removed lint check <code>MediaCapabilities</code> since its advice is no longer the
+  recommended practice.</li></ul>
 
 <p></p><p>
 
@@ -154,6 +182,7 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>UnspecifiedImmutableFlag</code> </td><td style="text-align:left"> Missing <code>PendingIntent</code> mutability flag </td></tr>
 <tr><td style="text-align:left"> <code>WatchFaceEditor</code> </td><td style="text-align:left"> Watch face editor must use launchMode=“standard” </td></tr>
 <tr><td style="text-align:left"> <code>WebViewClientOnReceivedSslError</code> </td><td style="text-align:left"> Proceeds with the HTTPS connection despite SSL errors </td></tr>
+<tr><td style="text-align:left"> <code>IntentFilterUniqueDataAttributes</code> </td><td style="text-align:left"> Data tags should only declare unique attributes </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -171,7 +200,7 @@ lint check authors, see the API Guide.
   lint task instead of running it across all variants and accumulating
   results. This is much faster, is usually what you want, and now the
   target name will not change based on whether the project has product
-  flavors, so you can start just running <code>./gradlew:app:lint</code> instead
+  flavors, so you can start just running <code>./gradlew :app:lint</code> instead
   of <code>./gradlew :app:lintDebug</code> or <code>:app:lintProDebug</code> etc.
   Furthermore, the <code>lintOptions</code> block is now just named <code>lint</code>
   instead.
@@ -179,15 +208,9 @@ lint check authors, see the API Guide.
 <p></p><p>
 
 </p></li>
-<li class="asterisk">Lint “partial analysis” mode is now integrated in lint. It is
-  enabled by default, but you can disable it by modifying
-  <code>gradle.properties</code> to include
+<li class="asterisk">Lint “partial analysis” mode is now integrated in lint.
 
 <p></p><p>
-
-      <code>android.enableParallelLint=false</code>
-
-</p><p>
 
 </p></li>
 <li class="asterisk">The API check now also looks up operator overloading functions.</li></ul>
@@ -1507,6 +1530,24 @@ lint check authors, see the API Guide.
 
 </p><p>
 
+<strong class="asterisk">7.2</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>AssertionSideEffect</code> </td><td style="text-align:left"> Assertions that have side effects </td></tr>
+<tr><td style="text-align:left"> <code>BidiSpoofing</code> </td><td style="text-align:left"> Misleading bidirectional Unicode strings </td></tr>
+<tr><td style="text-align:left"> <code>MotionLayoutMissingId</code> </td><td style="text-align:left"> Views inside MotionLayout require an id </td></tr>
+<tr><td style="text-align:left"> <code>UastImplementation</code> </td><td style="text-align:left"> Avoid UAST implementation classes </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
 <strong class="asterisk">7.1</strong>
 
 </p><p>
@@ -1530,6 +1571,10 @@ lint check authors, see the API Guide.
 </p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
 <tr><td style="text-align:left"> <code>FileEndsWithExt</code> </td><td style="text-align:left"> Flags suspicious usages of File.endsWith(extension) </td></tr>
 <tr><td style="text-align:left"> <code>DataExtractionRules</code> </td><td style="text-align:left"> Missing data extraction rules </td></tr>
+<tr><td style="text-align:left"> <code>RedundantLabel</code> </td><td style="text-align:left"> Redundant label on activity in manifest </td></tr>
+<tr><td style="text-align:left"> <code>DiscouragedApi</code> </td><td style="text-align:left"> Using APIs annotated with @Discouraged </td></tr>
+<tr><td style="text-align:left"> <code>ViewBindingType</code> </td><td style="text-align:left"> Validation for <code>tools:viewBindingType</code> </td></tr>
+<tr><td style="text-align:left"> <code>AppBundleLocaleChanges</code> </td><td style="text-align:left"> Handling runtime locale changes </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -1544,6 +1589,12 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>WrongConstant</code> </td><td style="text-align:left"> Now has quickfixes to replace with constants </td></tr>
 <tr><td style="text-align:left"> <code>CheckResult</code> </td><td style="text-align:left"> Now also runs in unit tests </td></tr>
 </tbody></table></div>
+
+<p></p><p>
+
+</p><ul>
+<li class="asterisk">Removed lint check <code>MediaCapabilities</code> since its advice is no longer the
+  recommended practice.</li></ul>
 
 <p></p><p>
 
@@ -1573,6 +1624,7 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>UnspecifiedImmutableFlag</code> </td><td style="text-align:left"> Missing <code>PendingIntent</code> mutability flag </td></tr>
 <tr><td style="text-align:left"> <code>WatchFaceEditor</code> </td><td style="text-align:left"> Watch face editor must use launchMode=“standard” </td></tr>
 <tr><td style="text-align:left"> <code>WebViewClientOnReceivedSslError</code> </td><td style="text-align:left"> Proceeds with the HTTPS connection despite SSL errors </td></tr>
+<tr><td style="text-align:left"> <code>IntentFilterUniqueDataAttributes</code> </td><td style="text-align:left"> Data tags should only declare unique attributes </td></tr>
 </tbody></table></div>
 
 <p></p><p>
@@ -1590,7 +1642,7 @@ lint check authors, see the API Guide.
   lint task instead of running it across all variants and accumulating
   results. This is much faster, is usually what you want, and now the
   target name will not change based on whether the project has product
-  flavors, so you can start just running <code>./gradlew:app:lint</code> instead
+  flavors, so you can start just running <code>./gradlew :app:lint</code> instead
   of <code>./gradlew :app:lintDebug</code> or <code>:app:lintProDebug</code> etc.
   Furthermore, the <code>lintOptions</code> block is now just named <code>lint</code>
   instead.
@@ -1598,15 +1650,9 @@ lint check authors, see the API Guide.
 <p></p><p>
 
 </p></li>
-<li class="asterisk">Lint “partial analysis” mode is now integrated in lint. It is
-  enabled by default, but you can disable it by modifying
-  <code>gradle.properties</code> to include
+<li class="asterisk">Lint “partial analysis” mode is now integrated in lint.
 
 <p></p><p>
-
-      <code>android.enableParallelLint=false</code>
-
-</p><p>
 
 </p></li>
 <li class="asterisk">The API check now also looks up operator overloading functions.</li></ul>

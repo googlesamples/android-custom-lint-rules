@@ -1,0 +1,151 @@
+<meta charset="utf-8">
+(#) File endsWith on file extensions
+
+!!! WARNING: File endsWith on file extensions
+   This is a warning.
+
+Id
+:   `FileEndsWithExt`
+Summary
+:   File endsWith on file extensions
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/FileEndsWithDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)
+
+The Kotlin extension method `File.endsWith(suffix)` checks whole path
+components,
+not just string suffixes. This means that
+`File("foo.txt").endsWith(".txt")` will return
+false. Instead you might have intended `file.path.endsWith` or
+`file.extension.equals`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:4:Warning: File.endsWith compares whole filenames, not just
+file extensions; did you mean file.path.endsWith(".xml") ?
+[FileEndsWithExt]
+
+fun File.isXml() = endsWith(".xml")
+                   ----------------
+
+
+src/test.kt:7:Warning: File.extension does not include the leading dot;
+did you mean "json" ? [FileEndsWithExt]
+
+fun File.isJson() = extension == ".json"
+                                  -----
+
+
+src/test.kt:8:Warning: File.extension does not include the leading dot;
+did you mean "webp" ? [FileEndsWithExt]
+
+fun isWebp(path: File) = path.extension.startsWith(".webp")
+                                                    -----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import java.io.File
+
+// This does not work -- it will return false for "foo/bar.xml", but true for "foo/.xml"
+fun File.isXml() = endsWith(".xml")
+
+// This does not work -- the extension property does not include the leading dot
+fun File.isJson() = extension == ".json"
+fun isWebp(path: File) = path.extension.startsWith(".webp")
+
+fun File.isText() = path.endsWith(".txt") // OK
+fun File.isPng() = extension == "png" // OK
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("FileEndsWithExt")
+  fun method() {
+     endsWith(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("FileEndsWithExt")
+  void method() {
+     endsWith(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection FileEndsWithExt
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="FileEndsWithExt" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'FileEndsWithExt'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore FileEndsWithExt ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -64,6 +64,13 @@ build.gradle:8:Error: Use an integer rather than a string here (replace
     ---------------------
 
 
+build.gradle:10:Error: Use an integer rather than a string here (replace
+'19' with just 19) [StringShouldBeInt]
+
+    compileSdk '19'
+    ---------------
+
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -79,6 +86,7 @@ android {
         minSdkVersion '8'
         targetSdkVersion "16"
     }
+    compileSdk '19'
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

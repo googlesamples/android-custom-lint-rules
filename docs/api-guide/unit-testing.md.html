@@ -108,14 +108,17 @@ in the source file contents. This constructs a `TestFile`, and there
 are a number of different types of test source files, such as for
 Kotlin files, manifest files, icons, property files, and so on.
 
-Using test file descriptors like this has a number of advantages
-over the traditional approach of checking in test files as sources:
+Using test file descriptors like this to **describe** an input file has
+a number of advantages over the traditional approach of checking in
+test files as sources:
 
 * Everything is kept together, so it's easier to look at a test and see
   what it analyzes and what the expected results are. This is
   particularly important for complex lint checks which test a lot of
   scenarios. As of this writing, `ApiDetectorTest` has 157 individual
   unit tests.
+
+  ![Multiple test files shown inline](nested-test-files.png)
 
 * Lint can provide a DSL to construct test files easily. For example,
   `projectProperties().compileSdk(17)` and
@@ -136,14 +139,19 @@ over the traditional approach of checking in test files as sources:
   code and figure out what the class file should be named and where to
   place it.
 
-* We can easily “parameterize” our test files. For example, if you
-  want to run your unit test against a 100K json file, you can
-  construct it programmatically; you don't have to check one in.
+* We can easily “parameterize” our test files. For example, if you want
+  to run your unit test against a 100K json file, you can construct it
+  programmatically; you don't have to check one in. As another example
+  you can programmatically create a number of repetitive scenarios.
 
-* Since test sources often (deliberately!) have errors in them, this
-  sometimes causes problems with the tooling; for example, some code
-  review tools will flag “disallowed” constructs or things like tabs or
-  trailing spaces, which may be deliberate in a lint unit test.
+* Since test sources often (deliberately!) have errors in them (which
+  is relevant when lint is unning on the fly inside the IDE editor),
+  this sometimes causes problems with the tooling; for example, some
+  code review tools will flag “disallowed” constructs or things like
+  tabs or trailing spaces, which may be deliberate in a lint unit test.
+
+* You can test running in single-file mode, which is how lint is run
+  on the fly in the editor.
 
 * Lint originally checked in test sources as individual files.
   Unfortunately over time, source files ended up getting reused by
@@ -156,6 +164,12 @@ over the traditional approach of checking in test files as sources:
   how this looks:
 
   ![Screenshot of nested highlighting](nested-syntax-highlighting.png)
+
+* Finally, but most importantly, with the descriptors of your test
+  scenarios, lint can re-run your tests under a number of different
+  scenarios, including modifying your source files and project layout.
+  This concept is documented in more detail in the [test
+  modes](test-modes.md.html) chapter.
 
 ## Trimming indents?
 
@@ -303,7 +317,7 @@ as one of the test files. For a larger example, see
 
 Here's an example of a test failure for an unresolved import:
 
-```
+```text
 java.lang.IllegalStateException:
 app/src/com/example/MyDiffUtilCallbackJava.java:4: Error:
 Couldn't resolve this import [LintError]
@@ -375,6 +389,10 @@ provides a source test file, as well as a set of corresponding binary
 files (since a single source file can create multiple class files, and
 for Kotlin, some META-INF data).
 
+Here's an example of a lint test which is using `bytecode(...)` to
+describe binary files:
+[](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/client/api/JarFileIssueRegistryTest.kt?q=testNewerLintBroken)
+
 Initially, you just specify the sources, and when no binary data
 has been provided, lint will instead attempt to compile the sources
 and emit the full test file registration.
@@ -383,33 +401,6 @@ This isn't just a convenience; lint's test infrastructure also uses
 this to test some additional scenarios (for example, in a multi- module
 project it will only provide the binaries, not the sources, for
 upstream modules.)
-
-## Test Modes
-
-"Describing” your source inputs using `TestFile` objects like this
-instead of just checking in your test files as real `.kt` and `.java`
-has a number of advantages:
-
-* It's really easy to see what a test is doing; all the test files are
-  placed right next to each other, with full syntax highlighting if you
-  open the test cases in IntelliJ; example:
-
-  ![Figure [screen]: Nested syntax highlighting](nested-test-files.png)
-
-* You can test handling broken sources (which is relevant when lint is
-  running on the fly inside the IDE editor).
-
-* You can test running in single-file mode, which is how lint is run
-  on the fly in the editor.
-
-* You can create test files programmatically if you want to cover
-  a number of repetitive scenarios
-
-* Finally, but most importantly, with the descriptors of your test
-  scenarios, lint can re-run your tests under a number of different
-  scenarios, including modifying your source files and project layout.
-  This concept is documented in more detail in the [test
-  modes](test-modes.md.html) chapter.
 
 ## My Detector Isn't Invoked From a Test!
 

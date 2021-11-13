@@ -23,7 +23,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
 
@@ -99,29 +99,17 @@ public class IntDefTest {
     @Retention(RetentionPolicy.SOURCE)
     private @interface Flags1 {}
 
-    @IntDef(flag = true, value={FLAG1, FLAG2})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Flags2 {}
-
-    @IntDef(flag = true, value={FLAG9, FLAG10, FLAG11})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Flags3 {}
-
-    @IntDef(flag = true, value={FLAG1, FLAG3, FLAG4})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Flags4 {}
-
-    @IntDef(flag = true, value={FLAG5, FLAG6, FLAG7, FLAG8})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Flags5 {}
-
-    @IntDef(flag = true, value={FLAG5, FLAG6, FLAG7, FLAG8})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Flags6 {}
-
-    @IntDef(flag = true, value={FLAG12, FLAG13, FLAG14})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface Flags7 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG3}) private @interface Flags1 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG4}) private @interface Flags4 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG5}) private @interface Flags5 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG6}) private @interface Flags6 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG7}) private @interface Flags7 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG8}) private @interface Flags8 {}
+    @IntDef(flag = true, value={FLAG11,FLAG9,FLAG10}) private @interface Flags10 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG11}) private @interface Flags11 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG12}) private @interface Flags12 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG13}) private @interface Flags13 {}
+    @IntDef(flag = true, value={FLAG1,FLAG9,FLAG14}) private @interface Flags14 {}
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

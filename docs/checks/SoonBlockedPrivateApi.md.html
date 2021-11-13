@@ -63,9 +63,9 @@ public class TestReflection {
     public void test(Context context, int subId) {
         try {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_SELECTION_MODE_MANUAL"); // ERROR 1
+            Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_TYPES"); // ERROR 1
             Object o1 = deniedField.get(tm);
-            Field allowedField = TelephonyManager.class.getDeclaredField("PHONE_TYPE_CDMA"); // OK
+            Field allowedField = TelephonyManager.class.getDeclaredField("NETWORK_SELECTION_MODE_MANUAL"); // OK
             Object o2 = allowedField.get(tm);
             Field maybeField = TelephonyManager.class.getDeclaredField("OTASP_NEEDED"); // ERROR 2
             Object o3 = maybeField.get(tm);

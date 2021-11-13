@@ -91,6 +91,13 @@ https://issuetracker.google.com/issues/new?component=192708.
 
 You can suppress false positives using one of the following mechanisms:
 
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  #noinspection PropertyEscape
+  key = problematic-value
+  ```
+
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look
   like this:

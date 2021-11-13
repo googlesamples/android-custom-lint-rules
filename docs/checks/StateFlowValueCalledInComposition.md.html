@@ -1,0 +1,284 @@
+<meta charset="utf-8">
+(#) StateFlow.value should not be called within composition
+
+!!! ERROR: StateFlow.value should not be called within composition
+   This is an error.
+
+Id
+:   `StateFlowValueCalledInComposition`
+Summary
+:   StateFlow.value should not be called within composition
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.runtime
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/ComposableStateFlowValueDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/ComposableStateFlowValueDetectorTest.kt)
+
+Calling StateFlow.value within composition will not observe changes to
+the StateFlow, so changes might not be reflected within the composition.
+Instead you should use stateFlow.collectAsState() to observe changes to
+the StateFlow, and recompose when it changes.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/runtime/foo/TestFlow.kt:20:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:24:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    stateFlow.value
+              -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:25:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:29:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    stateFlow.value
+              -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:30:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:39:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    stateFlow.value
+              -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:40:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:43:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    stateFlow.value
+              -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:44:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:50:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    stateFlow.value
+              -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:51:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:55:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    stateFlow.value
+              -----
+
+
+src/androidx/compose/runtime/foo/TestFlow.kt:56:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+
+    testFlow.value
+             -----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/runtime/foo/TestFlow.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.runtime.foo
+
+import androidx.compose.runtime.Composable
+import kotlinx.coroutines.flow.*
+
+val stateFlow: StateFlow<Boolean> = object : StateFlow<Boolean> {
+    override val value = true
+}
+
+class TestFlow : StateFlow<Boolean> {
+    override val value = true
+}
+
+val testFlow = TestFlow()
+
+@Composable
+fun Test() {
+    stateFlow.value
+    testFlow.value
+}
+
+val lambda = @Composable {
+    stateFlow.value
+    testFlow.value
+}
+
+val lambda2: @Composable () -> Unit = {
+    stateFlow.value
+    testFlow.value
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2() {
+    LambdaParameter(content = {
+        stateFlow.value
+        testFlow.value
+    })
+    LambdaParameter {
+        stateFlow.value
+        testFlow.value
+    }
+}
+
+fun test3() {
+    val localLambda1 = @Composable {
+        stateFlow.value
+        testFlow.value
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        stateFlow.value
+        testFlow.value
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/ComposableStateFlowValueDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ComposableStateFlowValueDetector.errors`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("StateFlowValueCalledInComposition")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("StateFlowValueCalledInComposition")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection StateFlowValueCalledInComposition
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="StateFlowValueCalledInComposition" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'StateFlowValueCalledInComposition'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore StateFlowValueCalledInComposition ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
