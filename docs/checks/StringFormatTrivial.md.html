@@ -1,0 +1,175 @@
+<meta charset="utf-8">
+(#) `String.format` string only contains trivial conversions
+
+!!! WARNING: `String.format` string only contains trivial conversions
+   This is a warning.
+
+Id
+:   `StringFormatTrivial`
+Summary
+:   `String.format` string only contains trivial conversions
+Note
+:   **This issue is disabled by default**; use `--enable StringFormatTrivial`
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files and resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StringFormatDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringFormatDetectorTest.java)
+Copyright Year
+:   2011
+
+Every call to `String.format` creates a new `Formatter` instance, which
+will decrease the performance of your app. `String.format` should only
+be used when necessary--if the formatted string contains only trivial
+conversions (e.g. `b`, `s`, `c`) and there are no translation concerns,
+it will be more efficient to replace them and concatenate with `+`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Trivial.java:10:Warning: This formatting string is trivial.
+Rather than using String.format to create your String, it will be more
+performant to concatenate your arguments with +.  [StringFormatTrivial]
+
+    String output1a = String.format("%s", "Hello world");
+                                    ----
+
+
+src/test/pkg/Trivial.java:11:Warning: This formatting string is trivial.
+Rather than using String.format to create your String, it will be more
+performant to concatenate your arguments with +.  [StringFormatTrivial]
+
+    String output2a = String.format("%s %c", "Hello world", '!');
+                                    -------
+
+
+src/test/pkg/Trivial.java:12:Warning: This formatting string is trivial.
+Rather than using String.format to create your String, it will be more
+performant to concatenate your arguments with +.  [StringFormatTrivial]
+
+    String output3a = String.format("%s %c %b", "Hello world", '!', true);
+                                    ----------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Trivial.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.res.Resources;
+
+public class Trivial {
+    private static void test(Resources resources) {
+        String trivial1 = resources.getString(R.string.trivial1); // OK
+        String trivial2 = resources.getString(R.string.trivial2); // OK
+        String trivial3 = resources.getString(R.string.trivial3); // OK
+        String output1a = String.format("%s", "Hello world");
+        String output2a = String.format("%s %c", "Hello world", '!');
+        String output3a = String.format("%s %c %b", "Hello world", '!', true);
+        String output1b = String.format(trivial1, "Hello world");
+        String output2b = String.format(trivial2, "Hello world", '!');
+        String output3b = String.format(trivial3, "Hello world", '!', true);
+    }
+
+    public static final class R {
+        public static final class string {
+            public static final int trivial1 = 0x7f0a0000;
+            public static final int trivial2 = 0x7f0a0001;
+            public static final int trivial3 = 0x7f0a0002;
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringFormatDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `StringFormatDetector.testTrivialString`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("StringFormatTrivial")
+  fun method() {
+     format(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("StringFormatTrivial")
+  void method() {
+     format(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection StringFormatTrivial
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="StringFormatTrivial" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'StringFormatTrivial'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore StringFormatTrivial ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

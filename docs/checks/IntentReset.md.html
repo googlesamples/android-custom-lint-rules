@@ -23,9 +23,9 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IntentDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IntentDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IntentDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IntentDetectorTest.kt)
 Copyright Year
 :   2018
 
@@ -41,15 +41,15 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/IntentTest.java:19:Warning: Calling setType after calling
 setData will clear the data: Call setDataAndType instead? [IntentReset]
 
-    intent.setType(type); // ERROR
-    --------------------
+    intent.setType(type); // ERROR 1.1
+           -------------
 
 
 src/test/pkg/IntentTest.java:26:Warning: Calling setData after calling
 setType will clear the type: Call setDataAndType instead? [IntentReset]
 
-    intent.setData(uri); // ERROR
-    -------------------
+    intent.setData(uri); // ERROR 2.1
+           ------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,50 +68,54 @@ public class IntentTest {
         public void test1() {
             // OK: Nulls are allowed
             Intent intent = new Intent();
-            intent.setData(null); // OK
-            intent.setType(null); // OK
+            intent.setData(null); // OK 1
+            intent.setType(null); // OK 2
         }
 
         public void test2(Uri uri, String type) {
             // Error: Cleared
             Intent intent = new Intent();
-            intent.setData(uri); // ERROR
-            intent.setType(type); // ERROR
+            intent.setData(uri); // ERROR 1.2
+            intent.setType(type); // ERROR 1.1
         }
 
         public void test3(Uri uri, String type) {
             // Error: Cleared (reverse order from test2)
             Intent intent = new Intent();
-            intent.setType(type); // ERROR
-            intent.setData(uri); // ERROR
+            intent.setType(type); // ERROR 2.2
+            intent.setData(uri); // ERROR 2.1
         }
 
         public void test4(Uri uri, String type, boolean setData) {
             // OK: Different code paths
             Intent intent = new Intent();
             if (setData) {
-                intent.setData(uri); // OK
+                intent.setData(uri); // OK 3
             } else {
-                intent.setType(type); // OK
+                intent.setType(type); // OK 4
             }
+            if (setData)
+                intent.setData(uri); // OK 5
+            else
+                intent.setType(type); // OK 6
         }
 
         public void test5(Uri uri, String type) {
             // Ok: on different objects
             Intent intent1 = new Intent();
             Intent intent2 = new Intent();
-            intent1.setData(uri); // OK
-            intent2.setType(type); // OK
+            intent1.setData(uri); // OK 7
+            intent2.setType(type); // OK 8
         }
 
         public void test6(boolean setData, Uri dataUri,
                 boolean setType, String mime) {
             Intent intent = new Intent();
             if (setData) {
-                intent.setData(dataUri); // OK
+                intent.setData(dataUri); // OK 9
             }
             if (setType) {
-                intent.setType(mime); // OK
+                intent.setType(mime); // OK 10
             }
         }
 
@@ -119,10 +123,10 @@ public class IntentTest {
             Intent intent = new Intent();
             switch (flavor) {
                 case 1:
-                    intent.setData(dataUri); // OK
+                    intent.setData(dataUri); // OK 11
                     break;
                 case 2:
-                    intent.setType(mime); // OK
+                    intent.setType(mime); // OK 12
                     break;
             }
         }
@@ -130,7 +134,7 @@ public class IntentTest {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IntentDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IntentDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

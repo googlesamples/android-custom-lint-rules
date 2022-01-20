@@ -23,9 +23,9 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ToastDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ToastDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ToastDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ToastDetectorTest.kt)
 Copyright Year
 :   2012
 
@@ -41,28 +41,28 @@ appear.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/ToastTest.java:32:Warning: Toast created but not shown: did
-you forget to call show() ? [ShowToast]
+you forget to call show()? [ShowToast]
 
     Toast.makeText(context, "foo", Toast.LENGTH_LONG);
     --------------
 
 
 src/test/pkg/ToastTest.java:33:Warning: Toast created but not shown: did
-you forget to call show() ? [ShowToast]
+you forget to call show()? [ShowToast]
 
     Toast toast = Toast.makeText(context, R.string.app_name, 5000);
                   --------------
 
 
 src/test/pkg/ToastTest.java:39:Warning: Toast created but not shown: did
-you forget to call show() ? [ShowToast]
+you forget to call show()? [ShowToast]
 
     Toast.makeText(context, "foo", Toast.LENGTH_LONG);
     --------------
 
 
 src/test/pkg/ToastTest.java:54:Warning: Toast created but not shown: did
-you forget to call show() ? [ShowToast]
+you forget to call show()? [ShowToast]
 
     Toast toast2 = Toast.makeText(context, "foo", Toast.LENGTH_LONG); // not shown
                    --------------
@@ -140,7 +140,7 @@ public abstract class ToastTest extends Context {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ToastDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ToastDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

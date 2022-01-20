@@ -23,23 +23,19 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ChromeOsSourceDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ChromeOsSourceDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
 Copyright Year
 :   2018
 
 The `Activity` should not be locked to a portrait orientation so that
-users
-can take advantage of the multi-window environments and larger
-landscape-first screens
-that Android runs on such as Chrome OS. To fix the issue, consider
-calling
-`setRequestedOrientation` with the
+users can take advantage of the multi-window environments and larger
+landscape-first screens that Android runs on such as Chrome OS. To fix
+the issue, consider calling `setRequestedOrientation` with the
 `ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR` or
 `ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED` options or removing the
-call
-all together.
+call all together.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -83,7 +79,7 @@ public class MainActivity extends Activity {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

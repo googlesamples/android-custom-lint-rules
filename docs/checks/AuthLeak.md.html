@@ -23,9 +23,9 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StringAuthLeakDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StringAuthLeakDetector.java)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringAuthLeakDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringAuthLeakDetectorTest.kt)
 Copyright Year
 :   2016
 
@@ -39,8 +39,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/AuthDemo.java:2:Warning: Possible credential leak [AuthLeak]
 
-  private static final String AUTH_IP = "scheme://user:pwd@127.0.0.1:8000";
+  private static final String AUTH_IP = "scheme://user:pwd@127.0.0.1:8000"; // WARN 1
                                          ---------------------------
+
+
+src/AuthDemo.java:4:Warning: Possible credential leak [AuthLeak]
+
+  private static final String LEAK = "http://someuser:%restofmypass@example.com"; // WARN 2
+                                      -----------------------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,13 +56,15 @@ Here is the source file referenced above:
 `src/AuthDemo.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
 public class AuthDemo {
-  private static final String AUTH_IP = "scheme://user:pwd@127.0.0.1:8000";
-  private static final String AUTH_NO_LEAK = "scheme://user:%s@www.google.com";
+  private static final String AUTH_IP = "scheme://user:pwd@127.0.0.1:8000"; // WARN 1
+  private static final String AUTH_NO_LEAK = "scheme://user:%s@www.google.com"; // OK 1
+  private static final String LEAK = "http://someuser:%restofmypass@example.com"; // WARN 2
+  private static final String URL = "http://%-05s@example.com"; // OK 2
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringAuthLeakDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringAuthLeakDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

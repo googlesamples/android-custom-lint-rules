@@ -1,0 +1,229 @@
+<meta charset="utf-8">
+(#) Creating a MutableState object with a mutable collection type
+
+!!! WARNING: Creating a MutableState object with a mutable collection type
+   This is a warning.
+
+Id
+:   `MutableCollectionMutableState`
+Summary
+:   Creating a MutableState object with a mutable collection type
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.runtime
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/MutableCollectionMutableStateDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/MutableCollectionMutableStateDetectorTest.kt)
+Copyright Year
+:   2021
+
+Writes to mutable collections inside a MutableState will not cause a
+recomposition - only writes to the MutableState itself will. In most
+cases you should either use a read-only collection (such as List or Map)
+and assign a new instance to the MutableState when your data changes, or
+you can use an snapshot-backed collection such as SnapshotStateList or
+SnapshotStateMap which will correctly cause a recomposition when their
+contents are modified.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/test.kt:12:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val listProperty = mutableStateOf(list)
+                       --------------
+
+
+src/test/test.kt:14:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val setFunction = mutableStateOf(mutableSetOf(1))
+                      --------------
+
+
+src/test/test.kt:15:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val setProperty = mutableStateOf(set)
+                      --------------
+
+
+src/test/test.kt:17:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val mapFunction = mutableStateOf(mutableMapOf(1 to 1))
+                      --------------
+
+
+src/test/test.kt:18:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val mapProperty = mutableStateOf(map)
+                      --------------
+
+
+src/test/test.kt:20:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val collectionProperty = mutableStateOf(collection)
+                             --------------
+
+
+src/test/test.kt:28:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val listParameter = mutableStateOf(listParam)
+                        --------------
+
+
+src/test/test.kt:29:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val setParameter = mutableStateOf(setParam)
+                       --------------
+
+
+src/test/test.kt:30:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val mapParameter = mutableStateOf(mapParam)
+                       --------------
+
+
+src/test/test.kt:31:Warning: Creating a MutableState object with a
+mutable collection type [MutableCollectionMutableState]
+
+    val collectionProperty = mutableStateOf(collectionParam)
+                             --------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test
+
+import androidx.compose.runtime.*
+
+val list = mutableListOf(1)
+val set = mutableSetOf(1)
+val map = mutableMapOf(1 to 1)
+val collection: MutableCollection<Int> = list
+
+val listFunction = mutableStateOf(mutableListOf(1))
+val listProperty = mutableStateOf(list)
+
+val setFunction = mutableStateOf(mutableSetOf(1))
+val setProperty = mutableStateOf(set)
+
+val mapFunction = mutableStateOf(mutableMapOf(1 to 1))
+val mapProperty = mutableStateOf(map)
+
+val collectionProperty = mutableStateOf(collection)
+
+fun test(
+    listParam: MutableList<Int>,
+    setParam: MutableSet<Int>,
+    mapParam: MutableMap<Int, Int>,
+    collectionParam: MutableCollection<Int>
+) {
+    val listParameter = mutableStateOf(listParam)
+    val setParameter = mutableStateOf(setParam)
+    val mapParameter = mutableStateOf(mapParam)
+    val collectionProperty = mutableStateOf(collectionParam)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/MutableCollectionMutableStateDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `MutableCollectionMutableStateDetector.mutableCollection_stdlib`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("MutableCollectionMutableState")
+  fun method() {
+     mutableStateOf(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("MutableCollectionMutableState")
+  void method() {
+     mutableStateOf(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection MutableCollectionMutableState
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MutableCollectionMutableState" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MutableCollectionMutableState'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MutableCollectionMutableState ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
