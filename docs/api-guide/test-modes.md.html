@@ -484,4 +484,37 @@ updated to be prepared for whitespace characters:
                      .build();
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+### CDATA Mode
+
+When declaring string resources, you may want to use XML CDATA sections
+instead of plain text. For example, instead of
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="app_name"&gt;Application Name&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+you can equivalently use
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="app_name"&gt;&lt;![CDATA[Application Name]]&gt;&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(where you can place newlines and other unescaped text inside the bracketed span.)
+
+This alternative form shows up differently in the XML DOM that is
+provided to lint detectors; in particular, if you are iterating through
+the `Node` children of an `Element`, you should not just look at nodes
+with `nodeType == Node.TEXT_NODE`; you need to also handle `noteType ==
+Node.CDATA_SECTION_NODE`.
+
+This test mode will automatically retry all your tests that define
+string resources, and will convert regular text into `CDATA` and makes
+sure the results continue to be the same.
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

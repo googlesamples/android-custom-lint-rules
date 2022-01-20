@@ -9,4 +9,4 @@ snippets) but are readable and editable as markdown.)
 Let's go there right now: [Link](README.md.html)
 
 A (usually recent) snapshot of these docs are hosted
-[here](http://googlesamples.github.io/android-custom-lint-rules/).
+[here](https://googlesamples.github.io/android-custom-lint-rules/).

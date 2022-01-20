@@ -1,0 +1,300 @@
+<meta charset="utf-8">
+(#) Suspicious indentation
+
+!!! ERROR: Suspicious indentation
+   This is an error.
+
+Id
+:   `SuspiciousIndentation`
+Alias
+:   SuspiciousIndentAfterControlStatement
+Summary
+:   Suspicious indentation
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IndentationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IndentationDetectorTest.kt)
+Copyright Year
+:   2021
+
+This check looks for cases where the indentation suggests a grouping
+that isn't actually there in the code. A common example of this would be
+something like
+```kotlin
+if (column > width)
+    line++
+    column = 0
+```
+Here, the `column = 0` line will be executed every single time, not just
+if the condition is true.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/Java.java:4:Error: Suspicious indentation: This is conditionally
+executed; expected it to be indented [SuspiciousIndentation]
+
+    System.out.println("test"); // WARN 1
+    --------------------------
+
+
+src/Java.java:7:Error: Suspicious indentation: This is indented but is
+not nested under the previous expression (if (context == null)...)
+[SuspiciousIndentation]
+
+    System.out.println("test"); // WARN 2
+    --------------------------
+
+
+src/Kotlin.kt:8:Error: Suspicious indentation: This is indented but is
+not nested under the previous expression (if (this[i] == '\n')...)
+[SuspiciousIndentation]
+
+    line++ // WARN 3
+    ------
+
+
+src/Kotlin.kt:15:Error: Suspicious indentation: This is indented but is
+not continuing the previous expression (var s = "The price i...)
+[SuspiciousIndentation]
+
+    price.toString() + // WARN 4
+    ----------------------------
+
+
+src/Kotlin.kt:23:Error: Suspicious indentation: This is indented but is
+not continuing the previous expression (s += "The price...)
+[SuspiciousIndentation]
+
+    price.toString() + // WARN 5
+    ----------------------------
+
+
+src/Kotlin.kt:32:Error: Suspicious indentation: This is indented but is
+not continuing the previous expression (s = "The price was...)
+[SuspiciousIndentation]
+
+    price.toString() + // WARN 6
+    ----------------------------
+
+
+src/Kotlin.kt:42:Error: Suspicious indentation: This is indented but is
+not nested under the previous expression (for (i in 0 until 10...)
+[SuspiciousIndentation]
+
+    y++ // WARN 7
+    ---
+
+
+src/Kotlin.kt:48:Error: Suspicious indentation: This is indented but is
+not nested under the previous expression (while (x > 0)       ...)
+[SuspiciousIndentation]
+
+    y++ // WARN 8
+    ---
+
+
+src/Kotlin.kt:55:Error: Suspicious indentation: This is conditionally
+executed; expected it to be indented [SuspiciousIndentation]
+
+   println("hello")     // WARN 9
+   ----------------
+
+
+src/Kotlin.kt:62:Error: Suspicious indentation: This is conditionally
+executed; expected it to be indented [SuspiciousIndentation]
+
+   println("hello")     // WARN 10
+   ----------------
+
+
+src/Kotlin.kt:73:Error: Suspicious indentation: This is indented but is
+not nested under the previous expression (if (this[i] != '\n')...)
+[SuspiciousIndentation]
+
+    line++ // WARN 11
+    ------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/Java.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+class Java {
+  public void test(Object context) {
+    if (context == null)
+    System.out.println("test"); // WARN 1
+    if (context == null)
+        System.out.println("test"); // OK
+        System.out.println("test"); // WARN 2
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/Kotlin.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun String.getLineAndColumn(offset: Int): Pair<Int,Int> {
+    var line = 1
+    var column = 1
+    for (i in 0 until offset) {
+        column++
+        if (this[i] == '\n')
+            column = 0
+            line++ // WARN 3
+    }
+    return Pair(line, column)
+}
+
+fun getFooter1(price: Int) {
+    var s = "The price is: " // missing +
+        price.toString() + // WARN 4
+        "."
+}
+
+fun getFooter2(price: Int) {
+    var s = ""
+    if (price > 100) {
+        s += "The price " // missing +
+            price.toString() + // WARN 5
+            " is high."
+    }
+}
+
+fun getFooter3(price: Int) {
+    var s = ""
+    if (price < 1000) {
+        s = "The price was " // missing +
+          price.toString() + // WARN 6
+          "."
+    }
+}
+
+fun loops1() {
+    var x = 0
+    var y = 0
+    for (i in 0 until 100)
+        x++
+        y++ // WARN 7
+}
+
+fun loops2() {
+    while (x > 0)
+        x--
+        y++ // WARN 8
+}
+
+fun expectedIndent1(x: Int) {
+   if (x > 10)
+       println("hello") // OK
+   if (x < 10)
+   println("hello")     // WARN 9
+}
+
+fun expectedIndent2(x: Int) {
+   if (x < 10)
+       println("hello")
+   else
+   println("hello")     // WARN 10
+}
+
+fun String.getLineAndColumn2(offset: Int): Pair<Int,Int> {
+    var line = 1
+    var column = 1
+    for (i in 0 until offset) {
+        column++
+        if (this[i] != '\n') {
+        } else
+            column = 0
+            line++ // WARN 11
+    }
+    return Pair(line, column)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IndentationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SuspiciousIndentation")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SuspiciousIndentation")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SuspiciousIndentation
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SuspiciousIndentation" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SuspiciousIndentation'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SuspiciousIndentation ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

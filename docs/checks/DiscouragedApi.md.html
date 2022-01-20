@@ -23,14 +23,64 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DiscouragedDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DiscouragedDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DiscouragedDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DiscouragedDetectorTest.kt)
 Copyright Year
 :   2021
 
 Discouraged APIs are allowed and are not deprecated, but they may be
 unfit for common use (e.g. due to slow performance or subtle behavior).
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MainActivity.kt:13:Warning: don't use this
+[DiscouragedApi]
+
+    findViewById&lt;TextView&gt;(R.id.text)?.text = getSomeString()
+                                              -------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MainActivity.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.app.Activity
+import android.os.Bundle
+import android.widget.TextView
+import androidx.annotation.Discouraged
+import java.util.UUID
+
+class MainActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        findViewById<TextView>(R.id.text)?.text = getSomeString()
+    }
+
+    companion object {
+        @Discouraged(message = "don't use this")
+        fun getSomeString(): String {
+            return UUID.randomUUID().toString()
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DiscouragedDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DiscouragedDetector.test205800560`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

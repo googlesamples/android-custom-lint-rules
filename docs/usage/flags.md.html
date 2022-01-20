@@ -45,9 +45,9 @@ DSL](agp-dsl.md.html) options instead.
 : Set the exit code to an error if any fixes are applied
 
 *directories*
-: You can also pass in directories for files to be analyzed. This
-  was common many years ago when project metadata tended to be stored
-  in simple `.classpath` files from Eclipse; these days, you typically
+: You can also pass in directories for files to be analyzed. This was
+  common many years ago when project metadata tended to be stored in
+  simple `.classpath` files from Eclipse; these days, you typically
   will pass it a `--lint-model` or `--project` description instead.
 
 ## Enabled Checks
@@ -106,6 +106,12 @@ DSL](agp-dsl.md.html) options instead.
 : Rewrite the baseline files to remove any issues that have been
   fixed
 
+`--write-reference-baseline`
+: Writes the current results, including issues that were filtered from
+  the input baseline if any. Does not set the exit code to indicate
+  that the baseline is created the way --baseline would. Implies
+  --update-baseline and --continue-after-baseline-created.
+
 `--allow-suppress`
 : Whether to allow suppressing issues that have been explicitly
   registered as not suppressible.
@@ -113,6 +119,11 @@ DSL](agp-dsl.md.html) options instead.
 `--restrict-suppress`
 : Opposite of --allow-suppress: do not allow suppressing restricted
   issues
+
+`--skip-annotated`
+: Comma separated list of annotations (by fully qualified name) which
+  indicate that lint should ignore this compilation unit (only allowed
+  on top level classes and files)
 
 ## Output Options
 
@@ -223,8 +234,15 @@ DSL](agp-dsl.md.html) options instead.
 : Describes all the quickfixes in an XML file expressed as document
   edits -- insert, replace, delete
 
-`--stacktrace`
-: Dump exceptions from detectors to the console
+`--client-id`
+: Sets the id of the client, such as “gradle”
+
+`--client-name`
+: Sets the display name of the client, such as “Android Gradle
+  Plugin”
+
+`--client-version`
+: Sets the version of the client, such as “7.1.0-alpha01”
 
 ## Exit Status
 
@@ -245,5 +263,11 @@ DSL](agp-dsl.md.html) options instead.
 
 `5`
 : Invalid command-line argument.
+
+`6`
+: A new baseline file was created.
+
+`7`
+: Quickfixes were applied.
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

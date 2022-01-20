@@ -25,28 +25,40 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
-:   https://android.github.io/kotlin-guides/interop.html#nullability-annotations
+:   https://developer.android.com/kotlin/interop#nullability_annotations
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InteroperabilityDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InteroperabilityDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
 Copyright Year
 :   2018
 
-To improve referencing this code from Kotlin, consider adding
-explicit nullness information here with either `@NonNull` or
-`@Nullable`.
-
-You can set the environment variable
-```
-    `ANDROID_LINT_NULLNESS_IGNORE_DEPRECATED=true`
-```
-if you want lint to ignore classes and members that have been annotated
-with
-`@Deprecated`.
+To improve referencing this code from Kotlin, consider adding explicit
+nullness information here with either `@NonNull` or `@Nullable`.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
+
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) ignore-deprecated
+
+Whether to ignore classes and members that have been annotated with `@Deprecated`.
+Normally this lint check will flag all unannotated elements, but by setting this option to `true` it will skip any deprecated elements.
+
+Default is false.
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="UnknownNullness"&gt;
+        &lt;option name="ignore-deprecated" value="false" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (##) Example
 
@@ -54,8 +66,8 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/Test.java:10:Warning: Unknown nullability; explicitly
 declare as @Nullable or @NonNull to improve Kotlin interoperability; see
-https://android.github.io/kotlin-guides/interop.html#nullability-annotations
- [UnknownNullness]
+https://developer.android.com/kotlin/interop#nullability_annotations
+[UnknownNullness]
 
     public Object error1(Integer error2, int[] error3) { return null; }
                                          -----
@@ -63,8 +75,8 @@ https://android.github.io/kotlin-guides/interop.html#nullability-annotations
 
 src/test/pkg/Test.java:14:Warning: Unknown nullability; explicitly
 declare as @Nullable or @NonNull to improve Kotlin interoperability; see
-https://android.github.io/kotlin-guides/interop.html#nullability-annotations
- [UnknownNullness]
+https://developer.android.com/kotlin/interop#nullability_annotations
+[UnknownNullness]
 
     public Float error4;
            -----
@@ -72,8 +84,8 @@ https://android.github.io/kotlin-guides/interop.html#nullability-annotations
 
 src/test/pkg/Test.java:16:Warning: Unknown nullability; explicitly
 declare as @Nullable or @NonNull to improve Kotlin interoperability; see
-https://android.github.io/kotlin-guides/interop.html#nullability-annotations
- [UnknownNullness]
+https://developer.android.com/kotlin/interop#nullability_annotations
+[UnknownNullness]
 
     public Float error5;
            -----
@@ -81,8 +93,8 @@ https://android.github.io/kotlin-guides/interop.html#nullability-annotations
 
 src/test/pkg/Test.java:18:Warning: Unknown nullability; explicitly
 declare as @Nullable or @NonNull to improve Kotlin interoperability; see
-https://android.github.io/kotlin-guides/interop.html#nullability-annotations
- [UnknownNullness]
+https://developer.android.com/kotlin/interop#nullability_annotations
+[UnknownNullness]
 
     public Object error6() { return null; }
            ------
@@ -90,8 +102,8 @@ https://android.github.io/kotlin-guides/interop.html#nullability-annotations
 
 src/test/pkg/Test.java:19:Warning: Unknown nullability; explicitly
 declare as @Nullable or @NonNull to improve Kotlin interoperability; see
-https://android.github.io/kotlin-guides/interop.html#nullability-annotations
- [UnknownNullness]
+https://developer.android.com/kotlin/interop#nullability_annotations
+[UnknownNullness]
 
     protected Float error7;
               -----
@@ -99,8 +111,8 @@ https://android.github.io/kotlin-guides/interop.html#nullability-annotations
 
 src/test/pkg/Test.java:34:Warning: Unknown nullability; explicitly
 declare as @Nullable or @NonNull to improve Kotlin interoperability; see
-https://android.github.io/kotlin-guides/interop.html#nullability-annotations
- [UnknownNullness]
+https://developer.android.com/kotlin/interop#nullability_annotations
+[UnknownNullness]
 
     public Float error8;
            -----
@@ -150,7 +162,7 @@ public class Test {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

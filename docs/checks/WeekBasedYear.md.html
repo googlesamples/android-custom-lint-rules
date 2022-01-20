@@ -25,9 +25,9 @@ Editing
 See
 :   https://stackoverflow.com/questions/46847245/using-datetimeformatter-on-january-first-cause-an-invalid-year-value
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DateFormatDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DateFormatDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)
 Copyright Year
 :   2014
 
@@ -43,56 +43,56 @@ If you expected this to format as 2019, you should use the pattern
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/DateFormatTest.kt:16:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     DateTimeFormatter.ofPattern("'profile-'YYYY-MM-dd-HH-mm-ss-SSS'.rawproto'", Locale.US) // ERROR
                                            ----
 
 
 src/test/pkg/DateFormatTest.kt:29:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s1 =  DateTimeFormatter.ofPattern("MMMM d, YYYY") // ERROR
                                                    ----
 
 
 src/test/pkg/DateFormatTest.kt:30:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s2 =  SimpleDateFormat("MMMM d, YYYY") // ERROR
                                         ----
 
 
 src/test/pkg/DateFormatTest.kt:31:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s3 = DateTimeFormatter.ofPattern("""dd-MM-YYYY""") // ERROR
                                                   ----
 
 
 src/test/pkg/DateFormatTest.kt:32:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s4 = DateTimeFormatter.ofPattern("'$something'dd-MM-YYYY") // ERROR
                                          ------------------------
 
 
 src/test/pkg/DateFormatTest.kt:33:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s5 = DateTimeFormatter.ofPattern("'\u1234'dd-MM-YYYY") // ERROR
                                          --------------------
 
 
 src/test/pkg/DateFormatTest.kt:35:Warning: DateFormat character 'Y' in
-YYYY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s6 = DateTimeFormatter.ofPattern(constant) // ERROR
                                          --------
 
 
 src/test/pkg/DateFormatTest.kt:36:Warning: DateFormat character 'Y' in
-YY is the week-era-year; did you mean 'y' ? [WeekBasedYear]
+YY is the week-era-year; did you mean 'y'? [WeekBasedYear]
 
     val s7 = DateTimeFormatter.ofPattern("""dd-YY-MM""") // ERROR
                                                --
@@ -147,7 +147,7 @@ class DateFormatTest {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

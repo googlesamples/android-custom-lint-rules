@@ -23,18 +23,16 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/FileEndsWithDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/FileEndsWithDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)
 Copyright Year
 :   2021
 
 The Kotlin extension method `File.endsWith(suffix)` checks whole path
-components,
-not just string suffixes. This means that
-`File("foo.txt").endsWith(".txt")` will return
-false. Instead you might have intended `file.path.endsWith` or
-`file.extension.equals`.
+components, not just string suffixes. This means that
+`File("foo.txt").endsWith(".txt")` will return false. Instead you might
+have intended `file.path.endsWith` or `file.extension.equals`.
 
 (##) Example
 
@@ -82,7 +80,7 @@ fun File.isPng() = extension == "png" // OK
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 (##) Suppressing

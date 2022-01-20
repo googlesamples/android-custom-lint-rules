@@ -27,9 +27,9 @@ Editing
 See
 :   https://android.github.io/kotlin-guides/interop.html#no-hard-keywords
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InteroperabilityDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InteroperabilityDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
 Copyright Year
 :   2018
 
@@ -39,9 +39,10 @@ Soft keywords, modifier keywords, and special identifiers are allowed.
 
 For example, Mockito’s `when` function requires backticks when used from
 Kotlin:
-
-    val callable = Mockito.mock(Callable::class.java)
-    Mockito.\`when\`(callable.call()).thenReturn(/* … */)
+```kotlin
+val callable = Mockito.mock(Callable::class.java)
+Mockito.\`when\`(callable.call()).thenReturn(/* … */)
+```
 
 (##) Example
 
@@ -82,7 +83,7 @@ public class Test {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InteroperabilityDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

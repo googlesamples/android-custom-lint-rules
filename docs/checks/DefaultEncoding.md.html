@@ -1,0 +1,245 @@
+<meta charset="utf-8">
+(#) Using Default Character Encoding
+
+!!! ERROR: Using Default Character Encoding
+   This is an error.
+
+Id
+:   `DefaultEncoding`
+Summary
+:   Using Default Character Encoding
+Note
+:   **This issue is disabled by default**; use `--enable DefaultEncoding`
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   JDK
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DefaultEncodingDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DefaultEncodingDetectorTest.kt)
+Copyright Year
+:   2021
+
+Some APIs will implicitly use the default system character encoding
+instead of UTF-8 when converting to or from bytes, such as when creating
+a default `FileReader`.
+
+This is *usually* not correct; you only want to do this if you need to
+read files created by other programs where they have deliberately
+written in the same encoding. The default encoding varies from platform
+to platform and can vary from locale to locale, so this makes it
+difficult to interpret files containing non-ASCII characters.
+
+We recommend using UTF-8 everywhere.
+
+Note that on Android, the default file encoding is always UTF-8 (see
+https://developer.android.com/reference/java/nio/charset/Charset#defaultCharset()
+ for more), so this lint check deliberately does not flag any problems
+in Android code, since it is always safe to rely on the default
+character encoding there.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Test.java:14:Error: This file will be written with the
+default system encoding instead of a specific charset which is usually a
+mistake; add StandardCharsets.UTF_8? [DefaultEncoding]
+
+    new FileWriter("/path");                      // ERROR 1
+    -----------------------
+
+
+src/test/pkg/Test.java:15:Error: This file will be written with the
+default system encoding instead of a specific charset which is usually a
+mistake; add charset argument, FileWriter(..., UTF_8)?
+[DefaultEncoding]
+
+    new FileWriter(file);                         // ERROR 2
+    --------------------
+
+
+src/test/pkg/Test.java:16:Error: This file will be written with the
+default system encoding instead of a specific charset which is usually a
+mistake; add charset argument, FileWriter(..., UTF_8)?
+[DefaultEncoding]
+
+    new FileWriter(file, true);                   // ERROR 3
+    --------------------------
+
+
+src/test/pkg/Test.java:17:Error: This file will be written with the
+default system encoding instead of a specific charset which is usually a
+mistake; add charset argument, FileWriter(..., UTF_8)?
+[DefaultEncoding]
+
+    new PrintWriter(new BufferedWriter(new FileWriter(file))); // ERROR 4
+                                       --------------------
+
+
+src/test/pkg/Test.java:24:Error: This PrintWriter will use the default
+system encoding instead of a specific charset which is usually a
+mistake; add charset argument, PrintWriter(..., UTF_8)?
+[DefaultEncoding]
+
+    new PrintWriter(System.out, true);            // ERROR 5
+    ---------------------------------
+
+
+src/test/pkg/Test.java:25:Error: This PrintWriter will use the default
+system encoding instead of a specific charset which is usually a
+mistake; add charset argument, PrintWriter(..., UTF_8)?
+[DefaultEncoding]
+
+    new PrintWriter("/path");                     // ERROR 6
+    ------------------------
+
+
+src/test/pkg/Test.java:26:Error: This PrintWriter will use the default
+system encoding instead of a specific charset which is usually a
+mistake; add charset argument, PrintWriter(..., UTF_8)?
+[DefaultEncoding]
+
+    new PrintWriter(file);                        // ERROR 7
+    ---------------------
+
+
+src/test/pkg/Test.java:36:Error: This string will be interpreted with
+the default system encoding instead of a specific charset which is
+usually a mistake; add charset argument, String(..., UTF_8)?
+[DefaultEncoding]
+
+    new String(bytes);                         // ERROR 8
+    -----------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Test.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+@SuppressWarnings({"Since15", "unused", "CharsetObjectCanBeUsed"})
+public class Test {
+    public void testFileWriter(File file, FileDescriptor fd) throws IOException {
+        new FileWriter("/path");                      // ERROR 1
+        new FileWriter(file);                         // ERROR 2
+        new FileWriter(file, true);                   // ERROR 3
+        new PrintWriter(new BufferedWriter(new FileWriter(file))); // ERROR 4
+
+        new FileWriter(fd);                           // OK 1
+        new FileWriter(file, StandardCharsets.UTF_8); // OK 2
+    }
+
+    public void testPrintWriter(File file) throws IOException {
+        new PrintWriter(System.out, true);            // ERROR 5
+        new PrintWriter("/path");                     // ERROR 6
+        new PrintWriter(file);                        // ERROR 7
+
+        new PrintWriter("/path", "utf-8");            // OK 3
+        new PrintWriter("/path", StandardCharsets.UTF_8);          // OK 4
+        new PrintWriter(System.out, true, StandardCharsets.UTF_8); // OK 5
+        new PrintWriter(file, "utf-8");               // OK 6
+        new PrintWriter(file, Charset.defaultCharset()); // OK 7
+    }
+
+    public void test(byte[] bytes) throws IOException {
+        new String(bytes);                         // ERROR 8
+        new String(bytes, StandardCharsets.UTF_8); // OK 9
+        new String(bytes, "UTF-8");                // OK 10
+        new String(bytes, 0, 5, "UTF-8");          // OK 11
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DefaultEncodingDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("DefaultEncoding")
+  fun method() {
+     getBytes(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("DefaultEncoding")
+  void method() {
+     getBytes(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection DefaultEncoding
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DefaultEncoding" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DefaultEncoding'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DefaultEncoding ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

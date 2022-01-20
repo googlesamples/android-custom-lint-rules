@@ -1,0 +1,221 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Options
+
+## Usage
+
+Users can configure lint using `lint.xml` files, turning on and off
+checks, changing the default severity, ignoring violations based on
+paths or regular expressions matching paths or messages, and so on.
+
+They can also configure “options” on a per issue type basis. Options
+are simply strings, booleans, integers or paths that configure how a
+detector works.
+
+For example, in the following `lint.xml` file, we're configuring the
+`UnknownNullness` detector to turn on its `ignoreDeprecated` option,
+and we're telling the `TooManyViews` detector that the maximum number
+of views in a layout it should allow before generating a warning should
+be set to 20:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;lint&gt;
+    &lt;issue id="UnknownNullness"&gt;
+        &lt;option name="ignoreDeprecated" value="true" /&gt;
+    &lt;/issue&gt;
+    &lt;issue id="TooManyViews"&gt;
+        &lt;option name="maxCount" value="20" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note that `lint.xml` files can be located not just in the project
+directory but nested as well, for example for a particular source
+folder.
+
+(See the [lint.xml](../usage/lintxml.md.html) documentation for more.)
+
+## Creating Options
+
+First, create an `Option` and register it with the corresponding
+`Issue`.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val MAX_COUNT = IntOption("maxCount", "Max number of views allowed", 80)
+val MY_ISSUE = Issue.create("MyId", ...)
+        .setOptions(listOf(MAX_COUNT))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+An option has a few pieces of metadata:
+
+* The name, which is a short identifier. Users will configure the
+  option by listing this key along with the configured value in their
+  `lint.xml` files. By convention this should be using camel case and
+  only valid Java identifier characters.
+
+* A description. This should be a short sentence which lists the
+  purpose of the option (and should be capitalized, and not end with
+  punctuation).
+
+* A default value. This is the value that will be returned from
+  `Option.getValue()` if the user has not configured the setting.
+
+* For integer and float options, minimum and maximum allowed values.
+
+* An optional explanation. This is a longer explanation of the option,
+  if necessary.
+
+The name and default value are used by lint when options are looked up
+by detectors; the description, explanation and allowed ranges are used
+to include information about available options when lint generates for
+example HTML reports, or text reports including explanations, or
+displaying lint checks in the IDE settings panel, and so on.
+
+There are currently 5 types of options: Strings, booleans, ints, floats
+and paths. There's a separate option class for each one, which makes it
+easier to look up these options since for example for a `StringOption`,
+`getValue` returns a `String`, for an `IntOption` it returns an `Int`,
+and so on.
+
+Option Type             | Option Class
+------------------------|-----------------------------------
+`String`                | `StringOption`
+`Boolean`               | `BooleanOption`
+`Int`                   | `IntOption`
+`Float`                 | `FloatOption`
+`File`                  | `FileOption`
+
+## Reading Options
+
+To look up the configured value for an option, just call `getValue`
+and pass in the `context`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val maxCount = MAX_COUNT.getValue(context)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This will return the `Int` value configured for this option by the
+user, or if not set, our original default value, in this case 80.
+
+## Specific Configurations
+
+The above call will look up the option configured for the specific
+source file in the current `context`, which might be an individual
+Kotlin source file. That's generally what you want; users can configure
+`lint.xml` files not just at the root of the project; they can be
+placed throughout the source folders and are interpreted by lint to
+apply to the folders below. Therefore, if we're analyzing a particular
+Kotlin file and we want to check an option, you generally want to check
+what's configured locally for this file.
+
+However, there are cases where you want to look up options up front,
+for example at the project level.
+
+In that case, first look up the particular configuration you want, and
+then pass in that configuration instead of the context to the
+`Option.getValue` call.
+
+For example, the context for the current module is already available in
+the `context`, so you might for example look up the option value like
+this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val maxCount = MAX_COUNT.getValue(context.configuration)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to find the most applicable configuration for a given
+source file, use
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val configuration = context.findConfiguration(context.file)
+val maxCount = MAX_COUNT.getValue(configuration)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Files
+
+Note that there is a special `Option` type for files and paths:
+`FileOption`. Make sure that you use this instead of just a
+`StringOption` if you are planning on configuring files, because in the
+case of paths, users will want to specify paths relative to the
+location of the `lint.xml` file where the path is defined. For
+`FileOption` lint is aware of this and will convert the relative path
+string as necessary.
+
+## Constraints
+
+Note that the integer and float options allow you to specify a valid
+range for the configured value -- a minimum (inclusive) and a maximum
+(exclusive):
+
+This range will be included with the option documentation, such as in
+“**duration** (default is 1.5): Expected duration in seconds. Must be
+at least 0.0 and less than 15.0.”
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+private val DURATION_OPTION = FloatOption(
+    name = "duration",
+    description = "Expected duration",
+    defaultValue = 1.5f,
+    min = 0f,
+    max = 15f
+)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It will also be checked at runtime, and if the configured value is
+outside of the range, lint will report an error and pinpoint the
+location in the invalid `lint.xml` file:
+
+```text
+lint.xml:4: Error: duration: Must be less than 15.0 [LintError]
+        <option name="duration" value="100.0" />
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 errors, 0 warnings
+```
+
+## Testing Options
+
+When writing a lint unit test, you can easily configure specific values
+for your detector options. On the `lint()` test task, you can call
+`configureOption(option, value)`. There are a number of overloads for
+this method, so you can reference the option by its string name, or
+passing in the option instance, and if you do, you can pass in strings,
+integers, booleans, floats and files as values. Here's an example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+lint().files(
+    kotlin("fun test() { println("Hello World.") }")
+)
+.configureOption(MAX_COUNT, 150)
+.run()
+.expectClean()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Supporting Lint 4.2, 7.0 and 7.1
+
+The `Option` support is new in 7.2. If your lint check still needs to
+work with older versions of lint, you can bypass the option
+registration, and just read option values directly from the
+configuration.
+
+First, find the configuration as shown above, and then instead of
+calling `Option.getValue`, call `getOption` on the configuration:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val option: String? = configuration.getOption(ISSUE, "maxCount")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The `getOption` method returns a `String`. For numbers and booleans,
+the coniguration also provides lookups which will convert the value to
+a number or boolean respectively: `getOptionAsInt`,
+`getOptionAsBoolean`, and most importantly, `getOptionAsFile`. If you
+are looking up paths, be sure to use `getOptionAsFile` since it has the
+important attribute that it allows paths to be relative to the
+configuration file where the (possibly inherited) value was defined,
+which is what users expect when editing `lint.xml` files.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val option = configuration.getOptionAsInt(ISSUE, "maxCount", 100)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

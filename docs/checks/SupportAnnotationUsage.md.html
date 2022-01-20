@@ -23,9 +23,9 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AnnotationDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
 Copyright Year
 :   2012
 
@@ -38,202 +38,58 @@ the `to` value.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/WrongUsages.java:34:Error: This annotation does not apply
-for type String; expected int. Should @DialogStyle be annotated with
-@StringDef instead? [SupportAnnotationUsage]
+src/test/pkg/Annotation1.kt:14:Error: Use @kotlin.annotation.Target, not
+@java.lang.annotation.Target here; these targets will be ignored from
+Kotlin and the annotation will not be allowed on any element types from
+Java [SupportAnnotationUsage]
 
-    @DialogStyle
-    ------------
-
-
-src/test/pkg/WrongUsages.java:39:Error: This annotation does not apply
-for type String; expected int or long [SupportAnnotationUsage]
-
-    @IntRange(from = 1, to = 0)
-    ---------------------------
+@java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 1
+                      ------
 
 
-src/test/pkg/WrongUsages.java:40:Error: Invalid size range: the min
-attribute must be less than the max attribute [SupportAnnotationUsage]
+src/test/pkg/Annotation1.kt:19:Error: Do not use
+@java.lang.annotation.Target here; it will cause the annotation to not
+be allowed on any element types from Java [SupportAnnotationUsage]
 
-    @Size(min=10, max = 8)
-    ----------------------
-
-
-src/test/pkg/WrongUsages.java:45:Error: This annotation does not apply
-for type String; expected float or double [SupportAnnotationUsage]
-
-    @FloatRange(from = 1.0, to = 0.0)
-    ---------------------------------
-
-
-src/test/pkg/WrongUsages.java:46:Error: This annotation does not apply
-for type String; expected int or long [SupportAnnotationUsage]
-
-    @ColorInt
-    ---------
-
-
-src/test/pkg/WrongUsages.java:47:Error: The size multiple must be at
-least 1 [SupportAnnotationUsage]
-
-    @Size(multiple=0)
-    -----------------
-
-
-src/test/pkg/WrongUsages.java:48:Error: This annotation does not apply
-for type String; expected int or long [SupportAnnotationUsage]
-
-    @DrawableRes
-    ------------
-
-
-src/test/pkg/WrongUsages.java:53:Error: The size can't be negative
-[SupportAnnotationUsage]
-
-    @Size(-5)
-    ---------
-
-
-src/test/pkg/WrongUsages.java:58:Error: For methods, permission
-annotation should specify one of value, anyOf or allOf
-[SupportAnnotationUsage]
-
-    @RequiresPermission
-    -------------------
-
-
-src/test/pkg/WrongUsages.java:63:Error: Only specify one of value, anyOf
-or allOf [SupportAnnotationUsage]
-
-    @RequiresPermission(allOf = {"my.permission.PERM1","my.permission.PERM2"},anyOf = {"my.permission.PERM1","my.permission.PERM2"})
-    --------------------------------------------------------------------------------------------------------------------------------
-
-
-src/test/pkg/WrongUsages.java:64:Error: @CheckResult should not be
-specified on void methods [SupportAnnotationUsage]
-
-    @CheckResult // Error on void methods
-    ------------
-
-
-src/test/pkg/WrongUsages.java:82:Error: This annotation does not apply
-for type java.util.List<java.lang.String>; expected int
-[SupportAnnotationUsage]
-
-    @DialogStyle public List&lt;String&gt; getFlags2() { return null; } // ERROR
-    ------------
+@java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 2
+                      ------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/WrongUsages.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+`src/test/pkg/Annotation1.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
 
-package test.pkg;
-import androidx.annotation.IntDef;
-import androidx.annotation.IntRange;
-import androidx.annotation.FloatRange;
-import androidx.annotation.CheckResult;
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.Size;
-import androidx.annotation.RequiresPermission;
-import android.annotation.SuppressLint;
-import java.lang.annotation.*;
-import java.util.List;
-@SuppressLint("UnusedDeclaration")
-public class WrongUsages {
-    @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface DialogStyle {}
-    public static final int STYLE_NORMAL = 0;
-    public static final int STYLE_NO_TITLE = 1;
-    public static final int STYLE_NO_FRAME = 2;
-    public static final int STYLE_NO_INPUT = 3;
+import java.lang.annotation.ElementType
 
-    @DialogStyle
-    public int okay1() {
-        return 0;
-    }
+// Correct: can be used on any element from Kotlin and Java
+annotation class Annotation1() // OK 1
 
-    @DialogStyle
-    public long okay2() {
-        return 0;
-    }
+// Correct: can be used on parameters only both in Kotlin and Java
+@Target(AnnotationTarget.VALUE_PARAMETER) // OK 2
+annotation class Annotation2()
 
-    @DialogStyle
-    public String wrong() {
-        return null;
-    }
+// Incorrect: can be used on any element (not just parameters) in
+// Kotlin, and cannot be used on any elements (including parameters) in Java
+@java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 1
+annotation class Annotation3()
 
-    @IntRange(from = 1, to = 0)
-    @Size(min=10, max = 8)
-    public String wrongIntRange() {
-        return null;
-    }
-
-    @FloatRange(from = 1.0, to = 0.0)
-    @ColorInt
-    @Size(multiple=0)
-    @DrawableRes
-    public String wrongFloatRange() {
-        return null;
-    }
-
-    @Size(-5)
-    public int[] wrongSize() {
-        return null;
-    }
-
-    @RequiresPermission
-    public void wrongPermission(
-        @RequiresPermission int allowed) { // OK
-    }
-
-    @RequiresPermission(allOf = {"my.permission.PERM1","my.permission.PERM2"},anyOf = {"my.permission.PERM1","my.permission.PERM2"})
-    @CheckResult // Error on void methods
-    public void wrongPermission2() {
-    }
-
-    public void autoBoxing(@DrawableRes Integer param1) { }
-    public void array(@DrawableRes int[] param1) { }
-    public void varargs(@DrawableRes int... param1) { }
-    public void varargs(@DrawableRes List<Integer> param1) { }
-
-
-    @Size(min=1)
-    public int[] okSize() {
-        return null;
-    }
-
-    @DialogStyle public Pair<Integer, Integer> getFlags1() { return null; } // OK
-    @DialogStyle public List<Integer> getFlags2() { return null; } // OK
-    @DialogStyle public java.util.Map<Integer, String> getFlags2() { return null; } // OK
-    @DialogStyle public List<String> getFlags2() { return null; } // ERROR
-
-    private class Pair<S,T> { }
-
-
-    @androidx.annotation.LongDef({1L,2L,3L})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface LongDialogStyle {}
-
-    @LongDialogStyle // OK
-    public int okWithLong() {
-        return 0;
-    }
-}
+// Incorrect: works fine from Kotlin (can be used only on parameters),
+// but cannot be used on any elements from Java
+@java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 2
+@Target(AnnotationTarget.VALUE_PARAMETER)
+annotation class Annotation4()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `AnnotationDetector.testWrongUsages`.
+found for this lint check, `AnnotationDetector.testAnnotationTarget`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

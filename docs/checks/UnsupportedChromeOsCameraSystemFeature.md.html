@@ -23,21 +23,18 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ChromeOsSourceDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ChromeOsSourceDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
 Copyright Year
 :   2018
 
 You should look for the `FEATURE_CAMERA_ANY` features to include all
-possible cameras that may be on the device. Looking for
-`FEATURE_CAMERA`
+possible cameras that may be on the device. Looking for `FEATURE_CAMERA`
 only looks for a rear facing camera, which certain tablets or Chrome OS
 devices don't have, as well as newer device configurations and modes may
-place the
-device in a state where the rear camera is not available. To fix the
-issue,
-look for `FEATURE_CAMERA_ANY` instead.
+place the device in a state where the rear camera is not available. To
+fix the issue, look for `FEATURE_CAMERA_ANY` instead.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -80,7 +77,7 @@ public class MainActivity extends Activity {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-master-dev:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ChromeOsSourceDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test

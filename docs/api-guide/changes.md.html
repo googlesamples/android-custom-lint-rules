@@ -5,6 +5,36 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**7.3**
+
+* The new AnnotationUsageType.DEFINTION now lets detectors easily check
+  occurrences of an annotation in the source code. Previously,
+  `visitAnnotationUsage` would only check annotated elements, not the
+  annotations themselves, and to check an annotation you'd need to
+  create an `UElementHandler`. See the docs for the new enum constant
+  for more details, and for an example of a detector that was converted
+  from a handler to using this, see `IgnoreWithoutReasonDetector`.
+
+* Lint unit tests can now include `package-info.java` files with
+  annotations in source form (until now, this only worked if the files
+  were provided as binary class files)
+
+**7.2**
+
+* There is now a way to register “options” for detectors. These are
+  simple key/value pairs of type string, integer, boolean or file, and
+  users can configure values in `lint.xml` files. This has all been
+  possible since 4.2, but in 7.2 there is now a way to register the
+  names, descriptions and default values of these options, and these
+  will show up in issue explanations, HTML reports, and so on. (In the
+  future we can use this to create an Options UI in the IDE, allow
+  configuration via Gradle DSL, and so on.)
+
+  For more, see the [options chapter](options.md.html).
+
+* A new test mode, `TestMode.CDATA`, checks that tests correctly handle
+  XML CDATA sections in `<string>` declarations.
+
 **7.1**
 
 * Lint now bundles IntelliJ version 2021.1 and Kotlin compiler version 1.5.30.
