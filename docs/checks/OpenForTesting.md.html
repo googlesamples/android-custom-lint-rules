@@ -1,0 +1,185 @@
+<meta charset="utf-8">
+(#) Extending API only allowed from tests
+
+!!! ERROR: Extending API only allowed from tests
+   This is an error.
+
+Id
+:   `OpenForTesting`
+Summary
+:   Extending API only allowed from tests
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/OpenForTestingDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/OpenForTestingDetectorTest.kt)
+Copyright Year
+:   2022
+
+Classes or methods annotated with `@OpenForTesting` are only allowed to
+be subclassed or overridden from unit tests.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Builder1.kt:10:Error: Builder1 should only be subclassed
+from tests [OpenForTesting]
+
+class MyBuilder1 : Builder1() {  // ERROR 1
+                   --------
+
+
+src/test/pkg/Builder1.kt:22:Error: Builder2.someMethod should only be
+overridden from tests [OpenForTesting]
+
+    override fun someMethod(arg: Int) { } // ERROR 2
+                 ----------
+
+
+src/test/pkg/MyBuilder3.java:2:Error: Builder1 should only be subclassed
+from tests [OpenForTesting]
+
+class MyBuilder3 extends Builder1 { // ERROR 3
+                         --------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/test/pkg/Builder1.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+import androidx.annotation.OpenForTesting
+
+// Annotation on class
+@OpenForTesting
+open class Builder1 {
+    open fun someMethod(arg: Int) { }
+}
+
+class MyBuilder1 : Builder1() {  // ERROR 1
+    override fun someMethod(arg: Int) { }
+}
+
+// Annotation on specific method
+open class Builder2 {
+    @OpenForTesting
+    open fun someMethod(arg: Int) { }
+    open fun someOtherMethod(arg: Int) { }
+}
+
+class MyBuilder2 : Builder2() {
+    override fun someMethod(arg: Int) { } // ERROR 2
+    override fun someOtherMethod(arg: Int) { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyBuilder3.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+class MyBuilder3 extends Builder1 { // ERROR 3
+    @Override void someMethod(int arg) { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`test/test/pkg/MyBuilder4.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+class MyBuilder4 extends Builder1 { // OK: In unit test
+    @Override void someMethod(int arg) { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`test/test/pkg/MyBuilder5.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+class MyBuilder5 extends Builder2 { // OK: In unit test
+    @Override void someMethod(int arg) { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/OpenForTestingDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("OpenForTesting")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("OpenForTesting")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection OpenForTesting
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="OpenForTesting" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'OpenForTesting'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore OpenForTesting ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

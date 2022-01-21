@@ -1,0 +1,202 @@
+<meta charset="utf-8">
+(#) Using a method deprecated in earlier SDK
+
+!!! WARNING: Using a method deprecated in earlier SDK
+   This is a warning.
+
+Id
+:   `DeprecatedSinceApi`
+Summary
+:   Using a method deprecated in earlier SDK
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DeprecatedSinceApiDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DeprecatedSinceApiDetectorTest.kt)
+Copyright Year
+:   2022
+
+Some backport methods are only necessary until a specific version of
+Android. These have been annotated with `@DeprecatedSinceApi`,
+specifying the relevant API level and replacement suggestions. Calling
+these methods when the `minSdkVersion` is already at the deprecated API
+level or above is unnecessary.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Api.kt:26:Warning: This method is deprecated as of API
+level 25 [DeprecatedSinceApi]
+
+    api.someMethod2(0)         // WARN 1
+    ------------------
+
+
+src/test/pkg/Api.kt:27:Warning: This method is deprecated as of API
+level 30; Use AlarmManager.notify instead [DeprecatedSinceApi]
+
+    api.someMethod3(0)         // WARN 2
+    ------------------
+
+
+src/test/pkg/Api.kt:28:Warning: This field is deprecated as of API level
+30 [DeprecatedSinceApi]
+
+    val c = MY_CONSTANT        // WARN 3
+            -----------
+
+
+src/test/pkg/Api.kt:29:Warning: This class is deprecated as of API level
+28 [DeprecatedSinceApi]
+
+    api2.someMethod1(0)        // WARN 4
+    -------------------
+
+
+src/test/pkg/Api.kt:30:Warning: This method is deprecated as of API
+level 30 [DeprecatedSinceApi]
+
+    api2.someMethod2(0)        // WARN 5
+    -------------------
+
+
+src/test/pkg/Api.kt:31:Warning: This class is deprecated as of API level
+28 [DeprecatedSinceApi]
+
+    val clz = Api2::class.java // WARN 6
+              -----------
+
+
+src/test/pkg/Api.kt:32:Warning: This method is deprecated as of API
+level 25 [DeprecatedSinceApi]
+
+    println(api::someMethod2)  // WARN 7
+            ----------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Api.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+import androidx.annotation.DeprecatedSinceApi
+
+class Api {
+    @DeprecatedSinceApi(api = 21)
+    fun someMethod1(arg: Int) { }
+    @DeprecatedSinceApi(api = 25)
+    fun someMethod2(arg: Int) { }
+    @DeprecatedSinceApi(api = 30, message = "Use AlarmManager.notify instead")
+    fun someMethod3(arg: Int) { }
+}
+
+@DeprecatedSinceApi(api = 28)
+class Api2 {
+    fun someMethod1(arg: Int) { }
+    @DeprecatedSinceApi(api = 30)
+    fun someMethod2(arg: Int) { }
+}
+
+@DeprecatedSinceApi(30)
+const val MY_CONSTANT = "test"
+
+class Test {
+    fun test(api: Api, api2: Api2) {
+      api.someMethod1(0)         // OK
+      api.someMethod2(0)         // WARN 1
+      api.someMethod3(0)         // WARN 2
+      val c = MY_CONSTANT        // WARN 3
+      api2.someMethod1(0)        // WARN 4
+      api2.someMethod2(0)        // WARN 5
+      val clz = Api2::class.java // WARN 6
+      println(api::someMethod2)  // WARN 7
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DeprecatedSinceApiDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("DeprecatedSinceApi")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("DeprecatedSinceApi")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection DeprecatedSinceApi
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DeprecatedSinceApi" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DeprecatedSinceApi'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DeprecatedSinceApi ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

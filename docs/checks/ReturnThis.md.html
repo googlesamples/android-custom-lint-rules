@@ -1,17 +1,17 @@
 <meta charset="utf-8">
-(#) @Ignore without Reason
+(#) Method must return `this`
 
-!!! WARNING: @Ignore without Reason
-   This is a warning.
+!!! ERROR: Method must return `this`
+   This is an error.
 
 Id
-:   `IgnoreWithoutReason`
+:   `ReturnThis`
 Summary
-:   @Ignore without Reason
+:   Method must return `this`
 Severity
-:   Warning
+:   Error
 Category
-:   Testing
+:   Correctness
 Platform
 :   Any
 Vendor
@@ -19,60 +19,61 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Kotlin and Java files and test sources
+:   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IgnoreWithoutReasonDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ReturnThisDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IgnoreWithoutReasonDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ReturnThisDetectorTest.kt)
 Copyright Year
-:   2018
+:   2022
 
-Ignoring a test without a reason makes it difficult to figure out the
-problem later. Please define an explicit reason why it is ignored, and
-when it can be resolved.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
+Methods annotated with `@ReturnThis` (usually in the super method that
+this method is overriding) should also `return this`.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/MyTest.java:7:Warning: Test is ignored without giving any
-explanation [IgnoreWithoutReason]
+src/Builder.kt:18:Error: This method should return this (because it has
+been annotated with @ReturnThis) [ReturnThis]
 
-@Ignore class MyTest {
--------
+    return MyClass()
+    ----------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/foo/MyTest.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package foo;
+`src/Builder.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.annotation.ReturnThis
 
-import org.junit.Ignore;
-import org.junit.Test;
+@ReturnThis
+open class Builder {
+    open fun someMethod(arg: Int): Builder {
+        return this
+    }
+    open fun someOtherMethod(arg: Int): Builder {
+        return this
+    }
+}
 
-@SuppressWarnings("ClassNameDiffersFromFileName")
-@Ignore class MyTest {
-  @Test void something() {
-  }
+class MyClass : Builder() {
+    override fun someMethod(arg: Int): Builder {
+        return this // OK
+    }
+    override fun someOtherMethod(arg: Int): Builder {
+        return MyClass()
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IgnoreWithoutReasonDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ReturnThisDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `IgnoreWithoutReasonDetector.testAnnotationWithoutReasonOnClass`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 
@@ -83,7 +84,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```kt
   // Kotlin
-  @Suppress("IgnoreWithoutReason")
+  @Suppress("ReturnThis")
   fun method() {
      problematicStatement()
   }
@@ -93,7 +94,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```java
   // Java
-  @SuppressWarnings("IgnoreWithoutReason")
+  @SuppressWarnings("ReturnThis")
   void method() {
      problematicStatement();
   }
@@ -102,7 +103,7 @@ You can suppress false positives using one of the following mechanisms:
 * Using a suppression comment like this on the line above:
 
   ```kt
-  //noinspection IgnoreWithoutReason
+  //noinspection ReturnThis
   problematicStatement()
   ```
 
@@ -112,7 +113,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="IgnoreWithoutReason" severity="ignore" /&gt;
+      &lt;issue id="ReturnThis" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -125,7 +126,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'IgnoreWithoutReason'
+      disable 'ReturnThis'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -133,7 +134,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore IgnoreWithoutReason ...`
+  $ lint --ignore ReturnThis ...`
   ```
 
 * Last, but not least, using baselines, as discussed
