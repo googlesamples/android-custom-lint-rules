@@ -1,17 +1,17 @@
 <meta charset="utf-8">
-(#) @Ignore without Reason
+(#) Calling an empty super method
 
-!!! WARNING: @Ignore without Reason
+!!! WARNING: Calling an empty super method
    This is a warning.
 
 Id
-:   `IgnoreWithoutReason`
+:   `EmptySuperCall`
 Summary
-:   @Ignore without Reason
+:   Calling an empty super method
 Severity
 :   Warning
 Category
-:   Testing
+:   Correctness
 Platform
 :   Any
 Vendor
@@ -19,60 +19,67 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Kotlin and Java files and test sources
+:   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IgnoreWithoutReasonDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/EmptySuperDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IgnoreWithoutReasonDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/EmptySuperDetectorTest.kt)
 Copyright Year
-:   2018
+:   2022
 
-Ignoring a test without a reason makes it difficult to figure out the
-problem later. Please define an explicit reason why it is ignored, and
-when it can be resolved.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
+For methods annotated with `@EmptySuper`, overriding methods should not
+also call the super implementation, either because it is empty, or
+perhaps it contains code not intended to be run when the method is
+overridden.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/MyTest.java:7:Warning: Test is ignored without giving any
-explanation [IgnoreWithoutReason]
+src/ParentClass.kt:22:Warning: No need to call super.someOtherMethod;
+the super method is defined to be empty [EmptySuperCall]
 
-@Ignore class MyTest {
--------
+    super.someOtherMethod(arg) // ERROR
+          ---------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/foo/MyTest.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package foo;
+`src/ParentClass.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.annotation.EmptySuper
 
-import org.junit.Ignore;
-import org.junit.Test;
+open class ParentClass {
+    @EmptySuper
+    open fun someMethod(arg: Int) {
+        // ...
+    }
 
-@SuppressWarnings("ClassNameDiffersFromFileName")
-@Ignore class MyTest {
-  @Test void something() {
-  }
+    @EmptySuper
+    open fun someOtherMethod(arg: Int) {
+        // ...
+    }
+}
+
+class MyClass : ParentClass() {
+    override fun someMethod(arg: Int) {
+        // Not calling the overridden (@EmptySuper) method.
+        println(super.toString()) // but invoking other super methods is fine
+    }
+
+    override fun someOtherMethod(arg: Int) {
+        super.someOtherMethod(arg) // ERROR
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IgnoreWithoutReasonDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/EmptySuperDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `IgnoreWithoutReasonDetector.testAnnotationWithoutReasonOnClass`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 
@@ -83,7 +90,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```kt
   // Kotlin
-  @Suppress("IgnoreWithoutReason")
+  @Suppress("EmptySuperCall")
   fun method() {
      problematicStatement()
   }
@@ -93,7 +100,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```java
   // Java
-  @SuppressWarnings("IgnoreWithoutReason")
+  @SuppressWarnings("EmptySuperCall")
   void method() {
      problematicStatement();
   }
@@ -102,7 +109,7 @@ You can suppress false positives using one of the following mechanisms:
 * Using a suppression comment like this on the line above:
 
   ```kt
-  //noinspection IgnoreWithoutReason
+  //noinspection EmptySuperCall
   problematicStatement()
   ```
 
@@ -112,7 +119,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="IgnoreWithoutReason" severity="ignore" /&gt;
+      &lt;issue id="EmptySuperCall" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -125,7 +132,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'IgnoreWithoutReason'
+      disable 'EmptySuperCall'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -133,7 +140,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore IgnoreWithoutReason ...`
+  $ lint --ignore EmptySuperCall ...`
   ```
 
 * Last, but not least, using baselines, as discussed
