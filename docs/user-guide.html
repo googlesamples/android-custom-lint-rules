@@ -88,6 +88,28 @@ lint check authors, see the API Guide.
 
 </p><p>
 
+<strong class="asterisk">7.3</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint-checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>SuspiciousIndentation</code> </td><td style="text-align:left"> Flags suspiciously indented code </td></tr>
+<tr><td style="text-align:left"> <code>StringFormatTrivial</code> </td><td style="text-align:left"> Avoid trivial conversions in String.format </td></tr>
+<tr><td style="text-align:left"> <code>WearableActionDuplicate</code> </td><td style="text-align:left"> Duplicate watch face configurations </td></tr>
+<tr><td style="text-align:left"> <code>EmptySuperCall</code> </td><td style="text-align:left"> Invoking super. on @EmptySuper method </td></tr>
+<tr><td style="text-align:left"> <code>OpenForTesting</code> </td><td style="text-align:left"> Overriding @OpenForTesting outside tests </td></tr>
+<tr><td style="text-align:left"> <code>DeprecatedSinceApi</code> </td><td style="text-align:left"> Calling deprecated SDK backport methods </td></tr>
+<tr><td style="text-align:left"> <code>ReturnThis</code> </td><td style="text-align:left"> Not returning “this” from @ReturnThis methods </td></tr>
+<tr><td style="text-align:left"> <code>KotlinNullnessAnnotation</code> </td><td style="text-align:left"> Using nullability annotations in Kotlin </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
 <strong class="asterisk">7.2</strong>
 
 </p><p>
@@ -276,9 +298,9 @@ DSL</a> options instead.
 
 </p></dd><dt><code>--abort-if-suggestions-applied</code></dt><dd><p>  Set the exit code to an error if any fixes are applied
 
-</p></dd><dt><em class="asterisk">directories</em></dt><dd><p>  You can also pass in directories for files to be analyzed. This
-  was common many years ago when project metadata tended to be stored
-  in simple <code>.classpath</code> files from Eclipse; these days, you typically
+</p></dd><dt><em class="asterisk">directories</em></dt><dd><p>  You can also pass in directories for files to be analyzed. This was
+  common many years ago when project metadata tended to be stored in
+  simple <code>.classpath</code> files from Eclipse; these days, you typically
   will pass it a <code>--lint-model</code> or <code>--project</code> description instead.
 
 </p></dd></dl><p></p>
@@ -325,11 +347,20 @@ DSL</a> options instead.
 </p></dd><dt><code>--remove-fixed</code></dt><dd><p>  Rewrite the baseline files to remove any issues that have been
   fixed
 
+</p></dd><dt><code>--write-reference-baseline</code></dt><dd><p>  Writes the current results, including issues that were filtered from
+  the input baseline if any. Does not set the exit code to indicate
+  that the baseline is created the way —baseline would. Implies
+  —update-baseline and —continue-after-baseline-created.
+
 </p></dd><dt><code>--allow-suppress</code></dt><dd><p>  Whether to allow suppressing issues that have been explicitly
   registered as not suppressible.
 
 </p></dd><dt><code>--restrict-suppress</code></dt><dd><p>  Opposite of —allow-suppress: do not allow suppressing restricted
   issues
+
+</p></dd><dt><code>--skip-annotated</code></dt><dd><p>  Comma separated list of annotations (by fully qualified name) which
+  indicate that lint should ignore this compilation unit (only allowed
+  on top level classes and files)
 
 </p></dd></dl><p></p>
 <a class="target" name="outputoptions">&nbsp;</a><a class="target" name="lintcommandlintflags/outputoptions">&nbsp;</a><a class="target" name="toc1.3">&nbsp;</a><h2>Output Options</h2>
@@ -422,7 +453,12 @@ DSL</a> options instead.
 </p></dd><dt><code>--describe-suggestions</code> <em class="asterisk">file</em></dt><dd><p>  Describes all the quickfixes in an XML file expressed as document
   edits — insert, replace, delete
 
-</p></dd><dt><code>--stacktrace</code></dt><dd><p>  Dump exceptions from detectors to the console
+</p></dd><dt><code>--client-id</code></dt><dd><p>  Sets the id of the client, such as “gradle”
+
+</p></dd><dt><code>--client-name</code></dt><dd><p>  Sets the display name of the client, such as “Android Gradle
+  Plugin”
+
+</p></dd><dt><code>--client-version</code></dt><dd><p>  Sets the version of the client, such as “7.1.0-alpha01”
 
 </p></dd></dl><p></p>
 <a class="target" name="exitstatus">&nbsp;</a><a class="target" name="lintcommandlintflags/exitstatus">&nbsp;</a><a class="target" name="toc1.6">&nbsp;</a><h2>Exit Status</h2>
@@ -440,6 +476,10 @@ DSL</a> options instead.
 </p></dd></td></tr><tr valign="top"><td><dt><code>4</code></dt></td><td><dd><p>  Lint help.
 
 </p></dd></td></tr><tr valign="top"><td><dt><code>5</code></dt></td><td><dd><p>  Invalid command-line argument.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>6</code></dt></td><td><dd><p>  A new baseline file was created.
+
+</p></dd></td></tr><tr valign="top"><td><dt><code>7</code></dt></td><td><dd><p>  Quickfixes were applied.
 
 </p></dd></td></tr></tbody></table></dl><p></p>
 <a class="target" name="lintgradleplugindsl">&nbsp;</a><a class="target" name="lintgradleplugindsl">&nbsp;</a><a class="target" name="toc2">&nbsp;</a><h1>Lint Gradle Plugin DSL</h1>
@@ -1530,6 +1570,28 @@ lint check authors, see the API Guide.
 
 </p><p>
 
+<strong class="asterisk">7.3</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint-checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>SuspiciousIndentation</code> </td><td style="text-align:left"> Flags suspiciously indented code </td></tr>
+<tr><td style="text-align:left"> <code>StringFormatTrivial</code> </td><td style="text-align:left"> Avoid trivial conversions in String.format </td></tr>
+<tr><td style="text-align:left"> <code>WearableActionDuplicate</code> </td><td style="text-align:left"> Duplicate watch face configurations </td></tr>
+<tr><td style="text-align:left"> <code>EmptySuperCall</code> </td><td style="text-align:left"> Invoking super. on @EmptySuper method </td></tr>
+<tr><td style="text-align:left"> <code>OpenForTesting</code> </td><td style="text-align:left"> Overriding @OpenForTesting outside tests </td></tr>
+<tr><td style="text-align:left"> <code>DeprecatedSinceApi</code> </td><td style="text-align:left"> Calling deprecated SDK backport methods </td></tr>
+<tr><td style="text-align:left"> <code>ReturnThis</code> </td><td style="text-align:left"> Not returning “this” from @ReturnThis methods </td></tr>
+<tr><td style="text-align:left"> <code>KotlinNullnessAnnotation</code> </td><td style="text-align:left"> Using nullability annotations in Kotlin </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
 <strong class="asterisk">7.2</strong>
 
 </p><p>
@@ -1713,7 +1775,13 @@ what they are seems useful.
 
 </p><p>
 
-  Corresponding system property: <code>lint.nullness.ignore-deprecated</code>
+  Corresponding system property: <code>lint.nullness.ignore-deprecated</code>.
+
+</p><p>
+
+  Note that this setting can also be configured using a proper
+  <code>lint.xml</code> setting instead; this is now listed in the documentation
+  for that check.
 
 </p></dd></dl><p></p>
 <a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc10.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>

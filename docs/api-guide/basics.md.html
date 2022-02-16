@@ -31,9 +31,9 @@ looking for good name suggestions.
 
 ### API Stability
 
-Lint's APIs are still marked as @Beta, and we have made it very clear
-all along that this is not a stable API, so custom lint checks may need
-to be updated periodically to keep working.
+Lint's APIs are not stable, and a large part of Lint's API surface is
+not under our control (such as UAST and PSI). Therefore, custom lint
+checks may need to be updated periodically to keep working.
 
 However, ”some APIs are more stable than others“. In particular, the
 detector API (described below) is much less likely to change than the

@@ -47,8 +47,9 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 AndroidManifest.xml:5:Warning: Expecting
 android:resizeableActivity="true" for this activity so the user can take
-advantage of the multi-window environment on Chrome OS devices
-[NonResizeableActivity]
+advantage of the multi-window environment on all devices. NOTE:
+beginning with Android 12, all apps run in multi-window mode on large
+screen devices. [NonResizeableActivity]
 
     &lt;activity android:name=".MainActivity" android:resizeableActivity="false"/&gt;
                                            ----------------------------------
