@@ -129,6 +129,21 @@ The current set of available quick fix types are:
     with simple names because there is a conflicting import of the same
     name from a different package.
 
+    Normally, you should write your replacement source code using fully
+    qualified names, and then apply `shortenNames` to the quickfix to
+    tell lint to replace fully qualified names with imports; don't try
+    to write your quickfix to also add the import statements on its
+    own. There's a possibility that a given name cannot be imported
+    because it's already importing the same name for a different
+    namespace. When using fully qualified names, lint will specifically
+    handle this.
+
+    In some cases you cannot use fully qualified names in the code
+    snippet; this is the case with Kotlin extension functions for
+    example. For that scenario, the replacement quickfix has an
+    `imports` property you can use to specify methods (and classes and
+    fields) to import at the same time.
+
 * `fix().annotate`: Annotating an element. This will add (or optionally
   replace) an annotation on a source element such as a method. It will
   also handle import management.

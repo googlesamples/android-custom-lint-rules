@@ -19,6 +19,15 @@ Guide.
   annotations in source form (until now, this only worked if the files
   were provided as binary class files)
 
+* String replacement quickfixes can now be configured with a list of
+  imports to be performed when the fix is applied. This can be used to
+  for example import Kotlin extension functions needed by the
+  replacement string. (You should not use this for normal imports;
+  instead, the replacement string should use fully qualified names
+  everywhere along with the `shortenNames` property on the fix, and
+  then lint will rewrite and import all symbols that can be done
+  without conflicts.)
+
 **7.2**
 
 * There is now a way to register “options” for detectors. These are
