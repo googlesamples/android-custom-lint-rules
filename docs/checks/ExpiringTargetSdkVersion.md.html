@@ -58,12 +58,11 @@ https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:5:Error: Google Play will soon require that apps target API
-level 30 or higher. This will be required for new apps in August 2021,
-and for updates to existing apps in November 2021.
-[ExpiringTargetSdkVersion]
+build.gradle:6:Error: Google Play will soon require that apps target API
+level  or higher. This will be required for new apps in August , and for
+updates to existing apps in November . [ExpiringTargetSdkVersion]
 
-    targetSdkVersion 29
+    targetSdkVersion 
     -------------------
 
 
@@ -77,8 +76,10 @@ apply plugin: 'com.android.application'
 
 android {
     defaultConfig {
-        targetSdkVersion 29
-        targetSdkVersion 31 // OK
+        // Already meeting last year's requirement but not this year's requirement
+        targetSdkVersion 
+        targetSdkVersion  // OK
+ // OK
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

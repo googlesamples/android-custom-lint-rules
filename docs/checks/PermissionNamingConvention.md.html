@@ -1,0 +1,152 @@
+<meta charset="utf-8">
+(#) Permission name does not follow recommended convention
+
+!!! WARNING: Permission name does not follow recommended convention
+   This is a warning.
+
+Id
+:   `PermissionNamingConvention`
+Summary
+:   Permission name does not follow recommended convention
+Note
+:   **This issue is disabled by default**; use `--enable PermissionNamingConvention`
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PermissionErrorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PermissionErrorDetectorTest.kt)
+Copyright Year
+:   2022
+
+Permissions should be prefixed with an app's package name, using
+reverse-domain-style naming. This prefix should be followed by
+`.permission.`, and then a description of the capability that the
+permission represents, in upper SNAKE_CASE. For example,
+`com.example.myapp.permission.ENGAGE_HYPERSPACE`.
+
+Following this recommendation avoids naming collisions, and helps
+clearly identify the owner and intention of a custom permission.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:7:Warning: com.example.helloworld.FOO_BAR does not
+follow recommended naming convention [PermissionNamingConvention]
+
+  &lt;permission android:name="com.example.helloworld.FOO_BAR" /&gt;
+                            ------------------------------
+
+
+AndroidManifest.xml:8:Warning: com.example.helloworld.permission.FOO-BAR
+does not follow recommended naming convention
+[PermissionNamingConvention]
+
+  &lt;permission android:name="com.example.helloworld.permission.FOO-BAR" /&gt;
+                            -----------------------------------------
+
+
+AndroidManifest.xml:9:Warning: com.example.helloworld.permission.foo_bar
+does not follow recommended naming convention
+[PermissionNamingConvention]
+
+  &lt;permission android:name="com.example.helloworld.permission.foo_bar" /&gt;
+                            -----------------------------------------
+
+
+AndroidManifest.xml:10:Warning: android.permission.FOO_BAR does not
+follow recommended naming convention [PermissionNamingConvention]
+
+  &lt;permission android:name="android.permission.FOO_BAR" /&gt;
+                            --------------------------
+
+
+AndroidManifest.xml:11:Warning: FOO_BAR does not follow recommended
+naming convention [PermissionNamingConvention]
+
+  &lt;permission android:name="FOO_BAR" /&gt;
+                            -------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.example.helloworld"&gt;
+  &lt;permission android:name="com.example.helloworld.permission.FOO_BAR" /&gt;
+  &lt;permission android:name="com.example.helloworld.specific.path.permission.FOO_BAR" /&gt;
+  &lt;permission android:name="com.example.helloworld.permission.FOO_BAR_123" /&gt;
+  &lt;permission android:name="com.example.helloworld.FOO_BAR" /&gt;
+  &lt;permission android:name="com.example.helloworld.permission.FOO-BAR" /&gt;
+  &lt;permission android:name="com.example.helloworld.permission.foo_bar" /&gt;
+  &lt;permission android:name="android.permission.FOO_BAR" /&gt;
+  &lt;permission android:name="FOO_BAR" /&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PermissionErrorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="PermissionNamingConvention"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="PermissionNamingConvention" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'PermissionNamingConvention'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore PermissionNamingConvention ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

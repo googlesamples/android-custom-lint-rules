@@ -322,7 +322,7 @@ java.lang.IllegalStateException:
 app/src/com/example/MyDiffUtilCallbackJava.java:4: Error:
 Couldn't resolve this import [LintError]
 import androidx.recyclerview.widget.DiffUtil;
-       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       -------------------------------------
 
 This usually means that the unit test needs to declare a stub file or
 placeholder with the expected signature such that type resolving works.
@@ -334,9 +334,6 @@ this unit test as allowing resolution errors by setting
 (This check only enforces import references, not all references, so if
 it doesn't matter to the detector, you can just remove the import but
 leave references to the class in the code.)
-
-For more information, see the "Library Dependencies and Stubs" section in
-https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/docs/api-guide/unit-testing.md.html
 ```
 
 ## Binary and Compiled Source Files

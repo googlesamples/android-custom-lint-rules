@@ -36,6 +36,27 @@ when it can be resolved.
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) allow-comments
+
+Whether to allow a comment next to the @Ignore tag to be considered providing a reason.
+Normally you have to specify an annotation argument to the `@Ignore` annotation, but with this option you can configure whether it should also allow ignore reasons to specified by a comment adjacent to the ignore tag.
+
+Default is true.
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="IgnoreWithoutReason"&gt;
+        &lt;option name="allow-comments" value="true" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:
@@ -60,7 +81,7 @@ import org.junit.Test;
 
 @SuppressWarnings("ClassNameDiffersFromFileName")
 @Ignore class MyTest {
-  @Test void something() {
+  @Test public void something() {
   }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

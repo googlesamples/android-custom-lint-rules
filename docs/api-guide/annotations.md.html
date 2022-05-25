@@ -120,6 +120,18 @@ Then we just check the method call to make sure that its return value
 isn't ignored, e.g. that it's stored into a variable or passed into
 another method call.
 
+!!! Tip
+   In `applicableAnnotations`, you typically return the fully
+   qualified names of the annotation classes your detector is
+   targeting. However, in some cases, it's useful to match all
+   annotations of a given name; for example, there are many, many
+   variations of the `@Nullable` annotations, and you don't really
+   want to be in the business of keeping track of and listing all of
+   them here. Lint will also let you specify just the basename of an
+   annotation here, such as `"Nullable"`, and if so, annotations like
+   `androidx.annotation.Nullable` and
+   `org.jetbrains.annotations.Nullable` will both match.
+
 ## Annotation Usage Types and isApplicableAnnotationUsage
 
 ### Method Override

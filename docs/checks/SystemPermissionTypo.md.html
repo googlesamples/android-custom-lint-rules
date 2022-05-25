@@ -1,0 +1,161 @@
+<meta charset="utf-8">
+(#) Permission appears to be a system permission with a typo
+
+!!! WARNING: Permission appears to be a system permission with a typo
+   This is a warning.
+
+Id
+:   `SystemPermissionTypo`
+Summary
+:   Permission appears to be a system permission with a typo
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PermissionErrorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PermissionErrorDetectorTest.kt)
+Copyright Year
+:   2022
+
+This check looks for required permissions that *look* like well-known
+system permissions, but aren't, and may be typos.
+
+Please double check the permission value you have supplied.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:5:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+  &lt;uses-permission android:name="android.permission.BIND_NCF_SERVICE" /&gt;
+                                 -----------------------------------
+
+
+AndroidManifest.xml:6:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+  &lt;application android:name="App" android:permission="android.permission.BIND_NCF_SERVICE"&gt;
+                                                      -----------------------------------
+
+
+AndroidManifest.xml:9:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+    &lt;activity android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+                                  -----------------------------------
+
+
+AndroidManifest.xml:10:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+    &lt;activity-alias android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+                                        -----------------------------------
+
+
+AndroidManifest.xml:11:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+    &lt;receiver android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+                                  -----------------------------------
+
+
+AndroidManifest.xml:12:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+    &lt;service android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+                                 -----------------------------------
+
+
+AndroidManifest.xml:13:Warning: Did you mean
+android.permission.BIND_NFC_SERVICE? [SystemPermissionTypo]
+
+    &lt;provider android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+                                  -----------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.example.helloworld"&gt;
+  &lt;uses-permission android:name="android.permission.BIND_NCF_SERVICE" /&gt;
+  &lt;application android:name="App" android:permission="android.permission.BIND_NCF_SERVICE"&gt;
+    &lt;activity /&gt;
+    &lt;activity android:permission="android.permission.BIND_NFC_SERVICE" /&gt;
+    &lt;activity android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+    &lt;activity-alias android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+    &lt;receiver android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+    &lt;service android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+    &lt;provider android:permission="android.permission.BIND_NCF_SERVICE" /&gt;
+    &lt;/application&gt;
+  &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PermissionErrorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="SystemPermissionTypo"` on the problematic XML element
+  (or one of its enclosing elements). You may also need to add the
+  following namespace declaration on the root element in the XML file
+  if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SystemPermissionTypo" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SystemPermissionTypo'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SystemPermissionTypo ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

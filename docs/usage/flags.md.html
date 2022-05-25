@@ -112,6 +112,13 @@ DSL](agp-dsl.md.html) options instead.
   that the baseline is created the way --baseline would. Implies
   --update-baseline and --continue-after-baseline-created.
 
+`--missing-baseline-is-empty-baseline`
+: Treat a missing baseline file as an empty baseline file. In most
+  cases, this means that if the baseline file does not exist, a new
+  one will not be created. But in the case when --update-baseline is
+  also used and there are lint issues, a new baseline file will be
+  created, and the lint issues will be written to it.
+
 `--allow-suppress`
 : Whether to allow suppressing issues that have been explicitly
   registered as not suppressible.
@@ -243,6 +250,9 @@ DSL](agp-dsl.md.html) options instead.
 
 `--client-version`
 : Sets the version of the client, such as “7.1.0-alpha01”
+
+`--offline`
+: Whether lint should attempt to stay offline
 
 ## Exit Status
 

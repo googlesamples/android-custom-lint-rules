@@ -88,6 +88,33 @@ lint check authors, see the API Guide.
 
 </p><p>
 
+<strong class="asterisk">7.4</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint-checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>PermissionNamingConvention</code> </td><td style="text-align:left"> Custom permissions not following naming convention </td></tr>
+<tr><td style="text-align:left"> <code>KnownPermissionError</code> </td><td style="text-align:left"> Well-known permission errors, e.g. <code>android:permission="true"</code> </td></tr>
+<tr><td style="text-align:left"> <code>SystemPermissionTypo</code> </td><td style="text-align:left"> Usage of permissions that look like system permissions, but have typos </td></tr>
+<tr><td style="text-align:left"> <code>CustomPermissionTypo</code> </td><td style="text-align:left"> Usage of permissions that look like custom permissions from the same project, but have typos </td></tr>
+<tr><td style="text-align:left"> <code>ReservedSystemPermission</code> </td><td style="text-align:left"> Accidental redefining of a framework permission </td></tr>
+<tr><td style="text-align:left"> <code>GestureBackNavigation</code> </td><td style="text-align:left"> Usage of KeyEvent.KEYCODE_BACK </td></tr>
+<tr><td style="text-align:left"> <code>UnusedTranslation</code> </td><td style="text-align:left"> Unused translation, not declared in localeConfig </td></tr>
+<tr><td style="text-align:left"> <code>NotificationPermission</code> </td><td style="text-align:left"> Notifications Without android.permission.POST_NOTIFICATIONS </td></tr>
+<tr><td style="text-align:left"> <code>MonochromeLauncherIcon</code> </td><td style="text-align:left"> Monochrome icon is not defined </td></tr>
+<tr><td style="text-align:left"> <code>PlaySdkIndexNonCompliant</code> </td><td style="text-align:left"> Library has policy issues in SDK Index </td></tr>
+<tr><td style="text-align:left"> <code>TileProviderPermissions</code> </td><td style="text-align:left"> TileProvider does not set permission </td></tr>
+<tr><td style="text-align:left"> <code>SquareAndRoundTilePreviews</code> </td><td style="text-align:left"> TileProvider does not have round and square previews </td></tr>
+<tr><td style="text-align:left"> <code>InternalInsetResource</code> </td><td style="text-align:left"> Using internal inset dimension resource </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
 <strong class="asterisk">7.3</strong>
 
 </p><p>
@@ -106,7 +133,18 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>DeprecatedSinceApi</code> </td><td style="text-align:left"> Calling deprecated SDK backport methods </td></tr>
 <tr><td style="text-align:left"> <code>ReturnThis</code> </td><td style="text-align:left"> Not returning “this” from @ReturnThis methods </td></tr>
 <tr><td style="text-align:left"> <code>KotlinNullnessAnnotation</code> </td><td style="text-align:left"> Using nullability annotations in Kotlin </td></tr>
+<tr><td style="text-align:left"> <code>MissingInflatedId</code> </td><td style="text-align:left"> ID not found in inflated resource </td></tr>
+<tr><td style="text-align:left"> <code>NotificationId0</code> </td><td style="text-align:left"> Notification Id is 0 </td></tr>
 </tbody></table></div>
+
+<p></p><p>
+
+</p><ul>
+<li class="asterisk">The Android Gradle plugin now supports having missing baseline files
+  instead of empty baseline files. Add the experimental flag
+  <code>android.experimental.lint.missingBaselineIsEmptyBaseline=true</code> in
+  <code>gradle.properties</code>, and then run the new task <code>updateLintBaseline</code>
+  to create or update baselines.</li></ul>
 
 <p></p><p>
 
@@ -352,6 +390,12 @@ DSL</a> options instead.
   that the baseline is created the way —baseline would. Implies
   —update-baseline and —continue-after-baseline-created.
 
+</p></dd><dt><code>--missing-baseline-is-empty-baseline</code></dt><dd><p>  Treat a missing baseline file as an empty baseline file. In most
+  cases, this means that if the baseline file does not exist, a new
+  one will not be created. But in the case when —update-baseline is
+  also used and there are lint issues, a new baseline file will be
+  created, and the lint issues will be written to it.
+
 </p></dd><dt><code>--allow-suppress</code></dt><dd><p>  Whether to allow suppressing issues that have been explicitly
   registered as not suppressible.
 
@@ -459,6 +503,8 @@ DSL</a> options instead.
   Plugin”
 
 </p></dd><dt><code>--client-version</code></dt><dd><p>  Sets the version of the client, such as “7.1.0-alpha01”
+
+</p></dd><dt><code>--offline</code></dt><dd><p>  Whether lint should attempt to stay offline
 
 </p></dd></dl><p></p>
 <a class="target" name="exitstatus">&nbsp;</a><a class="target" name="lintcommandlintflags/exitstatus">&nbsp;</a><a class="target" name="toc1.6">&nbsp;</a><h2>Exit Status</h2>
@@ -826,7 +872,7 @@ lint available than the one you're pointing to:
 
 </p><pre class="listing backtick"><code><span class="line"></span>gradle.properties:2: Warning: Newer version of lint available: 7.1.0-alpha04 [GradleDependency]
 <span class="line"></span>android.experimental.lint.version = 7.0.0-rc01
-<span class="line"></span>                                    ~~~~~~~~~~~~~
+<span class="line"></span>                                    ----------
 <span class="line"></span>0 errors, 1 warnings</code></pre><p>
 
 There is also a quickfix in the IDE to perform this update.
@@ -1570,6 +1616,33 @@ lint check authors, see the API Guide.
 
 </p><p>
 
+<strong class="asterisk">7.4</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint-checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>PermissionNamingConvention</code> </td><td style="text-align:left"> Custom permissions not following naming convention </td></tr>
+<tr><td style="text-align:left"> <code>KnownPermissionError</code> </td><td style="text-align:left"> Well-known permission errors, e.g. <code>android:permission="true"</code> </td></tr>
+<tr><td style="text-align:left"> <code>SystemPermissionTypo</code> </td><td style="text-align:left"> Usage of permissions that look like system permissions, but have typos </td></tr>
+<tr><td style="text-align:left"> <code>CustomPermissionTypo</code> </td><td style="text-align:left"> Usage of permissions that look like custom permissions from the same project, but have typos </td></tr>
+<tr><td style="text-align:left"> <code>ReservedSystemPermission</code> </td><td style="text-align:left"> Accidental redefining of a framework permission </td></tr>
+<tr><td style="text-align:left"> <code>GestureBackNavigation</code> </td><td style="text-align:left"> Usage of KeyEvent.KEYCODE_BACK </td></tr>
+<tr><td style="text-align:left"> <code>UnusedTranslation</code> </td><td style="text-align:left"> Unused translation, not declared in localeConfig </td></tr>
+<tr><td style="text-align:left"> <code>NotificationPermission</code> </td><td style="text-align:left"> Notifications Without android.permission.POST_NOTIFICATIONS </td></tr>
+<tr><td style="text-align:left"> <code>MonochromeLauncherIcon</code> </td><td style="text-align:left"> Monochrome icon is not defined </td></tr>
+<tr><td style="text-align:left"> <code>PlaySdkIndexNonCompliant</code> </td><td style="text-align:left"> Library has policy issues in SDK Index </td></tr>
+<tr><td style="text-align:left"> <code>TileProviderPermissions</code> </td><td style="text-align:left"> TileProvider does not set permission </td></tr>
+<tr><td style="text-align:left"> <code>SquareAndRoundTilePreviews</code> </td><td style="text-align:left"> TileProvider does not have round and square previews </td></tr>
+<tr><td style="text-align:left"> <code>InternalInsetResource</code> </td><td style="text-align:left"> Using internal inset dimension resource </td></tr>
+</tbody></table></div>
+
+<p></p><p>
+
 <strong class="asterisk">7.3</strong>
 
 </p><p>
@@ -1588,7 +1661,18 @@ lint check authors, see the API Guide.
 <tr><td style="text-align:left"> <code>DeprecatedSinceApi</code> </td><td style="text-align:left"> Calling deprecated SDK backport methods </td></tr>
 <tr><td style="text-align:left"> <code>ReturnThis</code> </td><td style="text-align:left"> Not returning “this” from @ReturnThis methods </td></tr>
 <tr><td style="text-align:left"> <code>KotlinNullnessAnnotation</code> </td><td style="text-align:left"> Using nullability annotations in Kotlin </td></tr>
+<tr><td style="text-align:left"> <code>MissingInflatedId</code> </td><td style="text-align:left"> ID not found in inflated resource </td></tr>
+<tr><td style="text-align:left"> <code>NotificationId0</code> </td><td style="text-align:left"> Notification Id is 0 </td></tr>
 </tbody></table></div>
+
+<p></p><p>
+
+</p><ul>
+<li class="asterisk">The Android Gradle plugin now supports having missing baseline files
+  instead of empty baseline files. Add the experimental flag
+  <code>android.experimental.lint.missingBaselineIsEmptyBaseline=true</code> in
+  <code>gradle.properties</code>, and then run the new task <code>updateLintBaseline</code>
+  to create or update baselines.</li></ul>
 
 <p></p><p>
 

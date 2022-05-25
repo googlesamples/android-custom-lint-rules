@@ -1,15 +1,15 @@
 <meta charset="utf-8">
 (#) Outdated Library
 
-!!! ERROR: Outdated Library
-   This is an error.
+!!! WARNING: Outdated Library
+   This is a warning.
 
 Id
 :   `OutdatedLibrary`
 Summary
 :   Outdated Library
 Severity
-:   Error
+:   Warning
 Category
 :   Compliance
 Platform
@@ -22,6 +22,8 @@ Affects
 :   Gradle build files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://play.google.com/sdks
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
 Tests
@@ -44,84 +46,25 @@ remove it from your app.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:4:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 1.2.17.
-[OutdatedLibrary]
+build.gradle:5:Warning: log4j:log4j version 1.2.15 has been marked as
+outdated by its author [OutdatedLibrary]
 
-    compile 'log4j:log4j:1.2.16' // ERROR
+    compile 'log4j:log4j:1.2.15' // Outdated NON_BLOCKING
             --------------------
 
 
-build.gradle:5:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 1.2.17.
-[OutdatedLibrary]
+build.gradle:8:Error: log4j:log4j version 1.2.12 has been marked as
+outdated by its author [OutdatedLibrary]
 
-    compile 'log4j:log4j:1.2.15' // ERROR
+    compile 'log4j:log4j:1.2.12' // OUTDATED BLOCKING
             --------------------
 
 
-build.gradle:6:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 1.2.17.
-[OutdatedLibrary]
+build.gradle:13:Warning: com.example.ads.third.party:example version
+7.2.0 has been marked as outdated by its author [OutdatedLibrary]
 
-    compile 'log4j:log4j:1.2.14' // ERROR
-            --------------------
-
-
-build.gradle:11:Error: This version is obsolete. Details: Library is
-obsolete. Consider switching to recommended version 1.2.17.
-[OutdatedLibrary]
-
-    compile 'log4j:log4j:0.5'    // ERROR
-            -----------------
-
-
-build.gradle:15:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 7.3.1.
-[OutdatedLibrary]
-
-    compile 'com.example.ads.thirdparty:example:7.2.1' // ERROR
-            ------------------------------------------
-
-
-build.gradle:16:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 7.3.1.
-[OutdatedLibrary]
-
-    compile 'com.example.ads.thirdparty:example:7.2.0' // ERROR
-            ------------------------------------------
-
-
-build.gradle:17:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 7.3.1.
-[OutdatedLibrary]
-
-    compile 'com.example.ads.thirdparty:example:7.1.1' // ERROR
-            ------------------------------------------
-
-
-build.gradle:18:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 7.3.1.
-[OutdatedLibrary]
-
-    compile 'com.example.ads.thirdparty:example:7.1.0' // ERROR
-            ------------------------------------------
-
-
-build.gradle:20:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 7.3.1.
-[OutdatedLibrary]
-
-    compile 'com.example.ads.thirdparty:example:7.0.0' // ERROR
-            ------------------------------------------
-
-
-build.gradle:21:Error: This version is deprecated. Details: Deprecated
-due to ANR issue. Consider switching to recommended version 7.3.1.
-[OutdatedLibrary]
-
-    compile 'com.example.ads.thirdparty:example:6.8.5' // ERROR
-            ------------------------------------------
+    compile 'com.example.ads.third.party:example:7.2.0' // Outdated & Non compliant & Critical
+            -------------------------------------------
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,31 +74,24 @@ Here is the source file referenced above:
 `build.gradle`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
 dependencies {
-    compile 'log4j:log4j:1.2.18' // OK
+    compile 'log4j:log4j:1.2.18' // OK, latest
     compile 'log4j:log4j:1.2.17' // OK
-    compile 'log4j:log4j:1.2.16' // ERROR
-    compile 'log4j:log4j:1.2.15' // ERROR
-    compile 'log4j:log4j:1.2.14' // ERROR
-    compile 'log4j:log4j:1.2.13' // ERROR
-    compile 'log4j:log4j:1.2.12' // ERROR
-    compile 'log4j:log4j:1.2.4'  // ERROR
-    compile 'log4j:log4j:1.2.3'  // OK (not included in range)
-    compile 'log4j:log4j:0.5'    // ERROR
-    compile 'com.example.ads.thirdparty:example:7.3.1' // OK
-    compile 'com.example.ads.thirdparty:example:8.0.0' // OK
-    compile 'com.example.ads.thirdparty:example:7.2.2' // OK
-    compile 'com.example.ads.thirdparty:example:7.2.1' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.2.0' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.1.1' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.1.0' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.0.5' // OK
-    compile 'com.example.ads.thirdparty:example:7.0.0' // ERROR
-    compile 'com.example.ads.thirdparty:example:6.8.5' // ERROR
-    compile 'com.android.volley:volley:1.1.0'   // OK
+    compile 'log4j:log4j:1.2.16' // Critical NON_BLOCKING
+    compile 'log4j:log4j:1.2.15' // Outdated NON_BLOCKING
+    compile 'log4j:log4j:1.2.14' // Non compliant
+    compile 'log4j:log4j:1.2.13' // Critical BLOCKING
+    compile 'log4j:log4j:1.2.12' // OUTDATED BLOCKING
+    compile 'log4j:log4j:1.2.11' // Ok (not in Index)
+    compile 'com.example.ads.third.party:example:8.0.0' // OK
+    compile 'com.example.ads.third.party:example:7.2.2' // OK
+    compile 'com.example.ads.third.party:example:7.2.1' // OK
+    compile 'com.example.ads.third.party:example:7.2.0' // Outdated & Non compliant & Critical
 
     compile 'log4j:log4j:latest.release' // OK
     compile 'log4j:log4j' // OK
     compile 'log4j:log4j:_' // OK
+
+    compile 'com.another.example:example' // Ok (not in Index)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -164,7 +100,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testDeprecatedLibrary`.
+found for this lint check, `GradleDetector.testSdkIndexLibrary`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

@@ -42,6 +42,27 @@ if (column > width)
 Here, the `column = 0` line will be executed every single time, not just
 if the condition is true.
 
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) always-run
+
+Whether this check should be included while editing.
+While you're editing, it's common to have a temporary situation where you have suspicious indentation scenarios -- e.g. you start typing an `if` statement on the line above something you want to make conditional, and you haven't indented it yet. It can be distracting and misleading to suddenly have both statements light up as errors. Therefore, lint will avoid including this check when running on the fly in the editor, unless it looks like the file has not been recently edited. With this option, you can turn it on in all cases.
+
+Default is false.
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="SuspiciousIndentation"&gt;
+        &lt;option name="always-run" value="false" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:

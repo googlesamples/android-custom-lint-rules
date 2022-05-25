@@ -55,6 +55,14 @@ multi-dexing during development, and this can break API version checks
     ----------------
 
 
+build.gradle:10:Warning: You no longer need a dev mode to enable
+multi-dexing during development, and this can break API version checks
+[DevModeObsolete]
+
+    minSdk 21
+    ---------
+
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -70,6 +78,7 @@ android {
         dev {
             // To avoid using legacy multidex, set minSdkVersion to 21 or higher.
             minSdkVersion 21
+            minSdk 21
             versionNameSuffix "-dev"
             applicationIdSuffix '.dev'
         }
