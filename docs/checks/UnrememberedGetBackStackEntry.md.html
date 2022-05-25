@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Calling getBackStackEntry during composition with using `remember`
+(#) Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key
 
-!!! ERROR: Calling getBackStackEntry during composition with using `remember`
+!!! ERROR: Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key
    This is an error.
 
 Id
 :   `UnrememberedGetBackStackEntry`
 Summary
-:   Calling getBackStackEntry during composition with using `remember`
+:   Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key
 Severity
 :   Error
 Category
@@ -31,64 +31,76 @@ Copyright Year
 
 Backstack entries retrieved during composition need to be `remember`ed,
 otherwise they will be retrieved from the navController again, and be
-changed. Either hoist the state to an object that is not created during
-composition, or wrap the state in a call to `remember`.
+changed. You also need to pass in a key of a NavBackStackEntry to the
+remember call or they will not be updated properly. If this is in a
+`NavGraphBuilder.composable` scope, you should pass in the lambda's
+given entry as the key. Either hoist the state to an object that is not
+created during composition, or wrap the state in a call to `remember`
+with a `NavBackStackEntry` as a key.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/com/example/{.kt:10:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:15:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:20:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:30:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:34:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:41:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:46:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     navController.getBackStackEntry("test")
                   -----------------
 
 
 src/com/example/{.kt:54:Error: Calling getBackStackEntry during
-composition without using remember [UnrememberedGetBackStackEntry]
+composition without using remember with a NavBackStackEntry key
+[UnrememberedGetBackStackEntry]
 
     val entry = navController.getBackStackEntry("test")
                               -----------------

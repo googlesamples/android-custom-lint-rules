@@ -4,6 +4,26 @@ This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
+**7.4**
+
+* New built-in lint-checks:
+
+  Issue ID                    | Summary
+  ----------------------------|-----------------------------------
+  `PermissionNamingConvention`| Custom permissions not following naming convention
+  `KnownPermissionError`      | Well-known permission errors, e.g. `android:permission="true"`
+  `SystemPermissionTypo`      | Usage of permissions that look like system permissions, but have typos
+  `CustomPermissionTypo`      | Usage of permissions that look like custom permissions from the same project, but have typos
+  `ReservedSystemPermission`  | Accidental redefining of a framework permission
+  `GestureBackNavigation`     | Usage of KeyEvent.KEYCODE_BACK
+  `UnusedTranslation`         | Unused translation, not declared in localeConfig
+  `NotificationPermission`    | Notifications Without android.permission.POST_NOTIFICATIONS
+  `MonochromeLauncherIcon`    | Monochrome icon is not defined
+  `PlaySdkIndexNonCompliant`  | Library has policy issues in SDK Index
+  `TileProviderPermissions`   | TileProvider does not set permission
+  `SquareAndRoundTilePreviews`| TileProvider does not have round and square previews
+  `InternalInsetResource`     | Using internal inset dimension resource
+
 **7.3**
 
 * New built-in lint-checks:
@@ -18,6 +38,14 @@ lint check authors, see the API Guide.
   `DeprecatedSinceApi`     | Calling deprecated SDK backport methods
   `ReturnThis`             | Not returning “this” from @ReturnThis methods
   `KotlinNullnessAnnotation`| Using nullability annotations in Kotlin
+  `MissingInflatedId`      | ID not found in inflated resource
+  `NotificationId0`        | Notification Id is 0
+
+* The Android Gradle plugin now supports having missing baseline files
+  instead of empty baseline files. Add the experimental flag
+  `android.experimental.lint.missingBaselineIsEmptyBaseline=true` in
+  `gradle.properties`, and then run the new task `updateLintBaseline`
+  to create or update baselines.
 
 **7.2**
 

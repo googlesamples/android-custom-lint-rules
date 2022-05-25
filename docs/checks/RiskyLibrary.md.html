@@ -1,15 +1,15 @@
 <meta charset="utf-8">
 (#) Libraries with Privacy or Security Risks
 
-!!! ERROR: Libraries with Privacy or Security Risks
-   This is an error.
+!!! WARNING: Libraries with Privacy or Security Risks
+   This is a warning.
 
 Id
 :   `RiskyLibrary`
 Summary
 :   Libraries with Privacy or Security Risks
 Severity
-:   Error
+:   Warning
 Category
 :   Security
 Platform
@@ -22,6 +22,8 @@ Affects
 :   Gradle build files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://play.google.com/sdks
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
 Tests
@@ -43,78 +45,6 @@ remove it from your app.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:7:Error: This version is known to be insecure. Details: Bad
-security bug CVE-4311. Consider switching to recommended version 1.2.17.
-[RiskyLibrary]
-
-    compile 'log4j:log4j:1.2.13' // ERROR
-            --------------------
-
-
-build.gradle:8:Error: This version is known to be insecure. Details: Bad
-security bug CVE-4311. Consider switching to recommended version 1.2.17.
-[RiskyLibrary]
-
-    compile 'log4j:log4j:1.2.12' // ERROR
-            --------------------
-
-
-build.gradle:9:Error: This version is known to be insecure. Details: Bad
-security bug CVE-4311. Consider switching to recommended version 1.2.17.
-[RiskyLibrary]
-
-    compile 'log4j:log4j:1.2.4'  // ERROR
-            -------------------
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`build.gradle`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
-dependencies {
-    compile 'log4j:log4j:1.2.18' // OK
-    compile 'log4j:log4j:1.2.17' // OK
-    compile 'log4j:log4j:1.2.16' // ERROR
-    compile 'log4j:log4j:1.2.15' // ERROR
-    compile 'log4j:log4j:1.2.14' // ERROR
-    compile 'log4j:log4j:1.2.13' // ERROR
-    compile 'log4j:log4j:1.2.12' // ERROR
-    compile 'log4j:log4j:1.2.4'  // ERROR
-    compile 'log4j:log4j:1.2.3'  // OK (not included in range)
-    compile 'log4j:log4j:0.5'    // ERROR
-    compile 'com.example.ads.thirdparty:example:7.3.1' // OK
-    compile 'com.example.ads.thirdparty:example:8.0.0' // OK
-    compile 'com.example.ads.thirdparty:example:7.2.2' // OK
-    compile 'com.example.ads.thirdparty:example:7.2.1' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.2.0' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.1.1' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.1.0' // ERROR
-    compile 'com.example.ads.thirdparty:example:7.0.5' // OK
-    compile 'com.example.ads.thirdparty:example:7.0.0' // ERROR
-    compile 'com.example.ads.thirdparty:example:6.8.5' // ERROR
-    compile 'com.android.volley:volley:1.1.0'   // OK
-
-    compile 'log4j:log4j:latest.release' // OK
-    compile 'log4j:log4j' // OK
-    compile 'log4j:log4j:_' // OK
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testDeprecatedLibrary`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

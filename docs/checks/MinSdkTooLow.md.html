@@ -50,6 +50,14 @@ incremented without noticeably reducing the number of supported devices.
     ---------------
 
 
+build.gradle:9:Warning: The value of minSdkVersion is too low. It can be
+incremented without noticeably reducing the number of supported devices.
+[MinSdkTooLow]
+
+    minSdk 7
+    --------
+
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -64,6 +72,7 @@ android {
 
     defaultConfig {
         minSdkVersion 7
+        minSdk 7
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"

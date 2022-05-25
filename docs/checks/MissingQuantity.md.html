@@ -25,7 +25,7 @@ Editing
 See
 :   https://developer.android.com/guide/topics/resources/string-resource.html#Plurals
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PluralsDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PluralsDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PluralsDetectorTest.java)
 Copyright Year
@@ -50,7 +50,8 @@ for `quantity="few"`.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/values-pl/plurals2.xml:3:Error: For locale "pl" (Polish) the
-following quantities should also be defined: many [MissingQuantity]
+following quantity should also be defined: many (e.g. "5 miesięcy")
+[MissingQuantity]
 
     &lt;plurals name="numberOfSongsAvailable"&gt;
     ^

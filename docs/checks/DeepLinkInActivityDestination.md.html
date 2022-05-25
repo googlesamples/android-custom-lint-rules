@@ -1,0 +1,144 @@
+<meta charset="utf-8">
+(#) A <deeplink> should not be attached to an <activity> destination
+
+!!! WARNING: A <deeplink> should not be attached to an <activity> destination
+   This is a warning.
+
+Id
+:   `DeepLinkInActivityDestination`
+Summary
+:   A <deeplink> should not be attached to an <activity> destination
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Identifier
+:   androidx.navigation.runtime
+Feedback
+:   https://issuetracker.google.com/issues/new?component=409828
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/main/java/androidx/navigation/runtime/lint/DeepLinkInActivityDestinationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/test/java/androidx/navigation/runtime/lint/DeepLinkInActivityDestinationDetectorTest.kt)
+Copyright Year
+:   2022
+
+Attaching a <deeplink> to an <activity> destination will never give     
+           the right behavior when using an implicit deep link on
+another app's task                 (where the system back should
+immediately take the user back to the app that                 triggered
+the deep link). Instead, attach the deep link directly to               
+ the second activity (either by manually writing the appropriate
+<intent-filter>                 or by adding the <deeplink> to the start
+destination of a nav host in that second                 activity).
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/navigation/nav_main.xml:17:Warning: Do not attach a <deeplink> to an
+<activity> destination. Attach the deeplink directly to the second
+activity or the start destination of a nav host in the second activity
+instead. [DeepLinkInActivityDestination]
+
+    &lt;deepLink app:uri="www.example.com" /&gt;
+    --------------------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/navigation/nav_main.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/fragment_main"
+    &gt;
+
+    &lt;fragment
+        android:id="@+id/fragment_main"
+        android:name="com.example.deeplink.MainFragment"
+        /&gt;
+
+    &lt;activity
+        android:id="@+id/activity_deep_link"
+        android:name="com.example.deeplink.DeepLinkActivity"
+        &gt;
+        &lt;deepLink app:uri="www.example.com" /&gt;
+    &lt;/activity&gt;
+
+&lt;/navigation&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/test/java/androidx/navigation/runtime/lint/DeepLinkInActivityDestinationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DeepLinkInActivityDestinationDetector.expectFail`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409828.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="DeepLinkInActivityDestination"` on the problematic
+  XML element (or one of its enclosing elements). You may also need to
+  add the following namespace declaration on the root element in the
+  XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;deepLink xmlns:tools="http://schemas.android.com/tools"
+      tools:ignore="DeepLinkInActivityDestination" ...&gt;
+    ...
+  &lt;/deepLink&gt;
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DeepLinkInActivityDestination" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DeepLinkInActivityDestination'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DeepLinkInActivityDestination ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

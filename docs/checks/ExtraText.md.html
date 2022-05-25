@@ -1,15 +1,15 @@
 <meta charset="utf-8">
 (#) Extraneous text in resource files
 
-!!! WARNING: Extraneous text in resource files
-   This is a warning.
+!!! ERROR: Extraneous text in resource files
+   This is an error.
 
 Id
 :   `ExtraText`
 Summary
 :   Extraneous text in resource files
 Severity
-:   Warning
+:   Error
 Category
 :   Correctness
 Platform
@@ -29,48 +29,74 @@ Tests
 Copyright Year
 :   2011
 
-Layout resource files should only contain elements and attributes. Any
-XML text content found in the file is likely accidental (and potentially
-dangerous if the text resembles XML and the developer believes the text
-to be functional)
+Non-value resource files should only contain elements and attributes.
+Any XML text content found in the file is likely accidental (and
+potentially dangerous if the text resembles XML and the developer
+believes the text to be functional).
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/layout/broken.xml:6:Warning: Unexpected text found in layout file:
-"ImageButton android:id="@+id/android_logo2"
-android:layout_width="wrap_content" android:layout_heigh..."
-[ExtraText]
+AndroidManifest.xml:7:Error: Unexpected text found in manifest file:
+"android:label="Android AdServices" android:forceQueryable="true"
+android:directBootAware="true">" [ExtraText]
 
-    &lt;Button android:text="Button" android:id="@+id/button2" android:layout_width="wrap_content" android:layout_height="wrap_content"&gt;&lt;/Button&gt;
+    android:label="Android AdServices"
     ^
+
+
+res/drawable/icon.xml:1:Warning: Unexpected text found in drawable file:
+">" [ExtraText]
+
+&lt;shape&gt;&gt;
+       -
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`res/layout/broken.xml`:
+`AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/newlinear" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"&gt;
-    &lt;Button android:text="Button" android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content"&gt;&lt;/Button&gt;
-    &lt;ImageView android:id="@+id/android_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/android_button" android:focusable="false" android:clickable="false" android:layout_weight="1.0" /&gt;
-    ImageButton android:id="@+id/android_logo2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/android_button" android:focusable="false" android:clickable="false" android:layout_weight="1.0" /&gt;
-    &lt;Button android:text="Button" android:id="@+id/button2" android:layout_width="wrap_content" android:layout_height="wrap_content"&gt;&lt;/Button&gt;
-    &lt;Button android:id="@+android:id/summary" android:contentDescription="@string/label" /&gt;
-&lt;/LinearLayout&gt;
+&lt;manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.adservices.api"&gt;
+
+    &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" /&gt;
+    &lt;application&gt;
+        android:label="Android AdServices"
+        android:forceQueryable="true"
+        android:directBootAware="true"&gt;
+    &lt;/application&gt;
+    `
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/drawable/icon.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;shape&gt;&gt;
+  &lt;item&gt;&lt;/item&gt;&gt;
+&lt;/shape&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;string name="test"&gt;Test&lt;/string&gt; &lt;!-- Text is allowed in value resource files --&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml/myfile.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;foo&gt;
+    Test &lt;!-- Text is allowed in xml and raw folder files --&gt;
+&lt;/foo&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ExtraTextDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ExtraTextDetector.testBroken`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

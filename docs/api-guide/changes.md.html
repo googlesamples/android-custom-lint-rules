@@ -5,6 +5,18 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**7.4**
+
+* Annotation detectors can now specify just an annotation name instead
+  of its fully qualified name in order to match *all* annotations of
+  that name. For example,
+  `override fun applicableAnnotations() = listOf("Nullable")`
+  will match both `androidx.annotation.Nullable` and
+  `org.jetbrains.annotations.Nullable`. This is used by for example
+  the built-in CheckResultDetector to match many new variants of the
+  `CheckReturnValue` annotations, such as the ones in mockito and in
+  protobuf.
+
 **7.3**
 
 * The new AnnotationUsageType.DEFINTION now lets detectors easily check

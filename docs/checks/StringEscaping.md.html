@@ -23,14 +23,14 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DuplicateResourceDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StringEscapeDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DuplicateResourceDetectorTest.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringEscapeDetectorTest.kt)
 Copyright Year
-:   2012
+:   2022
 
-Apostrophes (') must always be escaped (with a \\), unless they appear
-in a string which is itself escaped in double quotes (").
+Apostrophes (') must always be escaped (with a \\\\), unless they appear
+in a string which is itself escaped in double quotes (\").
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -60,6 +60,20 @@ sequence [StringEscaping]
                                         ^
 
 
+res/values/strings.xml:19:Error: Apostrophe not preceded by \
+[StringEscaping]
+
+  &lt;item&gt;It's incorrect&lt;/item&gt;
+          ^
+
+
+res/values/strings.xml:23:Error: Apostrophe not preceded by \
+[StringEscaping]
+
+    &lt;item quantity="few"&gt;%d piose'nki.&lt;/item&gt;
+                                 ^
+
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -82,18 +96,21 @@ Here is the source file referenced above:
 &lt;string name="space_slash"&gt; \&lt;/string&gt;
 &lt;string name="space_slash2"&gt;  \&lt;/string&gt;
 &lt;string name="space_slash3"&gt;   \&lt;/string&gt;
+&lt;string-array name="array_of_string"&gt;
+  &lt;item&gt;It\'s correct&lt;/item&gt;
+  &lt;item&gt;It's incorrect&lt;/item&gt;
+&lt;/string-array&gt;
+&lt;plurals name="numberOfSongsAvailable"&gt;
+    &lt;item quantity="one"&gt;%d piosenkę.&lt;/item&gt;
+    &lt;item quantity="few"&gt;%d piose'nki.&lt;/item&gt;
+    &lt;item quantity="other"&gt;%d piosenek.&lt;/item&gt;
+&lt;/plurals&gt;
 &lt;/resources&gt;
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DuplicateResourceDetectorTest.java)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringEscapeDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `DuplicateResourceDetector.testInvalidXml`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 
@@ -104,6 +121,15 @@ You can suppress false positives using one of the following mechanisms:
   may also need to add the following namespace declaration on the root
   element in the XML file if it's not already there:
   `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;resources xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;string tools:ignore="StringEscaping" .../&gt;
+    ...
+  &lt;/resources&gt;
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

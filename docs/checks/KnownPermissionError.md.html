@@ -1,0 +1,152 @@
+<meta charset="utf-8">
+(#) Value specified for permission is a known error
+
+!!! ERROR: Value specified for permission is a known error
+   This is an error.
+
+Id
+:   `KnownPermissionError`
+Summary
+:   Value specified for permission is a known error
+Severity
+:   Error
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PermissionErrorDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PermissionErrorDetectorTest.kt)
+Copyright Year
+:   2022
+
+This check looks for values specified in component permissions that are
+known errors, such as `android:permission="true"`.
+
+ Please double check the permission value you have supplied. The value
+is expected to be a  permission string from the system, another app, or
+your own, NOT a boolean.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:4:Error: true is not a valid permission value
+[KnownPermissionError]
+
+  &lt;application android:permission="true"&gt;
+                                   ----
+
+
+AndroidManifest.xml:5:Error: TRUE is not a valid permission value
+[KnownPermissionError]
+
+    &lt;activity android:permission="TRUE" /&gt;
+                                  ----
+
+
+AndroidManifest.xml:6:Error: True is not a valid permission value
+[KnownPermissionError]
+
+    &lt;activity-alias android:permission="True" /&gt;
+                                        ----
+
+
+AndroidManifest.xml:7:Error: true is not a valid permission value
+[KnownPermissionError]
+
+    &lt;receiver android:permission="true" /&gt;
+                                  ----
+
+
+AndroidManifest.xml:8:Error: false is not a valid permission value
+[KnownPermissionError]
+
+    &lt;service android:permission="false" /&gt;
+                                 -----
+
+
+AndroidManifest.xml:9:Error: false is not a valid permission value
+[KnownPermissionError]
+
+    &lt;provider android:permission="false" /&gt;
+                                  -----
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.example.helloworld"&gt;
+  &lt;application android:permission="true"&gt;
+    &lt;activity android:permission="TRUE" /&gt;
+    &lt;activity-alias android:permission="True" /&gt;
+    &lt;receiver android:permission="true" /&gt;
+    &lt;service android:permission="false" /&gt;
+    &lt;provider android:permission="false" /&gt;
+  &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PermissionErrorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="KnownPermissionError"` on the problematic XML element
+  (or one of its enclosing elements). You may also need to add the
+  following namespace declaration on the root element in the XML file
+  if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="KnownPermissionError" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'KnownPermissionError'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore KnownPermissionError ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
