@@ -90,6 +90,15 @@ You can suppress false positives using one of the following mechanisms:
   if it's not already there:
   `xmlns:tools="http://schemas.android.com/tools"`.
 
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;permission tools:ignore="CustomPermissionTypo" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
+
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look
   like this:

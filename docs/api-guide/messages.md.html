@@ -1,0 +1,177 @@
+<meta charset="utf-8" lang="kotlin">
+
+# Error Message Conventions
+
+## Length
+
+The error message reported by a detector should typically be short; think of
+typical compiler error messages you see from `kotlinc` or `javac`.
+
+This is particularly important when your lint check is running inside the IDE,
+because the error message will typically be shown as a tooltip as the user
+hovers over the underlined symbol.
+
+It's tempting to try to fully explain what's going on, but lint has separate
+facilities for that -- the issue explanation metadata. When lint generates text
+and html reports, it will include the explanation metadata. Similarly, in the
+IDE, users can pull up the full explanation with a tooltip.
+
+This is not a hard rule; there are cases where lint uses multiple sentences to
+explain an issue, but strive to make the error message as short as possible
+while still legible.
+
+## Formatting
+
+Use the available formatting support for text in lint:
+
+Raw text format              | Renders To
+-----------------------------|--------------------------
+This is a \`code symbol\`    | This is a `code symbol`
+This is `*italics*`          | This is *italics*
+This is `**bold**`           | This is **bold**
+http://, https://            | [](http://), [](https://)
+`\*not italics*`             | `\*not italics*`
+\`\`\`language\n text\n\`\`\`| (preformatted text block)
+ [Supported markup in lint's markdown-like raw text format]
+
+In particular, when referencing code elements such as variable names, APIs, and
+so on, use the code symbol formatting (\`like this\`), not simple or double
+quotes.
+
+## Punctuation
+
+One line error messages should not be punctuated - e.g. the error message
+should be “Unused import foo”, not “Unused import foo.”
+
+However, if there are multiple sentences in the error message, all sentences
+should be punctuate.
+
+Note that there should be no space before an exclamation (!) or question mark
+(?) sign.
+
+## Include Details
+
+Avoid generic error messages such as “Unused import”; try to incorporate
+specific details from the current error. In the unused import example, instead
+of just saying “Unused import”, say “Unused import java.io.List”.
+
+In addition to being clearer (you can see from the error message what the
+problem is without having to look up the corresponding source code), this is
+important to support lint's [baseline](../usage/baselines.md.html) feature.
+Lint matches known errors not by matching on specific line numbers (which would
+cause problems as soon as the line numbers drift after edits to the file), lint
+matches by error message in the file, so the more unique error messages are,
+the better. If all unused import warnings were just “Unused import”, lint would
+match them in order, which often would be the wrong thing.
+
+## Reference Android By Number
+
+When referring to Android behaviors introduced in new API levels, use the
+phrase “In Android 12 and higher”, instead of variations like “Android S” or
+"API 31“.
+
+## Keep Messages Stable
+
+Once you have written an error message, think twice before changing it. This is
+again because of the baseline mechanism mentioned above. If users have already
+run lint with your previous error message, and that message has been written
+into baselines, changing the error message will cause the baseline to no longer
+match, which means this will show up as a new error for users.
+
+If you **have** to change an error message because it's misleading, then of
+course, do that -- but avoid it if there isn't a strong reason to do so.
+
+There *are* some edits you can make to the error message which the baseline
+matcher will handle:
+
+* Adding a suffix
+* Adding a suffix which also changes the final punctuation; e.g. changing
+  ”Hello.“ to ”Hello, world!“ is compatible.
+* Adding a prefix
+
+## Examples
+
+Here are some examples from lint's built-in checks. Note that these are not
+chosen as great examples of clear error messages; most of these were written
+by engineers without review from a tech writer. But for better or worse they
+reflect the ”tone“ of the built-in lint checks today. (These were derived from
+lint's unit test suite, which explains silly symbols like `test.pkg` in the
+error messages.)
+
+Note that the [Id] block is not part of the error message; it's included here
+to help cross reference the messages with the corresponding lint check.
+
+* [AccidentalOctal] The leading 0 turns this number into octal which is probably not what was intended (interpreted as 8)
+* [AdapterViewChildren] A list/grid should have no children declared in XML
+* [AddJavascriptInterface] \`WebView.addJavascriptInterface\` should not be called with minSdkVersion < 17 for security reasons: JavaScript can use reflection to manipulate application
+* [AllCaps] Using \`textAllCaps\` with a string (\`has_markup\`) that contains markup; the markup will be dropped by the caps conversion
+* [AllowAllHostnameVerifier] Using the \`AllowAllHostnameVerifier\` HostnameVerifier is unsafe because it always returns true, which could cause insecure network traffic due to trusting TLS/SSL server certificates for wrong hostnames
+* [AlwaysShowAction] Prefer \`ifRoom\` instead of \`always\`
+* [AndroidGradlePluginVersion] A newer version of com.android.tools.build:gradle than 3.3.0-alpha04 is available: 3.3.2
+* [AnimatorKeep] This method is accessed from an ObjectAnimator so it should be annotated with \`@Keep\` to ensure that it is not discarded or renamed in release builds
+* [AnnotateVersionCheck] This field should be annotated with \`ChecksSdkIntAtLeast(api=Build.VERSION_CODES.LOLLIPOP)\`
+* [AnnotationProcessorOnCompilePath] Add annotation processor to processor path using \`annotationProcessor\` instead of \`api\`
+* [AppBundleLocaleChanges] Found dynamic locale changes, but did not find corresponding Play Core library calls for downloading languages and splitting by language is not disabled in the \`bundle\` configuration
+* [AppCompatCustomView] This custom view should extend \`android.support.v7.widget.AppCompatButton\` instead
+* [AppCompatMethod] Should use \`getSupportActionBar\` instead of \`getActionBar\` name
+* [AppCompatResource] Should use \`android:showAsAction\` when not using the appcompat library
+* [AppIndexingService] \`UPDATE_INDEX\` is configured as a service in your app, which is no longer supported for the API level you're targeting. Use a \`BroadcastReceiver\` instead.
+* [AppLinkUrlError] Missing URL for the intent filter
+* [AppLinksAutoVerify] This host does not support app links to your app. Checks the Digital Asset Links JSON file: http://example.com/.well-known/assetlinks.json
+* [ApplySharedPref] Consider using \`apply()\` instead; \`commit\` writes its data to persistent storage immediately, whereas \`apply\` will handle it in the background
+* [AssertionSideEffect] Assertion condition has a side effect: i++
+* [Autofill] Missing \`autofillHints\` attribute
+* [BackButton] Back buttons are not standard on Android; see design guide's navigation section
+* [BadHostnameVerifier] \`verify\` always returns \`true\`, which could cause insecure network traffic due to trusting TLS/SSL server certificates for wrong hostnames
+* [BatteryLife] Use of \`com.android.camera.NEW_PICTURE\` is deprecated for all apps starting with the N release independent of the target SDK. Apps should not rely on these broadcasts and instead use \`WorkManager\`
+* [BidiSpoofing] Comment contains misleading Unicode bidirectional text
+* [BlockedPrivateApi] Reflective access to NETWORK_TYPES is forbidden when targeting API 28 and above
+* [BottomAppBar] This \`BottomAppBar\` must be wrapped in a \`CoordinatorLayout\` (\`android.support.design.widget.CoordinatorLayout\`)
+* [BrokenIterator] \`Vector#listIterator\` was broken in API 24 and 25; it can return \`hasNext()=false\` before the last element. Consider switching to \`ArrayList\` with synchronization if you need it.
+* [ButtonCase] @android:string/yes actually returns ”OK“, not ”Yes“; use @android:string/ok instead or create a local string resource for Yes
+* [ButtonOrder] OK button should be on the right (was ”OK | Cancel“, should be ”Cancel | OK“)
+* [ButtonStyle] Buttons in button bars should be borderless; use \`style="?android:attr/buttonBarButtonStyle"\` (and \`?android:attr/buttonBarStyle\` on the parent)
+* [ByteOrderMark] Found byte-order-mark in the middle of a file
+* [CanvasSize] Calling \`Canvas.getWidth()\` is usually wrong; you should be calling \`getWidth()\` instead
+* [CheckResult] The result of \`double\` is not used
+* [ClickableViewAccessibility] Custom view \`\`NoPerformClick\`\` has \`setOnTouchListener\` called on it but does not override \`performClick\`
+* [CoarseFineLocation] If you need access to FINE location, you must request both \`ACCESS_FINE_LOCATION\` and \`ACCESS_COARSE_LOCATION\`
+* [CommitPrefEdits] \`SharedPreferences.edit()\` without a corresponding \`commit()\` or \`apply()\` call
+* [CommitTransaction] This transaction should be completed with a \`commit()\` call
+* [ConstantLocale] Assigning \`Locale.getDefault()\` to a final static field is suspicious; this code will not work correctly if the user changes locale while the app is running
+* [ContentDescription] Missing \`contentDescription\` attribute on image
+* [ConvertToWebp] One or more images in this project can be converted to the WebP format which typically results in smaller file sizes, even for lossless conversion
+* [CustomPermissionTypo] Did you mean \`my.custom.permission.FOOBAR\`?
+* [CustomSplashScreen] The application should not provide its own launch screen
+* [CustomViewStyleable] By convention, the custom view (\`CustomView1\`) and the declare-styleable (\`MyDeclareStyleable\`) should have the same name (various editor features rely on this convention)
+* [CustomX509TrustManager] Implementing a custom \`X509TrustManager\` is error-prone and likely to be insecure. It is likely to disable certificate validation altogether, and is non-trivial to implement correctly without calling Android's default implementation.
+* [CutPasteId] The id \`R.id.duplicated\` has already been looked up in this method; possible cut & paste error?
+* [DalvikOverride] This package private method may be unintentionally overriding \`method\` in \`pkg1.Class1\`
+* [DataBindingWithoutKapt] If you plan to use data binding in a Kotlin project, you should apply the kotlin-kapt plugin.
+* [DataExtractionRules] The attribute \`android:allowBackup\` is deprecated from Android 12 and the default allows backup
+* [DefaultEncoding] This \`Scanner\` will use the default system encoding instead of a specific charset which is usually a mistake; add charset argument, \`Scanner(..., UTF_8)\`?
+* [DefaultLocale] Implicitly using the default locale is a common source of bugs: Use \`toUpperCase(Locale)\` instead. For strings meant to be internal use \`Locale.ROOT\`, otherwise \`Locale.getDefault()\`.
+* [DeletedProvider] The Crypto provider has been deleted in Android P (and was deprecated in Android N), so the code will crash
+* [DeprecatedProvider] The \`BC\` provider is deprecated and when \`targetSdkVersion\` is moved to \`P\` this method will throw a \`NoSuchAlgorithmException\`. To fix this you should stop specifying a provider and use the default implementation
+* [DeprecatedSinceApi] This method is deprecated as of API level 25
+* [Deprecated] \`AbsoluteLayout\` is deprecated
+* [DevModeObsolete] You no longer need a \`dev\` mode to enable multi-dexing during development, and this can break API version checks
+* [DeviceAdmin] You must have an intent filter for action \`android.app.action.DEVICE_ADMIN_ENABLED\`
+* [DiffUtilEquals] Suspicious equality check: Did you mean \`.equals()\` instead of \`==\` ?
+* [DisableBaselineAlignment] Set \`android:baselineAligned="false"\` on this element for better performance
+* [DiscouragedPrivateApi] Reflective access to addAssetPath, which is not part of the public SDK and therefore likely to change in future Android releases
+* [DrawAllocation] Avoid object allocations during draw/layout operations (preallocate and reuse instead)
+* [DuplicateActivity] Duplicate registration for activity \`com.example.helloworld.HelloWorld\`
+* [DuplicateDefinition] \`app_name\` has already been defined in this folder
+* [DuplicateDivider] Replace with \`android.support.v7.widget.DividerItemDecoration\`?
+* [DuplicateIds] Duplicate id \`@+id/android_logo\`, already defined earlier in this layout
+* [DuplicateIncludedIds] Duplicate id @+id/button1, defined or included multiple times in layout/layout2.xml: * [layout/layout2.xml => layout/layout3.xml defines @+id/button1, layout/layout2.xml => layout/layout4.xml defines @+id/button1]
+* [DuplicatePlatformClasses] \`xpp3\` defines classes that conflict with classes now provided by Android. Solutions include finding newer versions or alternative libraries that don't have the same problem (for example, for \`httpclient\` use \`HttpUrlConnection\` or \`okhttp\` instead), or repackaging the library using something like \`jarjar\`.
+* [DuplicateStrings] Duplicate string value \`HELLO\`, used in \`hello_caps\` and \`hello\`. Use \`android:inputType\` or \`android:capitalize\` to treat these as the same and avoid string duplication.
+* [DuplicateUsesFeature] Duplicate declaration of uses-feature \`android.hardware.camera\`
+* [EllipsizeMaxLines] Combining \`ellipsize=start\` and \`lines=1\` can lead to crashes. Use \`singleLine=true\` instead.
+* [EmptySuperCall] No need to call \`super.someOtherMethod\`; the super method is defined to be empty
+* [EnforceUTF8] iso-latin-1: Not using UTF-8 as the file encoding. This can lead to subtle bugs with non-ascii characters
+* [EnqueueWork] WorkContinuation \`cont\` not enqueued: did you forget to call \`enqueue()\`?
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -454,6 +454,9 @@ use the above “raw” syntax. Especially the first conversion; error
 messages often refer to class names and method names, and these should
 be surrounded by apostrophes.
 
+See the [error message](messages.md.html) chapter for more information
+on how to craft error messages.
+
 ## Issue Implementation
 
 The last issue registration property is the **`implementation`**. This
@@ -608,8 +611,9 @@ class MyDetector : Detector() {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This will just complain in every single file. Obviously, no real lint
-detector does this; we want to do some analysis and **conditionally**
-report incidents.
+detector does this; we want to do some analysis and **conditionally** report
+incidents. For information about how to phrase error messages, see the [error
+message](messages.md.html) chapter.
 
 In order to make it simpler to perform analysis, Lint has dedicated
 support for analyzing various file types. The way this works is that

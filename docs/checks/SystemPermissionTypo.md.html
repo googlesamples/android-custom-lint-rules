@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Permission appears to be a system permission with a typo
+(#) Permission appears to be a standard permission with a typo
 
-!!! WARNING: Permission appears to be a system permission with a typo
+!!! WARNING: Permission appears to be a standard permission with a typo
    This is a warning.
 
 Id
 :   `SystemPermissionTypo`
 Summary
-:   Permission appears to be a system permission with a typo
+:   Permission appears to be a standard permission with a typo
 Severity
 :   Warning
 Category
@@ -30,7 +30,8 @@ Copyright Year
 :   2022
 
 This check looks for required permissions that *look* like well-known
-system permissions, but aren't, and may be typos.
+system permissions or permissions from the Android SDK, but aren't, and
+may be typos.
 
 Please double check the permission value you have supplied.
 
@@ -124,6 +125,15 @@ You can suppress false positives using one of the following mechanisms:
   following namespace declaration on the root element in the XML file
   if it's not already there:
   `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;permission tools:ignore="SystemPermissionTypo" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

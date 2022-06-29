@@ -37,11 +37,10 @@ Do not use Kotlin’s hard keywords as the name of methods or fields.
 These require the use of backticks to escape when calling from Kotlin.
 Soft keywords, modifier keywords, and special identifiers are allowed.
 
-For example, Mockito’s `when` function requires backticks when used from
-Kotlin:
+For example, ActionEvent's `getWhen()` method requires backticks when
+used from Kotlin:
 ```kotlin
-val callable = Mockito.mock(Callable::class.java)
-Mockito.\`when\`(callable.call()).thenReturn(/* … */)
+val timestamp = event.`when`
 ```
 
 (##) Example
