@@ -46,6 +46,55 @@ remove it from your app.
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:7:Error: log4j:log4j version 1.2.13 has an associated
+message from its author that will block publishing to Play Console
+[RiskyLibrary]
+
+    compile 'log4j:log4j:1.2.13' // Critical BLOCKING
+            --------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    compile 'log4j:log4j:1.2.18' // OK, latest
+    compile 'log4j:log4j:1.2.17' // OK
+    compile 'log4j:log4j:1.2.16' // Critical NON_BLOCKING
+    compile 'log4j:log4j:1.2.15' // Outdated NON_BLOCKING
+    compile 'log4j:log4j:1.2.14' // Non compliant
+    compile 'log4j:log4j:1.2.13' // Critical BLOCKING
+    compile 'log4j:log4j:1.2.12' // OUTDATED BLOCKING
+    compile 'log4j:log4j:1.2.11' // Ok (not in Index)
+    compile 'com.example.ads.third.party:example:8.0.0' // OK
+    compile 'com.example.ads.third.party:example:7.2.2' // OK
+    compile 'com.example.ads.third.party:example:7.2.1' // OK
+    compile 'com.example.ads.third.party:example:7.2.0' // Outdated & Non compliant & Critical
+
+    compile 'log4j:log4j:latest.release' // OK
+    compile 'log4j:log4j' // OK
+    compile 'log4j:log4j:_' // OK
+
+    compile 'com.another.example:example' // Ok (not in Index)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testSdkIndexLibrary`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

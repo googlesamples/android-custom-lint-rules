@@ -17,6 +17,13 @@ Guide.
   `CheckReturnValue` annotations, such as the ones in mockito and in
   protobuf.
 
+* The new AnnotationUsageTypes IMPLICIT_CONSTRUCTOR and
+  IMPLICIT_CONSTRUCTOR_CALL let detectors analyzing annotations get callbacks
+  when an annotated no-args constructor is invoked explicitly from a subclass
+  which has an implicit constructor, or from an implicit super call in an
+  explicit sub constructor. These are not included by default, so override
+  isApplicableAnnotationUsage to opt in.
+
 **7.3**
 
 * The new AnnotationUsageType.DEFINTION now lets detectors easily check

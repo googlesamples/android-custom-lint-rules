@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Permission name is a reserved system permission
+(#) Permission name is a reserved Android permission
 
-!!! ERROR: Permission name is a reserved system permission
+!!! ERROR: Permission name is a reserved Android permission
    This is an error.
 
 Id
 :   `ReservedSystemPermission`
 Summary
-:   Permission name is a reserved system permission
+:   Permission name is a reserved Android permission
 Severity
 :   Error
 Category
@@ -30,17 +30,17 @@ Copyright Year
 :   2022
 
 This check looks for custom permission declarations whose names are
-reserved values for system permissions.
+reserved values for system or Android SDK permissions.
 
 Please double check the permission name you have supplied. Attempting to
-redeclare a system permission will be ignored.
+redeclare a system or Android SDK permission will be ignored.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 AndroidManifest.xml:4:Error: android.permission.BIND_APPWIDGET is a
-reserved permission for the system [ReservedSystemPermission]
+reserved permission [ReservedSystemPermission]
 
   &lt;permission android:name="android.permission.BIND_APPWIDGET" /&gt;
                             ---------------------------------
@@ -76,6 +76,15 @@ You can suppress false positives using one of the following mechanisms:
   the following namespace declaration on the root element in the XML
   file if it's not already there:
   `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;permission tools:ignore="ReservedSystemPermission" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

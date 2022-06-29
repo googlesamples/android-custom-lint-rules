@@ -23,7 +23,7 @@ Affects
 Editing
 :   This check can *not* run live in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnusedResourceDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnusedResourceDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UnusedResourceDetectorTest.java)
 Copyright Year
@@ -31,14 +31,16 @@ Copyright Year
 
 Unused resources make applications larger and slow down builds.
 
+
 The unused resource check can ignore tests. If you want to include
 resources that are only referenced from tests, consider packaging them
 in a test source set instead.
 
 You can include test sources in the unused resource check by setting the
-system property lint.unused-resources.include-tests=true, and to exclude
-them (usually for performance reasons), use
-lint.unused-resources.exclude-tests=true.
+system property lint.unused-resources.include-tests =true, and to
+exclude them (usually for performance reasons), use
+lint.unused-resources.exclude-tests =true.
+,
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
