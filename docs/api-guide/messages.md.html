@@ -44,7 +44,7 @@ One line error messages should not be punctuated - e.g. the error message
 should be “Unused import foo”, not “Unused import foo.”
 
 However, if there are multiple sentences in the error message, all sentences
-should be punctuate.
+should be punctuated.
 
 Note that there should be no space before an exclamation (!) or question mark
 (?) sign.
@@ -62,7 +62,7 @@ Lint matches known errors not by matching on specific line numbers (which would
 cause problems as soon as the line numbers drift after edits to the file), lint
 matches by error message in the file, so the more unique error messages are,
 the better. If all unused import warnings were just “Unused import”, lint would
-match them in order, which often would be the wrong thing.
+match them in order, which often would match the wrong import.
 
 ## Reference Android By Number
 
@@ -103,7 +103,6 @@ to help cross reference the messages with the corresponding lint check.
 
 * [AccidentalOctal] The leading 0 turns this number into octal which is probably not what was intended (interpreted as 8)
 * [AdapterViewChildren] A list/grid should have no children declared in XML
-* [AddJavascriptInterface] \`WebView.addJavascriptInterface\` should not be called with minSdkVersion < 17 for security reasons: JavaScript can use reflection to manipulate application
 * [AllCaps] Using \`textAllCaps\` with a string (\`has_markup\`) that contains markup; the markup will be dropped by the caps conversion
 * [AllowAllHostnameVerifier] Using the \`AllowAllHostnameVerifier\` HostnameVerifier is unsafe because it always returns true, which could cause insecure network traffic due to trusting TLS/SSL server certificates for wrong hostnames
 * [AlwaysShowAction] Prefer \`ifRoom\` instead of \`always\`

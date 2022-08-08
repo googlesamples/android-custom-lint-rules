@@ -151,4 +151,19 @@ For simple discouraged APIs, we have several approaches:
    a per incident basis too, so you can pick warning or error as
    default based on the specific check.
 
+# Informational Checks
+
+Lint checks should pinpoint a problem. They are not intended to only be
+educational or to just "bring awareness" around recent changes to an API.
+Especially if the lint check cannot check whether the guidance applies, for
+example because it depends on policy approval which is not available for
+inspection in the code.
+
+A check which unconditionally flags code in order to educate users is often
+considered by users to be "spammy". We've had some checks like that in the
+past, and they were not popular, and the issue id soon ended up in default
+ignore rules for lint. For an example, see [this StackOverflow
+thread](https://stackoverflow.com/questions/34173545/missing-support-for-fireb
+ase-app-indexing-android-lint).
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -528,9 +528,10 @@ a value for `size` in the scrolling direction.](InvalidSetHasFixedSize.md.html)
   - [UnrememberedAnimatable: Creating an Animatable during composition without using `remember`](UnrememberedAnimatable.md.html)
   - [UnusedTransitionTargetStateParameter: Transition.animate* calls should use the provided targetState when defining values](UnusedTransitionTargetStateParameter.md.html)
 
-* Jetpack Compose (androidx.compose.foundation) (1)
+* Jetpack Compose (androidx.compose.foundation) (2)
 
   - [FrequentlyChangedStateReadInComposition: Frequently changing state should not  be directly read in composable function](FrequentlyChangedStateReadInComposition.md.html)
+  - [UseOfNonLambdaOffsetOverload: Modifier.offset{ } is preferred over Modifier.offset() for `State` backed arguments.](UseOfNonLambdaOffsetOverload.md.html)
 
 * Jetpack Compose (androidx.compose.material) (2)
 
@@ -559,13 +560,14 @@ a value for `size` in the scrolling direction.](InvalidSetHasFixedSize.md.html)
 
   - [RememberSaveableSaverParameter: `Saver` objects should be passed to the saver parameter, not the vararg `inputs` parameter](RememberSaveableSaverParameter.md.html)
 
-* Jetpack Compose (androidx.compose.ui) (6)
+* Jetpack Compose (androidx.compose.ui) (7)
 
   - [ComposableModifierFactory: Modifier factory functions should not be @Composable](ComposableModifierFactory.md.html)
   - [ModifierFactoryExtensionFunction: Modifier factory functions should be extensions on Modifier](ModifierFactoryExtensionFunction.md.html)
   - [ModifierFactoryReturnType: Modifier factory functions should return Modifier](ModifierFactoryReturnType.md.html)
   - [ModifierFactoryUnreferencedReceiver: Modifier factory functions must use the receiver Modifier instance](ModifierFactoryUnreferencedReceiver.md.html)
   - [ModifierParameter: Guidelines for Modifier parameters in a Composable function](ModifierParameter.md.html)
+  - [ReturnFromAwaitPointerEventScope: Returning from awaitPointerEventScope may cause some input events to be dropped](ReturnFromAwaitPointerEventScope.md.html)
   - [UnnecessaryComposedModifier: Modifier.composed should only be used for modifiers that invoke @Composable functions](UnnecessaryComposedModifier.md.html)
 
 * Jetpack Compose (androidx.compose.ui.graphics) (2)
