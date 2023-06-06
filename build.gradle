@@ -2,11 +2,11 @@ buildscript {
     ext {
         kotlinVersion = '1.8.20'
         // Current release: Flamingo / AGP 8.0
-        //gradlePluginVersion = '8.0.2'
-        //lintVersion = '31.0.2'
+        gradlePluginVersion = '8.0.2'
+        lintVersion = '31.0.2'
         // Current preview release: Hedgehog
-        gradlePluginVersion = '8.2.0-alpha07'
-        lintVersion = '31.2.0-alpha07'
+        //gradlePluginVersion = '8.2.0-alpha07'
+        //lintVersion = '31.2.0-alpha07'
     }
 
     repositories {

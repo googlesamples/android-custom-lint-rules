@@ -14,5 +14,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
+      # AGP 8.2 requires 34.0.0-rc3 - see https://issuetracker.google.com/issues/236167971#comment36
+      # and https://github.com/actions/runner-images/issues/7506#issuecomment-1533097084
+      # TODO: Remove when AGP updates Build Tools to 34.0.0 and pre-installed in the runner
+      #- name: Install Android Build Tools 34.0.0-rc3
+      #  run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0-rc3"
+      #  shell: bash
       - name: Build with Gradle
         run: ./gradlew build test
