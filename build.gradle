@@ -1,16 +1,12 @@
 buildscript {
     ext {
-        kotlinVersion = '1.6.21'
-        // Current release: Chipmunk / AGP 7.2
-        gradlePluginVersion = '7.2.0'
-        lintVersion = '30.2.0'
-        // lintVersion = '30.2.0-rc02'
-        // Upcoming lint target: Dolphin / AGP 7.3
-        // gradlePluginVersion = '7.3.0-beta01'
-        // lintVersion = '30.3.0-beta01'
-        // Upcoming lint target: Electric Eel / AGP 7.4
-        // gradlePluginVersion = '7.4.0-alpha02'
-        // lintVersion = '30.4.0-alpha02'
+        kotlinVersion = '1.8.20'
+        // Current release: Flamingo / AGP 8.0
+        //gradlePluginVersion = '8.0.2'
+        //lintVersion = '31.0.2'
+        // Current preview release: Hedgehog
+        gradlePluginVersion = '8.2.0-alpha07'
+        lintVersion = '31.2.0-alpha07'
     }
 
     repositories {
