@@ -135,7 +135,7 @@ android {
   standard output or standard error streams respectively. In recent
   versions of lint, this will also imply `textReport true`.
 
-  Example: `textOutput file(“$reportsDir/lint-results.txt”)`
+  Example: `textOutput file(“$buildDir/reports/lint-results.txt”)`
 
 `xmlReport` *true or false*
 : Whether lint should generate an XML report. If you don't specify a
@@ -143,11 +143,11 @@ android {
   `lint-results-`*$variant*`.xml` in $module`/build/reports/, such as
   `app/build/reports/lint-results-debug.xml`.
 
-`xmlOutput file("$reportsDir/lint-report.xml")`
+`xmlOutput file("$buildDir/reports/lint-report.xml")`
 : Where lint should write its XML report. In recent versions of lint,
   this will also imply `xmlReport true`.
 
-  Example: `xmlOutput file("$reportsDir/lint-results.xml")`
+  Example: `xmlOutput file("$buildDir/reports/lint-results.xml")`
 
 `htmlReport` *true or false*
 : Whether lint should generate an HTML report, with issue explanations,
@@ -162,7 +162,7 @@ android {
   chapter](variables.md.html) for some flags to configure the HTML
   report.
 
-  Example: `htmlOutput file(“$reportsDir/lint-results.html”)`
+  Example: `htmlOutput file(“$buildDir/reports/lint-results.html”)`
 
 `sarifReport` *true or false*
 : Whether lint should generate a
@@ -176,7 +176,7 @@ android {
 : Where lint should write its HTML SARIF. In recent versions of lint,
   this will also imply `sarifReport true`.
 
-  Example: `sarifOutput file("$reportsDir/lint-report.sarif.json")`
+  Example: `sarifOutput file("$buildDir/reports/lint-report.sarif.json")`
 
 `quiet` *true or false*
 : Whether lint should limit its diagnostic output. *False by default.*

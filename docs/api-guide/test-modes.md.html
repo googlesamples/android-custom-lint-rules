@@ -517,4 +517,18 @@ This test mode will automatically retry all your tests that define
 string resources, and will convert regular text into `CDATA` and makes
 sure the results continue to be the same.
 
+### Suppressible Mode
+
+Users should be able to ignore lint warnings by inserting suppress annotations
+(in Kotlin and Java), and via `tools:ignore` attributes in XML files.
+
+This normally works for simple checks, but if you are combining results from
+different parts of the code, or for example caching locations and reporting
+them later, this is sometimes broken.
+
+This test mode looks at the reported warnings from your unit tests, and then
+for each one, it looks up the corresponding error location's source file, and
+inserts a suppress directive at the nearest applicable location. It then
+re-runs the analysis, and makes sure that the warning no longer appears.
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -338,10 +338,65 @@ leave references to the class in the code.)
 
 ## Binary and Compiled Source Files
 
-If you need to use binaries in your unit tests, there is
-a special test file type for that: base64gzip. Here's an
-example from a lint check which tries to recognize usage
-of Cordova in the bytecode:
+If you need to use binaries in your unit tests, there are two options:
+
+ 1. base64gzip
+ 2. API stubs
+
+If you want to analyze bytecode of method bodies, you'll need to use
+the first option.
+
+The first type requires you to actually compile your test file into a
+set of .class files, and check those in as a gzip-compressed, base64
+encoded string. Lint has utilities for this; see the next section.
+
+The second option is using API stubs. For simple stub files (where you
+only need to provide APIs you'll call as binaries, but not code), lint
+can produce the corresponding bytecode on the fly, so you don't need
+to pre-create binary contents of the class. This is particularly
+helpful when you just want to create stubs for a library your lint
+check is targeting and you want to make sure the detector is seeing
+the same types of elements as it will when analyzing real code outside
+of tests (since there is a difference between resolving into APIs from
+source and form binaries; when you're analyzing calls into source, you
+can access for example method bodies, and this isn't available via
+UAST from byte code.)
+
+These test files also let you specify an artifact name instead of a
+jar path, and lint will use this to place the jar in a special place
+such that it recognizes it (via `JavaEvaluator.findOwnerLibrary`) as
+belonging to this library.
+
+Here's an example of how you can create one of these binary stub
+files:
+
+```
+fun testIdentityEqualsOkay() {
+    lint().files(
+        kotlin(
+            "/*test contents here *using* some recycler view APIs*/"
+        ).indented(),
+        mavenLibrary(
+            "androidx.recyclerview:recyclerview:1.0.0",
+            java(
+                """
+                    package androidx.recyclerview.widget;
+                    public class DiffUtil {
+                        public abstract static class ItemCallback<T> {
+                            public abstract boolean areItemsTheSame(T oldItem, T newItem);
+                            public abstract boolean areContentsTheSame(T oldItem, T newItem);
+                        }
+                    }
+                    """
+            ).indented()
+        )
+    ).run().expect(
+```
+
+## Base64-encoded gzipped byte code
+
+Here's an example from a lint check which tries to recognize usage of
+Cordova in the bytecode:
 
 ```
 fun testVulnerableCordovaVersionInClasses() {
@@ -410,5 +465,27 @@ This is almost always because the test sources are referring to some
 library or dependency which isn't on the class path. See the ”Library
 Dependencies and Stubs“ section above, as well as the [frequently asked
 questions](faq.md.html).
+
+## Language Level
+
+Lint will analyze Java and Kotlin test files using its own default
+language levels. If you need a higher (or lower) language level in order
+to test a particular scenario, you can use the `kotlinLanguageLevel`
+and `javaLanguageLevel` setter methods on the lint test configuration.
+Here's an example of a unit test setup for Java records:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+    lint()
+      .files(
+        java("""
+            record Person(String name, int age) {
+            }
+            """)
+          .indented()
+      )
+      .javaLanguageLevel("17")
+      .run()
+      .expect(...)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

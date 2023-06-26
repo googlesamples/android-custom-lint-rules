@@ -5,6 +5,58 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**8.2**
+
+* For unit tests, you can now specify the language level to be used
+  for Kotlin and Java. For example, if your unit test is using Java
+  records, add `.javaLanguageLevel("17")` to your `lint()` test
+  configuration.
+
+**8.1**
+
+* The [data flow analyzer](dataflow-analyzer.md.html) has been
+  improved; in addition to fixing a few bugs, there are a couple of
+  new convenience sub classes which makes common tasks easier to
+  accomplish; see the documentation for `TargetMethodDataFlowAnalyzer`
+  for example.
+
+* The new `mavenLibrary` (and `binaryStub`) test files make it simple
+  to create binary stub files in your tests, without having to perform
+  compilation and check in base64 and gzip encoded test files. When
+  your detector resolves references, the PSI elements you get back
+  differ whether you're calling into source or into binary (jar/.class
+  file) elements, so testing both (which the new test files automate
+  using test modes) is helpful. More information about this is
+  available in [](unit-testing.md.html).
+
+* Lint now supports analyzing TOML files. There is a new
+  Scope.TOML_FILE detectors can register an interest in, a new
+  TomlScanner interface to implement for visitTomlDocument callbacks,
+  etc. From a GradleScanner, you can directly resolve version catalog
+  libraries via lookup methods on the GradleContext.
+
+* Lint's “diff” output for unit test verification has been improved;
+  it's now smarter about combining nearby chunks. (This should not
+  break existing tests; the test infrastructure will try the older
+  format as a fallback if the diffs aren't matching for the new
+  format.)
+
+* Lint contains JVM 17 bytecode. You will now need to use JDK 17+
+  when compiling custom Lint checks. You should also configure
+  the Kotlin compiler to target JVM 17, otherwise you may see errors
+  when calling inline functions declared in Lint, UAST, or PSI.
+
+* Lint's testing infrastructure now looks not just for test/
+  but also androidTest/ and testFixtures/ to set the corresponding
+  source set type on each test context.
+
+**8.0**
+
+* A new testmode which makes sure lint checks are all suppressible.
+  It analyzes the reported error locations from the expected test
+  output, and inserts suppress annotations in XML, Kotlin and Java
+  files and makes sure that the corresponding warnings disappear.
+
 **7.4**
 
 * Annotation detectors can now specify just an annotation name instead
