@@ -27,6 +27,10 @@ Flags:
 --builtins                        Generate documentation for the built-in
                                   issues. This is implied if --lint-jars is
                                   not specified
+--gmaven                          Generate documentation for the lint checks
+                                  found on maven.google.com.
+--maven-central                   Generate documentation for a few well known
+                                  lint libraries distributed on Maven Central.
 --lint-jars <jar-path>            Read the lint issues from the specific path
                                   (separated by : of custom jar files
 --issues [issues]                 Limits the issues documented to the specific
@@ -84,34 +88,6 @@ You can generate documentation for third-party checks. To do this, use
 the `lint-jars` flag to specify one or more jar file to scan for lint
 checks. If your lint check are packaged as an AAR file, you can unzip
 this file to find `lint.jar` inside.
-
-## Generating AndroidX documentation
-
-To generate the AndroidX documentation, check out the androidx
-repository into `$ANDROIDX_REPO`; then run
-
-```shell
-$ cd $ANDROIDX_REPO/frameworks/support
-$ ./gradlew createArchive
-```
-
-This will build all the lint custom checks in AndroidX. Then invoke the
-documentation generation tool like this:
-
-```shell
-$ export ANDROID_URI_PREFIX=https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:
-
-$ lint \
-    --generate-docs \
-    --output /tmp/lint-docs/ \
-    --lint-jars $ANDROIDX_REPO/out \
-    --source-url $ANDROID_URI_PREFIX $ANDROIDX_REPO/frameworks/support \
-    --test-url $ANDROID_URI_PREFIX $ANDROIDX_REPO/frameworks/support
-```
-
-If you want to include all the built-in Studio checks as well into a
-documentation set containing both, merge in the `--builtins` and
-`--source-url` and `--test-url` flags from above.
 
 ## Special Conventions
 

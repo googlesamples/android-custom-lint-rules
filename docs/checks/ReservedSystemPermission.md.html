@@ -30,10 +30,13 @@ Copyright Year
 :   2022
 
 This check looks for custom permission declarations whose names are
-reserved values for system or Android SDK permissions.
+reserved values for system or Android SDK permissions, or begin with the
+reserved string `android.`
 
 Please double check the permission name you have supplied. Attempting to
-redeclare a system or Android SDK permission will be ignored.
+redeclare a system or Android SDK permission will be ignored.  Using the
+prefix `android.` is a violation of the Android Compatibility Definition
+Document.
 
 (##) Example
 
@@ -46,6 +49,11 @@ reserved permission [ReservedSystemPermission]
                             ---------------------------------
 
 
+AndroidManifest.xml:5:Error: android.permission.FOOBAR is using the
+reserved system prefix android. [ReservedSystemPermission]
+
+  &lt;permission android:name="android.permission.FOOBAR" /&gt;
+                            -------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -56,6 +64,7 @@ Here is the source file referenced above:
   xmlns:tools="http://schemas.android.com/tools"
   package="com.example.helloworld"&gt;
   &lt;permission android:name="android.permission.BIND_APPWIDGET" /&gt;
+  &lt;permission android:name="android.permission.FOOBAR" /&gt;
   &lt;application&gt;
     &lt;service android:permission="android.permission.BIND_APPWIDGET" /&gt;
   &lt;/application&gt;

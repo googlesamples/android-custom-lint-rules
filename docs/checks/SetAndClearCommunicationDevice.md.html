@@ -1,0 +1,124 @@
+<meta charset="utf-8">
+(#) Clearing communication device
+
+!!! WARNING: Clearing communication device
+   This is a warning.
+
+Id
+:   `SetAndClearCommunicationDevice`
+Summary
+:   Clearing communication device
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/CommunicationDeviceDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CommunicationDeviceDetectorTest.kt)
+Copyright Year
+:   2022
+
+After selecting the audio device for communication use cases using
+`setCommunicationDevice(AudioDeviceInfo device)`, the selection is
+active as long as the requesting application process lives, until
+`clearCommunicationDevice()` is called or until the device is
+disconnected. It is therefore important to clear the request when a call
+ends or the requesting activity or service is stopped or destroyed.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Test.kt:9:Warning: Must call clearCommunicationDevice()
+after setCommunicationDevice() [SetAndClearCommunicationDevice]
+
+    manager.setCommunicationDevice(AudioDeviceInfo())
+    -------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/test/pkg/Test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+
+class Test {
+  fun test() {
+    val manager = AudioManager()
+    manager.setCommunicationDevice(AudioDeviceInfo())
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/AudioManager.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package android.media;
+
+public class AudioManager {
+  public boolean setCommunicationDevice(@NonNull AudioDeviceInfo device) {}
+  public void clearCommunicationDevice() {}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/AudioDeviceInfo.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package android.media;
+public class AudioDeviceInfo {}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CommunicationDeviceDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SetAndClearCommunicationDevice" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SetAndClearCommunicationDevice'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SetAndClearCommunicationDevice ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

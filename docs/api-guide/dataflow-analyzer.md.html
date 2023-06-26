@@ -44,6 +44,13 @@ To use the dataflow analyzer, you basically extend the
 `DataFlowAnalyzer` class, and override one or more of its callbacks,
 and then tell it to analyze a method scope.
 
+!!! Tip
+   In recent versions of lint, there is a new special subclass of the
+   `DataFlowAnalyzer`, `TargetMethodDataFlowAnalyzer`, which makes it
+   easier to write flow analyzers where you are looking for a specific
+   “cleanup” or close function invoked on an instance. See the separate
+   section on `TargetMethodDataFlowAnalyzer` below for more information.
+
 For the above transaction scenario, it might look like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -303,6 +310,12 @@ As you can see, it's passing in the field that is being stored to, in
 case you want to perform additional analysis to track field values; see
 the next section.
 
+!!! Tip
+   There is a special subclass of the `DataFlowAnalyzer`, called
+   `EscapeCheckingDataFlowAnalyzer`, which you can extend instead. This
+   handles recording all the scenarios where the instance escapes from
+   the method, and at the end you can just check its `escaped` property.
+
 ## Non Local Analysis
 
 In the above examples, if we found that the value escaped via a return
@@ -346,5 +359,41 @@ For the Slices API, apply a number of checks on chained calls constructing slice
 
 [Source](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SliceDetector.kt)
 [Test](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SliceDetectorTest.kt)
+
+## TargetMethodDataFlowAnalyzer
+
+The `TargetMethodDataFlowAnalyzer` is a special subclass of the
+`DataFlowAnalyzer` which makes it simple to see if you eventually wind up
+calling a target method on a particular instance. For example, calling
+`close` on a file that was opened, or calling `start` on an animation you
+created.
+
+In addition, there is an extension function on `UMethod` which visits
+this analyzer, and then checks for various conditions, e.g. whether the
+instance “escaped” (for example by being stored in a field or passed to
+another method), in which case you probably don't want to conclude (and
+report) that the close method is never called. It also handles failures
+to resolve, where it remembers whether there was a resolve failure, and
+if so it looks to see if it finds a likely match (with the same name as
+the target function), and if so also makes sure you don't report a false
+positive.
+
+A simple way to do this is as follows:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+val targets = mapOf("show" to listOf("android.widget.Toast",
+      "com.google.android.material.snackbar.Snackbar")
+val analyzer = TargetMethodDataFlowAnalyzer.create(node, targets)
+if (method.isMissingTarget(analyzer)) {
+    context.report(...)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can subclass `TargetMethodDataFlowAnalyzer` directly and override the
+`getTargetMethod` methods and any other UAST visitor methods if you want
+to customize the behavior further.
+
+One advantage of using the `TargetMethodDataFlowAnalyzer` is that it also
+correctly handles method references.
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -25,18 +25,57 @@ Identifier
 :   androidx.recyclerview
 Feedback
 :   https://issuetracker.google.com/issues/new?component=460887
+Min
+:   Lint 7.0
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [androidx.recyclerview:recyclerview](androidx_recyclerview_recyclerview.md.html)
+
 Affects
 :   Kotlin and Java files and resource files
 Editing
 :   This check can *not* run live in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/recyclerview/recyclerview-lint/src/main/java/androidx/recyclerview/lint/InvalidSetHasFixedSizeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/recyclerview/recyclerview-lint/src/test/java/androidx/recyclerview/lint/InvalidSetHasFixedSizeTest.kt)
 Copyright Year
 :   2020
 
 When a RecyclerView uses `setHasFixedSize(...)` you cannot use
 `wrap_content` for  size in the scrolling direction.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.recyclerview:recyclerview:1.3.1-rc01")
+
+// build.gradle
+implementation 'androidx.recyclerview:recyclerview:1.3.1-rc01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.recyclerview)
+
+# libs.versions.toml
+[versions]
+recyclerview = "1.3.1-rc01"
+[libraries]
+recyclerview = {
+    module = "androidx.recyclerview:recyclerview",
+    version.ref = "recyclerview"
+}
+```
+
+1.3.1-rc01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.recyclerview:recyclerview](androidx_recyclerview_recyclerview.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

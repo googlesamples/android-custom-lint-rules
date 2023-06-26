@@ -1,0 +1,144 @@
+<meta charset="utf-8">
+(#) Incorrect usage of getCallingUid() or getCallingPid()
+
+!!! ERROR: Incorrect usage of getCallingUid() or getCallingPid()
+   This is an error.
+
+Id
+:   `BinderGetCallingInMainThread`
+Summary
+:   Incorrect usage of getCallingUid() or getCallingPid()
+Severity
+:   Error
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/BinderGetCallingInMainThreadDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BinderGetCallingInMainThreadDetectorTest.kt)
+Copyright Year
+:   2022
+
+`Binder.getCallingUid()` and `Binder.getCallingPid()` will return
+information about the current process if called inside a thread that is
+not handling a binder transaction. This can cause security issues. If
+you still want to use your own uid/pid, use `Process.myUid()` or
+`Process.myPid()`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyService.kt:10:Error: Binder.getCallingUid() should not be
+used inside onBind() [BinderGetCallingInMainThread]
+
+    Binder.getCallingUid()
+    ----------------------
+
+
+src/test/pkg/MyService.kt:11:Error: Binder.getCallingPid() should not be
+used inside onBind() [BinderGetCallingInMainThread]
+
+    Binder.getCallingPid()
+    ----------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MyService.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.app.Service
+import android.content.Intent
+import android.os.Binder
+import android.os.IBinder
+
+class MyService : Service() {
+    override fun onBind(intent: Intent): IBinder {
+        Binder.getCallingUid()
+        Binder.getCallingPid()
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BinderGetCallingInMainThreadDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("BinderGetCallingInMainThread")
+  fun method() {
+     getCallingUid(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("BinderGetCallingInMainThread")
+  void method() {
+     getCallingUid(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection BinderGetCallingInMainThread
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="BinderGetCallingInMainThread" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'BinderGetCallingInMainThread'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore BinderGetCallingInMainThread ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

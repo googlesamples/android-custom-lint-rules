@@ -20,6 +20,13 @@ Identifier
 :   androidx.compose.ui.test.manifest
 Feedback
 :   https://issuetracker.google.com/issues/new?component=741505
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.ui:ui-test-manifest](androidx_compose_ui_ui-test-manifest.md.html)
+
 Affects
 :   Gradle build files
 Editing
@@ -28,6 +35,8 @@ See
 :   https://developer.android.com/jetpack/compose/testing#setup
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-test-manifest-lint/src/main/java/androidx/compose/ui/test/manifest/lint/GradleDebugConfigurationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-test-manifest-lint/src/test/java/androix/compose/ui/test/manifest/lint/GradleDebugConfigurationDetectorTest.kt)
 Copyright Year
 :   2022
 
@@ -36,6 +45,113 @@ launching a Compose host, such as with createComposeRule. However, it
 only needs to be present in testing configurations therefore use this
 dependency with the debugImplementation configuration.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:2:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    implementation("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    -------------------------------------------------------------------
+
+
+build.gradle:3:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    api("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    --------------------------------------------------------
+
+
+build.gradle:4:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    compileOnly("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    ----------------------------------------------------------------
+
+
+build.gradle:5:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    runtimeOnly("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    ----------------------------------------------------------------
+
+
+build.gradle:6:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    annotationProcessor("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    ------------------------------------------------------------------------
+
+
+build.gradle:7:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    lintChecks("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    ---------------------------------------------------------------
+
+
+build.gradle:8:Warning: Please use debugImplementation.
+[TestManifestGradleConfiguration]
+
+    lintPublish("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    ----------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    implementation("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    api("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    compileOnly("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    runtimeOnly("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    annotationProcessor("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    lintChecks("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+    lintPublish("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-test-manifest-lint/src/test/java/androix/compose/ui/test/manifest/lint/GradleDebugConfigurationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDebugConfigurationDetector.kotlin_manifestDependencyInBlockedConfigs_shouldRaiseIssue`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=741505.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.ui:ui-test-manifest:1.5.0-beta02")
+
+// build.gradle
+implementation 'androidx.compose.ui:ui-test-manifest:1.5.0-beta02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.ui-test-manifest)
+
+# libs.versions.toml
+[versions]
+ui-test-manifest = "1.5.0-beta02"
+[libraries]
+ui-test-manifest = {
+    module = "androidx.compose.ui:ui-test-manifest",
+    version.ref = "ui-test-manifest"
+}
+```
+
+1.5.0-beta02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.ui:ui-test-manifest](androidx_compose_ui_ui-test-manifest.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

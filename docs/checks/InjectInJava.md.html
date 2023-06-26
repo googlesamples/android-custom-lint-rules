@@ -1,0 +1,239 @@
+<meta charset="utf-8">
+(#) Only Kotlin classes should be injected in order for Anvil to work.
+
+!!! ERROR: Only Kotlin classes should be injected in order for Anvil to work.
+   This is an error.
+
+Id
+:   `InjectInJava`
+Summary
+:   Only Kotlin classes should be injected in order for Anvil to work.
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   slack-lint
+Contact
+:   https://github.com/slackhq/slack-lints
+Feedback
+:   https://github.com/slackhq/slack-lints
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/InjectInJavaDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/InjectInJavaDetectorTest.kt)
+Copyright Year
+:   2021
+
+Only Kotlin classes should be injected in order for Anvil to work. If
+you cannot easily convert this to Kotlin, consider manually providing it
+via a Kotlin `@Module`-annotated object.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/JavaClass.java:9:Error: Only Kotlin classes should be
+injected in order for Anvil to work. [InjectInJava]
+
+  @Inject String memberInjected;
+  -------
+
+
+src/test/pkg/JavaClass.java:11:Error: Only Kotlin classes should be
+injected in order for Anvil to work. [InjectInJava]
+
+  @Inject JavaClass(String constructorInjected) {
+  -------
+
+
+src/test/pkg/JavaClass.java:15:Error: Only Kotlin classes should be
+injected in order for Anvil to work. [InjectInJava]
+
+  @Inject void methodInject(String value) {
+  -------
+
+
+src/test/pkg/JavaClass.java:21:Error: Only Kotlin classes should be
+injected in order for Anvil to work. [InjectInJava]
+
+    @AssistedInject JavaAssistedClass(@Assisted String assistedParam) {
+    ---------------
+
+
+src/test/pkg/JavaClass.java:25:Error: Only Kotlin classes should be
+injected in order for Anvil to work. [InjectInJava]
+
+    @AssistedFactory
+    ----------------
+
+
+src/test/pkg/JavaClass.java:31:Error: Only Kotlin classes should be
+injected in order for Anvil to work. [InjectInJava]
+
+  @Module static abstract class ExampleModule {
+  -------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/JavaClass.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import javax.inject.Inject;
+import dagger.Module;
+import dagger.assisted.AssistedInject;
+import dagger.assisted.AssistedFactory;
+
+class JavaClass {
+  @Inject String memberInjected;
+
+  @Inject JavaClass(String constructorInjected) {
+
+  }
+
+  @Inject void methodInject(String value) {
+
+  }
+
+  static class JavaAssistedClass {
+
+    @AssistedInject JavaAssistedClass(@Assisted String assistedParam) {
+
+    }
+
+    @AssistedFactory
+    interface Factory {
+      JavaAssistedClass create(String assistedParam);
+    }
+  }
+
+  @Module static abstract class ExampleModule {
+
+  }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/InjectInJavaDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InjectInJavaDetector.javaIsNotOk`.
+To report a problem with this extracted sample, visit
+https://github.com/slackhq/slack-lints.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint:slack-lint-checks:0.3.0")
+
+// build.gradle
+lintChecks 'com.slack.lint:slack-lint-checks:0.3.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.slack-lint-checks)
+
+# libs.versions.toml
+[versions]
+slack-lint-checks = "0.3.0"
+[libraries]
+slack-lint-checks = {
+    module = "com.slack.lint:slack-lint-checks",
+    version.ref = "slack-lint-checks"
+}
+```
+
+0.3.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("InjectInJava")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("InjectInJava")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection InjectInJava
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="InjectInJava" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'InjectInJava'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore InjectInJava ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

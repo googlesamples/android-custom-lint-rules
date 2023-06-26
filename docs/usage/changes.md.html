@@ -4,6 +4,41 @@ This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
+**8.1**
+
+* Lint now supports and includes checks for Gradle version catalog
+  files. The built in checks around dependencies in Gradle files
+  also apply to these TOML version catalog files.
+
+* New built-in lint-checks:
+
+  Issue ID                          | Summary
+  ----------------------------------|-----------------------------------
+  `NoOp`                            | Finds leftover code constructs which have no side effect or purpose
+  `UnspecifiedRegisterReceiverFlag` | Missing `registerReceiver()` exported flag
+  `UnsafeImplicitIntentLaunch`      | Implicit intent matches an internal non-exported component
+  `ShortcutUsageDetector`           | Shortcut usage should be reported
+  `UseTomlInstead`                  | Mixing and matching Gradle build file and TOML dependencies
+  `KaptUsageInsteadOfKsp`           | Using kapt where KSP would also be available
+  `BomWithoutPlatform`              | BOM artifact added as a dependency instead of as a platform
+  `ProviderReadPermissionOnly`      | Provider with readPermission only and implemented write APIs
+
+  (The `NoOp` and `UnsafeImplicitIntentLaunch` lint checks are
+  currently disabled by default.)
+
+**8.0**
+
+* New built-in lint-checks:
+
+  Issue ID                          | Summary
+  ----------------------------------|-----------------------------------
+  `ChromeOsOnConfigurationChanged`  | ChromeOS performance checks in onConfigurationChanged()
+  `SetAndClearCommunicationDevice`  | Missing `clearCommunicationDevice()` after set
+
+  * Lint's API check now supports SDK extensions. The version checking
+    utilities (VersionChecks, ApiConstraint) have also been improved
+    to handle more scenarios.
+
 **7.4**
 
 * New built-in lint-checks:
@@ -14,7 +49,7 @@ lint check authors, see the API Guide.
   `KnownPermissionError`      | Well-known permission errors, e.g. `android:permission="true"`
   `SystemPermissionTypo`      | Usage of permissions that look like system permissions, but have typos
   `CustomPermissionTypo`      | Usage of permissions that look like custom permissions from the same project, but have typos
-  `ReservedSystemPermission`  | Accidental redefining of a framework permission
+  `ReservedSystemPermission`  | Accidental redefining of a framework permission, or usage of the `andriod.` prefix
   `GestureBackNavigation`     | Usage of KeyEvent.KEYCODE_BACK
   `UnusedTranslation`         | Unused translation, not declared in localeConfig
   `NotificationPermission`    | Notifications Without android.permission.POST_NOTIFICATIONS
@@ -23,6 +58,7 @@ lint check authors, see the API Guide.
   `TileProviderPermissions`   | TileProvider does not set permission
   `SquareAndRoundTilePreviews`| TileProvider does not have round and square previews
   `InternalInsetResource`     | Using internal inset dimension resource
+  `BinderGetCallingInMainThread`| Incorrect usage of getCallingUid() or getCallingPid()
 
 * Lint now respects the `--offline` flag passed to Gradle, and will refrain
   from making network calls for checks that normally do (such as

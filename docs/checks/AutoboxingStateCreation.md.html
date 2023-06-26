@@ -1,0 +1,183 @@
+<meta charset="utf-8">
+(#) `State<T>` will autobox values assigned to this state. Use a specialized state type instead.
+
+!!! WARNING: `State<T>` will autobox values assigned to this state. Use a specialized state type instead.
+   This is a warning.
+
+Id
+:   `AutoboxingStateCreation`
+Summary
+:   `State<T>` will autobox values assigned to this state. Use a specialized state type instead.
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.runtime
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/AutoboxingStateCreationDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/AutoboxingStateCreationDetectorTest.kt)
+Copyright Year
+:   2023
+
+Calling `mutableStateOf<T>()` when `T` is either backed by a primitive
+type on the JVM or is a value class results in a state implementation
+that requires all state values to be boxed. This usually causes an
+additional allocation for each state write, and adds some additional
+work to auto-unbox values when reading the value of the state. Instead,
+prefer to use a specialized primitive state implementation for `Int`,
+`Long`, `Float`, and `Double` when the state does not need to track null
+values and does not override the default `SnapshotMutationPolicy`.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/runtime/lint/test/test.kt:8:Information: Prefer
+mutableStateOf instead of mutableStateOf [AutoboxingStateCreation]
+
+    val state = mutableStateOf&lt;&gt;()
+                --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/runtime/lint/test/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.runtime.lint.test
+
+import androidx.compose.runtime.*
+import
+
+fun valueAssignment() {
+    val state = mutableStateOf<>()
+    state.value =
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/AutoboxingStateCreationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AutoboxingStateCreationDetector.testTrivialMutableStateOf_thatCouldBeMutablePrimitiveStateOf`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.runtime:runtime:1.5.0-beta02")
+
+// build.gradle
+implementation 'androidx.compose.runtime:runtime:1.5.0-beta02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.runtime)
+
+# libs.versions.toml
+[versions]
+runtime = "1.5.0-beta02"
+[libraries]
+runtime = {
+    module = "androidx.compose.runtime:runtime",
+    version.ref = "runtime"
+}
+```
+
+1.5.0-beta02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AutoboxingStateCreation")
+  fun method() {
+     mutableStateOf(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AutoboxingStateCreation")
+  void method() {
+     mutableStateOf(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AutoboxingStateCreation
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AutoboxingStateCreation" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AutoboxingStateCreation'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AutoboxingStateCreation ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

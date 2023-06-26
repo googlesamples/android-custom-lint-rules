@@ -1,0 +1,81 @@
+(#) androidx.activity:activity-compose
+
+Name
+:   Activity Compose
+Description
+:   Compose integration with Activity
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Jetpack Activity Compose
+Identifier
+:   androidx.activity.compose
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.activity:activity-compose:1.8.0-alpha05
+
+(##) Included Issues
+
+|Issue Id                                                  |Issue Description                                                                |
+|----------------------------------------------------------|---------------------------------------------------------------------------------|
+|[LaunchDuringComposition](LaunchDuringComposition.md.html)|Calls to `launch` should happen inside of a SideEffect and not during composition|
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.activity:activity-compose:1.8.0-alpha05")
+
+// build.gradle
+implementation 'androidx.activity:activity-compose:1.8.0-alpha05'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.activity-compose)
+
+# libs.versions.toml
+[versions]
+activity-compose = "1.8.0-alpha05"
+[libraries]
+activity-compose = {
+    module = "androidx.activity:activity-compose",
+    version.ref = "activity-compose"
+}
+```
+
+1.8.0-alpha05 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 1.4.0: First version includes LaunchDuringComposition.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.8.0-alpha05|2023/06/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha04|2023/05/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha03|2023/04/12|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha02|2023/03/08|       1|         Yes|    8.0 and 8.1|       7.0|
+|       1.8.0-alpha01|2023/02/08|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.7.2|2023/05/24|       1|         Yes|    8.0 and 8.1|       7.0|
+|               1.7.1|2023/04/19|       1|         Yes|    8.0 and 8.1|       7.0|
+|               1.7.0|2023/03/22|       1|         Yes|    8.0 and 8.1|       7.0|
+|               1.6.1|2022/10/24|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.6.0|2022/09/21|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.5.1|2022/07/27|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.5.0|2022/06/29|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.4.0|2021/10/27|       1|         Yes|            7.1|       7.0|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

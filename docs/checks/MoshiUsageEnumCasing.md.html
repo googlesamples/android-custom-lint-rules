@@ -1,0 +1,143 @@
+<meta charset="utf-8">
+(#) Consider using `@Json(name = ...)` rather than lower casing.
+
+!!! WARNING: Consider using `@Json(name = ...)` rather than lower casing.
+   This is a warning.
+
+Id
+:   `MoshiUsageEnumCasing`
+Summary
+:   Consider using `@Json(name = ...)` rather than lower casing.
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   slack-lint
+Contact
+:   https://github.com/slackhq/slack-lints
+Feedback
+:   https://github.com/slackhq/slack-lints
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
+Copyright Year
+:   2021
+
+Moshi offers `@Json` annotations to specify names to use in JSON
+serialization, similar to Gson's `@SerializedName`. This can help avoid
+lower-casing enum properties in source directly.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint:slack-lint-checks:0.3.0")
+
+// build.gradle
+lintChecks 'com.slack.lint:slack-lint-checks:0.3.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.slack-lint-checks)
+
+# libs.versions.toml
+[versions]
+slack-lint-checks = "0.3.0"
+[libraries]
+slack-lint-checks = {
+    module = "com.slack.lint:slack-lint-checks",
+    version.ref = "slack-lint-checks"
+}
+```
+
+0.3.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("MoshiUsageEnumCasing")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("MoshiUsageEnumCasing")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection MoshiUsageEnumCasing
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MoshiUsageEnumCasing" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MoshiUsageEnumCasing'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MoshiUsageEnumCasing ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -20,6 +20,13 @@ Identifier
 :   androidx.compose.material
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.material:material](androidx_compose_material_material.md.html)
+
 Affects
 :   Kotlin and Java files and test sources
 Editing
@@ -80,8 +87,6 @@ used [UnusedMaterialScaffoldPaddingParameter]
 
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { innerPadding -&gt; /**/ }
                                                       ------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -114,6 +119,36 @@ found for this lint check, `ScaffoldPaddingDetector.unreferencedParameters`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=612128.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.material:material:1.5.0-beta02")
+
+// build.gradle
+implementation 'androidx.compose.material:material:1.5.0-beta02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.material)
+
+# libs.versions.toml
+[versions]
+material = "1.5.0-beta02"
+[libraries]
+material = {
+    module = "androidx.compose.material:material",
+    version.ref = "material"
+}
+```
+
+1.5.0-beta02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.material:material](androidx_compose_material_material.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

@@ -1,0 +1,210 @@
+<meta charset="utf-8">
+(#) Provider with readPermission only and implemented write APIs
+
+!!! WARNING: Provider with readPermission only and implemented write APIs
+   This is a warning.
+
+Id
+:   `ProviderReadPermissionOnly`
+Summary
+:   Provider with readPermission only and implemented write APIs
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ProviderPermissionDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ProviderPermissionDetectorTest.kt)
+Copyright Year
+:   2022
+
+This check looks for Content Providers that only have the
+`readPermission` attribute but implement write APIs.
+
+If `android:readPermission` is specified and both `android:permission`
+and `android:writePermission` are omitted, other apps can access any
+write operations that this provider exposes with no permission check.
+For a quick fix, changing the existing `android:readPermission` to
+`android:permission` will protect both read and write access with the
+same permission. Alternatively, declaring a separate
+`android:writePermission` can protect write access with a different
+permission.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:5:Warning: test.pkg.JavaTestContentProvider
+implements {insert} write APIs but does not protect them with a
+permission. Update the <provider> tag to use android:permission or
+android:writePermission [ProviderReadPermissionOnly]
+
+    &lt;provider android:name="test.pkg.JavaTestContentProvider" android:readPermission="android.permission.READ_DATA"/&gt;
+                                                              ----------------------
+
+
+AndroidManifest.xml:6:Warning: test.pkg.KotlinTestContentProvider
+implements {insert} write APIs but does not protect them with a
+permission. Update the <provider> tag to use android:permission or
+android:writePermission [ProviderReadPermissionOnly]
+
+    &lt;provider android:name="test.pkg.KotlinTestContentProvider" android:readPermission="android.permission.READ_DATA"/&gt;
+                                                                ----------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="test.pkg"&gt;
+  &lt;application&gt;
+    &lt;provider android:name="test.pkg.JavaTestContentProvider" android:readPermission="android.permission.READ_DATA"/&gt;
+    &lt;provider android:name="test.pkg.KotlinTestContentProvider" android:readPermission="android.permission.READ_DATA"/&gt;
+  &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/JavaTestContentProvider.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.ContentProvider;
+import android.net.Uri;
+import android.os.Bundle;
+
+public class JavaTestContentProvider extends ContentProvider {
+  @Override
+  public Uri insert(Uri uri, ContentValues values) {
+    return insert(uri, values, null);
+  }
+
+  @Override
+  public int delete(Uri uri, String selection, String[] selectionArgs) {
+    throw new UnsupportedOperationException("");
+  }
+
+  @Override
+  public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    return 0;
+  }
+
+  private Uri insert(Uri uri, ContentValues values, Bundle extras) {
+    System.out.println(uri);
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/KotlinTestContentProvider.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.content.ContentProvider
+import android.net.Uri
+
+class KotlinTestContentProvider : ContentProvider() {
+  override fun insert(uri: Uri, values: ContentValues?): Uri? = insert(uri, values, null) ?: null
+
+  override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+    throw UnsupportedOperationException()
+  }
+
+  override fun update(
+    uri: Uri,
+    values: ContentValues?,
+    selection: String?,
+    selectionArgs: Array<String>?
+  ): Int = 0
+
+  private fun insert(uri: Uri, values: ContentValues?, extras: Bundle?): Int? {
+    println(uri)
+    return null
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ProviderPermissionDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ProviderReadPermissionOnly")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ProviderReadPermissionOnly")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ProviderReadPermissionOnly
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ProviderReadPermissionOnly" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ProviderReadPermissionOnly'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ProviderReadPermissionOnly ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -8,8 +8,6 @@ Id
 :   `PermissionImpliesUnsupportedChromeOsHardware`
 Summary
 :   Permission Implies Unsupported Chrome OS Hardware
-Note
-:   **This issue is disabled by default**; use `--enable PermissionImpliesUnsupportedChromeOsHardware`
 Severity
 :   Error
 Category
@@ -34,11 +32,11 @@ Copyright Year
 :   2016
 
 The `<uses-permission>` element should not require a permission that
-implies an unsupported Chrome OS hardware feature. Google Play assumes
-that certain hardware related permissions indicate that the underlying
-hardware features are required by default. To fix the issue, consider
-declaring the corresponding uses-feature element with `required="false"`
-attribute.
+implies an unsupported large screen hardware feature. Google Play
+assumes that certain hardware related permissions indicate that the
+underlying hardware features are required by default. To fix the issue,
+consider declaring the corresponding <uses-feature> element with
+`required="false"` attribute.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -53,8 +51,6 @@ required="false"> tag [PermissionImpliesUnsupportedChromeOsHardware]
 
     &lt;uses-permission android:name="android.permission.CALL_PHONE"/&gt;
      ---------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

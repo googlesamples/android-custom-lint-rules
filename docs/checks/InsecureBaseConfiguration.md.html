@@ -23,6 +23,8 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
+:   https://goo.gle/InsecureBaseConfiguration
+See
 :   https://developer.android.com/preview/features/security-config.html
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/NetworkSecurityConfigDetector.java)
@@ -48,8 +50,6 @@ res/xml/network_config.xml:3:Warning: Insecure Base Configuration
 
     &lt;base-config cleartextTrafficPermitted="true"&gt;
                                             ----
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

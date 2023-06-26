@@ -37,6 +37,164 @@ Searches for interprocedural call paths that violate thread annotations
 in the program. Tracks the flow of instantiated types and lambda
 expressions to increase accuracy across method boundaries.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/Runnable.java:14:Error: Interprocedural thread annotation
+violation (UiThread to WorkerThread):
+Test#uiThreadStatic -> Test#unannotatedStatic -> Test#workerThreadStatic
+[WrongThreadInterprocedural]
+
+  @UiThread static void uiThreadStatic() { unannotatedStatic(); }
+                                           -------------------
+
+
+src/test/pkg/Runnable.java:18:Error: Interprocedural thread annotation
+violation (UiThread to WorkerThread):
+Test#uiThread -> Test#unannotated -> Test#workerThread
+[WrongThreadInterprocedural]
+
+  @UiThread void uiThread() { unannotated(); }
+                              -------------
+
+
+src/test/pkg/Runnable.java:25:Error: Interprocedural thread annotation
+violation (WorkerThread to UiThread):
+Test#callRunIt -> Test#runIt -> Test#callRunIt#lambda -> Test#runUi
+[WrongThreadInterprocedural]
+
+    runIt(() -&gt; runUi());
+    --------------------
+
+
+src/test/pkg/Runnable.java:39:Error: Interprocedural thread annotation
+violation (UiThread to WorkerThread):
+A#run -> Test#b [WrongThreadInterprocedural]
+
+    public void run(Runnable r) { r.run(); }
+                                    -----
+
+
+src/test/pkg/Runnable.java:44:Error: Interprocedural thread annotation
+violation (WorkerThread to UiThread):
+B#run -> Test#a [WrongThreadInterprocedural]
+
+    public void run(Runnable r) { r.run(); }
+                                    -----
+
+
+src/test/pkg/Runnable.java:71:Error: Interprocedural thread annotation
+violation (UiThread to WorkerThread):
+Test#callInvokeLater#lambda -> Test#c [WrongThreadInterprocedural]
+
+    invokeLater(() -&gt; c());
+                      ---
+
+
+src/test/pkg/Runnable.java:76:Error: Interprocedural thread annotation
+violation (WorkerThread to UiThread):
+Test#callInvokeInBackground#lambda -> Test#d
+[WrongThreadInterprocedural]
+
+    invokeInBackground(() -&gt; d());
+                             ---
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/Runnable.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import androidx.annotation.UiThread;
+import androidx.annotation.WorkerThread;
+
+@SuppressWarnings({"UnnecessaryInterfaceModifier", "ClassNameDiffersFromFileName"})
+@FunctionalInterface
+public interface Runnable {
+  public abstract void run();
+}
+
+@SuppressWarnings({"Convert2MethodRef", "MethodMayBeStatic", "override", "ClassNameDiffersFromFileName", "InnerClassMayBeStatic"})
+class Test {
+  @UiThread static void uiThreadStatic() { unannotatedStatic(); }
+  static void unannotatedStatic() { workerThreadStatic(); }
+  @WorkerThread static void workerThreadStatic() {}
+
+  @UiThread void uiThread() { unannotated(); }
+  void unannotated() { workerThread(); }
+  @WorkerThread void workerThread() {}
+
+  @UiThread void runUi() {}
+  void runIt(Runnable r) { r.run(); }
+  @WorkerThread void callRunIt() {
+    runIt(() -> runUi());
+  }
+
+  public static void main(String[] args) {
+    Test instance = new Test();
+    instance.uiThread();
+  }
+
+  interface It {
+    void run(Runnable r);
+  }
+
+  class A implements It {
+    @UiThread
+    public void run(Runnable r) { r.run(); }
+  }
+
+  class B implements It {
+    @WorkerThread
+    public void run(Runnable r) { r.run(); }
+  }
+
+  @UiThread
+  void a() {}
+
+  @WorkerThread
+  void b() {}
+
+  void runWithIt(It it, Runnable r) { it.run(r); }
+
+  void f() {
+    runWithIt(new A(), this::b);
+    runWithIt(new B(), this::a);
+  }
+
+  public static void invokeLater(@UiThread Runnable runnable) { /* place on queue to invoke on UiThread */ }
+
+  public static void invokeInBackground(@WorkerThread Runnable runnable) { /* place on queue to invoke on background thread */ }
+
+  @WorkerThread
+  void c() {}
+
+  @UiThread
+  void d() {}
+
+  void callInvokeLater() {
+    invokeLater(() -> c());
+    invokeLater(() -> d()); // Ok.
+  }
+
+  void callInvokeInBackground() {
+    invokeInBackground(() -> d());
+    invokeInBackground(() -> c()); // Ok.
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WrongThreadInterproceduralDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WrongThreadInterproceduralDetector.testThreadingFromJava`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

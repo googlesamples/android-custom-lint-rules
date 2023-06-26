@@ -35,9 +35,6 @@ Tests
 Copyright Year
 :   2014
 
-As of the second half of 2018, Google Play requires that new apps and
-app updates target API level 26 or higher.
-
 Configuring your app to target a recent API level ensures that users
 benefit from significant security and performance improvements, while
 still allowing your app to run on older Android versions (down to the
@@ -49,6 +46,49 @@ https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:5:Error: Google Play requires that apps target API level 
+or higher.
+ [ExpiredTargetSdkVersion]
+
+    targetSdkVersion 17
+    -------------------
+
+
+build.gradle:6:Error: Google Play requires that apps target API level 
+or higher.
+ [ExpiredTargetSdkVersion]
+
+    targetSdk 17
+    ------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+apply plugin: 'com.android.application'
+
+android {
+    defaultConfig {
+        targetSdkVersion 17
+        targetSdk 17
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testExpiring1`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

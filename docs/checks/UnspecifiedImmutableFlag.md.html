@@ -1,19 +1,21 @@
 <meta charset="utf-8">
 (#) Missing `PendingIntent` mutability flag
 
-!!! WARNING: Missing `PendingIntent` mutability flag
-   This is a warning.
+!!! ERROR: Missing `PendingIntent` mutability flag
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
 
 Id
 :   `UnspecifiedImmutableFlag`
 Summary
 :   Missing `PendingIntent` mutability flag
 Severity
-:   Warning
+:   Fatal
 Category
 :   Security
 Platform
-:   Any
+:   Android
 Vendor
 :   Android Open Source Project
 Feedback
@@ -24,6 +26,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 See
 :   https://developer.android.com/about/versions/12/behavior-changes-12#pending-intent-mutability
+See
+:   https://goo.gle/UnspecifiedImmutableFlag
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PendingIntentMutableFlagDetector.kt)
 Tests
@@ -34,51 +38,13 @@ Copyright Year
 Apps targeting Android 12 and higher must specify either
 `FLAG_IMMUTABLE` or `FLAG_MUTABLE` when constructing a `PendingIntent`.
 
-(##) Example
+`FLAG_IMMUTABLE` is available since target SDK 23, and is almost always
+the best choice. See
+https://developer.android.com/guide/components/intents-filters#CreateImmutablePendingIntents
+ for a list of common exceptions to this rule.
 
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/PendingIntentTest.java:7:Warning: Missing PendingIntent
-mutability flag [UnspecifiedImmutableFlag]
-
-    PendingIntent.getActivity(null, 0, null, 0);
-                                             -
-
-
-src/test/pkg/PendingIntentTest.java:8:Warning: Missing PendingIntent
-mutability flag [UnspecifiedImmutableFlag]
-
-    PendingIntent.getActivities(null, 0, null, 0);
-                                               -
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`src/test/pkg/PendingIntentTest.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.pkg;
-
-import android.app.PendingIntent;
-
-public class PendingIntentTest {
-    protected void test() {
-        PendingIntent.getActivity(null, 0, null, 0);
-        PendingIntent.getActivities(null, 0, null, 0);
-    }
-}
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PendingIntentMutableFlagDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `PendingIntentMutableFlagDetector.testNoFlag`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
 
 (##) Suppressing
 

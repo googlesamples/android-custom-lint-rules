@@ -54,8 +54,6 @@ NotAJobService must extend android.app.job.JobService
 
     new ComponentName(this, NotAJobService.class));
     ---------------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -89,7 +87,7 @@ public class JobSchedulerTest extends Activity {
     }
 
     public void testWrongInlined(JobScheduler jobScheduler) {
-        JobInfo.Builder builder = new JobInfo.Builder(MY_ID, 
+        JobInfo.Builder builder = new JobInfo.Builder(MY_ID,
                 new ComponentName(this, NotAJobService.class));
         jobScheduler.schedule(builder
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)

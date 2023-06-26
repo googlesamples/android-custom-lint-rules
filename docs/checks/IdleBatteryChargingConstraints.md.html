@@ -20,6 +20,13 @@ Identifier
 :   androidx.work
 Feedback
 :   https://issuetracker.google.com/issues/new?component=409906
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.work:work-runtime](androidx_work_work-runtime.md.html)
+
 Affects
 :   Kotlin and Java files
 Editing
@@ -34,6 +41,36 @@ Copyright Year
 Some devices are never considered charging and idle at the same time.
 Consider removing one of these constraints.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.work:work-runtime:2.9.0-alpha01")
+
+// build.gradle
+implementation 'androidx.work:work-runtime:2.9.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.work-runtime)
+
+# libs.versions.toml
+[versions]
+work-runtime = "2.9.0-alpha01"
+[libraries]
+work-runtime = {
+    module = "androidx.work:work-runtime",
+    version.ref = "work-runtime"
+}
+```
+
+2.9.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.work:work-runtime](androidx_work_work-runtime.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

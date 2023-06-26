@@ -30,7 +30,7 @@ Copyright Year
 :   2017
 
 Some methods have no side effects, and calling them without doing
-something without the result is suspicious.
+something with the result is suspicious.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -44,8 +44,6 @@ src/test/pkg/test.kt:10:Warning: The result of double is not used
 
     score.double()
     --------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

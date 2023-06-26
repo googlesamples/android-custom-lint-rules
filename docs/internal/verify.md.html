@@ -46,7 +46,8 @@ to place this into a shell function:
 ```ksh
 runGradleForAndroidX() {
     CUSTOM_REPO=$ADT_SOURCE_TREE/out/repo \
-    GRADLE_PLUGIN_VERSION=7.1.0-dev \
+    GRADLE_PLUGIN_VERSION=8.0.0-dev \
+    LINT_VERSION=31.0.0-dev \
     GRADLE_PLUGIN_REPO=$ADT_SOURCE_TREE/out/repo:$ADT_SOURCE_TREE/prebuilts/tools/common/m2/repository \
     $ADT_SOURCE_TREE/tools/gradlew --parallel ${@}
 }
@@ -63,6 +64,11 @@ gwx lint
 If you want to debug a particular scenario, replace the `--parallel`
 flag with `--no-daemon -Dorg.gradle.debug=true`, run the build, and
 create a Remote configuration in IntelliJ and use it to attach.
+
+You can also run `gwx updateLintBaseline` to have lint successfully
+run all targets and update the baselines and then inspect the diffs if
+you've added/updated lint checks and don't want it to stop after the
+first new (and correct) failure.
 
 ## Testing against Android Platform
 

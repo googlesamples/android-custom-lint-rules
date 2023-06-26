@@ -1,0 +1,119 @@
+<meta charset="utf-8">
+(#) Report shortcut usage
+
+!!! Tip: Report shortcut usage
+   Advice from this check is just a tip.
+
+Id
+:   `ReportShortcutUsage`
+Summary
+:   Report shortcut usage
+Severity
+:   Information
+Category
+:   Usability
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check can *not* run live in the IDE editor
+See
+:   https://developer.android.com/develop/ui/views/launch/shortcuts/managing-shortcuts
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ShortcutUsageDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ShortcutUsageDetectorTest.kt)
+Copyright Year
+:   2022
+
+Reporting shortcut usage is important to improving the ranking of
+shortcuts.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/TestDocumentationExample.java:16:Information: Calling this
+method indicates use of dynamic shortcuts, but there are no calls to
+methods that track shortcut usage, such as pushDynamicShortcut or
+reportShortcutUsed. Calling these methods is recommended, as they track
+shortcut usage and allow launchers to adjust which shortcuts appear
+based on activation history. Please see
+https://developer.android.com/develop/ui/views/launch/shortcuts/managing-shortcuts#track-usage
+ [ReportShortcutUsage]
+
+    ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts);
+    -------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/TestDocumentationExample.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.content.Context;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import java.util.ArrayList;
+
+@SuppressWarnings("unused")
+public class TestDocumentationExample extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ShortcutInfoCompat shortuctInfoCompat = new ShortcutInfoCompat.Builder(context, "id").build();
+        ArrayList<ShortcutInfoCompat> shortcuts = new ArrayList<ShortcutInfoCompat>();
+        shortcuts.add(shortcutInfoCompat);
+        ShortcutManagerCompat.setDynamicShortcuts(context, shortcuts);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ShortcutUsageDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ReportShortcutUsage" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ReportShortcutUsage'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ReportShortcutUsage ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

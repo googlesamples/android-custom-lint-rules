@@ -37,6 +37,10 @@ manifest file (or for custom views, in a layout file) must be
 public, it must have an empty public constructor, and if it's an inner
 class, it must be a static inner class.
 
+If you use a custom `AppComponentFactory` to instantiate app components
+yourself, consider disabling this Lint issue in order to avoid false
+positives.
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:
@@ -46,8 +50,6 @@ res/menu/my_menu.xml:13:Error: NotView must extend android.view.View
 
     android:actionViewClass="test.pkg.NotView" /&gt;
                              ----------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/topics/large-screens/large-screen-cookbook#restricted_app_orientation
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ChromeOsSourceDetector.kt)
 Tests
@@ -31,8 +33,9 @@ Copyright Year
 
 The `Activity` should not be locked to a portrait orientation so that
 users can take advantage of the multi-window environments and larger
-landscape-first screens that Android runs on such as Chrome OS. To fix
-the issue, consider calling `setRequestedOrientation` with the
+landscape-first screens that Android runs on such as ChromeOS, tablets,
+and foldables. To fix the issue, consider calling
+`setRequestedOrientation` with the
 `ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR` or
 `ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED` options or removing the
 call all together.
@@ -51,8 +54,6 @@ experience for any device or orientation
 
     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     -----------------------------------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

@@ -33,11 +33,12 @@ Tests
 Copyright Year
 :   2016
 
-The `<uses-feature>` element should not require this unsupported Chrome
-OS hardware feature. Any uses-feature not explicitly marked with
+The `<uses-feature>` element should not require this unsupported large
+screen hardware feature. Any <uses-feature> not explicitly marked with
 `required="false"` is necessary on the device to be installed on. Ensure
-that any features that might prevent it from being installed on a Chrome
-OS device are reviewed and marked as not required in the manifest.
+that any features that might prevent it from being installed on a
+ChromeOS, large screen, or foldable device are reviewed and marked as
+not required in the manifest.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -52,8 +53,6 @@ hardware feature that may not be supported by all Chrome OS devices
 
     android:name="android.hardware.touchscreen" android:required="true"/&gt;
                                                 -----------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

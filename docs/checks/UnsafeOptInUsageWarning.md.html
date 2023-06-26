@@ -20,6 +20,13 @@ Identifier
 :   androidx.annotation.experimental
 Feedback
 :   https://issuetracker.google.com/issues/new?component=459778
+Min
+:   Lint 7.0
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [androidx.annotation:annotation-experimental](androidx_annotation_annotation-experimental.md.html)
+
 Affects
 :   Kotlin and Java files
 Editing
@@ -55,6 +62,36 @@ as a comma-delimited list of opted-in annotations:
 </lint>
 ```
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.annotation:annotation-experimental:1.4.0-dev01")
+
+// build.gradle
+implementation 'androidx.annotation:annotation-experimental:1.4.0-dev01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.annotation-experimental)
+
+# libs.versions.toml
+[versions]
+annotation-experimental = "1.4.0-dev01"
+[libraries]
+annotation-experimental = {
+    module = "androidx.annotation:annotation-experimental",
+    version.ref = "annotation-experimental"
+}
+```
+
+1.4.0-dev01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.annotation:annotation-experimental](androidx_annotation_annotation-experimental.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

@@ -87,6 +87,12 @@ what they are seems useful.
 : Point lint to an alternative API database XML file instead of the
   normally used `$SDK/platforms/android-?/data/api-versions.xml` file.
 
+`ANDROID_LINT_SKIP_BYTECODE_VERIFIER`
+: If set to `true`, lint will *not* perform bytecode verification of custom
+  lint check jars from libraries or passed in via command line flags.
+
+  Corresponding system property: `android.lint.skip.bytecode.verifier`
+
 ### Lint Development Variables
 
 `LINT_PRINT_STACKTRACE`
@@ -159,4 +165,13 @@ what they are seems useful.
 : Controls whether lint will complain about custom check lint jar
   loading problems. By default, true.
 
+`android.lint.api-database-binary-path`
+: Point lint to a precomputed per-SDK platform, per-lint **binary** API
+  database to read from. If the file is not found or uses the wrong format
+  version, lint will fail.
+
+`android.lint.skip.bytecode.verifier`
+: Alias for `$ANDROID_LINT_SKIP_BYTECODE_VERIFIER`
+
+  Corresponding system property: `android.lint.skip.bytecode.verifier`
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

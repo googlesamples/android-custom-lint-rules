@@ -20,6 +20,13 @@ Identifier
 :   androidx.navigation.runtime
 Feedback
 :   https://issuetracker.google.com/issues/new?component=409828
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.navigation:navigation-runtime](androidx_navigation_navigation-runtime.md.html)
+
 Affects
 :   Resource files
 Editing
@@ -51,8 +58,6 @@ instead. [DeepLinkInActivityDestination]
 
     &lt;deepLink app:uri="www.example.com" /&gt;
     --------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -89,6 +94,36 @@ found for this lint check, `DeepLinkInActivityDestinationDetector.expectFail`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=409828.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.navigation:navigation-runtime:2.7.0-beta01")
+
+// build.gradle
+implementation 'androidx.navigation:navigation-runtime:2.7.0-beta01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.navigation-runtime)
+
+# libs.versions.toml
+[versions]
+navigation-runtime = "2.7.0-beta01"
+[libraries]
+navigation-runtime = {
+    module = "androidx.navigation:navigation-runtime",
+    version.ref = "navigation-runtime"
+}
+```
+
+2.7.0-beta01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.navigation:navigation-runtime](androidx_navigation_navigation-runtime.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

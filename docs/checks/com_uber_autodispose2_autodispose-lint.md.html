@@ -1,0 +1,73 @@
+(#) com.uber.autodispose2:autodispose-lint
+
+Name
+:   AutoDispose Lint Checks
+Description
+:   Automatic binding+disposal of RxJava 2+ streams.
+Project
+:   https://github.com/uber/AutoDispose
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Uber
+Identifier
+:   AutoDispose
+Feedback
+:   https://github.com/uber/AutoDispose/issues
+Min
+:   Lint 7.0
+Compiled
+:   Lint 7.0
+Artifact
+:   com.uber.autodispose2:autodispose-lint:2.1.1
+
+(##) Included Issues
+
+|Issue Id                          |Issue Description                                                                                                |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------|
+|[AutoDispose](AutoDispose.md.html)|Missing Disposable handling: Apply AutoDispose or cache the Disposable instance manually and enable lenient mode.|
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.uber.autodispose2:autodispose-lint:2.1.1")
+
+// build.gradle
+lintChecks 'com.uber.autodispose2:autodispose-lint:2.1.1'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.autodispose-lint)
+
+# libs.versions.toml
+[versions]
+autodispose-lint = "2.1.1"
+[libraries]
+autodispose-lint = {
+    module = "com.uber.autodispose2:autodispose-lint",
+    version.ref = "autodispose-lint"
+}
+```
+
+2.1.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 2.1.0: First version includes AutoDispose.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|               2.1.1|2021/09/07|       1|         Yes|            7.0|       7.0|
+|               2.1.0|2021/08/09|       1|         Yes|            7.0|       7.0|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

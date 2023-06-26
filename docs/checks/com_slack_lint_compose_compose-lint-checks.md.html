@@ -1,0 +1,100 @@
+(#) com.slack.lint.compose:compose-lint-checks
+
+Name
+:   Compose Lint Checks
+Description
+:   Compose Lint Checks
+Project
+:   https://github.com/slackhq/compose-lints
+Vendor
+:   slack
+Identifier
+:   com.slack.lint.compose:compose-lints
+Feedback
+:   https://github.com/slackhq/compose-lints/issues
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   com.slack.lint.compose:compose-lint-checks:1.2.0
+
+(##) Included Issues
+
+|Issue Id                                                                            |Issue Description                                                              |
+|------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+|[ComposeNamingUppercase](ComposeNamingUppercase.md.html)                            |Unit Composables should be uppercase                                           |
+|[ComposeNamingLowercase](ComposeNamingLowercase.md.html)                            |Value-returning Composables should be lowercase                                |
+|[ComposeCompositionLocalUsage](ComposeCompositionLocalUsage.md.html)                |CompositionLocals are discouraged                                              |
+|[ComposeContentEmitterReturningValues](ComposeContentEmitterReturningValues.md.html)|Composable functions should emit XOR return                                    |
+|[ComposeComposableModifier](ComposeComposableModifier.md.html)                      |Using @Composable builder functions for modifiers is not recommended           |
+|[ComposeModifierMissing](ComposeModifierMissing.md.html)                            |Missing modifier parameter                                                     |
+|[ComposeModifierReused](ComposeModifierReused.md.html)                              |Modifiers should only be used once                                             |
+|[ComposeModifierWithoutDefault](ComposeModifierWithoutDefault.md.html)              |Missing Modifier default value                                                 |
+|[ComposeM2Api](ComposeM2Api.md.html)                                                |Using a Compose M2 API is not recommended                                      |
+|[ComposeMultipleContentEmitters](ComposeMultipleContentEmitters.md.html)            |Composables should only be emit from one source                                |
+|[ComposeMutableParameters](ComposeMutableParameters.md.html)                        |Mutable objects in Compose will break state                                    |
+|[ComposeParameterOrder](ComposeParameterOrder.md.html)                              |Composable function parameters should be ordered                               |
+|[ComposePreviewNaming](ComposePreviewNaming.md.html)                                |Preview annotations require certain suffixes                                   |
+|[ComposePreviewPublic](ComposePreviewPublic.md.html)                                |Preview composables should be private                                          |
+|[ComposeRememberMissing](ComposeRememberMissing.md.html)                            |State values should be remembered                                              |
+|[ComposeUnstableCollections](ComposeUnstableCollections.md.html)                    |Immutable collections should ideally be used in Composables                    |
+|[ComposeViewModelForwarding](ComposeViewModelForwarding.md.html)                    |Forwarding a ViewModel through multiple @Composable functions should be avoided|
+|[ComposeViewModelInjection](ComposeViewModelInjection.md.html)                      |Implicit dependencies of composables should be made explicit                   |
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+
+// build.gradle
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.compose-lint-checks)
+
+# libs.versions.toml
+[versions]
+compose-lint-checks = "1.2.0"
+[libraries]
+compose-lint-checks = {
+    module = "com.slack.lint.compose:compose-lint-checks",
+    version.ref = "compose-lint-checks"
+}
+```
+
+1.2.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 1.0.0: First version includes ComposeComposableModifier,
+  ComposeCompositionLocalUsage, ComposeContentEmitterReturningValues,
+  ComposeModifierMissing, ComposeModifierReused,
+  ComposeModifierWithoutDefault, ComposeMultipleContentEmitters,
+  ComposeMutableParameters, ComposeNamingLowercase,
+  ComposeNamingUppercase, ComposeParameterOrder, ComposePreviewNaming,
+  ComposePreviewPublic, ComposeRememberMissing,
+  ComposeUnstableCollections, ComposeViewModelForwarding,
+  ComposeViewModelInjection.
+* 1.1.0: Adds ComposeM2Api.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|               1.2.0|2023/04/19|      18|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.1.1|2023/03/08|      18|         Yes|    7.3 and 7.4|7.3 and 7.4|
+|               1.1.0|2023/03/07|      18|         Yes|    7.3 and 7.4|7.3 and 7.4|
+|               1.0.1|2023/02/15|      17|         Yes|    7.3 and 7.4|7.3 and 7.4|
+|               1.0.0|2023/02/09|      17|         Yes|    7.3 and 7.4|7.3 and 7.4|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

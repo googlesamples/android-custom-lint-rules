@@ -1,0 +1,165 @@
+<meta charset="utf-8">
+(#) Marks usage of the requireNotNull method without lazy messages.
+
+!!! WARNING: Marks usage of the requireNotNull method without lazy messages.
+   This is a warning.
+
+Id
+:   `KotlinRequireNotNullUseMessage`
+Summary
+:   Marks usage of the requireNotNull method without lazy messages.
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   vanniktech/lint-rules/
+Feedback
+:   https://github.com/vanniktech/lint-rules/issues
+Min
+:   Lint 7.3 and 7.4
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [com.vanniktech:lint-rules-kotlin](com_vanniktech_lint-rules-kotlin.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-kotlin-lint/src/main/java/com/vanniktech/lintrules/kotlin/KotlinRequireNotNullUseMessageDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-kotlin-lint/src/test/java/com/vanniktech/lintrules/rxjava2/KotlinRequireNotNullUseMessageDetectorTest.kt)
+
+The default generated message from requireNotNull often lacks context,
+hence it's best to provide a custom message.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:2:Warning: Provide a message
+[KotlinRequireNotNullUseMessage]
+
+  requireNotNull(value)
+  --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun test(value: Int?) {
+  requireNotNull(value)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-kotlin-lint/src/test/java/com/vanniktech/lintrules/rxjava2/KotlinRequireNotNullUseMessageDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `KotlinRequireNotNullUseMessageDetector.requireNotNull`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.vanniktech:lint-rules-kotlin:0.24.0")
+
+// build.gradle
+lintChecks 'com.vanniktech:lint-rules-kotlin:0.24.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.lint-rules-kotlin)
+
+# libs.versions.toml
+[versions]
+lint-rules-kotlin = "0.24.0"
+[libraries]
+lint-rules-kotlin = {
+    module = "com.vanniktech:lint-rules-kotlin",
+    version.ref = "lint-rules-kotlin"
+}
+```
+
+0.24.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.vanniktech:lint-rules-kotlin](com_vanniktech_lint-rules-kotlin.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("KotlinRequireNotNullUseMessage")
+  fun method() {
+     requireNotNull(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("KotlinRequireNotNullUseMessage")
+  void method() {
+     requireNotNull(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection KotlinRequireNotNullUseMessage
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="KotlinRequireNotNullUseMessage" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'KotlinRequireNotNullUseMessage'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore KotlinRequireNotNullUseMessage ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

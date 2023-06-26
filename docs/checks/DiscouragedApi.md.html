@@ -36,51 +36,72 @@ unfit for common use (e.g. due to slow performance or subtle behavior).
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/MainActivity.kt:13:Warning: don't use this
+src/test/pkg/Test1.java:9:Warning: Use of this function is discouraged.
+It is more efficient to retrieve resources by identifier than by name.
+See getValue(int id, TypedValue outValue, boolean resolveRefs).
 [DiscouragedApi]
 
-    findViewById&lt;TextView&gt;(R.id.text)?.text = getSomeString()
-                                              -------------
-
-
+    Resources.getValue("name", testValue, false);
+              --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`src/test/pkg/MainActivity.kt`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
-package test.pkg
+`src/test/pkg/Test1.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
 
-import android.app.Activity
-import android.os.Bundle
-import android.widget.TextView
-import androidx.annotation.Discouraged
-import java.util.UUID
+import android.content.res.Resources;
+import android.util.TypedValue;
 
-class MainActivity : Activity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        findViewById<TextView>(R.id.text)?.text = getSomeString()
+public class Test1 {
+    public void setValue() {
+        TypedValue testValue;
+        Resources.getValue("name", testValue, false);
+        Resources.getValue(0, testValue, false);
     }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    companion object {
-        @Discouraged(message = "don't use this")
-        fun getSomeString(): String {
-            return UUID.randomUUID().toString()
-        }
-    }
+`src/android/content/res/Resources.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package android.content.res;
+
+import android.util.TypedValue;
+import androidx.annotation.Discouraged;
+
+public class Resources {
+
+    @Discouraged(message="Use of this function is discouraged. It is more efficient "
+                       + "to retrieve resources by identifier than by name.\n"
+                       + "See `getValue(int id, TypedValue outValue, boolean "
+                       + "resolveRefs)`.")
+    public int getValue(String name, TypedValue outValue, boolean resolveRefs) { }
+
+    public int getValue(int id, TypedValue outValue, boolean resolveRefs) { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/androidx/annotation/Discouraged.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package androidx.annotation;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+// Stub annotation for unit test.
+@Retention(SOURCE)
+@Target({METHOD})
+public @interface Discouraged {
+    String message() default "";
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DiscouragedDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `DiscouragedDetector.test205800560`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

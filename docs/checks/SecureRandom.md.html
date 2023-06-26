@@ -23,6 +23,8 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
+:   https://goo.gle/SecureRandom
+See
 :   https://developer.android.com/reference/java/security/SecureRandom.html
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SecureRandomDetector.kt)
@@ -125,8 +127,6 @@ a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 
     random2.setSeed(fixedSeed); // Wrong
     --------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

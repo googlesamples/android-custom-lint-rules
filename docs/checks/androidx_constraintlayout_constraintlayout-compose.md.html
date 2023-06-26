@@ -1,0 +1,82 @@
+(#) androidx.constraintlayout:constraintlayout-compose
+
+Name
+:   ConstraintLayout Compose
+Description
+:   This library offers a flexible and adaptable way to position and animate
+:   widgets in Compose
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Android Open Source Project
+Identifier
+:   androidx.constraintlayout.compose
+Feedback
+:   https://issuetracker.google.com/issues/new?component=323867&template=1023345
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10
+
+(##) Included Issues
+
+|Issue Id                                                                |Issue Description                                                                              |
+|------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+|[IncorrectReferencesDeclaration](IncorrectReferencesDeclaration.md.html)|`createRefsFor(vararg ids: Any)` should have at least one argument and match assigned variables|
+|[IncorrectMatchParentUsage](IncorrectMatchParentUsage.md.html)          |Prefer using `Dimension.percent(1f)` when defining custom constraints.                         |
+|[IncorrectChainMarginsUsage](IncorrectChainMarginsUsage.md.html)        |Use `LayoutReference.withChainParams()` to define margins for elements in a Chain.             |
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10")
+
+// build.gradle
+implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha10'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.constraintlayout-compose)
+
+# libs.versions.toml
+[versions]
+constraintlayout-compose = "1.1.0-alpha10"
+[libraries]
+constraintlayout-compose = {
+    module = "androidx.constraintlayout:constraintlayout-compose",
+    version.ref = "constraintlayout-compose"
+}
+```
+
+1.1.0-alpha10 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 1.1.0-alpha06: First version includes IncorrectReferencesDeclaration.
+* 1.1.0-alpha08: Adds IncorrectChainMarginsUsage,
+  IncorrectMatchParentUsage.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.1.0-alpha10|2023/05/24|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.1.0-alpha09|2023/03/22|       3|      No[^1]|    8.0 and 8.1|       7.0|
+|       1.1.0-alpha08|2023/03/08|       3|      No[^1]|    8.0 and 8.1|       7.0|
+|       1.1.0-alpha07|2023/02/08|       1|         Yes|    7.3 and 7.4|       7.0|
+|       1.1.0-alpha06|2023/01/25|       1|         Yes|    7.3 and 7.4|       7.0|
+
+Compatibility Problems:
+
+[^1]: org.jetbrains.uast.visitor.UastVisitor.DefaultImpls: boolean visitWhileExpression(org.jetbrains.uast.visitor.UastVisitor,org.jetbrains.uast.UWhileExpression) is not available  
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
