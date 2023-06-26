@@ -1,0 +1,155 @@
+<meta charset="utf-8">
+(#) Missing `registerReceiver()` exported flag
+
+!!! ERROR: Missing `registerReceiver()` exported flag
+   This is an error.
+
+Id
+:   `UnspecifiedRegisterReceiverFlag`
+Summary
+:   Missing `registerReceiver()` exported flag
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int)
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/RegisterReceiverFlagDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RegisterReceiverFlagDetectorTest.kt)
+Copyright Year
+:   2022
+
+In Android U, all receivers registering for non-system broadcasts are
+required to include a flag indicating the receiver's exported state.
+Apps registering for non-system broadcasts should use the
+`ContextCompat#registerReceiver` APIs with flags set to either
+`RECEIVER_EXPORTED` or `RECEIVER_NOT_EXPORTED`.
+
+If you are not expecting broadcasts from other apps on the device,
+register your receiver with `RECEIVER_NOT_EXPORTED` to protect your
+receiver on all platform releases.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/TestClass1.java:17:Warning: receiver is missing
+RECEIVER_EXPORTED or RECEIVER_NOT_EXPORTED flag for unprotected
+broadcasts registered for an IntentFilter that cannot be inspected by
+lint [UnspecifiedRegisterReceiverFlag]
+
+    mContext.registerReceiver(receiver, myIntentFilter);
+    ---------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/TestClass1.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+public class TestClass1 {
+    private Context mContext;
+    IntentFilter myIntentFilter;
+    private TestClass1(Context context) {
+      mContext = context;
+      myIntentFilter = new IntentFilter();
+      myIntentFilter.addAction(Intent.ACTION_BATTERY_LOW);
+      myIntentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
+    }
+    public void testMethod(BroadcastReceiver receiver) {
+        mContext.registerReceiver(receiver, myIntentFilter);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RegisterReceiverFlagDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RegisterReceiverFlagDetector.testIntentFilterIsFieldWithProtectedActions_nonPrivate`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnspecifiedRegisterReceiverFlag")
+  fun method() {
+     registerReceiver(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnspecifiedRegisterReceiverFlag")
+  void method() {
+     registerReceiver(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnspecifiedRegisterReceiverFlag
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnspecifiedRegisterReceiverFlag" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnspecifiedRegisterReceiverFlag'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnspecifiedRegisterReceiverFlag ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,225 @@
+<meta charset="utf-8">
+(#) Mutable objects in Compose will break state
+
+!!! ERROR: Mutable objects in Compose will break state
+   This is an error.
+
+Id
+:   `ComposeMutableParameters`
+Summary
+:   Mutable objects in Compose will break state
+Severity
+:   Error
+Category
+:   Productivity
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   com.slack.lint.compose:compose-lints
+Feedback
+:   https://github.com/slackhq/compose-lints/issues
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/main/java/slack/lint/compose/MutableParametersDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/MutableParametersDetectorTest.kt)
+Copyright Year
+:   2023
+
+Using mutable objects as state in Compose will cause your users to see
+incorrect or stale data in your app.
+Mutable objects that are not observable, such as `ArrayList<T>` or a
+mutable data class, cannot be observed by Compose to trigger
+recomposition when they change.
+See
+https://slackhq.github.io/compose-lints/rules/#do-not-use-inherently-mutable-types-as-parameters
+ for more information.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:2:Error: Using mutable objects as state in Compose will
+cause your users to see incorrect or stale data in your app.
+Mutable objects that are not observable, such as ArrayList<T> or a
+mutable data class, cannot be observed by Compose to trigger
+recomposition when they change.
+See
+https://slackhq.github.io/compose-lints/rules/#do-not-use-inherently-mutable-types-as-parameters
+ for more information. [ComposeMutableParameters]
+
+fun Something(a: MutableState&lt;String&gt;) {}
+                 --------------------
+
+
+src/test.kt:4:Error: Using mutable objects as state in Compose will
+cause your users to see incorrect or stale data in your app.
+Mutable objects that are not observable, such as ArrayList<T> or a
+mutable data class, cannot be observed by Compose to trigger
+recomposition when they change.
+See
+https://slackhq.github.io/compose-lints/rules/#do-not-use-inherently-mutable-types-as-parameters
+ for more information. [ComposeMutableParameters]
+
+fun Something(a: ArrayList&lt;String&gt;) {}
+                 -----------------
+
+
+src/test.kt:6:Error: Using mutable objects as state in Compose will
+cause your users to see incorrect or stale data in your app.
+Mutable objects that are not observable, such as ArrayList<T> or a
+mutable data class, cannot be observed by Compose to trigger
+recomposition when they change.
+See
+https://slackhq.github.io/compose-lints/rules/#do-not-use-inherently-mutable-types-as-parameters
+ for more information. [ComposeMutableParameters]
+
+fun Something(a: HashSet&lt;String&gt;) {}
+                 ---------------
+
+
+src/test.kt:8:Error: Using mutable objects as state in Compose will
+cause your users to see incorrect or stale data in your app.
+Mutable objects that are not observable, such as ArrayList<T> or a
+mutable data class, cannot be observed by Compose to trigger
+recomposition when they change.
+See
+https://slackhq.github.io/compose-lints/rules/#do-not-use-inherently-mutable-types-as-parameters
+ for more information. [ComposeMutableParameters]
+
+fun Something(a: MutableMap&lt;String, String&gt;) {}
+                 --------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+@Composable
+fun Something(a: MutableState<String>) {}
+@Composable
+fun Something(a: ArrayList<String>) {}
+@Composable
+fun Something(a: HashSet<String>) {}
+@Composable
+fun Something(a: MutableMap<String, String>) {}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/MutableParametersDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `MutableParametersDetector.errors when a Composable has a mutable parameter`.
+To report a problem with this extracted sample, visit
+https://github.com/slackhq/compose-lints/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+
+// build.gradle
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.compose-lint-checks)
+
+# libs.versions.toml
+[versions]
+compose-lint-checks = "1.2.0"
+[libraries]
+compose-lint-checks = {
+    module = "com.slack.lint.compose:compose-lint-checks",
+    version.ref = "compose-lint-checks"
+}
+```
+
+1.2.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ComposeMutableParameters")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ComposeMutableParameters")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ComposeMutableParameters
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ComposeMutableParameters" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ComposeMutableParameters'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ComposeMutableParameters ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,172 @@
+<meta charset="utf-8">
+(#) Checks that the layout file matches the class name.
+
+!!! WARNING: Checks that the layout file matches the class name.
+   This is a warning.
+
+Id
+:   `LayoutFileNameMatchesClass`
+Summary
+:   Checks that the layout file matches the class name.
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   vanniktech/lint-rules/
+Feedback
+:   https://github.com/vanniktech/lint-rules/issues
+Min
+:   Lint 7.3 and 7.4
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/LayoutFileNameMatchesClassDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/LayoutFileNameMatchesClassDetectorTest.kt)
+
+Layout file names should always match the name of the class. FooActivity
+should have a layout file named activity_foo hence.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/main/java/foo/FooActivity.java:5:Warning: Parameter should be named
+R.layout.unit_test_activity_foo [LayoutFileNameMatchesClass]
+
+    setContentView(R.layout.activity_bar);
+                   ---------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/main/java/foo/FooActivity.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+class FooActivity extends Activity {
+  void foo() {
+    setContentView(R.layout.activity_bar);
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/LayoutFileNameMatchesClassDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LayoutFileNameMatchesClassDetector.fooActivityUsesActivityBarWithResourcePrefix`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+
+// build.gradle
+lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.lint-rules-android)
+
+# libs.versions.toml
+[versions]
+lint-rules-android = "0.24.0"
+[libraries]
+lint-rules-android = {
+    module = "com.vanniktech:lint-rules-android",
+    version.ref = "lint-rules-android"
+}
+```
+
+0.24.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LayoutFileNameMatchesClass")
+  fun method() {
+     setContentView(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LayoutFileNameMatchesClass")
+  void method() {
+     setContentView(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LayoutFileNameMatchesClass
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LayoutFileNameMatchesClass" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LayoutFileNameMatchesClass'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LayoutFileNameMatchesClass ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

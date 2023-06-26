@@ -1,0 +1,147 @@
+<meta charset="utf-8">
+(#) Flags menu ids that don't match with the file name.
+
+!!! WARNING: Flags menu ids that don't match with the file name.
+   This is a warning.
+
+Id
+:   `MatchingMenuId`
+Summary
+:   Flags menu ids that don't match with the file name.
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   vanniktech/lint-rules/
+Feedback
+:   https://github.com/vanniktech/lint-rules/issues
+Min
+:   Lint 7.3 and 7.4
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
+
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/MatchingMenuIdDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/MatchingMenuIdDetectorTest.kt)
+
+When the layout file is named menu_home all of the containing ids should
+be prefixed with menuHome to avoid ambiguity between different menu
+files across different menu items.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/menu/menu_main.xml:2:Warning: Id should start with: menuMain
+[MatchingMenuId]
+
+  &lt;item android:id="@+id/something"/&gt;
+                    --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/menu/menu_main.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+  &lt;item android:id="@+id/something"/&gt;
+&lt;/menu&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/MatchingMenuIdDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `MatchingMenuIdDetector.idWithoutPrefix`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+
+// build.gradle
+lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.lint-rules-android)
+
+# libs.versions.toml
+[versions]
+lint-rules-android = "0.24.0"
+[libraries]
+lint-rules-android = {
+    module = "com.vanniktech:lint-rules-android",
+    version.ref = "lint-rules-android"
+}
+```
+
+0.24.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="MatchingMenuId"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MatchingMenuId" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MatchingMenuId'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MatchingMenuId ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

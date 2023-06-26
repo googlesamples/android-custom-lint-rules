@@ -87,15 +87,6 @@ associated constant missing case X.LENGTH_SHORT [SwitchIntDef]
 
     switch (X.getDuration()) {
     ------
-
-
-src/test/pkg/X.java:104:Warning: Switch statement on an int with known
-associated constant missing case LENGTH_INDEFINITE [SwitchIntDef]
-
-    switch (duration) {
-    ------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -205,7 +196,7 @@ public class X {
     }
 
     public static void testMissingWithDefault(@Duration int duration) {
-        switch (duration) {
+        switch (duration) { // OK
             case LENGTH_SHORT:
             case LENGTH_LONG:
             default:
@@ -215,7 +206,7 @@ public class X {
 
     @SuppressLint("SwitchIntDef")
     public static void testSuppressAnnotation(@Duration int duration) {
-        switch (duration) {
+        switch (duration) { // OK
             case LENGTH_SHORT:
             case LENGTH_INDEFINITE:
                 break;
@@ -224,7 +215,7 @@ public class X {
 
     public static void testSuppressComment(@Duration int duration) {
         //noinspection AndroidLintSwitchIntDef
-        switch (duration) {
+        switch (duration) { // OK
             case LENGTH_SHORT:
             case LENGTH_INDEFINITE:
                 break;

@@ -38,8 +38,10 @@ adequately describe the user interface.
 
 Note that elements in application screens that are purely decorative and
 do not provide any content or enable a user action should not have
-accessibility content descriptions. In this case, just suppress the lint
-warning with a tools:ignore="ContentDescription" attribute.
+accessibility content descriptions. In this case, set their descriptions
+to `@null`. If your app's minSdkVersion is 16 or higher, you can instead
+set these graphical elements' `android:importantForAccessibility`
+attributes to `no`.
 
 Note that for text fields, you should not set both the `hint` and the
 `contentDescription` attributes since the hint will never be shown. Just
@@ -93,8 +95,6 @@ attribute on image [ContentDescription]
 
     &lt;ImageButton android:id="@+id/summary3" android:contentDescription="TODO" /&gt;
                                             ---------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

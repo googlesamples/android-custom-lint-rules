@@ -18,6 +18,13 @@ Vendor
 :   Jetpack Navigation Compose
 Identifier
 :   androidx.navigation.compose
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html)
+
 Affects
 :   Kotlin and Java files and test sources
 Editing
@@ -43,8 +50,6 @@ scope [ComposableDestinationInComposeScope]
 
     composable("wrong") { }
     ----------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -77,6 +82,36 @@ found for this lint check, `ComposableDestinationInComposeScopeDetector.nestedCo
 To report a problem with this extracted sample, contact
 Jetpack Navigation Compose.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.navigation:navigation-compose:2.7.0-beta01")
+
+// build.gradle
+implementation 'androidx.navigation:navigation-compose:2.7.0-beta01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.navigation-compose)
+
+# libs.versions.toml
+[versions]
+navigation-compose = "2.7.0-beta01"
+[libraries]
+navigation-compose = {
+    module = "androidx.navigation:navigation-compose",
+    version.ref = "navigation-compose"
+}
+```
+
+2.7.0-beta01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

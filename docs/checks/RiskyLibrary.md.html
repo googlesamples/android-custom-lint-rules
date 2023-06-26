@@ -19,11 +19,13 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Gradle build files
+:   Gradle build files and TOML files
 Editing
 :   This check runs on the fly in the IDE editor
 See
 :   https://play.google.com/sdks
+See
+:   https://goo.gle/RiskyLibrary
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
 Tests
@@ -56,8 +58,6 @@ Console [RiskyLibrary]
 
     compile 'log4j:log4j:1.2.13' // Critical BLOCKING
             --------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

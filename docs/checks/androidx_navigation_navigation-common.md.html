@@ -1,0 +1,71 @@
+(#) androidx.navigation:navigation-common
+
+Name
+:   Navigation Common
+Description
+:   Android Navigation-Common
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Android Open Source Project
+Identifier
+:   androidx.navigation.common
+Feedback
+:   https://issuetracker.google.com/issues/new?component=409828
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.navigation:navigation-common:2.7.0-beta01
+
+(##) Included Issues
+
+|Issue Id                                    |Issue Description                                                   |
+|--------------------------------------------|--------------------------------------------------------------------|
+|[EmptyNavDeepLink](EmptyNavDeepLink.md.html)|NavDeepLink must define an uri, action, and/or mimetype to be valid.|
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.navigation:navigation-common:2.7.0-beta01")
+
+// build.gradle
+implementation 'androidx.navigation:navigation-common:2.7.0-beta01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.navigation-common)
+
+# libs.versions.toml
+[versions]
+navigation-common = "2.7.0-beta01"
+[libraries]
+navigation-common = {
+    module = "androidx.navigation:navigation-common",
+    version.ref = "navigation-common"
+}
+```
+
+2.7.0-beta01 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 2.6.0: First version includes EmptyNavDeepLink.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|        2.7.0-beta01|2023/06/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.7.0-alpha01|2023/05/24|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.6.0|2023/06/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

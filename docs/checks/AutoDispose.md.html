@@ -1,0 +1,186 @@
+<meta charset="utf-8">
+(#) Missing Disposable handling: Apply AutoDispose or cache the Disposable instance manually and enable lenient mode.
+
+!!! ERROR: Missing Disposable handling: Apply AutoDispose or cache the Disposable instance manually and enable lenient mode.
+   This is an error.
+
+Id
+:   `AutoDispose`
+Summary
+:   Missing Disposable handling: Apply AutoDispose or cache the Disposable instance manually and enable lenient mode.
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Uber
+Identifier
+:   AutoDispose
+Feedback
+:   https://github.com/uber/AutoDispose/issues
+Min
+:   Lint 7.0
+Compiled
+:   Lint 7.0
+Artifact
+:   [com.uber.autodispose2:autodispose-lint](com_uber_autodispose2_autodispose-lint.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/uber/AutoDispose/tree/main/static-analysis/autodispose-lint/src/main/kotlin/autodispose2/lint/AutoDisposeDetector.kt)
+Tests
+:   [Source Code](https://github.com/uber/AutoDispose/tree/main/static-analysis/autodispose-lint/src/test/kotlin/autodispose2/lint/AutoDisposeDetectorTest.kt)
+Copyright Year
+:   2019
+
+You're subscribing to an observable but not handling its subscription.
+This can result in memory leaks. You can avoid memory leaks by appending
+`.as(autoDisposable(this))` before you subscribe or cache the Disposable
+instance manually and enable lenient mode. More:
+https://github.com/uber/AutoDispose/wiki/Lint-Check.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/MyActivity.kt:10:Error:  [AutoDispose]
+      Observable.just(1).subscribe()
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/foo/MyActivity.kt:12: Error:  [AutoDispose]
+
+    Observable.just(2).subscribe()
+    ------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/MyActivity.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import androidx.appcompat.app.AppCompatActivity
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+
+class MyActivity: AppCompatActivity {
+  private val disposables = CompositeDisposable()
+  fun doSomething(flag: Boolean) {
+    if (flag) {
+      Observable.just(1).subscribe()
+    } else {
+      Observable.just(2).subscribe()
+    }
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/uber/AutoDispose/tree/main/static-analysis/autodispose-lint/src/test/kotlin/autodispose2/lint/AutoDisposeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AutoDisposeDetector.checkLenientLintInIfExpression`.
+To report a problem with this extracted sample, visit
+https://github.com/uber/AutoDispose/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.uber.autodispose2:autodispose-lint:2.1.1")
+
+// build.gradle
+lintChecks 'com.uber.autodispose2:autodispose-lint:2.1.1'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.autodispose-lint)
+
+# libs.versions.toml
+[versions]
+autodispose-lint = "2.1.1"
+[libraries]
+autodispose-lint = {
+    module = "com.uber.autodispose2:autodispose-lint",
+    version.ref = "autodispose-lint"
+}
+```
+
+2.1.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.uber.autodispose2:autodispose-lint](com_uber_autodispose2_autodispose-lint.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AutoDispose")
+  fun method() {
+     subscribe(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AutoDispose")
+  void method() {
+     subscribe(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AutoDispose
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AutoDispose" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AutoDispose'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AutoDispose ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

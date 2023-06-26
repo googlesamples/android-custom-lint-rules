@@ -1,0 +1,101 @@
+(#) com.google.dagger:dagger-lint
+
+Name
+:   Dagger Lint Rules
+Description
+:   A fast dependency injector for Android and Java.
+Project
+:   https://github.com/google/dagger
+License
+:   [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Google
+Identifier
+:   com.google.dagger:dagger-lint
+Contact
+:   https://github.com/google/dagger
+Feedback
+:   https://github.com/google/dagger/issues
+Min
+:   Lint 7.1
+Compiled
+:   Lint 7.1
+Artifact
+:   com.google.dagger:dagger-lint:2.46.1
+
+(##) Included Issues
+
+|Issue Id                                                                                  |Issue Description                                             |
+|------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+|[JvmStaticProvidesInObjectDetector](JvmStaticProvidesInObjectDetector.md.html)            |@JvmStatic used for @Provides function in an object class     |
+|[FieldSiteTargetOnQualifierAnnotation](FieldSiteTargetOnQualifierAnnotation.md.html)      |Redundant 'field:' used for Dagger qualifier annotation.      |
+|[ModuleCompanionObjects](ModuleCompanionObjects.md.html)                                  |Module companion objects should not be annotated with @Module.|
+|[ModuleCompanionObjectsNotInModuleParent](ModuleCompanionObjectsNotInModuleParent.md.html)|Companion objects should not be annotated with @Module.       |
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("com.google.dagger:dagger-lint:2.46.1")
+
+// build.gradle
+implementation 'com.google.dagger:dagger-lint:2.46.1'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.dagger-lint)
+
+# libs.versions.toml
+[versions]
+dagger-lint = "2.46.1"
+[libraries]
+dagger-lint = {
+    module = "com.google.dagger:dagger-lint",
+    version.ref = "dagger-lint"
+}
+```
+
+2.46.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 2.38.1: First version includes FieldSiteTargetOnQualifierAnnotation,
+  JvmStaticProvidesInObjectDetector, ModuleCompanionObjects,
+  ModuleCompanionObjectsNotInModuleParent.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|              2.46.1|2023/05/12|       4|         Yes|            7.1|       7.1|
+|                2.46|2023/04/28|       4|         Yes|            7.1|       7.1|
+|                2.45|2023/02/09|       4|         Yes|            7.1|       7.1|
+|              2.44.2|2022/11/14|       4|         Yes|            7.1|       7.1|
+|              2.44.1|2022/11/11|       4|         Yes|            7.1|       7.1|
+|                2.44|2022/09/21|       4|         Yes|            7.1|       7.1|
+|              2.43.2|2022/08/03|       4|         Yes|            7.1|       7.1|
+|              2.43.1|2022/07/29|       4|         Yes|            7.1|       7.1|
+|                2.43|2022/07/20|       4|         Yes|            7.1|       7.1|
+|                2.42|2022/05/09|       4|         Yes|            7.1|       7.1|
+|                2.41|2022/02/16|       4|         Yes|            7.1|       7.1|
+|              2.40.5|2021/12/06|       4|         Yes|            4.1|       3.6|
+|              2.40.4|2021/12/02|       4|         Yes|            4.1|       3.6|
+|              2.40.3|2021/11/29|       4|         Yes|            4.1|       3.6|
+|              2.40.2|2021/11/24|       4|         Yes|            4.1|       3.6|
+|              2.40.1|2021/11/11|       4|         Yes|            4.1|       3.6|
+|                2.40|2021/10/27|       4|         Yes|            4.1|       3.6|
+|              2.39.1|2021/10/01|       4|      No[^1]|            4.1|       3.6|
+|                2.39|2021/09/29|       4|      No[^1]|            4.1|       3.6|
+|              2.38.1|2021/07/27|       4|      No[^1]|            4.1|       3.6|
+
+Compatibility Problems:
+
+[^1]: org.jetbrains.uast.kotlin.KotlinUClass: org.jetbrains.kotlin.psi.KtClassOrObject getKtClass() is not accessible  
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

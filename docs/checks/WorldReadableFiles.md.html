@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://goo.gle/WorldReadableFiles
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SecurityDetector.java)
 Tests
@@ -59,8 +61,6 @@ MODE_WORLD_READABLE when creating files can be risky, review carefully
 
     dir = getDir(mFile.getName(), MODE_WORLD_READABLE);
                                   -------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

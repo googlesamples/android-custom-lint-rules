@@ -1,0 +1,79 @@
+(#) androidx.lifecycle:lifecycle-runtime-ktx
+
+Name
+:   Android Lifecycle Kotlin Extensions
+Description
+:   Kotlin extensions for 'lifecycle' artifact
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Android Open Source Project
+Identifier
+:   androidx.lifecycle
+Feedback
+:   https://issuetracker.google.com/issues/new?component=413132
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.lifecycle:lifecycle-runtime-ktx:2.6.1
+
+(##) Included Issues
+
+|Issue Id                                                          |Issue Description                                                              |
+|------------------------------------------------------------------|-------------------------------------------------------------------------------|
+|[UnsafeLifecycleWhenUsage](UnsafeLifecycleWhenUsage.md.html)      |Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method|
+|[RepeatOnLifecycleWrongUsage](RepeatOnLifecycleWrongUsage.md.html)|Wrong usage of repeatOnLifecycle.                                              |
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
+// build.gradle
+implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.lifecycle-runtime-ktx)
+
+# libs.versions.toml
+[versions]
+lifecycle-runtime-ktx = "2.6.1"
+[libraries]
+lifecycle-runtime-ktx = {
+    module = "androidx.lifecycle:lifecycle-runtime-ktx",
+    version.ref = "lifecycle-runtime-ktx"
+}
+```
+
+2.6.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 2.2.0: First version includes UnsafeLifecycleWhenUsage.
+* 2.4.0: Adds RepeatOnLifecycleWrongUsage.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|               2.6.1|2023/03/22|       2|         Yes|    8.0 and 8.1|       7.0|
+|               2.6.0|2023/03/08|       2|         Yes|    8.0 and 8.1|       7.0|
+|               2.5.1|2022/07/27|       2|         Yes|    7.3 and 7.4|       7.0|
+|               2.5.0|2022/06/29|       2|         Yes|    7.3 and 7.4|       7.0|
+|               2.4.1|2022/02/09|       2|         Yes|            7.1|       4.1|
+|               2.4.0|2021/10/27|       2|         Yes|            7.1|       4.1|
+|               2.3.1|2021/03/24|       1|         Yes|            4.1|       3.3|
+|               2.3.0|2021/02/10|       1|         Yes|            4.1|       3.3|
+|               2.2.0|2020/01/22|       1|         Yes|            3.6|       3.3|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,210 @@
+<meta charset="utf-8">
+(#) CompositionLocals should not be read in Modifier.onAttach() or Modifier.onDetach()
+
+!!! ERROR: CompositionLocals should not be read in Modifier.onAttach() or Modifier.onDetach()
+   This is an error.
+
+Id
+:   `SuspiciousCompositionLocalModifierRead`
+Summary
+:   CompositionLocals should not be read in Modifier.onAttach() or Modifier.onDetach()
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.ui
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.ui:ui](androidx_compose_ui_ui.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/main/java/androidx/compose/ui/lint/SuspiciousCompositionLocalModifierReadDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/SuspiciousCompositionLocalModifierReadDetectorTest.kt)
+Copyright Year
+:   2023
+
+Jetpack Compose is unable to send updated values of a CompositionLocal
+when it's read in a Modifier.Node's initializer and onAttach() or
+onDetach() callbacks. Modifier.Node's callbacks are not aware of
+snapshot reads, and their lifecycle callbacks are not invoked on every
+recomposition. If you read a CompositionLocal in onAttach() or
+onDetach(), you will only get the CompositionLocal's value once at the
+moment of the read, which may lead to unexpected behaviors. We recommend
+instead reading CompositionLocals at time-of-use in callbacks that apply
+your Modifier's behavior, like measure() for LayoutModifierNode, draw()
+for DrawModifierNode, and so on. To observe the value of the
+CompositionLocal manually, extend from the ObserverNode interface and
+place the read inside an observeReads {} block within the
+onObservedReadsChanged() callback.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/NodeUnderTest.kt:16:Error: Reading localInt in onAttach will
+only access the CompositionLocal's value when the modifier is attached.
+To be notified of the latest value of the CompositionLocal, read the
+value in one of the modifier's other callbacks.
+[SuspiciousCompositionLocalModifierRead]
+
+    val readValue = currentValueOf(localInt)
+                    ------------------------
+
+
+src/test/NodeUnderTest.kt:20:Error: Reading staticLocalInt in onDetach
+will only access the CompositionLocal's value when the modifier is
+detached. To be notified of the latest value of the CompositionLocal,
+read the value in one of the modifier's other callbacks.
+[SuspiciousCompositionLocalModifierRead]
+
+    val readValue = currentValueOf(staticLocalInt)
+                    ------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/NodeUnderTest.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test
+
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
+import androidx.compose.ui.node.currentValueOf
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
+
+val staticLocalInt = staticCompositionLocalOf { 0 }
+val localInt = compositionLocalOf { 0 }
+
+class NodeUnderTest : Modifier.Node(), CompositionLocalConsumerModifierNode {
+    override fun onAttach() {
+        val readValue = currentValueOf(localInt)
+    }
+
+    override fun onDetach() {
+        val readValue = currentValueOf(staticLocalInt)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/SuspiciousCompositionLocalModifierReadDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SuspiciousCompositionLocalModifierReadDetector.testCompositionLocalReadInModifierAttachAndDetach`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.ui:ui:1.5.0-beta02")
+
+// build.gradle
+implementation 'androidx.compose.ui:ui:1.5.0-beta02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.ui)
+
+# libs.versions.toml
+[versions]
+ui = "1.5.0-beta02"
+[libraries]
+ui = {
+    module = "androidx.compose.ui:ui",
+    version.ref = "ui"
+}
+```
+
+1.5.0-beta02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.ui:ui](androidx_compose_ui_ui.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("SuspiciousCompositionLocalModifierRead")
+  fun method() {
+     currentValueOf(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("SuspiciousCompositionLocalModifierRead")
+  void method() {
+     currentValueOf(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection SuspiciousCompositionLocalModifierRead
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="SuspiciousCompositionLocalModifierRead" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'SuspiciousCompositionLocalModifierRead'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore SuspiciousCompositionLocalModifierRead ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,233 @@
+<meta charset="utf-8">
+(#) Concrete Map type '%HINT%' is not natively supported by Moshi.
+
+!!! Tip: Concrete Map type '%HINT%' is not natively supported by Moshi.
+   Advice from this check is just a tip.
+
+Id
+:   `MoshiUsageNonMoshiClassMap`
+Summary
+:   Concrete Map type '%HINT%' is not natively supported by Moshi.
+Severity
+:   Information
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   slack-lint
+Contact
+:   https://github.com/slackhq/slack-lints
+Feedback
+:   https://github.com/slackhq/slack-lints
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
+Copyright Year
+:   2021
+
+The property type is concrete Map type (i.e. LinkedHashMap, HashMap,
+etc). Moshi only natively supports their interface type (Map). Consider
+upcasting to the interface type. Otherwise, moshi-gson-interop will hand
+serialization of this property to Gson, which may or may not handle it.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/slack/model/Example.kt:27:Information: Concrete Map type 'HashMap'
+is not natively supported by Moshi. [MoshiUsageNonMoshiClassMap]
+
+  val concreteMap: HashMap&lt;String, String&gt;,
+                   -----------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/slack/model/Example.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package slack.model
+
+import androidx.annotation.Keep
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonClass
+import java.util.ArrayList
+import java.util.HashSet
+import java.util.HashMap
+import java.util.Date
+import external.ExternalType
+import external.ExternalTypeAnnotated
+import slack.InternalType
+import slack.InternalTypeAnnotated
+import slack.InternalTypeAnnotated2
+import dev.zacsweers.moshix.adapters.AdaptedBy
+import test.CustomQualifier
+
+@JsonClass(generateAdapter = true)
+data class Example(
+  // collections
+  val okList: List<Int>,
+  val okSet: Set<Int>,
+  val okCollection: Collection<Int>,
+  val okMap: Map<String, String>,
+  val concreteList: ArrayList<Int>,
+  val concreteSet: HashSet<Int>,
+  val concreteMap: HashMap<String, String>,
+  // platform
+  val platformType: Date,
+  @AdaptedBy(DateFactory::class) val adaptedByOk: Date,
+  // external
+  val externalType: ExternalType,
+  val externalTypeAnnotated: ExternalTypeAnnotated,
+  // internal
+  val internalType: InternalType,
+  val internalTypeAnnotated: InternalTypeAnnotated,
+  val internalTypeAnnotated2: InternalTypeAnnotated2,
+  val int: Int,
+  val string: String,
+  val nullableString: String?,
+  val any: Any,
+  // Arrays
+  val arrayType: Array<String>,
+  val intArray: IntArray,
+  val boolArray: BooleanArray,
+  val complexArray: Array<List<String>>,
+  val badGeneric: List<ExternalType>,
+  val badGeneric2: CustomGenericType<ExternalType>,
+  val badNestedGeneric: CustomGenericType<List<ExternalType>>,
+  // This would normally error but since it has a custom qualifier we skip the check
+  @CustomQualifier val customQualifier: Date,
+  // Mutable collections
+  val mutableList: MutableList<Int>,
+  val mutableSet: MutableSet<Int>,
+  val mutableCollection: MutableCollection<Int>,
+  val mutableMap: MutableMap<String, String>
+)
+
+@Keep
+abstract class DateFactory : JsonAdapter.Factory
+
+@JsonClass(generateAdapter = true)
+data class CustomGenericType<T>(val value: T)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `MoshiUsageDetector.propertyTypes`.
+To report a problem with this extracted sample, visit
+https://github.com/slackhq/slack-lints.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint:slack-lint-checks:0.3.0")
+
+// build.gradle
+lintChecks 'com.slack.lint:slack-lint-checks:0.3.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.slack-lint-checks)
+
+# libs.versions.toml
+[versions]
+slack-lint-checks = "0.3.0"
+[libraries]
+slack-lint-checks = {
+    module = "com.slack.lint:slack-lint-checks",
+    version.ref = "slack-lint-checks"
+}
+```
+
+0.3.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("MoshiUsageNonMoshiClassMap")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("MoshiUsageNonMoshiClassMap")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection MoshiUsageNonMoshiClassMap
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MoshiUsageNonMoshiClassMap" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MoshiUsageNonMoshiClassMap'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MoshiUsageNonMoshiClassMap ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

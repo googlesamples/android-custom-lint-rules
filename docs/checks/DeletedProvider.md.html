@@ -24,6 +24,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 See
 :   https://android-developers.googleblog.com/2018/03/cryptography-changes-in-android-p.html
+See
+:   https://goo.gle/DeletedProvider
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/DeletedProviderDetector.kt)
 Tests
@@ -47,8 +49,6 @@ will crash [DeletedProvider]
 
     SecureRandom instance2 = SecureRandom.getInstance("SHA1PRNG", "Crypto");
                                                                   --------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

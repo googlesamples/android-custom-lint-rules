@@ -1,0 +1,151 @@
+<meta charset="utf-8">
+(#) Kapt usage should be replaced with KSP
+
+!!! WARNING: Kapt usage should be replaced with KSP
+   This is a warning.
+
+Id
+:   `KaptUsageInsteadOfKsp`
+Summary
+:   Kapt usage should be replaced with KSP
+Severity
+:   Warning
+Category
+:   Performance
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/studio/build/migrate-to-ksp
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+Copyright Year
+:   2014
+
+KSP is a more efficient replacement for kapt. For libraries that support
+both, KSP should be used to improve build times.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:9:Warning: This library supports using KSP instead of kapt,
+which greatly improves performance. Learn more:
+https://developer.android.com/studio/build/migrate-to-ksp
+[KaptUsageInsteadOfKsp]
+
+  kapt 'androidx.room:room-compiler:2.5.0'
+  ----------------------------------------
+
+
+build.gradle:10:Warning: This library supports using KSP instead of
+kapt, which greatly improves performance. Learn more:
+https://developer.android.com/studio/build/migrate-to-ksp
+[KaptUsageInsteadOfKsp]
+
+  kapt "androidx.room:room-compiler:$room_version"
+  ------------------------------------------------
+
+
+build.gradle:13:Warning: This library supports using KSP instead of
+kapt, which greatly improves performance. Learn more:
+https://developer.android.com/studio/build/migrate-to-ksp
+[KaptUsageInsteadOfKsp]
+
+  kapt 'com.github.bumptech.glide:compiler:4.14.2'
+  ------------------------------------------------
+
+
+build.gradle:14:Warning: This library supports using KSP instead of
+kapt, which greatly improves performance. Learn more:
+https://developer.android.com/studio/build/migrate-to-ksp
+[KaptUsageInsteadOfKsp]
+
+  kapt("com.github.bumptech.glide:compiler:glide_version")
+  --------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
+}
+dependencies {
+  def room_version = "2.5.0"
+  kapt 'androidx.room:room-compiler:2.5.0'
+  kapt "androidx.room:room-compiler:$room_version"
+
+  def glide_version = "4.14.2"
+  kapt 'com.github.bumptech.glide:compiler:4.14.2'
+  kapt("com.github.bumptech.glide:compiler:glide_version")
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testKaptToKspMigration`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection KaptUsageInsteadOfKsp
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="KaptUsageInsteadOfKsp" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'KaptUsageInsteadOfKsp'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore KaptUsageInsteadOfKsp ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

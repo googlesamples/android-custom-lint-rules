@@ -1,0 +1,200 @@
+<meta charset="utf-8">
+(#) Fragment dependencies should be injected using the Fragment's constructor.
+
+!!! ERROR: Fragment dependencies should be injected using the Fragment's constructor.
+   This is an error.
+
+Id
+:   `FragmentFieldInjection`
+Summary
+:   Fragment dependencies should be injected using the Fragment's constructor.
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   slack-lint
+Contact
+:   https://github.com/slackhq/slack-lints
+Feedback
+:   https://github.com/slackhq/slack-lints
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/FragmentDaggerFieldInjectionDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/FragmentDaggerFieldInjectionDetectorTest.kt)
+Copyright Year
+:   2021
+
+This dependency should be injected by dagger via the constructor. Add
+this field's type into the parameter list of the Fragment's constructor.
+This constructor should be annotated with either `@AssistedInject` or
+`@Inject`. Annotate with `@AssistedInject` if this Fragment requires
+runtime arguments via a `Bundle`. Annotate with `@Inject` if this
+Fragment does not require any runtime arguments. If this is an abstract
+class, the constructor does not need to be annotated with `@Inject` or
+`@AssistedInject`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/MyFragment.kt:11:Error: Fragment dependencies should be injected
+using the Fragment's constructor. [FragmentFieldInjection]
+
+  @Inject
+  ^
+
+
+src/foo/MyFragment.kt:13:Error: Fragment dependencies should be injected
+using the Fragment's constructor. [FragmentFieldInjection]
+
+  @Inject
+  ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/MyFragment.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import javax.inject.Inject
+import slack.coreui.fragment.ViewBindingFragment
+
+class MyFragment : ViewBindingFragment() {
+
+  private lateinit var notAnnotated: String
+  private val defaulted: String = "defaulted"
+
+  @Inject
+  private lateinit var stringValue1: String
+  @Inject
+  private lateinit var intValue1: Int
+
+  fun onCreate() {
+    notAnnotated = "fast"
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/FragmentDaggerFieldInjectionDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `FragmentDaggerFieldInjectionDetector.Kotlin - fragment has field injection warnings`.
+To report a problem with this extracted sample, visit
+https://github.com/slackhq/slack-lints.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint:slack-lint-checks:0.3.0")
+
+// build.gradle
+lintChecks 'com.slack.lint:slack-lint-checks:0.3.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.slack-lint-checks)
+
+# libs.versions.toml
+[versions]
+slack-lint-checks = "0.3.0"
+[libraries]
+slack-lint-checks = {
+    module = "com.slack.lint:slack-lint-checks",
+    version.ref = "slack-lint-checks"
+}
+```
+
+0.3.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("FragmentFieldInjection")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("FragmentFieldInjection")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection FragmentFieldInjection
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="FragmentFieldInjection" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'FragmentFieldInjection'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore FragmentFieldInjection ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

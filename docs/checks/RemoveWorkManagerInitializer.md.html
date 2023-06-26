@@ -22,6 +22,13 @@ Identifier
 :   androidx.work
 Feedback
 :   https://issuetracker.google.com/issues/new?component=409906
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.work:work-runtime](androidx_work_work-runtime.md.html)
+
 Affects
 :   Kotlin and Java files and manifest files
 Editing
@@ -43,14 +50,12 @@ AndroidManifest.xml file.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:8:Error: Remove androidx.work.WorkManagerInitializer
+AndroidManifest.xml:4:Error: Remove androidx.work.WorkManagerInitializer
 from your AndroidManifest.xml when using on-demand initialization.
 [RemoveWorkManagerInitializer]
 
-    &lt;meta-data
-    ^
-
-
+   &lt;application /&gt;
+   ---------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -60,15 +65,7 @@ Here is the source file referenced above:
 &lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
    xmlns:tools="http://schemas.android.com/tools"
    package="com.example"&gt;
-   &lt;application&gt;
-         &lt;provider
-           android:name="androidx.startup.InitializationProvider"
-           android:authorities="com.example.workmanager-init"&gt;
-           &lt;meta-data
-             android:name="androidx.work.WorkManagerInitializer"
-             android:value="@string/androidx_startup" /&gt;
-       &lt;/provider&gt;
-   &lt;/application&gt;
+   &lt;application /&gt;
  &lt;/manifest&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -77,10 +74,40 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `RemoveWorkManagerInitializerDetector.failWhenManifestHasDefaultInitializer`.
+found for this lint check, `RemoveWorkManagerInitializerDetector.failWhenUsingDefaultManifestMergeStrategy`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=409906.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.work:work-runtime:2.9.0-alpha01")
+
+// build.gradle
+implementation 'androidx.work:work-runtime:2.9.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.work-runtime)
+
+# libs.versions.toml
+[versions]
+work-runtime = "2.9.0-alpha01"
+[libraries]
+work-runtime = {
+    module = "androidx.work:work-runtime",
+    version.ref = "work-runtime"
+}
+```
+
+2.9.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.work:work-runtime](androidx_work_work-runtime.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

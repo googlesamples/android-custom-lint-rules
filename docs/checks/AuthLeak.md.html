@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://goo.gle/AuthLeak
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StringAuthLeakDetector.java)
 Tests
@@ -47,8 +49,6 @@ src/AuthDemo.java:4:Warning: Possible credential leak [AuthLeak]
 
   private static final String LEAK = "http://someuser:%restofmypass@example.com"; // WARN 2
                                       -----------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

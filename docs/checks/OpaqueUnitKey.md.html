@@ -1,0 +1,189 @@
+<meta charset="utf-8">
+(#) Passing an expression which always returns `Unit` as a key argument
+
+!!! WARNING: Passing an expression which always returns `Unit` as a key argument
+   This is a warning.
+
+Id
+:   `OpaqueUnitKey`
+Summary
+:   Passing an expression which always returns `Unit` as a key argument
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.runtime
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/OpaqueUnitKeyDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/OpaqueUnitKeyDetectorTest.kt)
+Copyright Year
+:   2023
+
+Certain Compose functions including `remember`, `LaunchedEffect`, and
+`DisposableEffect` declare (and sometimes require) one or more key
+parameters. When a key parameter changes, it is a signal that the
+previous invocation is now invalid. In certain cases, it may be required
+to pass `Unit` as a key to one of these functions, indicating that the
+invocation never becomes invalid. Using `Unit` as a key should be done
+infrequently, and should always be done explicitly by passing the `Unit`
+literal. This inspection checks for invocations where `Unit` is being
+passed as a key argument in any form other than the `Unit` literal. This
+is usually done by mistake, and can harm readability. If a Unit
+expression is being passed as a key, it is always equivalent to move the
+expression before the function invocation and pass the `Unit` literal
+instead.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/test.kt:10:Warning: Implicitly passing Unit as argument to key1
+[OpaqueUnitKey]
+
+    val x = remember(unitProperty) { listOf(1, 2, 3) }
+                     ------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test
+
+import androidx.compose.runtime.*
+
+val unitProperty = Unit
+
+@Composable
+fun Test() {
+    val x = remember(unitProperty) { listOf(1, 2, 3) }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/OpaqueUnitKeyDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `OpaqueUnitKeyDetector.remember_withUnitPropertyRead_reportsError`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.runtime:runtime:1.5.0-beta02")
+
+// build.gradle
+implementation 'androidx.compose.runtime:runtime:1.5.0-beta02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.runtime)
+
+# libs.versions.toml
+[versions]
+runtime = "1.5.0-beta02"
+[libraries]
+runtime = {
+    module = "androidx.compose.runtime:runtime",
+    version.ref = "runtime"
+}
+```
+
+1.5.0-beta02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("OpaqueUnitKey")
+  fun method() {
+     remember(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("OpaqueUnitKey")
+  void method() {
+     remember(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection OpaqueUnitKey
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="OpaqueUnitKey" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'OpaqueUnitKey'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore OpaqueUnitKey ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

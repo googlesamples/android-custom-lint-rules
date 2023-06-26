@@ -20,18 +20,57 @@ Identifier
 :   androidx.appcompat
 Feedback
 :   https://issuetracker.google.com/issues/new?component=460343
+Min
+:   Lint 7.0
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [androidx.appcompat:appcompat](androidx_appcompat_appcompat.md.html)
+
 Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/appcompat/appcompat-lint/src/main/kotlin/androidx/appcompat/widget/SwitchUsageXmlDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/appcompat/appcompat-lint/src/test/kotlin/androidx/appcompat/lint/widget/SwitchUsageXmlDetectorTest.kt)
 Copyright Year
 :   2020
 
 Use `SwitchCompat` from AppCompat or `SwitchMaterial` from Material
 library.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.appcompat:appcompat:1.7.0-alpha02")
+
+// build.gradle
+implementation 'androidx.appcompat:appcompat:1.7.0-alpha02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.appcompat)
+
+# libs.versions.toml
+[versions]
+appcompat = "1.7.0-alpha02"
+[libraries]
+appcompat = {
+    module = "androidx.appcompat:appcompat",
+    version.ref = "appcompat"
+}
+```
+
+1.7.0-alpha02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.appcompat:appcompat](androidx_appcompat_appcompat.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

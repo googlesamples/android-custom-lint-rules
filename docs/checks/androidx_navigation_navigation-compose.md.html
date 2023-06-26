@@ -1,0 +1,79 @@
+(#) androidx.navigation:navigation-compose
+
+Name
+:   Compose Navigation
+Description
+:   Compose integration with Navigation
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Jetpack Navigation Compose
+Identifier
+:   androidx.navigation.compose
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.navigation:navigation-compose:2.7.0-beta01
+
+(##) Included Issues
+
+|Issue Id                                                                          |Issue Description                                                                                |
+|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+|[ComposableDestinationInComposeScope](ComposableDestinationInComposeScope.md.html)|Building composable destination in compose scope                                                 |
+|[ComposableNavGraphInComposeScope](ComposableNavGraphInComposeScope.md.html)      |Building navigation graph in compose scope                                                       |
+|[UnrememberedGetBackStackEntry](UnrememberedGetBackStackEntry.md.html)            |Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key|
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.navigation:navigation-compose:2.7.0-beta01")
+
+// build.gradle
+implementation 'androidx.navigation:navigation-compose:2.7.0-beta01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.navigation-compose)
+
+# libs.versions.toml
+[versions]
+navigation-compose = "2.7.0-beta01"
+[libraries]
+navigation-compose = {
+    module = "androidx.navigation:navigation-compose",
+    version.ref = "navigation-compose"
+}
+```
+
+2.7.0-beta01 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 2.4.0: First version includes ComposableDestinationInComposeScope,
+  ComposableNavGraphInComposeScope, UnrememberedGetBackStackEntry.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|        2.7.0-beta01|2023/06/07|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.7.0-alpha01|2023/05/24|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.6.0|2023/06/07|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.5.3|2022/10/24|       3|         Yes|    7.3 and 7.4|       7.0|
+|               2.5.2|2022/09/07|       3|         Yes|    7.3 and 7.4|       7.0|
+|               2.5.1|2022/07/27|       3|         Yes|    7.3 and 7.4|       7.0|
+|               2.5.0|2022/06/29|       3|         Yes|    7.3 and 7.4|       7.0|
+|               2.4.2|2022/04/06|       3|         Yes|            7.1|       7.0|
+|               2.4.1|2022/02/09|       3|         Yes|            7.1|       7.0|
+|               2.4.0|2022/01/26|       3|         Yes|            7.1|       7.0|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

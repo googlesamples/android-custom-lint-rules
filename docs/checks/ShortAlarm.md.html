@@ -19,7 +19,7 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Kotlin and Java files
+:   Kotlin and Java files and manifest files
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
@@ -60,8 +60,6 @@ as of Android 5.1; don't rely on this to be exact [ShortAlarm]
 
     alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000, interval2, null); // ERROR
                                                                    ---------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -131,6 +129,21 @@ You can suppress false positives using one of the following mechanisms:
   ```kt
   //noinspection ShortAlarm
   problematicStatement()
+  ```
+
+* Adding the suppression attribute `tools:ignore="ShortAlarm"` on the
+  problematic XML element (or one of its enclosing elements). You may
+  also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;uses-permission tools:ignore="ShortAlarm" .../&gt;
+    ...
+  &lt;/manifest&gt;
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

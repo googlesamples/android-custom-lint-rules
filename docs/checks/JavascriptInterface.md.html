@@ -24,6 +24,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 See
 :   https://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
+See
+:   https://goo.gle/JavascriptInterface
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/JavaScriptInterfaceDetector.kt)
 Tests
@@ -73,8 +75,6 @@ added interface (NonAnnotatedObject) have been annotated with
 
     webview.addJavascriptInterface(t, "myobj");
             ----------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

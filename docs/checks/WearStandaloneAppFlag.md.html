@@ -1,15 +1,15 @@
 <meta charset="utf-8">
 (#) Invalid or missing Wear standalone app flag
 
-!!! WARNING: Invalid or missing Wear standalone app flag
-   This is a warning.
+!!! ERROR: Invalid or missing Wear standalone app flag
+   This is an error.
 
 Id
 :   `WearStandaloneAppFlag`
 Summary
 :   Invalid or missing Wear standalone app flag
 Severity
-:   Warning
+:   Error
 Category
 :   Correctness
 Platform
@@ -47,14 +47,12 @@ set the value to `true` or `false`.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:5:Warning: Missing <meta-data
+AndroidManifest.xml:5:Error: Missing <meta-data
 android:name="com.google.android.wearable.standalone" ../> element
 [WearStandaloneAppFlag]
 
     &lt;application&gt;
      -----------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

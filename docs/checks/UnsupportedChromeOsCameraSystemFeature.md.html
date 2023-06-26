@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/guide/topics/large-screens/large-screen-cookbook#chromebook_camera_support
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ChromeOsSourceDetector.kt)
 Tests
@@ -31,10 +33,10 @@ Copyright Year
 
 You should look for the `FEATURE_CAMERA_ANY` features to include all
 possible cameras that may be on the device. Looking for `FEATURE_CAMERA`
-only looks for a rear facing camera, which certain tablets or Chrome OS
-devices don't have, as well as newer device configurations and modes may
-place the device in a state where the rear camera is not available. To
-fix the issue, look for `FEATURE_CAMERA_ANY` instead.
+only looks for a rear facing camera, which certain large screen devices
+don't have, as well as newer device configurations and modes may place
+the device in a state where the rear camera is not available. To fix the
+issue, look for `FEATURE_CAMERA_ANY` instead.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -49,8 +51,6 @@ camera available on the device, not just the rear
 
     getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     -------------------------------------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

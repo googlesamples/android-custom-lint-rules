@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files and library bytecode
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://goo.gle/TrustAllX509TrustManager
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/X509TrustManagerDetector.java)
 Tests
@@ -55,8 +57,6 @@ due to trusting arbitrary TLS/SSL certificates presented by peers
 
     public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) throws CertificateException {
                 ------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

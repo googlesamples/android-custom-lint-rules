@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://goo.gle/BadHostnameVerifier
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/BadHostnameVerifierDetector.java)
 Tests
@@ -44,8 +46,6 @@ TLS/SSL server certificates for wrong hostnames [BadHostnameVerifier]
 
     public boolean verify(String hostname, SSLSession session) {
                    ------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

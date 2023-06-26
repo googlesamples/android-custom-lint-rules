@@ -1,0 +1,173 @@
+<meta charset="utf-8">
+(#) Formatting string doesn't match passed arguments
+
+!!! ERROR: Formatting string doesn't match passed arguments
+   This is an error.
+
+Id
+:   `TimberArgTypes`
+Summary
+:   Formatting string doesn't match passed arguments
+Severity
+:   Error
+Category
+:   Correctness: Messages
+Platform
+:   Any
+Vendor
+:   JakeWharton/timber
+Identifier
+:   com.jakewharton.timber:timber:{version}
+Feedback
+:   https://github.com/JakeWharton/timber/issues
+Min
+:   Lint 4.0
+Compiled
+:   Lint 7.0
+Artifact
+:   [com.jakewharton.timber:timber](com_jakewharton_timber_timber.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/JakeWharton/timber/tree/trunk/timber-lint/src/main/java/timber/lint/WrongTimberUsageDetector.kt)
+Tests
+:   [Source Code](https://github.com/JakeWharton/timber/tree/trunk/timber-lint/src/test/java/timber/lint/WrongTimberUsageDetectorTest.kt)
+
+The argument types that you specified in your formatting string does not
+match the types of the arguments that you passed to your formatting
+call.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Example.java:5:Error: Wrong argument type for formatting
+argument '#1' in %d: conversion is 'd', received String (argument #2 in
+method call) [TimberArgTypes]
+
+    Timber.d("%d", "arg1");
+                   ------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Example.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+import timber.log.Timber;
+public class Example {
+  public void log() {
+     Timber.d("%d", "arg1");
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/JakeWharton/timber/tree/trunk/timber-lint/src/test/java/timber/lint/WrongTimberUsageDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WrongTimberUsageDetector.wrongArgTypes`.
+To report a problem with this extracted sample, visit
+https://github.com/JakeWharton/timber/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+implementation("com.jakewharton.timber:timber:5.0.1")
+
+// build.gradle
+implementation 'com.jakewharton.timber:timber:5.0.1'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.timber)
+
+# libs.versions.toml
+[versions]
+timber = "5.0.1"
+[libraries]
+timber = {
+    module = "com.jakewharton.timber:timber",
+    version.ref = "timber"
+}
+```
+
+5.0.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.jakewharton.timber:timber](com_jakewharton_timber_timber.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("TimberArgTypes")
+  fun method() {
+     tag(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("TimberArgTypes")
+  void method() {
+     tag(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection TimberArgTypes
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TimberArgTypes" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TimberArgTypes'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TimberArgTypes ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

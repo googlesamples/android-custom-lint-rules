@@ -1,0 +1,173 @@
+<meta charset="utf-8">
+(#) Flags a version of the subscribe() method without an error Consumer.
+
+!!! ERROR: Flags a version of the subscribe() method without an error Consumer.
+   This is an error.
+
+Id
+:   `RxJava2SubscribeMissingOnError`
+Summary
+:   Flags a version of the subscribe() method without an error Consumer.
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   vanniktech/lint-rules/
+Feedback
+:   https://github.com/vanniktech/lint-rules/issues
+Min
+:   Lint 7.3 and 7.4
+Compiled
+:   Lint 7.3 and 7.4
+Artifact
+:   [com.vanniktech:lint-rules-rxjava2](com_vanniktech_lint-rules-rxjava2.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/main/java/com/vanniktech/lintrules/rxjava2/RxJava2SubscribeMissingOnErrorDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/java/com/vanniktech/lintrules/rxjava2/RxJava2SubscribeMissingOnErrorDetectorTest.kt)
+
+When calling the subscribe() method an error Consumer should always be
+used. Otherwise errors might be thrown and may crash the application or
+get forwarded to the Plugin Error handler.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Example.java:8:Error: Using a version of subscribe() without an
+error Consumer [RxJava2SubscribeMissingOnError]
+
+    o.subscribe();
+      ---------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Example.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+import io.reactivex.Observable;
+
+class Example {
+  public void foo() {
+    Observable<Object> o = null;
+    o.subscribe();
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/java/com/vanniktech/lintrules/rxjava2/RxJava2SubscribeMissingOnErrorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RxJava2SubscribeMissingOnErrorDetector.callingObservableSubscribe`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.vanniktech:lint-rules-rxjava2:0.24.0")
+
+// build.gradle
+lintChecks 'com.vanniktech:lint-rules-rxjava2:0.24.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.lint-rules-rxjava2)
+
+# libs.versions.toml
+[versions]
+lint-rules-rxjava2 = "0.24.0"
+[libraries]
+lint-rules-rxjava2 = {
+    module = "com.vanniktech:lint-rules-rxjava2",
+    version.ref = "lint-rules-rxjava2"
+}
+```
+
+0.24.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.vanniktech:lint-rules-rxjava2](com_vanniktech_lint-rules-rxjava2.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("RxJava2SubscribeMissingOnError")
+  fun method() {
+     subscribe(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("RxJava2SubscribeMissingOnError")
+  void method() {
+     subscribe(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection RxJava2SubscribeMissingOnError
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="RxJava2SubscribeMissingOnError" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'RxJava2SubscribeMissingOnError'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore RxJava2SubscribeMissingOnError ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

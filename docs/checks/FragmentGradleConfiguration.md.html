@@ -20,6 +20,13 @@ Identifier
 :   androidx.fragment.testing
 Feedback
 :   https://issuetracker.google.com/issues/new?component=460964
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.fragment:fragment-testing](androidx_fragment_fragment-testing.md.html)
+
 Affects
 :   Gradle build files
 Editing
@@ -27,9 +34,9 @@ Editing
 See
 :   https://d.android.com/training/basics/fragments/testing#configure
 Implementation
-:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-testing-lint/src/main/java/androidx/fragment/testing/lint/GradleConfigurationDetector.kt)
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-testing-manifest-lint/src/main/java/androidx/fragment/testing/manifest/lint/GradleConfigurationDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-testing-lint/src/test/java/androidx/fragment/testing/lint/GradleConfigurationDetectorTest.kt)
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-testing-manifest-lint/src/test/java/androidx/fragment/testing/manifest/lint/GradleConfigurationDetectorTest.kt)
 Copyright Year
 :   2019
 
@@ -46,10 +53,8 @@ Here is an example of lint warnings produced by this check:
 build.gradle:2:Error: Replace with debugImplementation.
 [FragmentGradleConfiguration]
 
-    androidTestImplementation("androidx.fragment:fragment-testing:1.2.0-beta02")
-    ----------------------------------------------------------------------------
-
-
+    androidTestImplementation("androidx.fragment:fragment-testing-manifest:1.2.0-beta02")
+    -------------------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -57,12 +62,12 @@ Here is the source file referenced above:
 `build.gradle`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
 dependencies {
-    androidTestImplementation("androidx.fragment:fragment-testing:1.2.0-beta02")
+    androidTestImplementation("androidx.fragment:fragment-testing-manifest:1.2.0-beta02")
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-testing-lint/src/test/java/androidx/fragment/testing/lint/GradleConfigurationDetectorTest.kt)
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-testing-manifest-lint/src/test/java/androidx/fragment/testing/manifest/lint/GradleConfigurationDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
@@ -70,6 +75,36 @@ found for this lint check, `GradleConfigurationDetector.expectFail`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=460964.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.fragment:fragment-testing:1.7.0-alpha01")
+
+// build.gradle
+implementation 'androidx.fragment:fragment-testing:1.7.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.fragment-testing)
+
+# libs.versions.toml
+[versions]
+fragment-testing = "1.7.0-alpha01"
+[libraries]
+fragment-testing = {
+    module = "androidx.fragment:fragment-testing",
+    version.ref = "fragment-testing"
+}
+```
+
+1.7.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.fragment:fragment-testing](androidx_fragment_fragment-testing.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

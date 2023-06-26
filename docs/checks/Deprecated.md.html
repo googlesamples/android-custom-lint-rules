@@ -104,8 +104,6 @@ Use inputType instead [Deprecated]
 
     &lt;EditText android:editable="false" /&gt;
               ------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -165,7 +163,7 @@ You can suppress false positives using one of the following mechanisms:
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
       ...
-      &lt;AbsoluteLayout editable="..." tools:ignore="Deprecated" .../&gt;
+      &lt;AbsoluteLayout sharedUserId="..." tools:ignore="Deprecated" .../&gt;
     ...
   &lt;/manifest&gt;
   ```

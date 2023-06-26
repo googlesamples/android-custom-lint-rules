@@ -1,0 +1,246 @@
+<meta charset="utf-8">
+(#) Using a Compose M2 API is not recommended
+
+!!! ERROR: Using a Compose M2 API is not recommended
+   This is an error.
+
+Id
+:   `ComposeM2Api`
+Summary
+:   Using a Compose M2 API is not recommended
+Note
+:   **This issue is disabled by default**; use `--enable ComposeM2Api`
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   com.slack.lint.compose:compose-lints
+Feedback
+:   https://github.com/slackhq/compose-lints/issues
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/main/java/slack/lint/compose/M2ApiDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/M2ApiDetectorTest.kt)
+Copyright Year
+:   2022
+
+Compose Material 2 (M2) is succeeded by Material 3 (M3). Please use M3
+APIs.
+See https://slackhq.github.io/compose-lints/rules/#use-material-3 for
+more information.
+
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) allowed-m2-apis
+
+A comma-separated list of APIs in androidx.compose.material that should be allowed..
+This property should define a comma-separated list of APIs in androidx.compose.material that should be allowed.
+
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="ComposeM2Api"&gt;
+        &lt;option name="allowed-m2-apis" value="some string" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:9:Error: Compose Material 2 (M2) is succeeded by Material 3
+(M3). Please use M3 APIs.
+See https://slackhq.github.io/compose-lints/rules/#use-material-3 for
+more information. [ComposeM2Api]
+
+  Text("Hello, world!")
+  ---------------------
+
+
+src/test.kt:23:Error: Compose Material 2 (M2) is succeeded by Material 3
+(M3). Please use M3 APIs.
+See https://slackhq.github.io/compose-lints/rules/#use-material-3 for
+more information. [ComposeM2Api]
+
+    Text("Hello, world!")
+    ---------------------
+
+
+src/test.kt:24:Error: Compose Material 2 (M2) is succeeded by Material 3
+(M3). Please use M3 APIs.
+See https://slackhq.github.io/compose-lints/rules/#use-material-3 for
+more information. [ComposeM2Api]
+
+    val elevation = BottomNavigationDefaults.Elevation
+                    ----------------------------------
+
+
+src/test.kt:25:Error: Compose Material 2 (M2) is succeeded by Material 3
+(M3). Please use M3 APIs.
+See https://slackhq.github.io/compose-lints/rules/#use-material-3 for
+more information. [ComposeM2Api]
+
+    val drawerValue = BottomDrawerValue.Closed
+                      ------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.material.BottomDrawerValue
+import androidx.compose.material.BottomNavigationDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.runtime.Composable
+
+@Composable
+fun Example() {
+  Text("Hello, world!")
+}
+
+@Composable
+fun AllowedExample() {
+  Surface {
+
+  }
+}
+
+@Composable
+fun Composite() {
+  Surface {
+    val ripple = rememberRipple()
+    Text("Hello, world!")
+    val elevation = BottomNavigationDefaults.Elevation
+    val drawerValue = BottomDrawerValue.Closed
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/M2ApiDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `M2ApiDetector.smokeTest`.
+To report a problem with this extracted sample, visit
+https://github.com/slackhq/compose-lints/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+
+// build.gradle
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.compose-lint-checks)
+
+# libs.versions.toml
+[versions]
+compose-lint-checks = "1.2.0"
+[libraries]
+compose-lint-checks = {
+    module = "com.slack.lint.compose:compose-lint-checks",
+    version.ref = "compose-lint-checks"
+}
+```
+
+1.2.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ComposeM2Api")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ComposeM2Api")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ComposeM2Api
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ComposeM2Api" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ComposeM2Api'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ComposeM2Api ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

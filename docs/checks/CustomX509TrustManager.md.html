@@ -22,6 +22,8 @@ Affects
 :   Kotlin and Java files and library bytecode
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://goo.gle/CustomX509TrustManager
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/X509TrustManagerDetector.java)
 Tests
@@ -43,8 +45,6 @@ to implement correctly without calling Android's default implementation.
 
     TrustManager[] trustAllCerts = new TrustManager[]{ new X509TrustManager() {
                                                            ----------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

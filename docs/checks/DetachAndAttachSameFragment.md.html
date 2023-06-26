@@ -20,6 +20,13 @@ Identifier
 :   androidx.fragment
 Feedback
 :   https://issuetracker.google.com/issues/new?component=460964
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.fragment:fragment](androidx_fragment_fragment.md.html)
+
 Affects
 :   Kotlin and Java files
 Editing
@@ -40,6 +47,36 @@ transaction so the attach() and detach() cancel each other out
 should separate                 the attach() and detach() calls into
 separate FragmentTransactions.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.fragment:fragment:1.7.0-alpha01")
+
+// build.gradle
+implementation 'androidx.fragment:fragment:1.7.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.fragment)
+
+# libs.versions.toml
+[versions]
+fragment = "1.7.0-alpha01"
+[libraries]
+fragment = {
+    module = "androidx.fragment:fragment",
+    version.ref = "fragment"
+}
+```
+
+1.7.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.fragment:fragment](androidx_fragment_fragment.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

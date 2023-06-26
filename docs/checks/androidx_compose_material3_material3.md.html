@@ -1,0 +1,74 @@
+(#) androidx.compose.material3:material3
+
+Name
+:   Compose Material3 Components
+Description
+:   Compose Material You Design Components library
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.material3
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.compose.material3:material3:1.2.0-alpha02
+
+(##) Included Issues
+
+|Issue Id                                                                                  |Issue Description                                                     |
+|------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+|[UnusedMaterial3ScaffoldPaddingParameter](UnusedMaterial3ScaffoldPaddingParameter.md.html)|Scaffold content should use the padding provided as a lambda parameter|
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.material3:material3:1.2.0-alpha02")
+
+// build.gradle
+implementation 'androidx.compose.material3:material3:1.2.0-alpha02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.material3)
+
+# libs.versions.toml
+[versions]
+material3 = "1.2.0-alpha02"
+[libraries]
+material3 = {
+    module = "androidx.compose.material3:material3",
+    version.ref = "material3"
+}
+```
+
+1.2.0-alpha02 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 1.0.0: First version includes
+  UnusedMaterial3ScaffoldPaddingParameter.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.2.0-alpha02|2023/05/24|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.2.0-alpha01|2023/05/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.1.0|2023/05/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.0.1|2022/11/09|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.0.0|2022/10/24|       1|         Yes|    7.3 and 7.4|       7.0|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

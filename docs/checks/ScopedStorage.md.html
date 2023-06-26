@@ -36,6 +36,17 @@ Scoped storage is enforced on Android 10+ (or Android 11+ if using
 will no longer provide write access to all files; it will provide the
 equivalent of `READ_EXTERNAL_STORAGE` instead.
 
+As of Android 13, if you need to query or interact with MediaStore or
+media files on the shared storage, you should be using instead one or
+more new storage permissions:
+* `android.permission.READ_MEDIA_IMAGES`
+* `android.permission.READ_MEDIA_VIDEO`
+* `android.permission.READ_MEDIA_AUDIO`
+
+and then add `maxSdkVersion="33"` to the older permission. See the
+developer guide for how to do this:
+https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions
+
 The `MANAGE_EXTERNAL_STORAGE` permission can be used to manage all
 files, but it is rarely necessary and most apps on Google Play are not
 allowed to use it. Most apps should instead migrate to use scoped
@@ -57,8 +68,6 @@ requestLegacyExternalStorage [ScopedStorage]
 
     &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;&lt;!-- ERROR --&gt;
                                    -----------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -69,6 +78,7 @@ Here is the source file referenced above:
     &lt;uses-sdk android:targetSdkVersion="29"/&gt;
     &lt;uses-permission/&gt;&lt;!-- Test for NPEs --&gt;
     &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;&lt;!-- ERROR --&gt;
+    &lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/&gt;&lt;!-- OK --&gt;
 &lt;/manifest&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -1,0 +1,290 @@
+<meta charset="utf-8">
+(#) Module companion objects should not be annotated with @Module.
+
+!!! WARNING: Module companion objects should not be annotated with @Module.
+   This is a warning.
+
+Id
+:   `ModuleCompanionObjects`
+Summary
+:   Module companion objects should not be annotated with @Module.
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Google
+Identifier
+:   com.google.dagger:dagger-lint
+Contact
+:   https://github.com/google/dagger
+Feedback
+:   https://github.com/google/dagger/issues
+Min
+:   Lint 7.1
+Compiled
+:   Lint 7.1
+Artifact
+:   [com.google.dagger:dagger-lint](com_google_dagger_dagger-lint.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/google/dagger/tree/master/java/dagger/lint/DaggerKotlinIssueDetector.kt)
+Tests
+:   [Source Code](https://github.com/google/dagger/tree/master/javatests/dagger/lint/DaggerKotlinIssueDetectorTest.kt)
+Copyright Year
+:   2020
+
+Companion objects in @Module-annotated classes are considered part of
+the API.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/MyQualifier.kt:66:Warning: Module companion objects should not
+be annotated with @Module. [ModuleCompanionObjects]
+
+  // This should fail because the companion object is part of ClassModule
+  ^
+
+
+src/foo/MyQualifier.kt:78:Warning: Module companion objects should not
+be annotated with @Module. [ModuleCompanionObjects]
+
+  // This should fail because the companion object is part of ClassModule
+  ^
+
+
+src/foo/MyQualifier.kt:101:Warning: Module companion objects should not
+be annotated with @Module. [ModuleCompanionObjects]
+
+  // This is should fail because this should be extracted to a standalone object.
+  ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/MyQualifier.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import javax.inject.Inject
+import javax.inject.Qualifier
+import kotlin.jvm.JvmStatic
+import dagger.Provides
+import dagger.Module
+
+@Qualifier
+annotation class MyQualifier
+
+class InjectedTest {
+  // This should fail because of `:field`
+  @Inject
+  @field:MyQualifier
+  lateinit var prop: String
+
+  // This is fine!
+  @Inject
+  @MyQualifier
+  lateinit var prop2: String
+}
+
+@Module
+object ObjectModule {
+  // This should fail because it uses `@JvmStatic`
+  @JvmStatic
+  @Provides
+  fun provideFoo(): String {
+
+  }
+
+  // This is fine!
+  @Provides
+  fun provideBar(): String {
+
+  }
+}
+
+@Module
+class ClassModule {
+  companion object {
+    // This should fail because the companion object is part of ClassModule, so this is unnecessary.
+    @JvmStatic
+    @Provides
+    fun provideBaz(): String {
+
+    }
+  }
+}
+
+@Module
+class ClassModuleQualified {
+  companion object {
+    // This should fail because the companion object is part of ClassModule, so this is unnecessary.
+    // This specifically tests a fully qualified annotation
+    @kotlin.jvm.JvmStatic
+    @Provides
+    fun provideBaz(): String {
+
+    }
+  }
+}
+
+@Module
+class ClassModule2 {
+  // This should fail because the companion object is part of ClassModule
+  @Module
+  companion object {
+    @Provides
+    fun provideBaz(): String {
+
+    }
+  }
+}
+
+@Module
+class ClassModule2Qualified {
+  // This should fail because the companion object is part of ClassModule
+  // This specifically tests a fully qualified annotation
+  @dagger.Module
+  companion object {
+    @Provides
+    fun provideBaz(): String {
+
+    }
+  }
+}
+
+// This is correct as of Dagger 2.26!
+@Module
+class ClassModule3 {
+  companion object {
+    @Provides
+    fun provideBaz(): String {
+
+    }
+  }
+}
+
+class ClassModule4 {
+  // This is should fail because this should be extracted to a standalone object.
+  @Module
+  companion object {
+    @Provides
+    fun provideBaz(): String {
+
+    }
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/google/dagger/tree/master/javatests/dagger/lint/DaggerKotlinIssueDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DaggerKotlinIssueDetector.simpleSmokeTestForQualifiersAndProviders`.
+To report a problem with this extracted sample, visit
+https://github.com/google/dagger/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("com.google.dagger:dagger-lint:2.46.1")
+
+// build.gradle
+implementation 'com.google.dagger:dagger-lint:2.46.1'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.dagger-lint)
+
+# libs.versions.toml
+[versions]
+dagger-lint = "2.46.1"
+[libraries]
+dagger-lint = {
+    module = "com.google.dagger:dagger-lint",
+    version.ref = "dagger-lint"
+}
+```
+
+2.46.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.google.dagger:dagger-lint](com_google_dagger_dagger-lint.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ModuleCompanionObjects")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ModuleCompanionObjects")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ModuleCompanionObjects
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ModuleCompanionObjects" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ModuleCompanionObjects'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ModuleCompanionObjects ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -22,6 +22,13 @@ Identifier
 :   androidx.activity
 Feedback
 :   https://issuetracker.google.com/issues/new?component=527362
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.activity:activity](androidx_activity_activity.md.html)
+
 Affects
 :   Gradle build files and Kotlin and Java files
 Editing
@@ -49,8 +56,6 @@ at least . [InvalidFragmentVersionForActivityResult]
 
 val launcher = ActivityResultCaller().registerForActivityResult(ActivityResultContract())
                --------------------------------------------------------------------------
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -74,6 +79,36 @@ found for this lint check, `ActivityResultFragmentVersionDetector.expectFailRegi
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=527362.
 
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.activity:activity:1.8.0-alpha05")
+
+// build.gradle
+implementation 'androidx.activity:activity:1.8.0-alpha05'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.activity)
+
+# libs.versions.toml
+[versions]
+activity = "1.8.0-alpha05"
+[libraries]
+activity = {
+    module = "androidx.activity:activity",
+    version.ref = "activity"
+}
+```
+
+1.8.0-alpha05 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.activity:activity](androidx_activity_activity.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
