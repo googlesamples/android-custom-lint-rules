@@ -787,7 +787,7 @@ class MyDetector : Detector(), XmlScanner {
         val incident = Incident(context, ISSUE)
             .message( "Use `<vector>` instead of `<bitmap>`")
             .at(element)
-        context.report(incident))
+        context.report(incident)
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
