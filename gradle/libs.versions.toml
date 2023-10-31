@@ -1,0 +1,37 @@
+[versions]
+agp = '8.1.2'
+lint = '31.1.2' # = agp + 23.0.0
+kotlin = '1.9.10'
+junit = '4.13.2'
+
+
+[libraries]
+# For a description of the below dependencies, see the main project README
+lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
+lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
+lint-cli = { group = "com.android.tools.lint", name = "lint", version.ref = "lint" }
+lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
+junit = { group = "junit", name = "junit", version.ref  = "junit" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
+[bundles]
+lint-api = [
+    "kotlin-stdlib",
+    "lint-api",
+    # You typically don't need this one, but it does have some utilities
+    # like the API database that some lint checks may want to use
+    #"lint-checks",
+]
+lint-tests = [
+    "junit",
+    "lint-cli",
+    "lint-tests"
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-lint = { id = "com.android.lint", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
