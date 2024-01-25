@@ -5,6 +5,49 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**8.4**
+
+* You can now use `~~` in text messages (error messages, issue
+  explanations, etc) to create strikethrough text. For example, “`Don't
+  do this: ~~super.onCreate()~~`” will render as “Don't do this:
+  ~~super.onCreate()~~”.
+
+**8.3**
+
+* If you'd like to change your error message reported by your
+  detector, you can now override your `Detector`'s `sameMessage`
+  method: match the details in the previous error message with the
+  new format. This is used by the baseline mechanism such that your
+  message change doesn't suddenly invalidate all existing baseline
+  files for your issue.
+
+* The replace-string quickfix descriptor now lets you replace a string
+  repeatedly. Example:
+  ```
+  fix().replace().text("Foo").with("Bar").repeatedly().build()
+  ```
+
+  You can also match an element optionally. Example:
+  ```
+  fix().composite(
+    fix().replace().text("<Tag>").with("<tag>").build(),
+     fix().replace().text("</Tag>").with("</tag>").optional().build()
+  )
+  ```
+
+* The quickfix machinery was improved significantly. It now does a
+  better job inserting imports (in alphabetical order instead of always
+  prepending to the import list), inserting new XML attributes in the
+  right canonical Android order, cleaning up whitespace after edits,
+  etc. This may result in some diffs in any quickfix-related unit tests
+  (e.g. `lint().run().expectFixDiffs(...)`)
+
+* The `getFileNameWithParent` utility method now always uses / as
+  a file separator instead of the platform-specific one (e.g. \ on
+  Windows). This ensures that baselines don't vary their error
+  messages (where this utility method is typically used) based on
+  which OS they were generated on.
+
 **8.2**
 
 * For unit tests, you can now specify the language level to be used

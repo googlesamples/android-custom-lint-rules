@@ -113,6 +113,16 @@ what they are seems useful.
   `bytecode` test file, lint can generate the .class file binary
   content automatically if it is pointed to the `javac` compiler.
 
+`LINT_TEST_KOTLINC_NATIVE`
+: When writing a lint check unit test, when creating a `klib` file,
+  lint can generate the `.klib` file binary content automatically
+  if it is pointed to `kotlinc-native`.
+
+`LINT_TEST_INTEROP`
+: When writing a lint check unit test, when creating a `c` or `def`
+  test file, lint can generate the `.klib` file binary content
+  automatically if it is pointed to `cinterop`.
+
 `INCLUDE_EXPENSIVE_LINT_TESTS`
 : When working on lint itself, set this environment variable to `true`
   some really, really expensive tests that we don't want run on the CI
@@ -130,6 +140,19 @@ what they are seems useful.
   to force lint to continue.
 
 `lint.autofix`
+: Turns on auto-fixing (applying safe quickfixes) by default. This is a
+  shortcut for invoking the `lintFix` targets or running the `lint`
+  command with `--apply-suggestions`.
+
+`lint.autofix.imports`
+: If `lint.autofix` is on, setting this flag will also include updating
+  imports and applying reference shortening for updated code. This
+  is normally only done in the IDE, relying on the safe refactoring
+  machinery there. Lint's implementation isn't accurate in all cases
+  (for example, it may apply reference shortening in comments), but
+  can be enabled when useful (such as large bulk operations along with
+  manual verification.)
+
 : Turns on auto-fixing (applying safe quickfixes) by default. This is a
   shortcut for invoking the `lintFix` targets or running the `lint`
   command with `--apply-suggestions`.
