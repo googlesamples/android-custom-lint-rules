@@ -1,12 +1,10 @@
 (#) androidx.appcompat:appcompat
 
 Name
-:   Android AppCompat Library
+:   AppCompat
 Description
-:   The Support Library is a static library that you can add to your Android
-:   application in order to use APIs that are either not available for older
-:   platform versions or utility APIs that aren't a part of the framework
-:   APIs. Compatible on devices running API 14 or later.
+:   Provides backwards-compatible implementations of UI-related Android SDK
+:   functionality, including dark mode and Material theming.
 License
 :   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 Vendor
@@ -18,9 +16,9 @@ Feedback
 Min
 :   Lint 7.0
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
-:   androidx.appcompat:appcompat:1.7.0-alpha02
+:   androidx.appcompat:appcompat:1.7.0-alpha03
 
 (##) Included Issues
 
@@ -45,17 +43,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.appcompat:appcompat:1.7.0-alpha02")
+implementation("androidx.appcompat:appcompat:1.7.0-alpha03")
 
 // build.gradle
-implementation 'androidx.appcompat:appcompat:1.7.0-alpha02'
+implementation 'androidx.appcompat:appcompat:1.7.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.appcompat)
 
 # libs.versions.toml
 [versions]
-appcompat = "1.7.0-alpha02"
+appcompat = "1.7.0-alpha03"
 [libraries]
 appcompat = {
     module = "androidx.appcompat:appcompat",
@@ -63,7 +61,7 @@ appcompat = {
 }
 ```
 
-1.7.0-alpha02 is the version this documentation was generated from;
+1.7.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -80,6 +78,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.7.0-alpha03|2023/07/26|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.7.0-alpha02|2023/02/08|      10|         Yes|    7.3 and 7.4|       7.0|
 |       1.7.0-alpha01|2022/10/05|      10|         Yes|    7.3 and 7.4|       7.0|
 |               1.6.1|2023/02/08|      10|         Yes|    7.3 and 7.4|       7.0|

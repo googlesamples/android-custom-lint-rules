@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
 
@@ -29,18 +29,11 @@ Affects
 :   Kotlin and Java files and test sources
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/AssertjDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/AssertjDetectorTest.kt)
 
 Importing org.assertj.core.api.Assertions is not ideal. Since it can
 require Java 8. It's simple as instead
 org.assertj.core.api.Java6Assertions can be imported and provides
 guarantee to run on Java 6 as well.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
 
 (##) Including
 
@@ -51,17 +44,17 @@ guarantee to run on Java 6 as well.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+lintChecks("com.vanniktech:lint-rules-android:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-android:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-android)
 
 # libs.versions.toml
 [versions]
-lint-rules-android = "0.24.0"
+lint-rules-android = "0.25.0"
 [libraries]
 lint-rules-android = {
     module = "com.vanniktech:lint-rules-android",
@@ -69,7 +62,7 @@ lint-rules-android = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).

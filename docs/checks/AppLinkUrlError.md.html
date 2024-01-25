@@ -1,17 +1,17 @@
 <meta charset="utf-8">
-(#) URL not supported by app for Firebase App Indexing
+(#) URI invalid
 
-!!! ERROR: URL not supported by app for Firebase App Indexing
+!!! ERROR: URI invalid
    This is an error.
 
 Id
 :   `AppLinkUrlError`
 Summary
-:   URL not supported by app for Firebase App Indexing
+:   URI invalid
 Severity
 :   Error
 Category
-:   Usability
+:   Correctness
 Platform
 :   Android
 Vendor
@@ -23,6 +23,8 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
+:   https://developer.android.com/training/app-links
+See
 :   https://g.co/AppIndexing/AndroidStudio
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppLinksValidDetector.kt)
@@ -31,8 +33,8 @@ Tests
 Copyright Year
 :   2017
 
-Ensure the URL is supported by your app, to get installs and traffic to
-your app from Google Search.
+Ensure your intent filter has the documented elements for deep links,
+web links, or Android App Links.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.

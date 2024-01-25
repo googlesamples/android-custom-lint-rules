@@ -42,7 +42,7 @@ This @Composable function has a modifier parameter but it doesn't have a
 default value.
 See
 https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-parameters
- for more information.
+for more information.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -51,21 +51,19 @@ https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-par
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:2:Error: This @Composable function has a modifier parameter
-but it doesn't have a default value.
-See
+src/test.kt:5:Error: This @Composable function has a modifier parameter
+but it doesn't have a default value.See
 https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-parameters
- for more information. [ComposeModifierWithoutDefault]
+for more information. [ComposeModifierWithoutDefault]
 
 fun Something(modifier: Modifier) { }
               ------------------
 
 
-src/test.kt:4:Error: This @Composable function has a modifier parameter
-but it doesn't have a default value.
-See
+src/test.kt:7:Error: This @Composable function has a modifier parameter
+but it doesn't have a default value.See
 https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-parameters
- for more information. [ComposeModifierWithoutDefault]
+for more information. [ComposeModifierWithoutDefault]
 
 fun Something(modifier: Modifier = Modifier, modifier2: Modifier) { }
                                              -------------------
@@ -75,6 +73,9 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
 @Composable
 fun Something(modifier: Modifier) { }
 @Composable

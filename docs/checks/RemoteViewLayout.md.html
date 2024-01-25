@@ -45,7 +45,7 @@ androidx.appcompat.widget.AppCompatTextView [RemoteViewLayout]
                      ---------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -57,14 +57,44 @@ fun test(packageName: String) {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+`res/layout/test.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;merge&gt;
+    &lt;Button /&gt;
+    &lt;AdapterViewFlipper /&gt;
+    &lt;FrameLayout /&gt;
+    &lt;GridLayout /&gt;
+    &lt;GridView /&gt;
+    &lt;LinearLayout /&gt;
+    &lt;ListView /&gt;
+    &lt;RelativeLayout /&gt;
+    &lt;StackView /&gt;
+    &lt;ViewFlipper /&gt;
+    &lt;AnalogClock /&gt;
+    &lt;Button /&gt;
+    &lt;Chronometer /&gt;
+    &lt;ImageButton /&gt;
+    &lt;ImageView /&gt;
+    &lt;ProgressBar /&gt;
+    &lt;TextClock /&gt;
+    &lt;TextView /&gt;
+    &lt;DatePicker /&gt;
+    &lt;CheckBox /&gt;
+    &lt;Switch /&gt;
+    &lt;RadioButton /&gt;
+    &lt;RadioGroup /&gt;
+    &lt;androidx.appcompat.widget.AppCompatTextView /&gt;
+&lt;/merge&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`test.pkg`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+@layout/test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RemoteViewDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `RemoteViewDetector.testBasic`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

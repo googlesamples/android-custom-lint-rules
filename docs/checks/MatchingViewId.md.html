@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
 
@@ -29,44 +29,10 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/MatchingViewIdDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/MatchingViewIdDetectorTest.kt)
 
 When the layout file is named activity_home all of the containing ids
 should be prefixed with activityHome to avoid ambiguity between
 different layout files across different views.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/layout/activity_main.xml:1:Warning: Id should start with:
-activityMain [MatchingViewId]
-
-&lt;TextView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/text"/&gt;
-                                                                                 ---------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/layout/activity_main.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;TextView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/text"/&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/MatchingViewIdDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `MatchingViewIdDetector.idWithoutPrefix`.
-To report a problem with this extracted sample, visit
-https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 
@@ -77,17 +43,17 @@ https://github.com/vanniktech/lint-rules/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+lintChecks("com.vanniktech:lint-rules-android:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-android:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-android)
 
 # libs.versions.toml
 [versions]
-lint-rules-android = "0.24.0"
+lint-rules-android = "0.25.0"
 [libraries]
 lint-rules-android = {
     module = "com.vanniktech:lint-rules-android",
@@ -95,7 +61,7 @@ lint-rules-android = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).

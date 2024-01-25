@@ -39,93 +39,100 @@ level or above is unnecessary.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/Api.kt:26:Warning: This method is deprecated as of API
-level 25 [DeprecatedSinceApi]
+src/test/pkg/Test.kt:9:Warning: This method is deprecated as of API
+level 21 [DeprecatedSinceApi]
 
-    api.someMethod2(0)         // WARN 1
-    ------------------
-
-
-src/test/pkg/Api.kt:27:Warning: This method is deprecated as of API
-level 30; Use AlarmManager.notify instead [DeprecatedSinceApi]
-
-    api.someMethod3(0)         // WARN 2
-    ------------------
+    api.noLongerNecessary1(0) // WARN 1
+    -------------------------
 
 
-src/test/pkg/Api.kt:28:Warning: This field is deprecated as of API level
-30 [DeprecatedSinceApi]
+src/test/pkg/Test.kt:10:Warning: This method is deprecated as of API
+level 23; Use AlarmManager.notify instead [DeprecatedSinceApi]
 
-    val c = MY_CONSTANT        // WARN 3
-            -----------
-
-
-src/test/pkg/Api.kt:29:Warning: This class is deprecated as of API level
-28 [DeprecatedSinceApi]
-
-    api2.someMethod1(0)        // WARN 4
-    -------------------
+    api.noLongerNecessary2(0) // WARN 2
+    -------------------------
 
 
-src/test/pkg/Api.kt:30:Warning: This method is deprecated as of API
-level 30 [DeprecatedSinceApi]
+src/test/pkg/Test.kt:11:Warning: This method is deprecated as of API
+level 24 [DeprecatedSinceApi]
 
-    api2.someMethod2(0)        // WARN 5
-    -------------------
+    api.noLongerNecessary3(0) // WARN 3
+    -------------------------
 
 
-src/test/pkg/Api.kt:31:Warning: This class is deprecated as of API level
-28 [DeprecatedSinceApi]
+src/test/pkg/Test.kt:18:Warning: This class is deprecated as of API
+level 19 [DeprecatedSinceApi]
 
-    val clz = Api2::class.java // WARN 6
+    val clz = Api2::class.java      // WARN 4
               -----------
 
 
-src/test/pkg/Api.kt:32:Warning: This method is deprecated as of API
-level 25 [DeprecatedSinceApi]
+src/test/pkg/Test.kt:19:Warning: This method is deprecated as of API
+level 23 [DeprecatedSinceApi]
 
-    println(api::someMethod2)  // WARN 7
-            ----------------
+    val method1 = api2::someMethod1 // WARN 5
+                  -----------------
+
+
+src/test/pkg/Test.kt:20:Warning: This method is deprecated as of API
+level 21 [DeprecatedSinceApi]
+
+    val method2 = api2::someMethod2 // WARN 6
+                  -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/Api.kt`:
+`src/test/pkg/Test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+@file:Suppress("UNUSED_PARAMETER", "UNUSED_VARIABLE", "unused")
 package test.pkg
 import androidx.annotation.DeprecatedSinceApi
 
-class Api {
-    @DeprecatedSinceApi(api = 21)
-    fun someMethod1(arg: Int) { }
-    @DeprecatedSinceApi(api = 25)
-    fun someMethod2(arg: Int) { }
-    @DeprecatedSinceApi(api = 30, message = "Use AlarmManager.notify instead")
-    fun someMethod3(arg: Int) { }
-}
-
-@DeprecatedSinceApi(api = 28)
-class Api2 {
-    fun someMethod1(arg: Int) { }
-    @DeprecatedSinceApi(api = 30)
-    fun someMethod2(arg: Int) { }
-}
-
-@DeprecatedSinceApi(30)
-const val MY_CONSTANT = "test"
-
 class Test {
     fun test(api: Api, api2: Api2) {
-      api.someMethod1(0)         // OK
-      api.someMethod2(0)         // WARN 1
-      api.someMethod3(0)         // WARN 2
-      val c = MY_CONSTANT        // WARN 3
-      api2.someMethod1(0)        // WARN 4
-      api2.someMethod2(0)        // WARN 5
-      val clz = Api2::class.java // WARN 6
-      println(api::someMethod2)  // WARN 7
+        // minSdkVersion = 24:
+
+        api.noLongerNecessary1(0) // WARN 1
+        api.noLongerNecessary2(0) // WARN 2
+        api.noLongerNecessary3(0) // WARN 3
+
+        api.unnecessaryInTheFuture1(0) // OK 1
+        api.unnecessaryInTheFuture2(0) // OK 2
+
+        // The above enforced calls (the most common scenario); check
+        // some other reference types.
+        val clz = Api2::class.java      // WARN 4
+        val method1 = api2::someMethod1 // WARN 5
+        val method2 = api2::someMethod2 // WARN 6
     }
 }
+
+class Api {
+    @DeprecatedSinceApi(api = 21)
+    fun noLongerNecessary1(arg: Int) { }
+
+    @DeprecatedSinceApi(api = 23, message = "Use AlarmManager.notify instead")
+    fun noLongerNecessary2(arg: Int) { }
+
+    @DeprecatedSinceApi(api = 24)
+    fun noLongerNecessary3(arg: Int) { }
+
+    @DeprecatedSinceApi(api = 25)
+    fun unnecessaryInTheFuture1(arg: Int) { }
+
+    @DeprecatedSinceApi(api = 33)
+    fun unnecessaryInTheFuture2(arg: Int) { }
+}
+
+@DeprecatedSinceApi(api = 19)
+class Api2 {
+    @DeprecatedSinceApi(api = 23)
+    fun someMethod1(arg: Int) { }
+    @DeprecatedSinceApi(api = 21)
+    fun someMethod2(arg: Int) { }
+}
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Straight quotes can be replaced with curvy quotes
+(#) Straight quotes can be replaced with curvy quotes, and apostrophes with typographic apostrophes.
 
-!!! WARNING: Straight quotes can be replaced with curvy quotes
+!!! WARNING: Straight quotes can be replaced with curvy quotes, and apostrophes with typographic apostrophes.
    This is a warning.
 
 Id
 :   `TypographyQuotes`
 Summary
-:   Straight quotes can be replaced with curvy quotes
+:   Straight quotes can be replaced with curvy quotes, and apostrophes with typographic apostrophes.
 Note
 :   **This issue is disabled by default**; use `--enable TypographyQuotes`
 Severity
@@ -34,10 +34,10 @@ Copyright Year
 :   2011
 
 Straight single quotes and double quotes, when used as a pair, can be
-replaced by "curvy quotes" (or directional quotes). This can make the
-text more readable. Note that you should never use grave accents and
-apostrophes to quote, `like this'. (Also note that you should not use
-curvy quotes for code fragments.)
+replaced by "curvy quotes" (or directional quotes). Use the right single
+quotation mark for apostrophes. Never use generic quotes ", ' or
+free-standing accents `, ´ for quotation marks, apostrophes, or primes.
+This can make the text more readable.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -71,14 +71,14 @@ res/values/typography.xml:7:Warning: Replace apostrophe (') with
 typographic apostrophe (’, &#8217;) ? [TypographyQuotes]
 
     &lt;string name="single"&gt;Android's&lt;/string&gt;
-                          ---------
+                                 -
 
 
 res/values/typography.xml:9:Warning: Replace apostrophe (') with
 typographic apostrophe (’, &#8217;) ? [TypographyQuotes]
 
     &lt;string name="badquotes1"&gt;`First'&lt;/string&gt;
-                              -------
+                                    -
 
 
 res/values/typography.xml:10:Warning: Avoid quoting with grave accents;
@@ -94,6 +94,20 @@ directional quotes (‘’, &#8216; and &#8217;) ? [TypographyQuotes]
 
     &lt;string name="notbadquotes"&gt;Type Option-` then 'Escape'&lt;/string&gt;
                                 ---------------------------
+
+
+res/values/typography.xml:22:Warning: Replace apostrophe (') with
+typographic apostrophe (’, &#8217;) ? [TypographyQuotes]
+
+    &lt;string name="notdirectional"&gt;A's and B's&lt;/string&gt;
+                                  -----------
+
+
+res/values/typography.xml:29:Warning: Replace apostrophe (') with
+typographic apostrophe (’, &#8217;) ? [TypographyQuotes]
+
+    &lt;string&gt;something somthing d\'avoir something something l\'écran.&lt;/string&gt;
+            ---------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

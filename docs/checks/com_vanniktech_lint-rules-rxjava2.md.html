@@ -13,11 +13,11 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
-:   com.vanniktech:lint-rules-rxjava2:0.24.0
+:   com.vanniktech:lint-rules-rxjava2:0.25.0
 
 (##) Included Issues
 
@@ -40,17 +40,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-rxjava2:0.24.0")
+lintChecks("com.vanniktech:lint-rules-rxjava2:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-rxjava2:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-rxjava2:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-rxjava2)
 
 # libs.versions.toml
 [versions]
-lint-rules-rxjava2 = "0.24.0"
+lint-rules-rxjava2 = "0.25.0"
 [libraries]
 lint-rules-rxjava2 = {
     module = "com.vanniktech:lint-rules-rxjava2",
@@ -58,7 +58,7 @@ lint-rules-rxjava2 = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -75,6 +75,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|              0.25.0|2023/09/17|       7|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |              0.24.0|2023/02/21|       7|         Yes|    7.3 and 7.4|7.3 and 7.4|
 |              0.23.0|2022/12/20|       7|         Yes|    7.3 and 7.4|       7.0|
 |              0.22.0|2022/08/05|       7|         Yes|            7.2|       7.0|

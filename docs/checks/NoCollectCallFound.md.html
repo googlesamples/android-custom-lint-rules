@@ -1,0 +1,250 @@
+<meta charset="utf-8">
+(#) You must call collect on the given progress flow when using PredictiveBackHandler
+
+!!! ERROR: You must call collect on the given progress flow when using PredictiveBackHandler
+   This is an error.
+
+Id
+:   `NoCollectCallFound`
+Summary
+:   You must call collect on the given progress flow when using PredictiveBackHandler
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Activity Compose
+Identifier
+:   androidx.activity.compose
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.activity:activity-compose](androidx_activity_activity-compose.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/main/java/androidx/activity/compose/lint/CollectProgressDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/test/java/androidx/activity/compose/lint/CollectProgressDetectorTest.kt)
+Copyright Year
+:   2023
+
+You must call collect on the progress in the onBack function. The
+collect call is what properly splits the callback so it knows what to do
+when the back gestures is started vs when it is completed. Failing to
+call collect will cause all code in the block to run when the gesture is
+started.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/com/example/test.kt:9:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+
+
+src/com/example/test.kt:13:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+
+
+src/com/example/test.kt:17:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+
+
+src/com/example/test.kt:26:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+
+
+src/com/example/test.kt:29:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+
+
+src/com/example/test.kt:35:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+
+
+src/com/example/test.kt:39:Error: You must call collect() on Flow
+progress [NoCollectCallFound]
+
+    PredictiveBackHandler { progress -&gt; }
+                            --------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/com/example/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.compose.runtime.Composable
+import androidx.activity.compose.PredictiveBackHandler
+
+@Composable
+fun Test() {
+    PredictiveBackHandler { progress -> }
+}
+
+val lambda = @Composable {
+    PredictiveBackHandler { progress -> }
+}
+
+val lambda2: @Composable () -> Unit = {
+    PredictiveBackHandler { progress -> }
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2() {
+    LambdaParameter(content = {
+        PredictiveBackHandler { progress -> }
+    })
+    LambdaParameter {
+        PredictiveBackHandler { progress -> }
+    }
+}
+
+fun test3() {
+    val localLambda1 = @Composable {
+        PredictiveBackHandler { progress -> }
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        PredictiveBackHandler { progress -> }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/test/java/androidx/activity/compose/lint/CollectProgressDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `CollectProgressDetector.errors`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.activity:activity-compose:1.9.0-alpha02")
+
+// build.gradle
+implementation 'androidx.activity:activity-compose:1.9.0-alpha02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.activity-compose)
+
+# libs.versions.toml
+[versions]
+activity-compose = "1.9.0-alpha02"
+[libraries]
+activity-compose = {
+    module = "androidx.activity:activity-compose",
+    version.ref = "activity-compose"
+}
+```
+
+1.9.0-alpha02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.activity:activity-compose](androidx_activity_activity-compose.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("NoCollectCallFound")
+  fun method() {
+     PredictiveBackHandler(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("NoCollectCallFound")
+  void method() {
+     PredictiveBackHandler(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection NoCollectCallFound
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="NoCollectCallFound" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'NoCollectCallFound'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore NoCollectCallFound ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

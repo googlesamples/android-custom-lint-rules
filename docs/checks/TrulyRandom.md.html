@@ -40,7 +40,7 @@ initialization of the underlying PRNG on Android 4.3 and below.
 If your application relies on cryptographically secure random number
 generation you should apply the workaround described in
 https://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
- .
+.
 
 This lint rule is mostly informational; it does not accurately detect
 whether cryptographically secure RNG is required, or whether the
@@ -54,7 +54,7 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/PrngCalls.java:13:Warning: Potentially insecure random
 numbers on Android 4.3 and older. Read
 https://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
- for more info. [TrulyRandom]
+for more info. [TrulyRandom]
 
     KeyGenerator generator = KeyGenerator.getInstance("AES", "BC");
                                           -----------

@@ -39,7 +39,7 @@ the app, it will fail in some locales. For example, in the Turkish
 locale, the uppercase replacement for `i` is **not** `I`.
 
 If you want the methods to just perform ASCII replacement, for example
-to convert an enum name, call `String#toUpperCase(Locale.US)` instead.
+to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead.
 If you really want to use the current locale, call
 `String#toUpperCase(Locale.getDefault())` instead.
 

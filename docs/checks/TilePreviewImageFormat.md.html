@@ -1,0 +1,131 @@
+<meta charset="utf-8">
+(#) Tile preview is not compliant with standards
+
+!!! ERROR: Tile preview is not compliant with standards
+   This is an error.
+
+Id
+:   `TilePreviewImageFormat`
+Summary
+:   Tile preview is not compliant with standards
+Severity
+:   Error
+Category
+:   Usability: Icons
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Binary resource files and manifest files
+Editing
+:   This check can *not* run live in the IDE editor
+See
+:   https://developer.android.com/design/ui/wear/guides/surfaces/tiles#tile-previews
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TileProviderDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TileProviderDetectorTest.kt)
+Copyright Year
+:   2021
+
+Tile projects should specify preview resources with aspect ratio 1:1 and
+at least 384px by 384px in size.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:13:Error: Tile previews should have 1:1 aspect ratio
+[TilePreviewImageFormat]
+
+    android:resource="@drawable/ic_walk" /&gt;
+                      -----------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"&gt;
+    &lt;uses-feature android:name="android.hardware.type.watch" /&gt;
+    &lt;application android:icon="@drawable/ic_launcher"
+                 android:label="@string/app_name" &gt;
+    &lt;/application&gt;
+    &lt;service android:name=".MyTileProvider"
+             android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER"&gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" /&gt;
+        &lt;/intent-filter&gt;
+        &lt;meta-data android:name="androidx.wear.tiles.PREVIEW"
+                   android:resource="@drawable/ic_walk" /&gt;
+    &lt;/service&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TileProviderDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TileProviderDetector.testAspectRatioAndSize`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="TilePreviewImageFormat"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;service tools:ignore="TilePreviewImageFormat" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TilePreviewImageFormat" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TilePreviewImageFormat'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TilePreviewImageFormat ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

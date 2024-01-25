@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.compose.material3:material3](androidx_compose_material3_material3.md.html)
+:   [androidx.compose.material3:material3-android](androidx_compose_material3_material3-android.md.html)
 
 Affects
 :   Kotlin and Java files and test sources
@@ -127,28 +127,28 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.material3:material3:1.2.0-alpha02")
+implementation("androidx.compose.material3:material3-android:1.2.0-rc01")
 
 // build.gradle
-implementation 'androidx.compose.material3:material3:1.2.0-alpha02'
+implementation 'androidx.compose.material3:material3-android:1.2.0-rc01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.material3)
+implementation(libs.material3-android)
 
 # libs.versions.toml
 [versions]
-material3 = "1.2.0-alpha02"
+material3-android = "1.2.0-rc01"
 [libraries]
-material3 = {
-    module = "androidx.compose.material3:material3",
-    version.ref = "material3"
+material3-android = {
+    module = "androidx.compose.material3:material3-android",
+    version.ref = "material3-android"
 }
 ```
 
-1.2.0-alpha02 is the version this documentation was generated from;
+1.2.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.compose.material3:material3](androidx_compose_material3_material3.md.html).
+[Additional details about androidx.compose.material3:material3-android](androidx_compose_material3_material3-android.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

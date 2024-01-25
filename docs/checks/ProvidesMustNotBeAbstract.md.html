@@ -1,0 +1,257 @@
+<meta charset="utf-8">
+(#) @Provides functions cannot be abstract.
+
+!!! ERROR: @Provides functions cannot be abstract.
+   This is an error.
+
+Id
+:   `ProvidesMustNotBeAbstract`
+Summary
+:   @Provides functions cannot be abstract.
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   slack
+Identifier
+:   slack-lint
+Contact
+:   https://github.com/slackhq/slack-lints
+Feedback
+:   https://github.com/slackhq/slack-lints
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
+Tests
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DaggerIssuesDetectorTest.kt)
+Copyright Year
+:   2021
+
+@Provides functions cannot be abstract.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/MyQualifier.kt:25:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Int.bind(): Number = this@bind
+  --------------------------------------------
+
+
+src/foo/MyQualifier.kt:26:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Long.bind(): Number = this@bind
+  ---------------------------------------------
+
+
+src/foo/MyQualifier.kt:27:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Double.bind(): Number = this@bind
+  -----------------------------------------------
+
+
+src/foo/MyQualifier.kt:28:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Float.bind(): Number = this@bind
+  ----------------------------------------------
+
+
+src/foo/MyQualifier.kt:29:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Short.bind(): Number = this@bind
+  ----------------------------------------------
+
+
+src/foo/MyQualifier.kt:30:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Byte.bind(): Number = this@bind
+  ---------------------------------------------
+
+
+src/foo/MyQualifier.kt:31:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun Char.bind(): Comparable&lt;Char&gt; = this@bind
+  -------------------------------------------------------
+
+
+src/foo/MyQualifier.kt:32:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun String.bind(): Comparable&lt;String&gt; = this@bind
+  -----------------------------------------------------------
+
+
+src/foo/MyQualifier.kt:33:Error: @Provides functions cannot be abstract
+[ProvidesMustNotBeAbstract]
+
+  @Provides fun @receiver:MyQualifier Boolean.bind(): Comparable&lt;Boolean&gt; = this@bind
+  -----------------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/MyQualifier.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import javax.inject.Qualifier
+import dagger.Binds
+import dagger.Provides
+import dagger.Module
+
+@Qualifier
+annotation class MyQualifier
+
+@Module
+interface MyModule {
+  @Binds fun Int.bind(): Number
+  @Binds fun Long.bind(): Number
+  @Binds fun Double.bind(): Number
+  @Binds fun Float.bind(): Number
+  @Binds fun Short.bind(): Number
+  @Binds fun Byte.bind(): Number
+  @Binds fun Char.bind(): Comparable<Char>
+  @Binds fun String.bind(): Comparable<String>
+  @Binds fun @receiver:MyQualifier Boolean.bind(): Comparable<Boolean>
+}
+
+@Module
+interface MyModule2 {
+  @Provides fun Int.bind(): Number = this@bind
+  @Provides fun Long.bind(): Number = this@bind
+  @Provides fun Double.bind(): Number = this@bind
+  @Provides fun Float.bind(): Number = this@bind
+  @Provides fun Short.bind(): Number = this@bind
+  @Provides fun Byte.bind(): Number = this@bind
+  @Provides fun Char.bind(): Comparable<Char> = this@bind
+  @Provides fun String.bind(): Comparable<String> = this@bind
+  @Provides fun @receiver:MyQualifier Boolean.bind(): Comparable<Boolean> = this@bind
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DaggerIssuesDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `DaggerIssuesDetector.bindings cannot be extension functions`.
+To report a problem with this extracted sample, visit
+https://github.com/slackhq/slack-lints.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+```
+// build.gradle.kts
+lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
+
+// build.gradle
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
+
+// build.gradle.kts with version catalogs:
+lintChecks(libs.slack-lint-checks)
+
+# libs.versions.toml
+[versions]
+slack-lint-checks = "0.7.0"
+[libraries]
+slack-lint-checks = {
+    module = "com.slack.lint:slack-lint-checks",
+    version.ref = "slack-lint-checks"
+}
+```
+
+0.7.0 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ProvidesMustNotBeAbstract")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ProvidesMustNotBeAbstract")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ProvidesMustNotBeAbstract
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ProvidesMustNotBeAbstract" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ProvidesMustNotBeAbstract'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ProvidesMustNotBeAbstract ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

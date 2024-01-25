@@ -1,0 +1,77 @@
+(#) androidx.compose.ui:ui-graphics-android
+
+Name
+:   Compose Graphics
+Description
+:   Compose graphics
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.ui.graphics
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.compose.ui:ui-graphics-android:1.7.0-alpha01
+
+(##) Included Issues
+
+|Issue Id                                                    |Issue Description          |
+|------------------------------------------------------------|---------------------------|
+|[MissingColorAlphaChannel](MissingColorAlphaChannel.md.html)|Missing Color alpha channel|
+|[InvalidColorHexValue](InvalidColorHexValue.md.html)        |Invalid Color hex value    |
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.ui:ui-graphics-android:1.7.0-alpha01")
+
+// build.gradle
+implementation 'androidx.compose.ui:ui-graphics-android:1.7.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.ui-graphics-android)
+
+# libs.versions.toml
+[versions]
+ui-graphics-android = "1.7.0-alpha01"
+[libraries]
+ui-graphics-android = {
+    module = "androidx.compose.ui:ui-graphics-android",
+    version.ref = "ui-graphics-android"
+}
+```
+
+1.7.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 1.5.0: First version includes InvalidColorHexValue,
+  MissingColorAlphaChannel.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.7.0-alpha01|2024/01/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.0|2024/01/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.4|2023/10/18|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.3|2023/10/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.2|2023/09/27|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.1|2023/09/06|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.0|2023/08/09|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

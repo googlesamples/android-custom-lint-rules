@@ -1,0 +1,193 @@
+<meta charset="utf-8">
+(#) ArcAnimationSpec is designed for 2D values. Particularly, for positional values such as Offset.
+
+!!! Tip: ArcAnimationSpec is designed for 2D values. Particularly, for positional values such as Offset.
+   Advice from this check is just a tip.
+
+Id
+:   `ArcAnimationSpecTypeIssue`
+Summary
+:   ArcAnimationSpec is designed for 2D values. Particularly, for positional values such as Offset.
+Severity
+:   Information
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.animation.core
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.animation:animation-core-android](androidx_compose_animation_animation-core-android.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/main/java/androidx/compose/animation/core/lint/ArcAnimationSpecTypeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/ArcAnimationSpecTypeDetectorTest.kt)
+Copyright Year
+:   2023
+
+ArcAnimationSpec is designed for 2D values. Particularly, for positional
+values such as Offset.
+Trying to use it for values of different dimensions (Float, Size, Color,
+etc.) will result in unpredictable animation behavior.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/test.kt:14:Information: Arc animation is intended for 2D values
+such as Offset, IntOffset or DpOffset.
+Otherwise, the animation might not be what you expect.
+[ArcAnimationSpecTypeIssue]
+
+    ArcAnimationSpec&lt;Float&gt;(ArcAbove)
+    ----------------
+
+
+src/foo/test.kt:15:Information: Arc animation is intended for 2D values
+such as Offset, IntOffset or DpOffset.
+Otherwise, the animation might not be what you expect.
+[ArcAnimationSpecTypeIssue]
+
+    ArcAnimationSpec&lt;String&gt;(ArcAbove)
+    ----------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import androidx.compose.animation.core.ArcAnimationSpec
+import androidx.compose.animation.core.ArcAbove
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
+
+fun test() {
+    ArcAnimationSpec<Offset>(ArcAbove)
+    ArcAnimationSpec<IntOffset>(ArcAbove)
+    ArcAnimationSpec<DpOffset>(ArcAbove)
+    ArcAnimationSpec<Float>(ArcAbove)
+    ArcAnimationSpec<String>(ArcAbove)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/ArcAnimationSpecTypeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ArcAnimationSpecTypeDetector.testPreferredTypeIssue`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.animation:animation-core-android:1.7.0-alpha01")
+
+// build.gradle
+implementation 'androidx.compose.animation:animation-core-android:1.7.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.animation-core-android)
+
+# libs.versions.toml
+[versions]
+animation-core-android = "1.7.0-alpha01"
+[libraries]
+animation-core-android = {
+    module = "androidx.compose.animation:animation-core-android",
+    version.ref = "animation-core-android"
+}
+```
+
+1.7.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.animation:animation-core-android](androidx_compose_animation_animation-core-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ArcAnimationSpecTypeIssue")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ArcAnimationSpecTypeIssue")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ArcAnimationSpecTypeIssue
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ArcAnimationSpecTypeIssue" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ArcAnimationSpecTypeIssue'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ArcAnimationSpecTypeIssue ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

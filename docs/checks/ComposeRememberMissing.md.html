@@ -44,25 +44,25 @@ This is replaced when reported.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:3:Error: Using mutableStateOf in a @Composable function
+src/test.kt:7:Error: Using mutableStateOf in a @Composable function
 without it being inside of a remember function.
 If you don't remember the state instance, a new state instance will be
 created when the function is recomposed.
 See
 https://slackhq.github.io/compose-lints/rules/#state-should-be-remembered-in-composables
- for more information. [ComposeRememberMissing]
+for more information. [ComposeRememberMissing]
 
     val something = mutableStateOf("X")
                     -------------------
 
 
-src/test.kt:6:Error: Using mutableStateOf in a @Composable function
+src/test.kt:10:Error: Using mutableStateOf in a @Composable function
 without it being inside of a remember function.
 If you don't remember the state instance, a new state instance will be
 created when the function is recomposed.
 See
 https://slackhq.github.io/compose-lints/rules/#state-should-be-remembered-in-composables
- for more information. [ComposeRememberMissing]
+for more information. [ComposeRememberMissing]
 
 fun MyComposable(something: State&lt;String&gt; = mutableStateOf("X")) {
                                             -------------------
@@ -72,6 +72,10 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
+
 @Composable
 fun MyComposable() {
     val something = mutableStateOf("X")

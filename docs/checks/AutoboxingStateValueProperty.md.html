@@ -21,11 +21,11 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html)
+:   [androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html)
 
 Affects
 :   Kotlin and Java files and test sources
@@ -38,11 +38,11 @@ Tests
 Copyright Year
 :   2023
 
-Avoid using the generic value accessor when using a State objects with a
-specialized types. Usages of the generic value property result in an
-unnecessary autoboxing operation whenever the state's value is read or
-written to. Use the specialized value accessor or property delegation to
-avoid unnecessary allocations.
+Avoid using the generic `value` property when using a specialized State
+type. Reading or writing to the state's generic `value` property will
+result in an unnecessary autoboxing operation. Prefer the specialized
+value property (e.g. `intValue` for `MutableIntState`), or use property
+delegation to avoid unnecessary allocations.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -51,7 +51,7 @@ avoid unnecessary allocations.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/androidx/compose/runtime/lint/test/test.kt:9:Warning: Reading value
+src/androidx/compose/runtime/lint/test/test.kt:7:Warning: Reading value
 will cause an autoboxing operation. Use intValue to avoid unnecessary
 allocations. [AutoboxingStateValueProperty]
 
@@ -65,12 +65,10 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package androidx.compose.runtime.lint.test
 
-import androidx.compose.runtime.sandbox.MutableIntState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
 
 fun valueAssignment() {
-    val state = MutableIntState()
+    val state = mutableIntStateOf(4)
     val value = state.value
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,28 +90,28 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime:1.5.0-beta02")
+implementation("androidx.compose.runtime:runtime-android:1.7.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime:1.5.0-beta02'
+implementation 'androidx.compose.runtime:runtime-android:1.7.0-alpha01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.runtime)
+implementation(libs.runtime-android)
 
 # libs.versions.toml
 [versions]
-runtime = "1.5.0-beta02"
+runtime-android = "1.7.0-alpha01"
 [libraries]
-runtime = {
-    module = "androidx.compose.runtime:runtime",
-    version.ref = "runtime"
+runtime-android = {
+    module = "androidx.compose.runtime:runtime-android",
+    version.ref = "runtime-android"
 }
 ```
 
-1.5.0-beta02 is the version this documentation was generated from;
+1.7.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html).
+[Additional details about androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

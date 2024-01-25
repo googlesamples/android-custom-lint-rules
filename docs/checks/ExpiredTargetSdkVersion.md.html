@@ -21,7 +21,7 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Gradle build files
+:   Gradle build files and manifest files
 Editing
 :   This check runs on the fly in the IDE editor
 See
@@ -51,17 +51,15 @@ https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:5:Error: Google Play requires that apps target API level 
-or higher.
- [ExpiredTargetSdkVersion]
+build.gradle:5:Error: Google Play requires that apps target API level 31
+or higher. [ExpiredTargetSdkVersion]
 
     targetSdkVersion 17
     -------------------
 
 
-build.gradle:6:Error: Google Play requires that apps target API level 
-or higher.
- [ExpiredTargetSdkVersion]
+build.gradle:6:Error: Google Play requires that apps target API level 31
+or higher. [ExpiredTargetSdkVersion]
 
     targetSdk 17
     ------------
@@ -100,6 +98,13 @@ You can suppress false positives using one of the following mechanisms:
   //noinspection ExpiredTargetSdkVersion
   problematicStatement()
   ```
+
+* Adding the suppression attribute
+  `tools:ignore="ExpiredTargetSdkVersion"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

@@ -1,15 +1,15 @@
 <meta charset="utf-8">
 (#) TargetSdkVersion Soon Expiring
 
-!!! ERROR: TargetSdkVersion Soon Expiring
-   This is an error.
+!!! WARNING: TargetSdkVersion Soon Expiring
+   This is a warning.
 
 Id
 :   `ExpiringTargetSdkVersion`
 Summary
 :   TargetSdkVersion Soon Expiring
 Severity
-:   Error
+:   Warning
 Category
 :   Compliance
 Platform
@@ -19,7 +19,7 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Gradle build files
+:   Gradle build files and manifest files
 Editing
 :   This check runs on the fly in the IDE editor
 See
@@ -49,11 +49,11 @@ https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:6:Error: Google Play will soon require that apps target API
-level  or higher. This will be required for new apps and updates
-starting on August 31, . [ExpiringTargetSdkVersion]
+build.gradle:6:Warning: Google Play will soon require that apps target
+API level 33 or higher. This will be required for new apps and updates
+starting on August 31, 2023. [ExpiringTargetSdkVersion]
 
-    targetSdkVersion 
+    targetSdkVersion 31
     -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -66,9 +66,9 @@ apply plugin: 'com.android.application'
 android {
     defaultConfig {
         // Already meeting last year's requirement but not this year's requirement
-        targetSdkVersion
-        targetSdkVersion  // OK
-        targetSdkVersion  // OK
+        targetSdkVersion 31
+        targetSdkVersion 2023 // OK
+        targetSdkVersion 2024 // OK
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,6 +92,13 @@ You can suppress false positives using one of the following mechanisms:
   //noinspection ExpiringTargetSdkVersion
   problematicStatement()
   ```
+
+* Adding the suppression attribute
+  `tools:ignore="ExpiringTargetSdkVersion"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

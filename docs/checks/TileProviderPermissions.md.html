@@ -40,7 +40,7 @@ to prevent arbitrary apps from binding to it.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:7:Warning: TileProvider does not specify
+AndroidManifest.xml:8:Warning: TileProvider does not specify
 BIND_TILE_PROVIDER permission [TileProviderPermissions]
 
     &lt;service
@@ -53,6 +53,7 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
 &lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="test.pkg"&gt;
+    &lt;uses-feature android:name="android.hardware.type.watch" /&gt;
     &lt;application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" &gt;

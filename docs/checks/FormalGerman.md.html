@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
 
@@ -29,73 +29,8 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/FormalGermanDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/FormalGermanDetectorTest.kt)
 
 Informal language should be used at all times.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/values/config.xml:2:Warning: Formal language "Ihr" detected
-[FormalGerman]
-
-  &lt;string name="my_string_1"&gt;Wie lautet Ihr Name?&lt;/string&gt;
-                                        ^
-
-
-res/values/config.xml:3:Warning: Formal language "Sie?" detected
-[FormalGerman]
-
-  &lt;string name="my_string_2"&gt;Wie heissen Sie?&lt;/string&gt;
-                                         ^
-
-
-res/values/config.xml:4:Warning: Formal language "Ihrem" detected
-[FormalGerman]
-
-  &lt;string name="my_string_3"&gt;Frag nach Ihrem Namen.&lt;/string&gt;
-                                       ^
-
-
-res/values/config.xml:5:Warning: Formal language "Sie" detected
-[FormalGerman]
-
-  &lt;string name="my_string_4"&gt;Wie Sie möchten&lt;/string&gt;
-                                 ^
-
-
-res/values/config.xml:6:Warning: Formal language "Ihre" detected
-[FormalGerman]
-
-  &lt;string name="my_string_5"&gt;Ihre Historie&lt;/string&gt;
-                             ^
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/values/config.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;resources&gt;
-  &lt;string name="my_string_1"&gt;Wie lautet Ihr Name?&lt;/string&gt;
-  &lt;string name="my_string_2"&gt;Wie heissen Sie?&lt;/string&gt;
-  &lt;string name="my_string_3"&gt;Frag nach Ihrem Namen.&lt;/string&gt;
-  &lt;string name="my_string_4"&gt;Wie Sie möchten&lt;/string&gt;
-  &lt;string name="my_string_5"&gt;Ihre Historie&lt;/string&gt;
-&lt;/resources&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/FormalGermanDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `FormalGermanDetector.formal`.
-To report a problem with this extracted sample, visit
-https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 
@@ -106,17 +41,17 @@ https://github.com/vanniktech/lint-rules/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+lintChecks("com.vanniktech:lint-rules-android:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-android:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-android)
 
 # libs.versions.toml
 [versions]
-lint-rules-android = "0.24.0"
+lint-rules-android = "0.25.0"
 [libraries]
 lint-rules-android = {
     module = "com.vanniktech:lint-rules-android",
@@ -124,7 +59,7 @@ lint-rules-android = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).

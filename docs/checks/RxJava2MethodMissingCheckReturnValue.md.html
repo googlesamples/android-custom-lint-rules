@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-rxjava2](com_vanniktech_lint-rules-rxjava2.md.html)
 
@@ -29,173 +29,12 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/main/java/com/vanniktech/lintrules/rxjava2/RxJava2MethodMissingCheckReturnValueDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/java/com/vanniktech/lintrules/rxjava2/RxJava2MethodMissingCheckReturnValueDetectorTest.kt)
 
 Methods returning RxJava Reactive Types should be annotated with the
 @CheckReturnValue annotation. Static analyze tools such as Lint or
 ErrorProne can detect when the return value of a method is not used.
 This is usually an indication of a bug. If this is done on purpose (e.g.
 fire & forget) it should be stated explicitly.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/Example.java:15:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  private Observable&lt;Object&gt; observable() {
-                             ----------
-
-
-src/foo/Example.java:19:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  protected Flowable&lt;Object&gt; flowable() {
-                             --------
-
-
-src/foo/Example.java:23:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  protected Single&lt;Object&gt; single() {
-                           ------
-
-
-src/foo/Example.java:27:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  protected Maybe&lt;Object&gt; single() {
-                          ------
-
-
-src/foo/Example.java:31:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  public Completable completable() {
-                     -----------
-
-
-src/foo/Example.java:35:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  public Disposable disposable() {
-                    ----------
-
-
-src/foo/Example.java:39:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  public CompositeDisposable compositeDisposable() {
-                             -------------------
-
-
-src/foo/Example.java:43:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  public TestObserver testObserver() {
-                      ------------
-
-
-src/foo/Example.java:47:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  public TestSubscriber testSubscriber() {
-                        --------------
-
-
-src/foo/Example.java:51:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  public Scheduler scheduler() {
-                   ---------
-
-
-src/foo/Example.java:55:Warning: Method should have @CheckReturnValue
-annotation [RxJava2MethodMissingCheckReturnValue]
-
-  private Observable&lt;List&lt;Object&gt;&gt; observableList() {
-                                   --------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`src/foo/Example.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package foo;
-
-import io.reactivex.Observable;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
-import io.reactivex.Maybe;
-import io.reactivex.Completable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.TestObserver;
-import io.reactivex.subscribers.TestSubscriber;
-import io.reactivex.Scheduler;
-
-class Example {
-  private Observable<Object> observable() {
-    return null;
-  }
-
-  protected Flowable<Object> flowable() {
-    return null;
-  }
-
-  protected Single<Object> single() {
-    return null;
-  }
-
-  protected Maybe<Object> single() {
-    return null;
-  }
-
-  public Completable completable() {
-    return null;
-  }
-
-  public Disposable disposable() {
-    return null;
-  }
-
-  public CompositeDisposable compositeDisposable() {
-    return null;
-  }
-
-  public TestObserver testObserver() {
-    return null;
-  }
-
-  public TestSubscriber testSubscriber() {
-    return null;
-  }
-
-  public Scheduler scheduler() {
-    return null;
-  }
-
-  private Observable<List<Object>> observableList() {
-    return null;
-  }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/java/com/vanniktech/lintrules/rxjava2/RxJava2MethodMissingCheckReturnValueDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `RxJava2MethodMissingCheckReturnValueDetector.methodMissingCheckReturnValue`.
-To report a problem with this extracted sample, visit
-https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 
@@ -206,17 +45,17 @@ https://github.com/vanniktech/lint-rules/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-rxjava2:0.24.0")
+lintChecks("com.vanniktech:lint-rules-rxjava2:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-rxjava2:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-rxjava2:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-rxjava2)
 
 # libs.versions.toml
 [versions]
-lint-rules-rxjava2 = "0.24.0"
+lint-rules-rxjava2 = "0.25.0"
 [libraries]
 lint-rules-rxjava2 = {
     module = "com.vanniktech:lint-rules-rxjava2",
@@ -224,7 +63,7 @@ lint-rules-rxjava2 = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-rxjava2](com_vanniktech_lint-rules-rxjava2.md.html).

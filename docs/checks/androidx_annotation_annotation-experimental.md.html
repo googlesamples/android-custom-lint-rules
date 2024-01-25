@@ -18,9 +18,9 @@ Feedback
 Min
 :   Lint 7.0
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
-:   androidx.annotation:annotation-experimental:1.4.0-dev01
+:   androidx.annotation:annotation-experimental:1.4.0
 
 (##) Included Issues
 
@@ -39,17 +39,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.annotation:annotation-experimental:1.4.0-dev01")
+implementation("androidx.annotation:annotation-experimental:1.4.0")
 
 // build.gradle
-implementation 'androidx.annotation:annotation-experimental:1.4.0-dev01'
+implementation 'androidx.annotation:annotation-experimental:1.4.0'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.annotation-experimental)
 
 # libs.versions.toml
 [versions]
-annotation-experimental = "1.4.0-dev01"
+annotation-experimental = "1.4.0"
 [libraries]
 annotation-experimental = {
     module = "androidx.annotation:annotation-experimental",
@@ -57,7 +57,7 @@ annotation-experimental = {
 }
 ```
 
-1.4.0-dev01 is the version this documentation was generated from;
+1.4.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -67,7 +67,7 @@ there may be newer versions available.
 * 1.1.0: Adds UnsafeOptInUsageError, UnsafeOptInUsageWarning. Removes
   UnsafeExperimentalUsageError, UnsafeExperimentalUsageWarning.
 * 1.2.0: Adds ExperimentalAnnotationRetention.
-* 1.4.0-dev01: Adds WrongRequiresOptIn.
+* 1.3.1: Adds WrongRequiresOptIn.
 
 (##) Version Compatibility
 
@@ -75,7 +75,8 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|         1.4.0-dev01|2023/02/08|       4|         Yes|    7.3 and 7.4|       7.0|
+|               1.4.0|2024/01/24|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.3.1|2023/06/21|       4|         Yes|    7.3 and 7.4|       7.0|
 |               1.3.0|2022/09/07|       3|         Yes|    7.3 and 7.4|       7.0|
 |               1.2.0|2021/12/15|       3|      No[^1]|            7.1|       4.1|
 |               1.1.0|2021/04/07|       2|         Yes|            4.1|       4.1|

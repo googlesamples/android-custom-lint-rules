@@ -55,6 +55,14 @@ UMethod call UastFacade.getMethodBody(method) [LintImplUseUast]
     ----------------
 
 
+src/test/pkg/MyJavaLintDetector.java:42:Error: Don't call
+PsiMethod#getBody(); you must use UAST instead. If you don't have a
+UMethod call UastFacade.getMethodBody(method) [LintImplUseUast]
+
+    method.getBody(); // ERROR - must use UAST
+    ----------------
+
+
 src/test/pkg/MyJavaLintDetector.java:45:Error: Don't call
 PsiMember#getContainingClass(); you should use UAST instead and call
 getContainingUClass() [LintImplUseUast]

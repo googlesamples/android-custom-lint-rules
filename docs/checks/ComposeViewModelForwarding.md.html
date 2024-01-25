@@ -47,10 +47,11 @@ for more information.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:3:Error: Forwarding a ViewModel through multiple @Composable
-functions should be avoided. Consider using state hoisting.
-See https://slackhq.github.io/compose-lints/rules/#hoist-all-the-things
-for more information. [ComposeViewModelForwarding]
+src/MyViewModel.kt:7:Error: Forwarding a ViewModel through multiple
+@Composable functions should be avoided. Consider using state
+hoisting.See
+https://slackhq.github.io/compose-lints/rules/#hoist-all-the-things for
+more information. [ComposeViewModelForwarding]
 
     AnotherComposable(viewModel)
     ----------------------------
@@ -58,8 +59,12 @@ for more information. [ComposeViewModelForwarding]
 
 Here is the source file referenced above:
 
-`src/test.kt`:
+`src/MyViewModel.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+
+class MyViewModel
+
 @Composable
 fun MyComposable(viewModel: MyViewModel) {
     AnotherComposable(viewModel)

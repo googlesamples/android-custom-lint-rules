@@ -44,11 +44,12 @@ the latest version (or in particular, a version lower than your
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:25:Error: This support library should not use a different
-version (13) than the compileSdkVersion (19) [GradleCompatible]
+build.gradle:5:Error: Version 5.2.08 should not be used; the app can not
+be published with this version. Use version 11.1.71 instead.
+[GradleCompatible]
 
-    compile 'com.android.support:appcompat-v7:13.0.0'
-            -----------------------------------------
+    compile 'com.google.android.gms:play-services:5.2.08'
+            ---------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -57,33 +58,9 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
 apply plugin: 'android'
 
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.0"
-
-    defaultConfig {
-        minSdkVersion 7
-        targetSdkVersion 17
-        versionCode 1
-        versionName "1.0"
-    }
-
-    productFlavors {
-        free {
-        }
-        pro {
-        }
-    }
-}
-
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
-    freeCompile 'com.google.guava:guava:11.0.2'
-    compile 'com.android.support:appcompat-v7:13.0.0'
-    compile 'com.google.android.support:wearable:1.2.0'
-    compile 'com.android.support:multidex:1.0.0'
 
-    androidTestCompile 'com.android.support.test:runner:0.3'
+    compile 'com.google.android.gms:play-services:5.2.08'
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -92,7 +69,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testBasic`.
+found for this lint check, `GradleDetector.testBadPlayServicesVersion`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

@@ -45,7 +45,7 @@ absent in a composition and therefore follow the naming rules for
 classes.
 See
 https://slackhq.github.io/compose-lints/rules/#naming-composable-functions-properly
- for more information.
+for more information.
 
 (##) Options
 
@@ -71,27 +71,23 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:2:Error: Composable functions that return Unit should start
-with an uppercase letter.
-They are considered declarative entities that can be either present or
-absent in a composition and therefore follow the naming rules for
-classes.
-See
+src/test.kt:4:Error: Composable functions that return Unit should start
+with an uppercase letter.They are considered declarative entities that
+can be either present or absent in a composition and therefore follow
+the naming rules for classes.See
 https://slackhq.github.io/compose-lints/rules/#naming-composable-functions-properly
- for more information. [ComposeNamingUppercase]
+for more information. [ComposeNamingUppercase]
 
 fun myComposable() { }
     ------------
 
 
-src/test.kt:5:Error: Composable functions that return Unit should start
-with an uppercase letter.
-They are considered declarative entities that can be either present or
-absent in a composition and therefore follow the naming rules for
-classes.
-See
+src/test.kt:7:Error: Composable functions that return Unit should start
+with an uppercase letter.They are considered declarative entities that
+can be either present or absent in a composition and therefore follow
+the naming rules for classes.See
 https://slackhq.github.io/compose-lints/rules/#naming-composable-functions-properly
- for more information. [ComposeNamingUppercase]
+for more information. [ComposeNamingUppercase]
 
 fun myComposable(): Unit { }
     ------------
@@ -101,6 +97,8 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+
 @Composable
 fun myComposable() { }
 
@@ -111,11 +109,6 @@ fun myComposable(): Unit { }
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/ComposableFunctionNamingDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ComposableFunctionNamingDetector.errors when a composable returns nothing or Unit and is lowercase`.
-To report a problem with this extracted sample, visit
-https://github.com/slackhq/compose-lints/issues.
 
 (##) Including
 

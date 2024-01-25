@@ -42,7 +42,7 @@ This @Composable function emits content but doesn't have a modifier
 parameter.
 See
 https://slackhq.github.io/compose-lints/rules/#when-should-i-expose-modifier-parameters
- for more information.
+for more information.
 
 (##) Options
 
@@ -85,31 +85,28 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:2:Error: This @Composable function emits content but doesn't
-have a modifier parameter.
-See
+src/test.kt:5:Error: This @Composable function emits content but doesn't
+have a modifier parameter.See
 https://slackhq.github.io/compose-lints/rules/#when-should-i-expose-modifier-parameters
- for more information. [ComposeModifierMissing]
+for more information. [ComposeModifierMissing]
 
 fun Something1() {
     ----------
 
 
-src/test.kt:7:Error: This @Composable function emits content but doesn't
-have a modifier parameter.
-See
+src/test.kt:10:Error: This @Composable function emits content but
+doesn't have a modifier parameter.See
 https://slackhq.github.io/compose-lints/rules/#when-should-i-expose-modifier-parameters
- for more information. [ComposeModifierMissing]
+for more information. [ComposeModifierMissing]
 
 fun Something2() {
     ----------
 
 
-src/test.kt:12:Error: This @Composable function emits content but
-doesn't have a modifier parameter.
-See
+src/test.kt:15:Error: This @Composable function emits content but
+doesn't have a modifier parameter.See
 https://slackhq.github.io/compose-lints/rules/#when-should-i-expose-modifier-parameters
- for more information. [ComposeModifierMissing]
+for more information. [ComposeModifierMissing]
 
 fun Something3(): Unit {
     ----------
@@ -119,6 +116,9 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+
 @Composable
 fun Something1() {
     Row {

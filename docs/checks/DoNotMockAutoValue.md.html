@@ -43,6 +43,61 @@ Copyright Year
 `AutoValue` classes represent pure data classes, so mocking them should
 not be necessary. Construct a real instance of the class instead.
 
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) mock-annotations
+
+A comma-separated list of mock annotations..
+This property should define comma-separated list of mock annotation class names (FQCN).
+
+Default is "org.mockito.Mock,org.mockito.Spy".
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="DoNotMockAutoValue"&gt;
+        &lt;option name="mock-annotations" value=""org.mockito.Mock,org.mockito.Spy"" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(###) mock-factories
+
+A comma-separated list of mock factories (org.mockito.Mockito#methodName)..
+A comma-separated list of mock factories (org.mockito.Mockito#methodName).
+
+Default is "org.mockito.Mockito#mock,org.mockito.Mockito#spy,slack.test.mockito.MockitoHelpers#mock,slack.test.mockito.MockitoHelpersKt#mock".
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="DoNotMockAutoValue"&gt;
+        &lt;option name="mock-factories" value=""org.mockito.Mockito#mock,org.mockito.Mockito#spy,slack.test.mockito.MockitoHelpers#mock,slack.test.mockito.MockitoHelpersKt#mock"" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(###) mock-report
+
+If enabled, writes a mock report to <project-dir>/build/reports/mockdetector/mock-report.csv..
+If enabled, writes a mock report to <project-dir>/build/reports/mockdetector/mock-report.csv. The format of the file is a csv of (type,isError) of mocked classes.
+
+Default is "none".
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="DoNotMockAutoValue"&gt;
+        &lt;option name="mock-report" value=""none"" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 (##) Including
 
 !!!
@@ -52,17 +107,17 @@ not be necessary. Construct a real instance of the class instead.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.3.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.3.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.3.0"
+slack-lint-checks = "0.7.0"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -70,7 +125,7 @@ slack-lint-checks = {
 }
 ```
 
-0.3.0 is the version this documentation was generated from;
+0.7.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).

@@ -19,13 +19,13 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Class files
+:   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WakelockDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WakelockDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WakelockDetectorTest.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WakelockDetectorTest.kt)
 Copyright Year
 :   2012
 
@@ -45,48 +45,75 @@ https://developer.android.com/reference/android/view/WindowManager.LayoutParams.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/WakelockActivity1.java:15:Warning: Found a wakelock
-acquire() but no release() calls anywhere [Wakelock]
+src/test/pkg/WakelockActivity3.java:13:Warning: The release() call is
+not always reached (because of a possible exception in the path
+acquire() → randomCall() → exit; use try/finally to ensure release is
+always called) [Wakelock]
 
-    mWakeLock.acquire(); // Never released
-              -------
+    lock.release(); // Should be in finally block
+         -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/WakelockActivity1.java`:
+`src/test/pkg/WakelockActivity3.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
 package test.pkg;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.os.PowerManager;
 
-public class WakelockActivity1 extends Activity {
-    private PowerManager.WakeLock mWakeLock;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+public class WakelockActivity3 extends Activity {
+    void wrongFlow() {
         PowerManager manager = (PowerManager) getSystemService(POWER_SERVICE);
-        mWakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Test");
-        mWakeLock.acquire(); // Never released
+        PowerManager.WakeLock lock =
+                manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Test");
+        lock.acquire();
+        randomCall();
+        lock.release(); // Should be in finally block
+    }
+
+    static void randomCall() {
+        System.out.println("test");
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WakelockDetectorTest.java)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WakelockDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `WakelockDetector.test1`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("Wakelock")
+  fun method() {
+     acquire(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("Wakelock")
+  void method() {
+     acquire(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection Wakelock
+  problematicStatement()
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

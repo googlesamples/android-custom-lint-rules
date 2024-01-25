@@ -19,7 +19,7 @@ Vendor
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
 Affects
-:   Manifest files
+:   Gradle build files and manifest files
 Editing
 :   This check runs on the fly in the IDE editor
 See
@@ -27,11 +27,11 @@ See
 See
 :   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ManifestDetector.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GradleDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestDetectorTest.kt)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
 Copyright Year
-:   2011
+:   2014
 
 When your application runs on a version of Android that is more recent
 than your `targetSdkVersion` specifies that it has been tested with,
@@ -45,7 +45,7 @@ value. Then test your app to make sure everything works correctly. You
 may want to consult the compatibility notes to see what changes apply to
 each version you are adding support for:
 https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
- as well as follow this guide:
+as well as follow this guide:
 https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
 
 !!! Tip
@@ -60,7 +60,7 @@ Android; compatibility modes apply. Consider testing and updating this
 version. Consult the android.os.Build.VERSION_CODES javadoc for details.
 [OldTargetApi]
 
-    &lt;uses-sdk android:minSdkVersion="10" android:targetSdkVersion="14" /&gt;
+    &lt;uses-sdk android:minSdkVersion="10" android:targetSdkVersion="33" /&gt;
                                          -----------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -73,7 +73,7 @@ Here is the source file referenced above:
     android:versionCode="1"
     android:versionName="1.0" &gt;
 
-    &lt;uses-sdk android:minSdkVersion="10" android:targetSdkVersion="14" /&gt;
+    &lt;uses-sdk android:minSdkVersion="10" android:targetSdkVersion="33" /&gt;
 
     &lt;application
         android:icon="@drawable/ic_launcher"
@@ -93,11 +93,11 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ManifestDetectorTest.kt)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `ManifestDetector.testOldTargetSdk`.
+found for this lint check, `GradleDetector.testNotTheNewestTargetSdk`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 
@@ -111,13 +111,11 @@ You can suppress false positives using one of the following mechanisms:
   element in the XML file if it's not already there:
   `xmlns:tools="http://schemas.android.com/tools"`.
 
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;application tools:ignore="OldTargetApi" .../&gt;
-    ...
-  &lt;/manifest&gt;
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection OldTargetApi
+  problematicStatement()
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off
