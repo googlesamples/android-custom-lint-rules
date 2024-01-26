@@ -1,0 +1,80 @@
+(#) androidx.compose.animation:animation-core-android
+
+Name
+:   Compose Animation Core
+Description
+:   Animation engine and animation primitives that are the building blocks
+:   of the Compose animation library
+License
+:   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.animation.core
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 7.0
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   androidx.compose.animation:animation-core-android:1.7.0-alpha01
+
+(##) Included Issues
+
+|Issue Id                                                                            |Issue Description                                                                              |
+|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+|[UnusedTransitionTargetStateParameter](UnusedTransitionTargetStateParameter.md.html)|Transition.animate* calls should use the provided targetState when defining values             |
+|[UnrememberedAnimatable](UnrememberedAnimatable.md.html)                            |Creating an Animatable during composition without using `remember`                             |
+|[ArcAnimationSpecTypeIssue](ArcAnimationSpecTypeIssue.md.html)                      |ArcAnimationSpec is designed for 2D values. Particularly, for positional values such as Offset.|
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.animation:animation-core-android:1.7.0-alpha01")
+
+// build.gradle
+implementation 'androidx.compose.animation:animation-core-android:1.7.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.animation-core-android)
+
+# libs.versions.toml
+[versions]
+animation-core-android = "1.7.0-alpha01"
+[libraries]
+animation-core-android = {
+    module = "androidx.compose.animation:animation-core-android",
+    version.ref = "animation-core-android"
+}
+```
+
+1.7.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+(##) Changes
+
+* 1.5.0: First version includes UnrememberedAnimatable,
+  UnusedTransitionTargetStateParameter.
+* 1.7.0-alpha01: Adds ArcAnimationSpecTypeIssue.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.7.0-alpha01|2024/01/24|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.0|2024/01/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.4|2023/10/18|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.3|2023/10/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.2|2023/09/27|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.1|2023/09/06|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.5.0|2023/08/09|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

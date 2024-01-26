@@ -19,7 +19,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   com.slack.lint:slack-lint-checks:0.3.0
+:   com.slack.lint:slack-lint-checks:0.7.0
 
 (##) Included Issues
 
@@ -27,7 +27,14 @@ Artifact
 |--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 |[CastingViewContextToActivity](CastingViewContextToActivity.md.html)                              |Unsafe cast of `Context` to `Activity`                                                                                                 |
 |[ArgInFormattedQuantityStringRes](ArgInFormattedQuantityStringRes.md.html)                        |Count value in formatted string resource.                                                                                              |
-|[BindsCanBeExtensionFunction](BindsCanBeExtensionFunction.md.html)                                |@Binds-annotated functions can be extension functions.                                                                                 |
+|[BindsTypeMismatch](BindsTypeMismatch.md.html)                                                    |@Binds function parameters must be type-assignable to their return types.                                                              |
+|[BindingReturnType](BindingReturnType.md.html)                                                    |@Binds/@Provides functions must have a return type. Cannot be void or Unit.                                                            |
+|[BindingReceiverParameter](BindingReceiverParameter.md.html)                                      |@Binds/@Provides functions cannot be extension functions.                                                                              |
+|[BindsWrongParameterCount](BindsWrongParameterCount.md.html)                                      |@Binds functions require a single parameter as an input to bind.                                                                       |
+|[BindsMustBeAbstract](BindsMustBeAbstract.md.html)                                                |@Binds functions must be abstract and cannot have function bodies.                                                                     |
+|[RedundantBinds](RedundantBinds.md.html)                                                          |@Binds functions should return a different type (including annotations) than the input type.                                           |
+|[MustBeInModule](MustBeInModule.md.html)                                                          |@Binds/@Provides function must be in `@Module`-annotated classes.                                                                      |
+|[ProvidesMustNotBeAbstract](ProvidesMustNotBeAbstract.md.html)                                    |@Provides functions cannot be abstract.                                                                                                |
 |[KotlinPairNotCreated](KotlinPairNotCreated.md.html)                                              |Use Kotlin's kotlin.Pair instead of other Pair types from other libraries like AndroidX and Slack commons                              |
 |[DoNotCallProviders](DoNotCallProviders.md.html)                                                  |Dagger provider methods should not be called directly by user code.                                                                    |
 |[InclusiveNaming](InclusiveNaming.md.html)                                                        |Use inclusive naming.                                                                                                                  |
@@ -41,6 +48,7 @@ Artifact
 |[SubscribeOnMain](SubscribeOnMain.md.html)                                                        |subscribeOn called with the main thread scheduler.                                                                                     |
 |[GuavaChecksUsed](GuavaChecksUsed.md.html)                                                        |Use Slack's JavaPreconditions instead of Guava's Preconditions checks                                                                  |
 |[GuavaPreconditionsUsedInKotlin](GuavaPreconditionsUsedInKotlin.md.html)                          |Kotlin precondition checks should use the Kotlin standard library checks                                                               |
+|[DoNotMockPlatformTypes](DoNotMockPlatformTypes.md.html)                                          |platform types should not be mocked                                                                                                    |
 |[DoNotMockDataClass](DoNotMockDataClass.md.html)                                                  |data classes represent pure data classes, so mocking them should not be necessary.                                                     |
 |[DoNotMock](DoNotMock.md.html)                                                                    |<Never used>                                                                                                                           |
 |[DoNotMockSealedClass](DoNotMockSealedClass.md.html)                                              |sealed classes have a restricted type hierarchy, use a subtype instead                                                                 |
@@ -105,7 +113,9 @@ Artifact
 |[MissingResourceImportAlias](MissingResourceImportAlias.md.html)                                  |Missing import alias for R class.                                                                                                      |
 |[WrongResourceImportAlias](WrongResourceImportAlias.md.html)                                      |Wrong import alias for this R class.                                                                                                   |
 |[DenyListedApi](DenyListedApi.md.html)                                                            |Deny-listed API                                                                                                                        |
+|[DenyListedBlockingApi](DenyListedBlockingApi.md.html)                                            |Deny-listed API                                                                                                                        |
 |[ParcelizeFunctionProperty](ParcelizeFunctionProperty.md.html)                                    |Function type properties should not be used in Parcelize classes                                                                       |
+|[ExceptionMessage](ExceptionMessage.md.html)                                                      |Please provide a string for the lazyMessage parameter                                                                                  |
 
 (##) Including
 
@@ -116,17 +126,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.3.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.3.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.3.0"
+slack-lint-checks = "0.7.0"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -134,7 +144,7 @@ slack-lint-checks = {
 }
 ```
 
-0.3.0 is the version this documentation was generated from;
+0.7.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -192,6 +202,14 @@ there may be newer versions available.
 * 0.2.3: Adds ParcelizeFunctionProperty.
 * 0.3.0: Adds DoNotMockObjectClass, DoNotMockRecordClass,
   DoNotMockSealedClass.
+* 0.4.0: Adds DoNotMockPlatformTypes.
+* 0.5.0: Adds BindingReceiverParameter, BindingReturnType,
+  BindsMustBeAbstract, BindsMustBeInModule, BindsTypeMismatch,
+  BindsWrongParameterCount, ProvidesMustNotBeAbstract, RedundantBinds.
+  Removes BindsCanBeExtensionFunction.
+* 0.5.1: Adds MustBeInModule. Removes BindsMustBeInModule.
+* 0.6.0: Adds ExceptionMessage.
+* 0.7.0: Adds DenyListedBlockingApi.
 
 (##) Version Compatibility
 
@@ -199,6 +217,12 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               0.7.0|2023/10/27|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.6.1|2023/10/09|      90|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.6.0|2023/09/26|      90|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.5.1|2023/09/09|      89|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.5.0|2023/09/08|      89|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.4.0|2023/07/20|      82|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.3.0|2023/05/31|      81|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.2.3|2023/02/22|      78|         Yes|    8.0 and 8.1|       7.2|
 |               0.2.2|2023/02/09|      77|         Yes|    8.0 and 8.1|       7.2|

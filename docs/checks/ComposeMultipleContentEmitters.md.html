@@ -42,7 +42,7 @@ Composable functions should only be emitting content into the
 composition from one source at their top level.
 See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-multiple-pieces-of-content
- for more information.
+for more information.
 
 (##) Options
 
@@ -68,21 +68,23 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:1:Error: Composable functions should only be emitting
+src/test.kt:3:Error: Composable functions should only be emitting
 content into the composition from one source at their top level.
+
 See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-multiple-pieces-of-content
- for more information. [ComposeMultipleContentEmitters]
+for more information. [ComposeMultipleContentEmitters]
 
 @Composable
 ^
 
 
-src/test.kt:6:Error: Composable functions should only be emitting
+src/test.kt:8:Error: Composable functions should only be emitting
 content into the composition from one source at their top level.
+
 See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-multiple-pieces-of-content
- for more information. [ComposeMultipleContentEmitters]
+for more information. [ComposeMultipleContentEmitters]
 
 @Composable
 ^
@@ -92,6 +94,8 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+
 @Composable
 fun Something() {
     Text("Hi")

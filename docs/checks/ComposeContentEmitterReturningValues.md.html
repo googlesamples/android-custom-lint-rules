@@ -45,7 +45,7 @@ those control surfaces or callbacks should be provided as parameters to
 the composable function by the caller.
 See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-content-and-return-a-result
- for more information.
+for more information.
 
 (##) Options
 
@@ -71,27 +71,25 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:1:Error: Composable functions should either emit content
-into the composition or return a value, but not both.
-If a composable should offer additional control surfaces to its caller,
-those control surfaces or callbacks should be provided as parameters to
-the composable function by the caller.
-See
+src/test.kt:3:Error: Composable functions should either emit content
+into the composition or return a value, but not both.If a composable
+should offer additional control surfaces to its caller, those control
+surfaces or callbacks should be provided as parameters to the composable
+function by the caller.See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-content-and-return-a-result
- for more information. [ComposeContentEmitterReturningValues]
+for more information. [ComposeContentEmitterReturningValues]
 
 @Composable
 ^
 
 
-src/test.kt:6:Error: Composable functions should either emit content
-into the composition or return a value, but not both.
-If a composable should offer additional control surfaces to its caller,
-those control surfaces or callbacks should be provided as parameters to
-the composable function by the caller.
-See
+src/test.kt:8:Error: Composable functions should either emit content
+into the composition or return a value, but not both.If a composable
+should offer additional control surfaces to its caller, those control
+surfaces or callbacks should be provided as parameters to the composable
+function by the caller.See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-content-and-return-a-result
- for more information. [ComposeContentEmitterReturningValues]
+for more information. [ComposeContentEmitterReturningValues]
 
 @Composable
 ^
@@ -101,6 +99,8 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+
 @Composable
 fun Something() {
     Text("Hi")

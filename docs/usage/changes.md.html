@@ -4,6 +4,65 @@ This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
+**8.4**
+
+* New built-in lint-checks:
+
+  Issue ID                          | Summary
+  ----------------------------------|-----------------------------------
+  `BuildListAdds`                   | Missing `add` call in `buildList`
+  `PublicKeyCredential`             | Creating public key credential
+  `SecretInSource`                  | Secret in source code
+  `LintBaselineFixed`               | Baseline issues fixed
+
+* The `LintBaseline` issue was reporting two different types of issues:
+
+  1. An informational message that a baseline was applied, listing the
+  number of errors and warnings that were filtered out because of the
+  baseline
+
+  2. Whether one or more problems listed in the baseline are no longer
+  reported, meaning the issue has likely been fixed -- so the baseline
+  can be updated (for example to prevent the issue from silently
+  reoccurring).
+
+  Since these are separate problems and you may want to configure one
+  and not the other to be a warning or an error, the `LintBaseline`
+  issue id is now only used for the first type of issue, and the second
+  one is reported under a new issue ID, `LintBaselineFixed`. If you had
+  previously suppressed `LintBaseline` in order to remove both of these
+  reports, you'l need to also suppress `LintBaselineFixed`.
+
+**8.3**
+
+* New built-in lint-checks:
+
+  Issue ID                         | Summary
+  ---------------------------------|-----------------------------------
+  `ActivityIconColor`              | Ongoing activity icon is not white
+  `SelectedPhotoAccess`            | Behavior change when requesting photo library access
+  `UseSdkSuppress`                 | Using `@SdkSuppress` instead of `@RequiresApi`
+  `WrongCommentType`               | Wrong Comment Type
+
+**8.2**
+
+* New built-in lint-checks:
+
+  Issue ID                             | Summary
+  -------------------------------------|-----------------------------------
+  `ForegroundServicePermission`        | Missing permissions required by foregroundServiceType
+  `ForegroundServiceType`              | Missing `foregroundServiceType` attribute in manifest
+  `IntentWithNullActionLaunch`         | Unsafe intent launched with no action set
+  `MutableImplicitPendingIntent`       | Mutable Implicit PendingIntent is disallowed
+  `PlaySdkIndexGenericIssues`          | Library has issues in SDK Index
+  `StartActivityAndCollapseDeprecated` | TileService.startActivityAndCollapse(Intent) is deprecated
+  `TilePreviewImageFormat`             | Tile preview is not compliant with standards
+  `WearBackNavigation`                 | Wear: Disabling Back navigation
+  `WearMaterialTheme`                  | Using not non-Wear `MaterialTheme` in a Wear OS project
+  `WearPasswordInput`                  | Wear: Using password input
+  `WearRecents`                        | Wear OS: Recents and app resume
+  `WearSplashScreen`                   | Wear: Use `SplashScreen` library
+
 **8.1**
 
 * Lint now supports and includes checks for Gradle version catalog
@@ -16,12 +75,14 @@ lint check authors, see the API Guide.
   ----------------------------------|-----------------------------------
   `NoOp`                            | Finds leftover code constructs which have no side effect or purpose
   `UnspecifiedRegisterReceiverFlag` | Missing `registerReceiver()` exported flag
+  `UnsafeIntentLaunch`              | Launched unsafe Intent
   `UnsafeImplicitIntentLaunch`      | Implicit intent matches an internal non-exported component
-  `ShortcutUsageDetector`           | Shortcut usage should be reported
+  `ReportShortcutUsage`             | Shortcut usage should be reported
   `UseTomlInstead`                  | Mixing and matching Gradle build file and TOML dependencies
   `KaptUsageInsteadOfKsp`           | Using kapt where KSP would also be available
   `BomWithoutPlatform`              | BOM artifact added as a dependency instead of as a platform
   `ProviderReadPermissionOnly`      | Provider with readPermission only and implemented write APIs
+  `MutableImplicitPendingIntent`    | Mutable implicit PendingIntent is disallowed
 
   (The `NoOp` and `UnsafeImplicitIntentLaunch` lint checks are
   currently disabled by default.)

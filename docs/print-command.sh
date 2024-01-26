@@ -10,6 +10,8 @@ export ANDROID_URI_PREFIX=https://cs.android.com/androidx/platform/frameworks/su
 # If running the documentation driver directly, omit the
 # --generate-docs flag
 
+echo "(Also consider including --maven-central --gmaven)"
+
 echo lint \
     --generate-docs \
     --output $OUTPUT \

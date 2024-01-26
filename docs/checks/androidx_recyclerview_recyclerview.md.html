@@ -1,7 +1,7 @@
 (#) androidx.recyclerview:recyclerview
 
 Name
-:   Android Support RecyclerView
+:   RecyclerView
 Description
 :   Android Support RecyclerView
 License
@@ -15,9 +15,9 @@ Feedback
 Min
 :   Lint 7.0
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
-:   androidx.recyclerview:recyclerview:1.3.1-rc01
+:   androidx.recyclerview:recyclerview:1.4.0-alpha01
 
 (##) Included Issues
 
@@ -34,17 +34,17 @@ a value for `size` in the scrolling direction.|
 
 ```
 // build.gradle.kts
-implementation("androidx.recyclerview:recyclerview:1.3.1-rc01")
+implementation("androidx.recyclerview:recyclerview:1.4.0-alpha01")
 
 // build.gradle
-implementation 'androidx.recyclerview:recyclerview:1.3.1-rc01'
+implementation 'androidx.recyclerview:recyclerview:1.4.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.recyclerview)
 
 # libs.versions.toml
 [versions]
-recyclerview = "1.3.1-rc01"
+recyclerview = "1.4.0-alpha01"
 [libraries]
 recyclerview = {
     module = "androidx.recyclerview:recyclerview",
@@ -52,7 +52,7 @@ recyclerview = {
 }
 ```
 
-1.3.1-rc01 is the version this documentation was generated from;
+1.4.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -65,7 +65,9 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|          1.3.1-rc01|2023/05/24|       1|         Yes|    7.3 and 7.4|       7.0|
+|       1.4.0-alpha01|2023/10/18|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.3.2|2023/10/18|       1|         Yes|    7.3 and 7.4|       7.0|
+|               1.3.1|2023/07/26|       1|         Yes|    7.3 and 7.4|       7.0|
 |               1.3.0|2023/03/08|       1|         Yes|    7.3 and 7.4|       7.0|
 |               1.2.1|2021/06/02|       1|         Yes|            4.1|       3.3|
 |               1.2.0|2021/04/07|       1|         Yes|            4.1|       3.3|

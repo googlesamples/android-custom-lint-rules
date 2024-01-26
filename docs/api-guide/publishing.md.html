@@ -52,7 +52,7 @@ authors a way to provide their own additional checks enforcing usage.
 ### lintPublish Configuration
 
 The Android Gradle library plugin provides some special configurations,
-`lintConfig` and `lintPublish`.
+`lintChecks` and `lintPublish`.
 
 The `lintPublish` configuration lets you reference another project, and
 it will take that project's output jar and package it as a `lint.jar`
@@ -94,7 +94,7 @@ module, specify
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 apply plugin: 'com.android.application'
 dependencies {
-    lintConfig project(':checks')
+    lintChecks project(':checks')
     // other dependencies
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

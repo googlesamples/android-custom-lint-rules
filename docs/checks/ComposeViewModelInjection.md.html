@@ -64,7 +64,7 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:3:Error: Implicit dependencies of composables should be made
+src/test.kt:6:Error: Implicit dependencies of composables should be made
 explicit.
 Usages of  to acquire a ViewModel should be done in composable default
 parameters, so that it is more testable and flexible.
@@ -75,8 +75,8 @@ information. [ComposeViewModelInjection]
   ------------------------
 
 
-src/test.kt:8:Error: Implicit dependencies of composables should be made
-explicit.
+src/test.kt:11:Error: Implicit dependencies of composables should be
+made explicit.
 Usages of  to acquire a ViewModel should be done in composable default
 parameters, so that it is more testable and flexible.
 See https://slackhq.github.io/compose-lints/rules/#viewmodels for more
@@ -86,7 +86,7 @@ information. [ComposeViewModelInjection]
   ------------------------
 
 
-src/test.kt:13:Error: Implicit dependencies of composables should be
+src/test.kt:16:Error: Implicit dependencies of composables should be
 made explicit.
 Usages of  to acquire a ViewModel should be done in composable default
 parameters, so that it is more testable and flexible.
@@ -101,7 +101,10 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
-@Composable
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+
+ @Composable
 fun MyComposable(modifier: Modifier) {
   val viewModel = <MyVM>()
 }

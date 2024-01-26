@@ -21,7 +21,7 @@ Feedback
 Affects
 :   Resource files
 Editing
-:   This check can *not* run live in the IDE editor
+:   This check runs on the fly in the IDE editor
 See
 :   https://developer.android.com/training/wearables/views/exit#disabling-swipe-to-dismiss
 Implementation
@@ -93,6 +93,20 @@ for the unit tests for this check to see additional scenarios.
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="WearBackNavigation"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;item xmlns:tools="http://schemas.android.com/tools"
+      tools:ignore="WearBackNavigation" ...&gt;
+    ...
+  &lt;/item&gt;
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

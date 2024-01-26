@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.compose.material:material](androidx_compose_material_material.md.html)
+:   [androidx.compose.material:material-android](androidx_compose_material_material-android.md.html)
 
 Affects
 :   Kotlin and Java files and test sources
@@ -214,28 +214,28 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.material:material:1.5.0-beta02")
+implementation("androidx.compose.material:material-android:1.7.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.material:material:1.5.0-beta02'
+implementation 'androidx.compose.material:material-android:1.7.0-alpha01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.material)
+implementation(libs.material-android)
 
 # libs.versions.toml
 [versions]
-material = "1.5.0-beta02"
+material-android = "1.7.0-alpha01"
 [libraries]
-material = {
-    module = "androidx.compose.material:material",
-    version.ref = "material"
+material-android = {
+    module = "androidx.compose.material:material-android",
+    version.ref = "material-android"
 }
 ```
 
-1.5.0-beta02 is the version this documentation was generated from;
+1.7.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.compose.material:material](androidx_compose_material_material.md.html).
+[Additional details about androidx.compose.material:material-android](androidx_compose_material_material-android.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

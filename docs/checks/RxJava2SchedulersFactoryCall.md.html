@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-rxjava2](com_vanniktech_lint-rules-rxjava2.md.html)
 
@@ -29,52 +29,11 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/main/java/com/vanniktech/lintrules/rxjava2/RxJava2SchedulersFactoryCallDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/java/com/vanniktech/lintrules/rxjava2/RxJava2SchedulersFactoryCallDetectorTest.kt)
 
 Injecting the Schedulers instead of accessing them via the factory
 methods has the benefit that unit testing is way easier. Instead of
 overriding them via the Plugin mechanism we can just pass a custom
 Scheduler.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/Example.java:9:Warning: Inject this Scheduler instead of calling
-it directly [RxJava2SchedulersFactoryCall]
-
-    return Schedulers.io();
-                      --
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`src/foo/Example.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package foo;
-
-import io.reactivex.annotations.CheckReturnValue;
-import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
-
-class Example {
-  @CheckReturnValue Scheduler provideSchedulerIo() {
-    return Schedulers.io();
-  }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/java/com/vanniktech/lintrules/rxjava2/RxJava2SchedulersFactoryCallDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `RxJava2SchedulersFactoryCallDetector.ioCallInsideCheckReturnValueMethod`.
-To report a problem with this extracted sample, visit
-https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 
@@ -85,17 +44,17 @@ https://github.com/vanniktech/lint-rules/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-rxjava2:0.24.0")
+lintChecks("com.vanniktech:lint-rules-rxjava2:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-rxjava2:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-rxjava2:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-rxjava2)
 
 # libs.versions.toml
 [versions]
-lint-rules-rxjava2 = "0.24.0"
+lint-rules-rxjava2 = "0.25.0"
 [libraries]
 lint-rules-rxjava2 = {
     module = "com.vanniktech:lint-rules-rxjava2",
@@ -103,7 +62,7 @@ lint-rules-rxjava2 = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-rxjava2](com_vanniktech_lint-rules-rxjava2.md.html).

@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.compose.animation:animation](androidx_compose_animation_animation.md.html)
+:   [androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html)
 
 Affects
 :   Kotlin and Java files and test sources
@@ -179,28 +179,28 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.animation:animation:1.5.0-beta02")
+implementation("androidx.compose.animation:animation-android:1.7.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.animation:animation:1.5.0-beta02'
+implementation 'androidx.compose.animation:animation-android:1.7.0-alpha01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.animation)
+implementation(libs.animation-android)
 
 # libs.versions.toml
 [versions]
-animation = "1.5.0-beta02"
+animation-android = "1.7.0-alpha01"
 [libraries]
-animation = {
-    module = "androidx.compose.animation:animation",
-    version.ref = "animation"
+animation-android = {
+    module = "androidx.compose.animation:animation-android",
+    version.ref = "animation-android"
 }
 ```
 
-1.5.0-beta02 is the version this documentation was generated from;
+1.7.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.compose.animation:animation](androidx_compose_animation_animation.md.html).
+[Additional details about androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

@@ -432,6 +432,7 @@ Raw text format              | Renders To
 This is a \`code symbol\`    | This is a `code symbol`
 This is `*italics*`          | This is *italics*
 This is `**bold**`           | This is **bold**
+This is `~~strikethrough~~`  | This is ~~strikethrough~~
 http://, https://            | [](http://), [](https://)
 `\*not italics*`             | `\*not italics*`
 \`\`\`language\n text\n\`\`\`| (preformatted text block)
@@ -787,7 +788,7 @@ class MyDetector : Detector(), XmlScanner {
         val incident = Incident(context, ISSUE)
             .message( "Use `<vector>` instead of `<bitmap>`")
             .at(element)
-        context.report(incident))
+        context.report(incident)
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -894,7 +895,7 @@ argument is at least 5,000 and the third argument is at least 60,000.
 Line 1 says we want to have line 3 called whenever lint comes across a
 method to `setRepeating`.
 
-On lines 8-4 we make sure we're talking about the correct method on the
+On lines 8-14 we make sure we're talking about the correct method on the
 correct class with the correct signature. This uses the `JavaEvaluator`
 to check that the called method is a member of the named class. This is
 necessary because the callback would also be invoked if lint came
@@ -1067,7 +1068,7 @@ the original or underlying element. And you can construct these
 wrappers yourself, via `UBinaryExpression.asCall()`,
 `UUnaryExpression.asCall()`, and `UArrayAccessExpression.asCall()`.
 
-There is also a visitor you can use to visit call calls --
+There is also a visitor you can use to visit all calls --
 `UastCallVisitor`, which will visit all calls, including those from
 array accesses and unary operators and binary operators.
 

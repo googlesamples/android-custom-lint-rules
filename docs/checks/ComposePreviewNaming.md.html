@@ -44,21 +44,11 @@ This is replaced when reporting.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/Banana.kt:1:Error: Preview annotations with 1 preview annotations
-should end with the Preview suffix.
-See
-https://slackhq.github.io/compose-lints/rules/#naming-multipreview-annotations-properly
- for more information. [ComposePreviewNaming]
-
-@Preview
-^
-
-
 src/Banana.kt:3:Error: Preview annotations with 1 preview annotations
 should end with the Preview suffix.
 See
 https://slackhq.github.io/compose-lints/rules/#naming-multipreview-annotations-properly
- for more information. [ComposePreviewNaming]
+for more information. [ComposePreviewNaming]
 
 @Preview
 ^
@@ -68,9 +58,19 @@ src/Banana.kt:5:Error: Preview annotations with 1 preview annotations
 should end with the Preview suffix.
 See
 https://slackhq.github.io/compose-lints/rules/#naming-multipreview-annotations-properly
- for more information. [ComposePreviewNaming]
+for more information. [ComposePreviewNaming]
 
-@BananaPreview
+@Preview
+^
+
+
+src/Banana.kt:7:Error: Preview annotations with 1 preview annotations
+should end with the Preview suffix.
+See
+https://slackhq.github.io/compose-lints/rules/#naming-multipreview-annotations-properly
+for more information. [ComposePreviewNaming]
+
+@BananaPreviews
 ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -78,11 +78,13 @@ Here is the source file referenced above:
 
 `src/Banana.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.ui.tooling.preview.Preview
+
 @Preview
 annotation class Banana
 @Preview
 annotation class BananaPreviews
-@BananaPreview
+@BananaPreviews
 annotation class WithBananaPreviews
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

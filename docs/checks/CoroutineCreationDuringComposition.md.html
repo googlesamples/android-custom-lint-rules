@@ -21,11 +21,11 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html)
+:   [androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html)
 
 Affects
 :   Kotlin and Java files and test sources
@@ -297,28 +297,28 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime:1.5.0-beta02")
+implementation("androidx.compose.runtime:runtime-android:1.7.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime:1.5.0-beta02'
+implementation 'androidx.compose.runtime:runtime-android:1.7.0-alpha01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.runtime)
+implementation(libs.runtime-android)
 
 # libs.versions.toml
 [versions]
-runtime = "1.5.0-beta02"
+runtime-android = "1.7.0-alpha01"
 [libraries]
-runtime = {
-    module = "androidx.compose.runtime:runtime",
-    version.ref = "runtime"
+runtime-android = {
+    module = "androidx.compose.runtime:runtime-android",
+    version.ref = "runtime-android"
 }
 ```
 
-1.5.0-beta02 is the version this documentation was generated from;
+1.7.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.compose.runtime:runtime](androidx_compose_runtime_runtime.md.html).
+[Additional details about androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

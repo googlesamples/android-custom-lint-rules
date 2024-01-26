@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
 
@@ -29,53 +29,10 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/WrongGlobalIconColorDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/WrongGlobalIconColorDetectorTest.kt)
 
 In order to reuse icons, it's best if all icons share the same color and
 can be used at every position in the app. On the target side, tinting
 can be applied.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/drawable/ic_drawable.xml:7:Warning: Should use global tint color
-[WrongGlobalIconColor]
-
-    android:fillColor="#FF0000"
-                       -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/drawable/ic_drawable.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
-    android:viewportHeight="24"
-    android:viewportWidth="24"
-    android:width="24dp"&gt;
-  &lt;path
-      android:fillColor="#FF0000"
-      android:fillType="evenOdd"
-      android:pathData="M18.364,5.636C18.7545,6.0266 18.7545,6.6597 18.364,7.0503L13.4135,11.9993L18.364,16.9497C18.7545,17.3403 18.7545,17.9734 18.364,18.364C17.9734,18.7545 17.3403,18.7545 16.9497,18.364L11.9993,13.4135L7.0503,18.364C6.6597,18.7545 6.0266,18.7545 5.636,18.364C5.2455,17.9734 5.2455,17.3403 5.636,16.9497L10.5858,11.9986L5.636,7.0503C5.2455,6.6597 5.2455,6.0266 5.636,5.636C6.0266,5.2455 6.6597,5.2455 7.0503,5.636L12,10.5844L16.9497,5.636C17.3403,5.2455 17.9734,5.2455 18.364,5.636Z" /&gt;
-&lt;/vector&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/WrongGlobalIconColorDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `WrongGlobalIconColorDetector.flagsIcDrawable`.
-To report a problem with this extracted sample, visit
-https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 
@@ -86,17 +43,17 @@ https://github.com/vanniktech/lint-rules/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+lintChecks("com.vanniktech:lint-rules-android:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-android:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-android)
 
 # libs.versions.toml
 [versions]
-lint-rules-android = "0.24.0"
+lint-rules-android = "0.25.0"
 [libraries]
 lint-rules-android = {
     module = "com.vanniktech:lint-rules-android",
@@ -104,7 +61,7 @@ lint-rules-android = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).

@@ -45,7 +45,7 @@ function convention has drawbacks that set inappropriate expectations
 for callers when used with @Composable functions.
 See
 https://slackhq.github.io/compose-lints/rules/#naming-composable-functions-properly
- for more information.
+for more information.
 
 (##) Options
 
@@ -71,14 +71,13 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:2:Error: Composable functions that return a value should
-start with a lowercase letter.
-While useful and accepted outside of @Composable functions, this factory
-function convention has drawbacks that set inappropriate expectations
-for callers when used with @Composable functions.
-See
+src/test.kt:4:Error: Composable functions that return a value should
+start with a lowercase letter.While useful and accepted outside of
+@Composable functions, this factory function convention has drawbacks
+that set inappropriate expectations for callers when used with
+@Composable functions.See
 https://slackhq.github.io/compose-lints/rules/#naming-composable-functions-properly
- for more information. [ComposeNamingLowercase]
+for more information. [ComposeNamingLowercase]
 
 fun MyComposable(): Something { }
     ------------
@@ -88,6 +87,8 @@ Here is the source file referenced above:
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+
 @Composable
 fun MyComposable(): Something { }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,11 +96,6 @@ fun MyComposable(): Something { }
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/ComposableFunctionNamingDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ComposableFunctionNamingDetector.errors when a composable returns a value and is capitalized`.
-To report a problem with this extracted sample, visit
-https://github.com/slackhq/compose-lints/issues.
 
 (##) Including
 

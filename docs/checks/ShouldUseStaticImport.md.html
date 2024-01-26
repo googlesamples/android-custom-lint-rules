@@ -19,9 +19,9 @@ Vendor
 Feedback
 :   https://github.com/vanniktech/lint-rules/issues
 Min
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
 :   [com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html)
 
@@ -29,46 +29,9 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
-Implementation
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/java/com/vanniktech/lintrules/android/ShouldUseStaticImportDetector.kt)
-Tests
-:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/ShouldUseStaticImportDetectorTest.kt)
 
 Certain declarations like TimeUnit.SECONDS should be statically imported
 to increase the readability.
-
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/Example.java:5:Warning: Should statically import SECONDS
-[ShouldUseStaticImport]
-
-    TimeUnit.SECONDS.toDays(1);
-             -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`src/foo/Example.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package foo;
-import java.util.concurrent.TimeUnit;
-class Example {
-  public void foo() {
-    TimeUnit.SECONDS.toDays(1);
-  }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/java/com/vanniktech/lintrules/android/ShouldUseStaticImportDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ShouldUseStaticImportDetector.timeUnitSeconds`.
-To report a problem with this extracted sample, visit
-https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 
@@ -79,17 +42,17 @@ https://github.com/vanniktech/lint-rules/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.vanniktech:lint-rules-android:0.24.0")
+lintChecks("com.vanniktech:lint-rules-android:0.25.0")
 
 // build.gradle
-lintChecks 'com.vanniktech:lint-rules-android:0.24.0'
+lintChecks 'com.vanniktech:lint-rules-android:0.25.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.lint-rules-android)
 
 # libs.versions.toml
 [versions]
-lint-rules-android = "0.24.0"
+lint-rules-android = "0.25.0"
 [libraries]
 lint-rules-android = {
     module = "com.vanniktech:lint-rules-android",
@@ -97,7 +60,7 @@ lint-rules-android = {
 }
 ```
 
-0.24.0 is the version this documentation was generated from;
+0.25.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.vanniktech:lint-rules-android](com_vanniktech_lint-rules-android.md.html).

@@ -42,7 +42,7 @@ Composables annotated with `@Preview` that are used only for previewing
 the UI should not be public.
 See
 https://slackhq.github.io/compose-lints/rules/#preview-composables-should-not-be-public
- for more information.
+for more information.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -72,30 +72,43 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:1:Error: Composables annotated with @Preview that are used
-only for previewing the UI should not be public.
-See
+src/test.kt:4:Error: Composables annotated with @Preview that are used
+only for previewing the UI should not be public.See
 https://slackhq.github.io/compose-lints/rules/#preview-composables-should-not-be-public
- for more information. [ComposePreviewPublic]
+for more information. [ComposePreviewPublic]
 
 @Preview
 ^
 
 
-src/test.kt:4:Error: Composables annotated with @Preview that are used
-only for previewing the UI should not be public.
-See
+src/test.kt:7:Error: Composables annotated with @Preview that are used
+only for previewing the UI should not be public.See
 https://slackhq.github.io/compose-lints/rules/#preview-composables-should-not-be-public
- for more information. [ComposePreviewPublic]
+for more information. [ComposePreviewPublic]
 
 @CombinedPreviews
 ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/CombinedPreviews.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+
+@Preview
+annotation class CombinedPreviews
+
+class User
+class UserProvider : PreviewParameterProvider<User>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+
 @Preview
 @Composable
 fun MyComposable() { }
@@ -107,11 +120,6 @@ fun MyComposable() { }
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/PreviewPublicDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `PreviewPublicDetector.errors when a public preview composable is used when previewPublicOnlyIfParams is false`.
-To report a problem with this extracted sample, visit
-https://github.com/slackhq/compose-lints/issues.
 
 (##) Including
 
