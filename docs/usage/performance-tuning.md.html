@@ -40,7 +40,7 @@ cache; once that's done, this will work for clean builds as well.
 
 ## Use the `lintDebug` target, not `lint`
 
-If you run “./gradlew tasks” you'll see that there's a `lint` task, and
+If you run `./gradlew tasks` you'll see that there's a `lint` task, and
 you may be tempted to run it. But lint also adds specific tasks for
 each variant. For example, if you only have “debug” and “release”
 variants (e.g. you haven't defined any product flavors or additional
@@ -79,7 +79,7 @@ to miss much.
    build time optimizations.
 
 If you have lots of variants this makes a huge difference; with 7
-variants, `lint` will take ~7x longer than `lintDebug` !! (modulo some
+variants, `lint` will take ~7x longer than `lintDebug`!! (modulo some
 minor caching)
 
 !!! Tip
@@ -89,8 +89,8 @@ minor caching)
 
 ## Only analyze app/leaf modules
 
-If you have divided your project into many smaller modules - a number
-of libraries and just a couple of app modules, it's much better to
+If you have divided your project into many smaller modules -- a number
+of libraries and just a couple of app modules -- it's much better to
 
 1. Turn on checkDependencies mode, and
 
@@ -272,7 +272,7 @@ post](https://groups.google.com/g/lint-dev/c/mwpTCaQPXYU/m/YKc4EcMYAgAJ).
 
 If you see a suspicious check, you can try to disable its issues
 (unless you find their value is worth the cost; after all, real world
-bugs are typically more expensive than server compute cycles.) But
+bugs are typically more expensive than server compute cycles). But
 don't forget to also report the bug to the lint check author!
 
 !!! Warning
@@ -282,8 +282,8 @@ don't forget to also report the bug to the lint check author!
    unlucky detector that comes along has to perform the computation,
    and subsequent detectors just get to reuse the result. Because of
    this, it's not always the case that a particular detector is a
-   performance culprit, and as soon as you disable it, a new detector
-   moves to the top of the list paying the same initialization costs.
+   performance culprit. As soon as you disable it, a new detector may
+   move to the top of the list paying the same initialization costs.
    The main use for this tool is to find extreme or unusual performance
    behaviors.
 

@@ -9,7 +9,7 @@ In alphabetical order:
 
 Configuration
 : A configuration provides extra information or parameters to lint on a
-  per project, or even per directory basis. For example, the `lint.xml`
+  per-project, or even per-directory, basis. For example, the `lint.xml`
   files can change the severity for issues, or list incidents to ignore
   (matched for example by a regular expression), or even provide values
   for options read by a specific detector.
@@ -17,7 +17,7 @@ Configuration
 Context
 : An object passed into detectors in many APIs, providing data about
   (for example) which file is being analyzed (and in which project),
-  and for specific types of analysis additional information; for
+  and (for specific types of analysis) additional information; for
   example, an XmlContext points to the DOM document, a JavaContext
   includes the AST, and so on.
 
@@ -97,7 +97,7 @@ Scope
   Java and Kotlin files, there is a scope for .class files, and so on.
 
   Typically lint cares about which **set** of scopes apply,
-  so most of the APIs take an `EnumSet< Scope>`, but we'll often
+  so most of the APIs take an `EnumSet&lt;Scope>`, but we'll often
   refer to this as just “the scope” instead of the “scope set”.
 
 Severity

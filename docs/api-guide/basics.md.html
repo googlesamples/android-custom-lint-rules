@@ -169,13 +169,13 @@ declaration” error, you can and should include both locations.
 
 Many detector methods will pass in a `Context`, or a more specific
 subclass of `Context` such as `JavaContext` or `XmlContext`. This
-allows lint to provide access to the detectors information they may
-need, without passing in a lot of parameters (and allowing lint to add
-additional data over time without breaking signatures).
+allows lint to give the detectors information they may need, without
+passing in a lot of parameters. It also allows lint to add additional data
+over time without breaking signatures.
 
 The `Context` classes also provide many convenience APIs. For example,
 for `XmlContext` there are methods for creating locations for XML tags,
-XML attributes, just the name part of an XML attribute and just the
+XML attributes, just the name part of an XML attribute, and just the
 value part of an XML attribute. For a `JavaContext` there are also
 methods for creating locations, such as for a method call, including
 whether to include the receiver and/or the argument list.
@@ -204,7 +204,7 @@ that the user can just type to replace it.
 Lint's API has two halves:
 
 - The **Client API**: “Integrate (and run) lint from within a tool”.
-  For example, both the IDE and the build system uses this API to embed
+  For example, both the IDE and the build system use this API to embed
   and invoke lint to analyze the code in the project or editor.
 
 - The **Detector API**: “Implement a new lint check”. This is the API
@@ -213,12 +213,12 @@ Lint's API has two halves:
 The class in the Client API which represents lint running in a tool is
 called `LintClient`. This class is responsible for, among other things:
 
-* Reporting incidents found by detectors. For example, in the IDE, it
+* **Reporting incidents found by detectors**. For example, in the IDE, it
   will place error markers into the source editor, and in a build
   system, it may write warnings to the console or generate a report or
   even fail the build.
 
-* Handling I/O. Detectors should never read files from disk directly.
+* **Handling I/O**. Detectors should never read files from disk directly.
   This allows lint checks to work smoothly in for example the IDE. When
   lint runs on the fly, and a lint check asks for the source file
   contents (or other supporting files), the `LintClient` in the IDE
@@ -226,14 +226,13 @@ called `LintClient`. This class is responsible for, among other things:
   editors and if the requested file is being edited, it will return the
   current (often unsaved!) contents.
 
-* Handling network traffic. Lint checks should never open
-  URLConnections themselves. By going through the lint API to request
-  data for a URL, not only can the LintClient for example use any
-  configured IDE proxy settings which is done in the IntelliJ
-  integration of lint, but even the lint check's own unit tests can
-  easily be tested because the special unit test implementation of a
-  `LintClient` provides a simple way to provide exact responses for
-  specific URLs:
+* **Handling network traffic**. Lint checks should never open
+  URLConnections themselves. Instead, they should go through the lint API
+  to request data for URLs. Among other things, this allows the
+  `LintClient` to use configured IDE proxy settings (as is done in the
+  IntelliJ integration of lint). This is also good for testing, because
+  the special unit test implementation of a `LintClient` has a simple way
+  to provide exact responses for specific URLs:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 lint()
@@ -256,8 +255,8 @@ lint()
 
 And much, much, more. **However, most of the implementation of
 `LintClient` is intended for integration of lint itself, and as a check
-author you don't need to worry about it.** It's the detector API that
-matters, and is also less likely to change than the client API.
+author you don't need to worry about it.** The detector API will matter
+more, and it's also less likely to change than the client API.
 
 !!! Tip
    The division between the two halves is not perfect; some classes
@@ -273,8 +272,8 @@ Also,
    for internal lint usage have been made `public` such that lint's
    code in one package can access it from the other. There's normally a
    comment explaining that this is for internal use only, but be aware
-   that just because something is `public` or not `final` it's a good
-   idea to call or override it.
+   that even when something is `public` or not `final`, it might not be a
+   good idea to call or override it.
 
 ## Creating an Issue
 
@@ -283,7 +282,7 @@ your lint checks, see the [sample](example.md.html) and
 [publishing](publishing.md.html) chapters.
 
 `Issue` is a final class, so unlike `Detector`, you don't subclass
-it, you instantiate it via `Issue.create`.
+it; you instantiate it via `Issue.create`.
 
 By convention, issues are registered inside the companion object of the
 corresponding detector, but that is not required.
@@ -631,16 +630,16 @@ For example:
 
 * When implementing **`SourceCodeScanner`**, in Kotlin and Java files
   you can be called back
-  - When a method of a given name is invoked (`getApplicableMethodNames`
+  - when a method of a given name is invoked (`getApplicableMethodNames`
     and `visitMethodCall`)
-  - When a class of the given type is instantiated
+  - when a class of the given type is instantiated
     (`getApplicableConstructorTypes` and `visitConstructor`)
-  - When a new class is declared which extends (possibly indirectly)
+  - when a new class is declared which extends (possibly indirectly)
     a given class or interface (`applicableSuperClasses` and
     `visitClass`)
-  - When annotated elements are referenced or combined
+  - when annotated elements are referenced or combined
     (`applicableAnnotations` and `visitAnnotationUsage`)
-  - When any AST nodes of given types appear (`getApplicableUastTypes`
+  - when any AST nodes of given types appear (`getApplicableUastTypes`
     and `createUastHandler`)
 
 * When implementing a **`ClassScanner`**, in `.class` and `.jar` files
@@ -650,7 +649,7 @@ For example:
   - when a given bytecode instruction occurs
     (`getApplicableAsmNodeTypes` and `checkInstruction`)
   - like with XmlScanner's `visitDocument`, you can perform your own
-    ASM bytecode iteration via `checkClass`.
+    ASM bytecode iteration via `checkClass`
 
 * There are various other scanners too, for example `GradleScanner`
   which lets you visit `build.gradle` and `build.gradle.kts` DSL
@@ -677,9 +676,9 @@ instantiate the detector once per analysis, so you can stash state on
 the detector in fields and accumulate information for analysis at the
 end.
 
-There are some callbacks both before each individual file is analyzed
-(`beforeCheckFile` and `afterCheckFile`), as well as before and after
-analysis of all the modules (`beforeCheckRootProject` and
+There are some callbacks both before and after each individual file is
+analyzed (`beforeCheckFile` and `afterCheckFile`), as well as before and
+after analysis of all the modules (`beforeCheckRootProject` and
 `afterCheckRootProject`).
 
 This is for example how the ”unused resources“ check works: we store
@@ -764,8 +763,7 @@ to make implementation simpler. These include
   like the `ResourceRepository` and the `ResourceEvaluator`.
 
 * Finally, there are a number of utility methods; for example there is
-  an `editDistance` method used to find likely typos used by a number
-  of checks.
+  an `editDistance` method used to find likely typos.
 
 ## Scanner Example
 
@@ -807,7 +805,7 @@ class MyDetector : Detector(), XmlScanner {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The second, older form, may seem simpler, but the new API allows a lot
+The second (older) form may seem simpler, but the new API allows a lot
 more metadata to be attached to the report, such as an override
 severity. You don't have to convert to the builder syntax to do this;
 you could also have written the second form as
@@ -1003,7 +1001,7 @@ PSI element to try to convert it to UAST if source is available.
 
 !!! Warning
    Resolving only works if lint has a correct classpath such that the
-   referenced method, field or class are actually present. If it is
+   referenced method, field, or class is actually present. If it is
    not, resolve will return null, and various lint callbacks will not
    be invoked. This is a common source of questions for lint checks
    ”not working“; it frequently comes up in lint unit tests where a

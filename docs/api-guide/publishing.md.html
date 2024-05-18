@@ -126,7 +126,7 @@ return your deleted issue id or ids:
  * and is no longer registered, any existing mentions of the issue
  * id in baselines, lint.xml files etc are gracefully handled.
  */
-open val deletedIssues: List<String> = emptyList()
+open val deletedIssues: List&lt;String> = emptyList()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The reason you'll want to do this is listed right there in the doc: If
@@ -136,7 +136,7 @@ severity, then lint will report an error that it's an unknown id. This
 is done to catch issue id typos. And if the user has a baseline file
 listing incidents from your check, then if your issue id is not
 registered as deleted, lint will think this is an issue that has been
-"fixed“ since it's no longer reported, and lint will issue an
+“fixed” since it's no longer reported, and lint will issue an
 informational message that the baseline contains issues no longer
 reported (which is done such that users can update their baseline
 files, to ensure that the fixed issues aren't reintroduced again.)
