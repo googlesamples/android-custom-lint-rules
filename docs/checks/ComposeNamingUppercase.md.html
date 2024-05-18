@@ -39,11 +39,9 @@ Copyright Year
 :   2023
 
 Composable functions that return Unit should start with an uppercase
-letter.
-They are considered declarative entities that can be either present or
-absent in a composition and therefore follow the naming rules for
-classes.
-See
+letter.They are considered declarative entities that can be either
+present or absent in a composition and therefore follow the naming rules
+for classes.See
 https://slackhq.github.io/compose-lints/rules/#naming-composable-functions-properly
 for more information.
 
@@ -119,17 +117,17 @@ for the unit tests for this check to see additional scenarios.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose-lint-checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.2.0"
+compose-lint-checks = "1.3.1"
 [libraries]
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
@@ -137,7 +135,7 @@ compose-lint-checks = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).

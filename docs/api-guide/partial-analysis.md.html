@@ -308,8 +308,8 @@ is called an “incident”, and there is a new `Incident` class which
 represents it. To report an incident you simply call
 `context.report(incident)`. There are several ways to create these
 incidents. The easiest is to simply edit your existing call above by
-adding `Incident(` (or from Java, `new Incident(`) inside the
-`context.report` block like this:
+putting it inside `Incident(...)` (in Java, `new Incident(...)`) inside
+the `context.report` block like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
     context.report(Incident(
@@ -390,7 +390,7 @@ These are package-level functions, though from Java you can access them
 from the `Constraints` class.
 
 Recording an incident with a constraint is easy; first construct the
-`Incident` as before, and then report them via
+`Incident` as before, and then report it via
 `context.report(incident, constraint)`:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java
@@ -403,7 +403,7 @@ Recording an incident with a constraint is easy; first construct the
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, note that you can combine constraints; there are both “and”
-and “or” operators defined for the `Constraint` class. so the following
+and “or” operators defined for the `Constraint` class, so the following
 is valid:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin

@@ -110,14 +110,14 @@ by calling `element.sourcePsi`.
 
 ### How do I get the `UMethod` for a `PsiMethod` ?
 
-Call `psiMethod.toUElementOfType<UMethod>()`. Note that this may return
+Call `psiMethod.toUElementOfType&lt;UMethod>()`. Note that this may return
 null if UAST cannot find valid Java or Kotlin source code for the
 method.
 
 For `PsiField` and `PsiClass` instances use the equivalent
 `toUElementOfType` type arguments.
 
-### How do get a `JavaEvaluator` ?
+### How do get a `JavaEvaluator`?
 
 The `Context` passed into most of the `Detector` callback methods
 relevant to Kotlin and Java analysis is of type `JavaContext`, and it
@@ -173,7 +173,7 @@ use `getClassType`.
     abstract fun getTypeClass(psiType: PsiType?): PsiClass?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-### How do I look up hierarhcy annotations for an element?
+### How do I look up hierarchy annotations for an element?
 
 You can directly look up annotations via the modified list
 of PsiElement or the annotations for a `UAnnotated` element,
@@ -254,7 +254,7 @@ Lint has a utility method to help with this on the `JavaEvaluator`:
     open fun computeArgumentMapping(
         call: UCallExpression,
         method: PsiMethod
-    ): Map<UExpression, PsiParameter> { /* ... */
+    ): Map&lt;UExpression, PsiParameter> { /* ... */
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This returns a map from UAST expressions (each argument to a UAST call
@@ -290,7 +290,7 @@ This is possible as part of the issue registration. After creating your
 ### Why are overloaded operators not handled?
 
 Kotlin supports overloaded operators, but these are not handled as
-calls in the AST - instead, an implicit `get` or `set` method from an
+calls in the AST -- instead, an implicit `get` or `set` method from an
 array access will show up as a `UArrayAccessExpression`. Lint has
 specific support to help handling these scenarios; see the “Implicit
 Calls” section in the [basics chapter](basics.md.html).

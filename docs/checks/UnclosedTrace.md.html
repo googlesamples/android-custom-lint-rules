@@ -1,0 +1,238 @@
+<meta charset="utf-8">
+(#) Incorrect trace section usage
+
+!!! WARNING: Incorrect trace section usage
+   This is a warning.
+
+Id
+:   `UnclosedTrace`
+Summary
+:   Incorrect trace section usage
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TraceSectionDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TraceSectionDetectorTest.kt)
+Copyright Year
+:   2024
+
+Calls to begin trace sections must be followed by corresponding calls to
+end those trace sections. Care must be taken to ensure that
+begin-section / end-section pairs are properly nested, and that
+functions do not return when there are still unclosed trace sections.
+The easiest way to ensure begin-section / end-section pairs are properly
+closed is to use a try-finally block as follows:
+
+```kotlin
+try {
+  Trace.beginSection("OK")
+  return true
+} finally {
+  Trace.endSection()
+}
+```
+
+This lint check may result in false-positives if trace sections are
+guarded by conditionals. For example, it may erroneously say the
+following has unclosed trace sections:
+
+```kotlin
+try {
+  Trace.beginSection("Wrong")
+  if (a == b) {
+    Trace.beginSection("OK")
+    blockingCall()
+  }
+} finally {
+  // Even though this is technically correct, the lint check isn't capable of detecting
+  // that the two conditionals are the same
+  if (a == b) Trace.endSection()
+  Trace.endSection()
+}
+```
+
+To fix the code snippet above, you could add a nested try-finally as
+follows:
+
+```kotlin
+try {
+  Trace.beginSection("OK")
+  if (a == b) {
+    try {
+      Trace.beginSection("OK")
+      blockingCall()
+    } finally {
+      Trace.endSection()
+    }
+  }
+} finally {
+  Trace.endSection()
+}
+```
+
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) strict
+
+Whether to assume any method call could throw an exception.
+In strict mode, this check assumes that any method call in between begin-section and end-section pairs could potentially throw an exception. Strict mode is useful for situations where unchecked Java exceptions are caught and do not necessarily result in a crash.
+
+If strict mode is off, this check will still consider the flow of exceptions in Kotlin, but it will ignore unchecked exceptions (`RuntimeException` and its subclasses) in Java unless the method declares explicitly that it `throws` them. If strict mode is enabled, all Java method calls need to be guarded using a finally block so ensure the trace is always ended.
+
+Default is false.
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="UnclosedTrace"&gt;
+        &lt;option name="strict" value="false" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/test.kt:12:Warning: The beginSection() call is not always
+closed with a matching endSection() because the code in between may
+suspend [UnclosedTrace]
+
+    Trace.beginSection("Wrong-1")
+          ------------
+
+
+src/test/pkg/test.kt:18:Warning: The beginSection() call is not always
+closed with a matching endSection() because the code in between may
+throw an exception [UnclosedTrace]
+
+    Trace.beginSection("Wrong-2")
+          ------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.os.Trace
+
+fun okay1(foo: Int, bar: Int) {
+    Trace.beginSection("OK-1")
+    val foobar = foo + bar
+    Trace.endSection()
+}
+
+suspend fun wrong1() {
+    Trace.beginSection("Wrong-1")
+    suspendingCall()
+    Trace.endSection()
+}
+
+fun wrong2(foo: String, bar: String) {
+    Trace.beginSection("Wrong-2")
+    // Kotlin does not have checked exceptions. Any function could throw.
+    // Adding strings is a function, and therefore could throw an exception
+    val foobar = foo + bar
+    Trace.endSection()
+}
+
+fun okay2(foo: String, bar: String) {
+    Trace.beginSection("OK-2")
+    try {
+      val foobar = foo + bar
+    } finally {
+      Trace.endSection()
+    }
+}
+
+suspend fun suspendingCall() { }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TraceSectionDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnclosedTrace")
+  fun method() {
+     beginSection(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnclosedTrace")
+  void method() {
+     beginSection(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnclosedTrace
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnclosedTrace" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnclosedTrace'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnclosedTrace ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

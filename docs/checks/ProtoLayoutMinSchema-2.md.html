@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.wear.protolayout:protolayout](androidx_wear_protolayout_protolayout.md.html)
+:   [androidx.wear.protolayout:protolayout-material](androidx_wear_protolayout_protolayout-material.md.html)
 
 Affects
 :   Kotlin and Java files
@@ -61,8 +61,9 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * ProtoLayoutMinSchema: ProtoLayout feature is not guaranteed to be available on the target device API. (this issue)
-* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-expression:1.1.0-rc01](ProtoLayoutMinSchema.md.html)
-* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout:1.1.0-rc01](ProtoLayoutMinSchema-2.md.html)
+* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-expression:1.2.0-alpha03](ProtoLayoutMinSchema.md.html)
+* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-material:1.2.0-alpha03](ProtoLayoutMinSchema-2.md.html)
+* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout:1.2.0-alpha03](ProtoLayoutMinSchema-3.md.html)
 
 
 (##) Including
@@ -73,28 +74,28 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.wear.protolayout:protolayout:1.1.0-rc01")
+implementation("androidx.wear.protolayout:protolayout-material:1.2.0-alpha03")
 
 // build.gradle
-implementation 'androidx.wear.protolayout:protolayout:1.1.0-rc01'
+implementation 'androidx.wear.protolayout:protolayout-material:1.2.0-alpha03'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.protolayout)
+implementation(libs.protolayout-material)
 
 # libs.versions.toml
 [versions]
-protolayout = "1.1.0-rc01"
+protolayout-material = "1.2.0-alpha03"
 [libraries]
-protolayout = {
-    module = "androidx.wear.protolayout:protolayout",
-    version.ref = "protolayout"
+protolayout-material = {
+    module = "androidx.wear.protolayout:protolayout-material",
+    version.ref = "protolayout-material"
 }
 ```
 
-1.1.0-rc01 is the version this documentation was generated from;
+1.2.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.wear.protolayout:protolayout](androidx_wear_protolayout_protolayout.md.html).
+[Additional details about androidx.wear.protolayout:protolayout-material](androidx_wear_protolayout_protolayout-material.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

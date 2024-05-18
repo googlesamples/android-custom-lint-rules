@@ -9,7 +9,7 @@ warnings in the same test files.
 
 There are a number of built-in test modes:
 
-* Test modes which makes small tweaks to the source files which
+* Test modes which make small tweaks to the source files which
   should be compatible, such as
   * Inserting unnecessary parentheses
   * Replacing imported symbols with fully qualified names
@@ -36,7 +36,7 @@ tests, but you can opt out of any test modes by invoking the
 `skipTestModes` DSL method, as described below.
 
 You can also add in your own test modes. For example, lint adds its own
-internal test mode for making sure the built-in annotation checks works
+internal test mode for making sure the built-in annotation checks work
 with Android platform annotations in the following test mode:
 
 [](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidPlatformAnnotationsTestMode.kt)
@@ -322,7 +322,7 @@ parents. Let's say you're looking at a call and you want to see if the
 last argument is a literal expression such as a number or a String. You
 *can't* just use `if (call.valueArguments.lastOrNull() is
 ULiteralExpression)`, because that first argument could be a
-`UParenthesizedExpression`, as in `call(1, true, ("hello")), so you'd
+`UParenthesizedExpression`, as in `call(1, true, ("hello"))`, so you'd
 need to look inside the parentheses.
 
 UAST comes with two functions to help you handle this correctly:

@@ -106,7 +106,7 @@ argument corresponding to that parameter (the literal string “lint”).
 The second case shows a similar situation where the array syntax will
 end up calling our extension method, `get()`.
 
-And the third case shows the most common scenario: a straight forward
+And the third case shows the most common scenario: a straightforward
 method call to an annotated method.
 
 In many cases, the above detector implementation is nearly all you have
@@ -322,7 +322,7 @@ with `@ThreadSafe`. Similarly for the `pop()` call on line 3.
 
 The `fileStack.push` call on line 4 also resolves to the same method
 as the call on line 2 (even though the concrete type is a `FileStack`
-instead of a `Stack), so like on line 2, this call is taken to be
+instead of a `Stack`), so like on line 2, this call is taken to be
 thread safe.
 
 However, the `fileStack.pop` call on line 6 resolves to the API method

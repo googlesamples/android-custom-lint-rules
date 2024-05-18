@@ -19,103 +19,103 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   com.slack.lint:slack-lint-checks:0.7.0
+:   com.slack.lint:slack-lint-checks:0.7.3
 
 (##) Included Issues
 
-|Issue Id                                                                                          |Issue Description                                                                                                                      |
-|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-|[CastingViewContextToActivity](CastingViewContextToActivity.md.html)                              |Unsafe cast of `Context` to `Activity`                                                                                                 |
-|[ArgInFormattedQuantityStringRes](ArgInFormattedQuantityStringRes.md.html)                        |Count value in formatted string resource.                                                                                              |
-|[BindsTypeMismatch](BindsTypeMismatch.md.html)                                                    |@Binds function parameters must be type-assignable to their return types.                                                              |
-|[BindingReturnType](BindingReturnType.md.html)                                                    |@Binds/@Provides functions must have a return type. Cannot be void or Unit.                                                            |
-|[BindingReceiverParameter](BindingReceiverParameter.md.html)                                      |@Binds/@Provides functions cannot be extension functions.                                                                              |
-|[BindsWrongParameterCount](BindsWrongParameterCount.md.html)                                      |@Binds functions require a single parameter as an input to bind.                                                                       |
-|[BindsMustBeAbstract](BindsMustBeAbstract.md.html)                                                |@Binds functions must be abstract and cannot have function bodies.                                                                     |
-|[RedundantBinds](RedundantBinds.md.html)                                                          |@Binds functions should return a different type (including annotations) than the input type.                                           |
-|[MustBeInModule](MustBeInModule.md.html)                                                          |@Binds/@Provides function must be in `@Module`-annotated classes.                                                                      |
-|[ProvidesMustNotBeAbstract](ProvidesMustNotBeAbstract.md.html)                                    |@Provides functions cannot be abstract.                                                                                                |
-|[KotlinPairNotCreated](KotlinPairNotCreated.md.html)                                              |Use Kotlin's kotlin.Pair instead of other Pair types from other libraries like AndroidX and Slack commons                              |
-|[DoNotCallProviders](DoNotCallProviders.md.html)                                                  |Dagger provider methods should not be called directly by user code.                                                                    |
-|[InclusiveNaming](InclusiveNaming.md.html)                                                        |Use inclusive naming.                                                                                                                  |
-|[InclusiveNaming](InclusiveNaming.md.html)                                                        |Use inclusive naming.                                                                                                                  |
-|[DeprecatedCall](DeprecatedCall.md.html)                                                          |This class or method is deprecated; consider using an alternative.                                                                     |
-|[DeprecatedSqlUsage](DeprecatedSqlUsage.md.html)                                                  |Use SqlDelight!                                                                                                                        |
-|[JavaOnlyDetector](JavaOnlyDetector.md.html)                                                      |Using @JavaOnly elements in Kotlin code.                                                                                               |
-|[SerializableUsage](SerializableUsage.md.html)                                                    |Don't use Serializable.                                                                                                                |
-|[RawDispatchersUse](RawDispatchersUse.md.html)                                                    |Use SlackDispatchers.                                                                                                                  |
-|[MainScopeUsage](MainScopeUsage.md.html)                                                          |Use slack.foundation.coroutines.android.MainScope.                                                                                     |
-|[SubscribeOnMain](SubscribeOnMain.md.html)                                                        |subscribeOn called with the main thread scheduler.                                                                                     |
-|[GuavaChecksUsed](GuavaChecksUsed.md.html)                                                        |Use Slack's JavaPreconditions instead of Guava's Preconditions checks                                                                  |
-|[GuavaPreconditionsUsedInKotlin](GuavaPreconditionsUsedInKotlin.md.html)                          |Kotlin precondition checks should use the Kotlin standard library checks                                                               |
-|[DoNotMockPlatformTypes](DoNotMockPlatformTypes.md.html)                                          |platform types should not be mocked                                                                                                    |
-|[DoNotMockDataClass](DoNotMockDataClass.md.html)                                                  |data classes represent pure data classes, so mocking them should not be necessary.                                                     |
-|[DoNotMock](DoNotMock.md.html)                                                                    |<Never used>                                                                                                                           |
-|[DoNotMockSealedClass](DoNotMockSealedClass.md.html)                                              |sealed classes have a restricted type hierarchy, use a subtype instead                                                                 |
-|[DoNotMockAutoValue](DoNotMockAutoValue.md.html)                                                  |AutoValue classes represent pure data classes, so mocking them should not be necessary.                                                |
-|[DoNotMockObjectClass](DoNotMockObjectClass.md.html)                                              |object classes are singletons, so mocking them should not be necessary                                                                 |
-|[DoNotMockRecordClass](DoNotMockRecordClass.md.html)                                              |record classes represent pure data classes, so mocking them should not be necessary.                                                   |
-|[ErrorProneDoNotMockUsage](ErrorProneDoNotMockUsage.md.html)                                      |Use Slack's internal `@DoNotMock` annotation.                                                                                          |
-|[MoshiUsageAdaptedByRequiresAdapter](MoshiUsageAdaptedByRequiresAdapter.md.html)                  |@AdaptedBy.adapter must be a JsonAdapter or JsonAdapter.Factory.                                                                       |
-|[MoshiUsageAdaptedByRequiresKeep](MoshiUsageAdaptedByRequiresKeep.md.html)                        |Adapters targeted by @AdaptedBy must have @Keep.                                                                                       |
-|[MoshiUsageArray](MoshiUsageArray.md.html)                                                        |Prefer List over Array.                                                                                                                |
-|[MoshiUsageBlankGenerator](MoshiUsageBlankGenerator.md.html)                                      |Don't use blank JsonClass.generator values.                                                                                            |
-|[MoshiUsageBlankJsonName](MoshiUsageBlankJsonName.md.html)                                        |Don't use blank names in `@Json`.                                                                                                      |
-|[MoshiUsageBlankTypeLabel](MoshiUsageBlankTypeLabel.md.html)                                      |Moshi-sealed requires a type label specified after the 'sealed:' prefix.                                                               |
-|[MoshiUsageDoubleClassAnnotation](MoshiUsageDoubleClassAnnotation.md.html)                        |Only use one of @AdaptedBy or @JsonClass.                                                                                              |
-|[MoshiUsageDoubleTypeLabel](MoshiUsageDoubleTypeLabel.md.html)                                    |Only use one of @TypeLabel or @DefaultObject.                                                                                          |
-|[MoshiUsageDuplicateJsonName](MoshiUsageDuplicateJsonName.md.html)                                |Duplicate JSON names are errors as JSON does not allow duplicate keys in objects.                                                      |
-|[MoshiUsageEnumAnnotatedUnknown](MoshiUsageEnumAnnotatedUnknown.md.html)                          |UNKNOWN members in @JsonClass-annotated enums should not be annotated with @Json                                                       |
-|[MoshiUsageEnumCasing](MoshiUsageEnumCasing.md.html)                                              |Consider using `@Json(name = ...)` rather than lower casing.                                                                           |
-|[MoshiUsageEnumJsonClassGenerated](MoshiUsageEnumJsonClassGenerated.md.html)                      |Enums annotated with @JsonClass must not set `generateAdapter` to true.                                                                |
-|[MoshiUsageEnumMissingJsonClass](MoshiUsageEnumMissingJsonClass.md.html)                          |Enums serialized with Moshi should be annotated with @JsonClass.                                                                       |
-|[MoshiUsageEnumPropertyCouldBeMoshi](MoshiUsageEnumPropertyCouldBeMoshi.md.html)                  |Consider making enum properties also use Moshi.                                                                                        |
-|[MoshiUsageEnumPropertyDefaultUnknown](MoshiUsageEnumPropertyDefaultUnknown.md.html)              |Suspicious default value to 'UNKNOWN' for a Moshi enum.                                                                                |
-|[MoshiUsageEnumMissingUnknown](MoshiUsageEnumMissingUnknown.md.html)                              |Enums serialized with Moshi must reserve the first member as UNKNOWN.                                                                  |
-|[MoshiUsageGenerateAdapterShouldBeTrue](MoshiUsageGenerateAdapterShouldBeTrue.md.html)            |JsonClass.generateAdapter must be true in order for Moshi code gen to run.                                                             |
-|[MoshiUsageGenericSealedSubtype](MoshiUsageGenericSealedSubtype.md.html)                          |Sealed subtypes used with moshi-sealed cannot be generic.                                                                              |
-|[MoshiUsageInappropriateTypeLabel](MoshiUsageInappropriateTypeLabel.md.html)                      |Inappropriate @TypeLabel or @DefaultObject annotation.                                                                                 |
-|[MoshiUsageRedundantSiteTarget](MoshiUsageRedundantSiteTarget.md.html)                            |Use of site-targets on @Json are redundant.                                                                                            |
-|[MoshiUsageMissingPrimary](MoshiUsageMissingPrimary.md.html)                                      |@JsonClass-annotated types must have a primary constructor or be sealed.                                                               |
-|[MoshiUsageMissingTypeLabel](MoshiUsageMissingTypeLabel.md.html)                                  |Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject.                                                             |
-|[MoshiUsageMutableCollections](MoshiUsageMutableCollections.md.html)                              |Use immutable collections rather than mutable versions.                                                                                |
-|[MoshiUsageQualifierRetention](MoshiUsageQualifierRetention.md.html)                              |JsonQualifiers must have RUNTIME retention.                                                                                            |
-|[MoshiUsageQualifierTarget](MoshiUsageQualifierTarget.md.html)                                    |JsonQualifiers must include FIELD targeting.                                                                                           |
-|[MoshiUsageNonMoshiClassCollection](MoshiUsageNonMoshiClassCollection.md.html)                    |Concrete Collection type '%HINT%' is not natively supported by Moshi.                                                                  |
-|[MoshiUsageNonMoshiClassExternal](MoshiUsageNonMoshiClassExternal.md.html)                        |External type '%HINT%' is not natively supported by Moshi.                                                                             |
-|[MoshiUsageNonMoshiClassInternal](MoshiUsageNonMoshiClassInternal.md.html)                        |Non-Moshi internal type '%HINT%' is not natively supported by Moshi.                                                                   |
-|[MoshiUsageNonMoshiClassMap](MoshiUsageNonMoshiClassMap.md.html)                                  |Concrete Map type '%HINT%' is not natively supported by Moshi.                                                                         |
-|[MoshiUsageNonMoshiClassPlatform](MoshiUsageNonMoshiClassPlatform.md.html)                        |Platform type '%HINT%' is not natively supported by Moshi.                                                                             |
-|[MoshiUsageObject](MoshiUsageObject.md.html)                                                      |Object types cannot be annotated with @JsonClass.                                                                                      |
-|[MoshiUsageParamNeedsInit](MoshiUsageParamNeedsInit.md.html)                                      |Constructor non-property parameters in Moshi classes must have default values.                                                         |
-|[MoshiUsagePrivateConstructor](MoshiUsagePrivateConstructor.md.html)                              |Constructors in Moshi classes cannot be private.                                                                                       |
-|[MoshiUsagePrivateConstructorProperty](MoshiUsagePrivateConstructorProperty.md.html)              |Constructor parameter properties in Moshi classes cannot be private.                                                                   |
-|[MoshiUsageRedundantJsonName](MoshiUsageRedundantJsonName.md.html)                                |Json.name with the same value as the property/enum member name is redundant.                                                           |
-|[MoshiUsageSealedMustBeSealed](MoshiUsageSealedMustBeSealed.md.html)                              |Moshi-sealed can only be applied to 'sealed' types.                                                                                    |
-|[MoshiUsageSerializedName](MoshiUsageSerializedName.md.html)                                      |Use Moshi's @Json rather than Gson's @SerializedName.                                                                                  |
-|[MoshiUsageSnakeCase](MoshiUsageSnakeCase.md.html)                                                |Consider using `@Json(name = ...)` rather than direct snake casing.                                                                    |
-|[MoshiUsageTransientNeedsInit](MoshiUsageTransientNeedsInit.md.html)                              |Transient constructor properties must have default values.                                                                             |
-|[MoshiUsageUnsupportedType](MoshiUsageUnsupportedType.md.html)                                    |This type cannot be annotated with @JsonClass.                                                                                         |
-|[MoshiUsageUseData](MoshiUsageUseData.md.html)                                                    |Model classes should be immutable data classes.                                                                                        |
-|[MoshiUsageVarProperty](MoshiUsageVarProperty.md.html)                                            |Moshi properties should be immutable.                                                                                                  |
-|[MoshiUsageClassVisibility](MoshiUsageClassVisibility.md.html)                                    |@JsonClass-annotated types must be public, package-private, or internal.                                                               |
-|[FragmentConstructorInjection](FragmentConstructorInjection.md.html)                              |Fragment dependencies should be injected using constructor injections only.                                                            |
-|[FragmentFieldInjection](FragmentFieldInjection.md.html)                                          |Fragment dependencies should be injected using the Fragment's constructor.                                                             |
-|[InjectWithScopeRequiredLoggedInUserProvider](InjectWithScopeRequiredLoggedInUserProvider.md.html)|@InjectWith-annotated classes must implement LoggedInUserProvider (or extend something that does) if they target UserScope or OrgScope.|
-|[InjectWithTypeMustImplementAnvilInjectable](InjectWithTypeMustImplementAnvilInjectable.md.html)  |@InjectWith-annotated classes must implement AnvilInjectable (or extend something that does).                                          |
-|[RedactedInJavaUsage](RedactedInJavaUsage.md.html)                                                |@Redacted is only supported in Kotlin classes!                                                                                         |
-|[InjectInJava](InjectInJava.md.html)                                                              |Only Kotlin classes should be injected in order for Anvil to work.                                                                     |
-|[RetrofitUsage](RetrofitUsage.md.html)                                                            |This is replaced by the caller.                                                                                                        |
-|[RestrictCallsTo](RestrictCallsTo.md.html)                                                        |Methods annotated with @RestrictedCallsTo should only be called from the specified scope.                                              |
-|[SpanMarkPointMissingMask](SpanMarkPointMissingMask.md.html)                                      |Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to.                                                |
-|[DoNotExposeEitherNetInRepositories](DoNotExposeEitherNetInRepositories.md.html)                  |Repository APIs should not expose EitherNet types directly.                                                                            |
-|[FullyQualifiedResource](FullyQualifiedResource.md.html)                                          |Resources should use an import alias instead of being fully qualified.                                                                 |
-|[MissingResourceImportAlias](MissingResourceImportAlias.md.html)                                  |Missing import alias for R class.                                                                                                      |
-|[WrongResourceImportAlias](WrongResourceImportAlias.md.html)                                      |Wrong import alias for this R class.                                                                                                   |
-|[DenyListedApi](DenyListedApi.md.html)                                                            |Deny-listed API                                                                                                                        |
-|[DenyListedBlockingApi](DenyListedBlockingApi.md.html)                                            |Deny-listed API                                                                                                                        |
-|[ParcelizeFunctionProperty](ParcelizeFunctionProperty.md.html)                                    |Function type properties should not be used in Parcelize classes                                                                       |
-|[ExceptionMessage](ExceptionMessage.md.html)                                                      |Please provide a string for the lazyMessage parameter                                                                                  |
+|Issue Id                                                                              |Issue Description                                                                                        |
+|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+|[CastingViewContextToActivity](CastingViewContextToActivity.md.html)                  |Unsafe cast of `Context` to `Activity`                                                                   |
+|[ArgInFormattedQuantityStringRes](ArgInFormattedQuantityStringRes.md.html)            |Count value in formatted string resource.                                                                |
+|[BindsTypeMismatch](BindsTypeMismatch.md.html)                                        |@Binds parameter/return must be type-assignable                                                          |
+|[BindingReturnType](BindingReturnType.md.html)                                        |@Binds/@Provides must have a return type                                                                 |
+|[BindingReceiverParameter](BindingReceiverParameter.md.html)                          |@Binds/@Provides functions cannot be extensions                                                          |
+|[BindsWrongParameterCount](BindsWrongParameterCount.md.html)                          |@Binds must have one parameter                                                                           |
+|[BindsMustBeAbstract](BindsMustBeAbstract.md.html)                                    |@Binds functions must be abstract                                                                        |
+|[RedundantBinds](RedundantBinds.md.html)                                              |@Binds functions should return a different type                                                          |
+|[MustBeInModule](MustBeInModule.md.html)                                              |@Binds/@Provides functions must be in modules                                                            |
+|[ProvidesMustNotBeAbstract](ProvidesMustNotBeAbstract.md.html)                        |@Provides functions cannot be abstract                                                                   |
+|[KotlinPairNotCreated](KotlinPairNotCreated.md.html)                                  |Use Kotlin's kotlin.Pair instead of other Pair types from other libraries like AndroidX and Slack commons|
+|[DoNotCallProviders](DoNotCallProviders.md.html)                                      |Dagger provider methods should not be called directly by user code.                                      |
+|[InclusiveNaming](InclusiveNaming.md.html)                                            |Use inclusive naming.                                                                                    |
+|[InclusiveNaming](InclusiveNaming.md.html)                                            |Use inclusive naming.                                                                                    |
+|[DeprecatedCall](DeprecatedCall.md.html)                                              |This class or method is deprecated; consider using an alternative.                                       |
+|[DeprecatedSqlUsage](DeprecatedSqlUsage.md.html)                                      |Use SqlDelight!                                                                                          |
+|[JavaOnlyDetector](JavaOnlyDetector.md.html)                                          |Using @JavaOnly elements in Kotlin code.                                                                 |
+|[SerializableUsage](SerializableUsage.md.html)                                        |Don't use Serializable.                                                                                  |
+|[RawDispatchersUse](RawDispatchersUse.md.html)                                        |Use SlackDispatchers.                                                                                    |
+|[MainScopeUsage](MainScopeUsage.md.html)                                              |Use slack.foundation.coroutines.android.MainScope.                                                       |
+|[SubscribeOnMain](SubscribeOnMain.md.html)                                            |subscribeOn called with the main thread scheduler.                                                       |
+|[GuavaChecksUsed](GuavaChecksUsed.md.html)                                            |Use Slack's JavaPreconditions instead of Guava's Preconditions checks                                    |
+|[GuavaPreconditionsUsedInKotlin](GuavaPreconditionsUsedInKotlin.md.html)              |Kotlin precondition checks should use the Kotlin standard library checks                                 |
+|[DoNotMockAnything](DoNotMockAnything.md.html)                                        |Do not add new mocks.                                                                                    |
+|[DoNotMockPlatformTypes](DoNotMockPlatformTypes.md.html)                              |platform types should not be mocked                                                                      |
+|[DoNotMockDataClass](DoNotMockDataClass.md.html)                                      |data classes represent pure data classes, so mocking them should not be necessary.                       |
+|[DoNotMock](DoNotMock.md.html)                                                        |<Never used>                                                                                             |
+|[DoNotMockSealedClass](DoNotMockSealedClass.md.html)                                  |sealed classes have a restricted type hierarchy, use a subtype instead                                   |
+|[DoNotMockAutoValue](DoNotMockAutoValue.md.html)                                      |AutoValue classes represent pure data classes, so mocking them should not be necessary.                  |
+|[DoNotMockObjectClass](DoNotMockObjectClass.md.html)                                  |object classes are singletons, so mocking them should not be necessary                                   |
+|[DoNotMockRecordClass](DoNotMockRecordClass.md.html)                                  |record classes represent pure data classes, so mocking them should not be necessary.                     |
+|[ErrorProneDoNotMockUsage](ErrorProneDoNotMockUsage.md.html)                          |Use Slack's internal `@DoNotMock` annotation.                                                            |
+|[MoshiUsageAdaptedByRequiresAdapter](MoshiUsageAdaptedByRequiresAdapter.md.html)      |@AdaptedBy.adapter must be a JsonAdapter or JsonAdapter.Factory.                                         |
+|[MoshiUsageAdaptedByRequiresKeep](MoshiUsageAdaptedByRequiresKeep.md.html)            |Adapters targeted by @AdaptedBy must have @Keep.                                                         |
+|[MoshiUsageArray](MoshiUsageArray.md.html)                                            |Prefer List over Array.                                                                                  |
+|[MoshiUsageBlankGenerator](MoshiUsageBlankGenerator.md.html)                          |Don't use blank JsonClass.generator values.                                                              |
+|[MoshiUsageBlankJsonName](MoshiUsageBlankJsonName.md.html)                            |Don't use blank names in `@Json`.                                                                        |
+|[MoshiUsageBlankTypeLabel](MoshiUsageBlankTypeLabel.md.html)                          |Moshi-sealed requires a type label specified after the 'sealed:' prefix.                                 |
+|[MoshiUsageDoubleClassAnnotation](MoshiUsageDoubleClassAnnotation.md.html)            |Only use one of @AdaptedBy or @JsonClass.                                                                |
+|[MoshiUsageDoubleTypeLabel](MoshiUsageDoubleTypeLabel.md.html)                        |Only use one of @TypeLabel or @DefaultObject.                                                            |
+|[MoshiUsageDuplicateJsonName](MoshiUsageDuplicateJsonName.md.html)                    |Duplicate JSON names are errors as JSON does not allow duplicate keys in objects.                        |
+|[MoshiUsageEnumAnnotatedUnknown](MoshiUsageEnumAnnotatedUnknown.md.html)              |UNKNOWN members in @JsonClass-annotated enums should not be annotated with @Json                         |
+|[MoshiUsageEnumCasing](MoshiUsageEnumCasing.md.html)                                  |Consider using `@Json(name = ...)` rather than lower casing.                                             |
+|[MoshiUsageEnumJsonClassGenerated](MoshiUsageEnumJsonClassGenerated.md.html)          |Enums annotated with @JsonClass must not set `generateAdapter` to true.                                  |
+|[MoshiUsageEnumMissingJsonClass](MoshiUsageEnumMissingJsonClass.md.html)              |Enums serialized with Moshi should be annotated with @JsonClass.                                         |
+|[MoshiUsageEnumPropertyCouldBeMoshi](MoshiUsageEnumPropertyCouldBeMoshi.md.html)      |Consider making enum properties also use Moshi.                                                          |
+|[MoshiUsageEnumPropertyDefaultUnknown](MoshiUsageEnumPropertyDefaultUnknown.md.html)  |Suspicious default value to 'UNKNOWN' for a Moshi enum.                                                  |
+|[MoshiUsageEnumMissingUnknown](MoshiUsageEnumMissingUnknown.md.html)                  |Enums serialized with Moshi must reserve the first member as UNKNOWN.                                    |
+|[MoshiUsageGenerateAdapterShouldBeTrue](MoshiUsageGenerateAdapterShouldBeTrue.md.html)|JsonClass.generateAdapter must be true in order for Moshi code gen to run.                               |
+|[MoshiUsageGenericSealedSubtype](MoshiUsageGenericSealedSubtype.md.html)              |Sealed subtypes used with moshi-sealed cannot be generic.                                                |
+|[MoshiUsageInappropriateTypeLabel](MoshiUsageInappropriateTypeLabel.md.html)          |Inappropriate @TypeLabel or @DefaultObject annotation.                                                   |
+|[MoshiUsageRedundantSiteTarget](MoshiUsageRedundantSiteTarget.md.html)                |Use of site-targets on @Json are redundant.                                                              |
+|[MoshiUsageMissingPrimary](MoshiUsageMissingPrimary.md.html)                          |@JsonClass-annotated types must have a primary constructor or be sealed.                                 |
+|[MoshiUsageMissingTypeLabel](MoshiUsageMissingTypeLabel.md.html)                      |Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject.                               |
+|[MoshiUsageMutableCollections](MoshiUsageMutableCollections.md.html)                  |Use immutable collections rather than mutable versions.                                                  |
+|[MoshiUsageQualifierRetention](MoshiUsageQualifierRetention.md.html)                  |JsonQualifiers must have RUNTIME retention.                                                              |
+|[MoshiUsageQualifierTarget](MoshiUsageQualifierTarget.md.html)                        |JsonQualifiers must include FIELD targeting.                                                             |
+|[MoshiUsageNonMoshiClassCollection](MoshiUsageNonMoshiClassCollection.md.html)        |Concrete Collection type '%HINT%' is not natively supported by Moshi.                                    |
+|[MoshiUsageNonMoshiClassExternal](MoshiUsageNonMoshiClassExternal.md.html)            |External type '%HINT%' is not natively supported by Moshi.                                               |
+|[MoshiUsageNonMoshiClassInternal](MoshiUsageNonMoshiClassInternal.md.html)            |Non-Moshi internal type '%HINT%' is not natively supported by Moshi.                                     |
+|[MoshiUsageNonMoshiClassMap](MoshiUsageNonMoshiClassMap.md.html)                      |Concrete Map type '%HINT%' is not natively supported by Moshi.                                           |
+|[MoshiUsageNonMoshiClassPlatform](MoshiUsageNonMoshiClassPlatform.md.html)            |Platform type '%HINT%' is not natively supported by Moshi.                                               |
+|[MoshiUsageObject](MoshiUsageObject.md.html)                                          |Object types cannot be annotated with @JsonClass.                                                        |
+|[MoshiUsageParamNeedsInit](MoshiUsageParamNeedsInit.md.html)                          |Constructor non-property parameters in Moshi classes must have default values.                           |
+|[MoshiUsagePrivateConstructor](MoshiUsagePrivateConstructor.md.html)                  |Constructors in Moshi classes cannot be private.                                                         |
+|[MoshiUsagePrivateConstructorProperty](MoshiUsagePrivateConstructorProperty.md.html)  |Constructor parameter properties in Moshi classes cannot be private.                                     |
+|[MoshiUsageRedundantJsonName](MoshiUsageRedundantJsonName.md.html)                    |Json.name with the same value as the property/enum member name is redundant.                             |
+|[MoshiUsageSealedMustBeSealed](MoshiUsageSealedMustBeSealed.md.html)                  |Moshi-sealed can only be applied to 'sealed' types.                                                      |
+|[MoshiUsageSerializedName](MoshiUsageSerializedName.md.html)                          |Use Moshi's @Json rather than Gson's @SerializedName.                                                    |
+|[MoshiUsageSnakeCase](MoshiUsageSnakeCase.md.html)                                    |Consider using `@Json(name = ...)` rather than direct snake casing.                                      |
+|[MoshiUsageTransientNeedsInit](MoshiUsageTransientNeedsInit.md.html)                  |Transient constructor properties must have default values.                                               |
+|[MoshiUsageUnsupportedType](MoshiUsageUnsupportedType.md.html)                        |This type cannot be annotated with @JsonClass.                                                           |
+|[MoshiUsageUseData](MoshiUsageUseData.md.html)                                        |Model classes should be immutable data classes.                                                          |
+|[MoshiUsageVarProperty](MoshiUsageVarProperty.md.html)                                |Moshi properties should be immutable.                                                                    |
+|[MoshiUsageClassVisibility](MoshiUsageClassVisibility.md.html)                        |@JsonClass-annotated types must be public, package-private, or internal.                                 |
+|[FragmentConstructorInjection](FragmentConstructorInjection.md.html)                  |Fragment dependencies should be injected using constructor injections only.                              |
+|[FragmentFieldInjection](FragmentFieldInjection.md.html)                              |Fragment dependencies should be injected using the Fragment's constructor.                               |
+|[RedactedInJavaUsage](RedactedInJavaUsage.md.html)                                    |@Redacted is only supported in Kotlin classes!                                                           |
+|[InjectInJava](InjectInJava.md.html)                                                  |Only Kotlin classes should be injected in order for Anvil to work.                                       |
+|[RetrofitUsage](RetrofitUsage.md.html)                                                |This is replaced by the caller.                                                                          |
+|[RestrictCallsTo](RestrictCallsTo.md.html)                                            |Methods annotated with @RestrictedCallsTo should only be called from the specified scope.                |
+|[SpanMarkPointMissingMask](SpanMarkPointMissingMask.md.html)                          |Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to.                  |
+|[DoNotExposeEitherNetInRepositories](DoNotExposeEitherNetInRepositories.md.html)      |Repository APIs should not expose EitherNet types directly.                                              |
+|[FullyQualifiedResource](FullyQualifiedResource.md.html)                              |Resources should use an import alias instead of being fully qualified.                                   |
+|[MissingResourceImportAlias](MissingResourceImportAlias.md.html)                      |Missing import alias for R class.                                                                        |
+|[WrongResourceImportAlias](WrongResourceImportAlias.md.html)                          |Wrong import alias for this R class.                                                                     |
+|[DenyListedApi](DenyListedApi.md.html)                                                |Deny-listed API                                                                                          |
+|[DenyListedBlockingApi](DenyListedBlockingApi.md.html)                                |Deny-listed API                                                                                          |
+|[ParcelizeFunctionProperty](ParcelizeFunctionProperty.md.html)                        |Function type properties are not parcelable                                                              |
+|[ExceptionMessage](ExceptionMessage.md.html)                                          |Please provide a string for the `lazyMessage` parameter                                                  |
+|[MustUseNamedParams](MustUseNamedParams.md.html)                                      |Calls to @MustUseNamedParams-annotated methods must name all parameters.                                 |
 
 (##) Including
 
@@ -126,17 +126,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.3")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.3'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.0"
+slack-lint-checks = "0.7.3"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -144,7 +144,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.0 is the version this documentation was generated from;
+0.7.3 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -210,6 +210,10 @@ there may be newer versions available.
 * 0.5.1: Adds MustBeInModule. Removes BindsMustBeInModule.
 * 0.6.0: Adds ExceptionMessage.
 * 0.7.0: Adds DenyListedBlockingApi.
+* 0.7.1: Adds MustUseNamedParams. Removes
+  InjectWithScopeRequiredLoggedInUserProvider,
+  InjectWithTypeMustImplementAnvilInjectable.
+* 0.7.2: Adds DoNotMockAnything.
 
 (##) Version Compatibility
 
@@ -217,6 +221,9 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               0.7.3|2024/05/03|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.7.2|2024/05/02|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               0.7.1|2024/03/27|      90|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.7.0|2023/10/27|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.6.1|2023/10/09|      90|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.6.0|2023/09/26|      90|         Yes|    8.0 and 8.1|8.0 and 8.1|

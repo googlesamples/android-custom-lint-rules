@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) @InjectWith-annotated classes must implement LoggedInUserProvider (or extend something that does) if they target UserScope or OrgScope.
+(#) Calls to @MustUseNamedParams-annotated methods must name all parameters.
 
-!!! ERROR: @InjectWith-annotated classes must implement LoggedInUserProvider (or extend something that does) if they target UserScope or OrgScope.
+!!! ERROR: Calls to @MustUseNamedParams-annotated methods must name all parameters.
    This is an error.
 
 Id
-:   `InjectWithScopeRequiredLoggedInUserProvider`
+:   `MustUseNamedParams`
 Summary
-:   @InjectWith-annotated classes must implement LoggedInUserProvider (or extend something that does) if they target UserScope or OrgScope.
+:   Calls to @MustUseNamedParams-annotated methods must name all parameters.
 Severity
 :   Error
 Category
@@ -34,79 +34,60 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/InjectWithUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MustUseNamedParamsDetector.kt)
 Tests
-:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/InjectWithUsageDetectorTest.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MustUseNamedParamsDetectorTest.kt)
 Copyright Year
-:   2021
+:   2022
 
-`@InjectWith`-annotated classes must implement LoggedInUserProvider (or
-extend something that does) if they target UserScope or OrgScope.
+Calls to @MustUseNamedParams-annotated methods must name all
+parameters.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/BaseInjectableAnnotation.kt:24:Error: @InjectWith-annotated
-classes must implement LoggedInUserProvider (or extend something that
-does) if they target UserScope or OrgScope.
-[InjectWithScopeRequiredLoggedInUserProvider]
+src/foo/TestFile.kt:16:Error: Calls to @MustUseNamedParams-annotated
+methods must name all parameters. [MustUseNamedParams]
 
-class UserActivityWrong : BaseInjectable()
-      -----------------
-
-
-src/test/pkg/BaseInjectableAnnotation.kt:27:Error: @InjectWith-annotated
-classes must implement LoggedInUserProvider (or extend something that
-does) if they target UserScope or OrgScope.
-[InjectWithScopeRequiredLoggedInUserProvider]
-
-class OrgActivityWrong : BaseInjectable()
-      ----------------
+    methodWithAnnotation("Zac")
+    ---------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/test/pkg/BaseInjectableAnnotation.kt`:
+`src/foo/TestFile.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
-package test.pkg
+package foo
 
-import slack.anvil.injection.InjectWith
-import slack.anvil.injection.AnvilInjectable
-import slack.di.AppScope
-import slack.di.UserScope
-import slack.di.OrgScope
-import slack.foundation.auth.LoggedInUserProvider
+import slack.lint.annotations.MustUseNamedParams
 
-annotation class BaseInjectableAnnotation
+class TestFile {
+  @MustUseNamedParams
+  fun methodWithAnnotation(name: String) {
+    // Do nothing.
+  }
 
-abstract class BaseInjectable : AnvilInjectable<BaseInjectableAnnotation, BaseInjectable>
+  fun methodWithoutAnnotation(name: String) {
+    // Do nothing.
+  }
 
-@InjectWith(AppScope::class)
-class AppActivityCorrect : BaseInjectable()
+  fun useMethod() {
+    methodWithAnnotation("Zac")
+    methodWithAnnotation(name = "Sean")
 
-@InjectWith(UserScope::class)
-class UserActivityCorrect : BaseInjectable(), LoggedInUserProvider
-
-@InjectWith(OrgScope::class)
-class OrgActivityCorrect : BaseInjectable(), LoggedInUserProvider
-
-@InjectWith(UserScope::class)
-class UserActivityWrong : BaseInjectable()
-
-@InjectWith(OrgScope::class)
-class OrgActivityWrong : BaseInjectable()
-
-@InjectWith(AppScope::class)
-class MissingAnvilInjectable
+    methodWithoutAnnotation("Yifan")
+    methodWithoutAnnotation(name = "Sean2")
+  }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/InjectWithUsageDetectorTest.kt)
+[source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MustUseNamedParamsDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `InjectWithUsageDetector.smokeTest`.
+found for this lint check, `MustUseNamedParamsDetector.simpleTest`.
 To report a problem with this extracted sample, visit
 https://github.com/slackhq/slack-lints.
 
@@ -119,17 +100,17 @@ https://github.com/slackhq/slack-lints.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.3")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.3'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.0"
+slack-lint-checks = "0.7.3"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -137,7 +118,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.0 is the version this documentation was generated from;
+0.7.3 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).
@@ -150,7 +131,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```kt
   // Kotlin
-  @Suppress("InjectWithScopeRequiredLoggedInUserProvider")
+  @Suppress("MustUseNamedParams")
   fun method() {
      problematicStatement()
   }
@@ -160,7 +141,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```java
   // Java
-  @SuppressWarnings("InjectWithScopeRequiredLoggedInUserProvider")
+  @SuppressWarnings("MustUseNamedParams")
   void method() {
      problematicStatement();
   }
@@ -169,7 +150,7 @@ You can suppress false positives using one of the following mechanisms:
 * Using a suppression comment like this on the line above:
 
   ```kt
-  //noinspection InjectWithScopeRequiredLoggedInUserProvider
+  //noinspection MustUseNamedParams
   problematicStatement()
   ```
 
@@ -179,7 +160,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="InjectWithScopeRequiredLoggedInUserProvider" severity="ignore" /&gt;
+      &lt;issue id="MustUseNamedParams" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -192,7 +173,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'InjectWithScopeRequiredLoggedInUserProvider'
+      disable 'MustUseNamedParams'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -200,7 +181,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore InjectWithScopeRequiredLoggedInUserProvider ...`
+  $ lint --ignore MustUseNamedParams ...`
   ```
 
 * Last, but not least, using baselines, as discussed

@@ -2,7 +2,7 @@
 
 # Baselines
 
-# Creating a Baseline
+## Creating a Baseline
 
 You can take a snapshot of your project's current set of warnings,
 and then use the snapshot as a baseline for future inspection runs
@@ -10,7 +10,7 @@ so that only new issues are reported. The baseline snapshot lets you
 start using lint to fail the build without having to go back and
 address all existing issues first.
 
-To create a baseline snapshot, modify your project's `build.gradle```
+To create a baseline snapshot, modify your project's `build.gradle`
 file as follows.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,7 +28,7 @@ baseline, manually delete the file and run lint again to recreate it.
 
 Then, run lint from the IDE (**Analyze > Inspect Code**) or from
 the command line as follows. The output prints the location of the
-lint-baseline.xml file. The file location for your setup might be
+`lint-baseline.xml` file. The file location for your setup might be
 different from what is shown here.
 
 ```shell
@@ -40,7 +40,7 @@ different from what is shown here.
 
 Running lint records all of the current issues in the
 `lint-baseline.xml` file. The set of current issues is called the
-baseline, and you can check the lint-baseline.xml file into version
+baseline, and you can check the `lint-baseline.xml` file into version
 control if you want to share it with others.
 
 ## Customize the baseline
@@ -75,12 +75,13 @@ issues that are not reported anymore. This information lets you know
 if you have actually fixed issues, so you can optionally re-create
 the baseline to prevent the error from coming back undetected.
 
-!!! Note: Baselines are enabled when you run inspections in batch
-   mode in the IDE, but they are ignored for the in-editor checks that
-   run in the background when you are editing a file. The reason is that
-   baselines are intended for the case where a codebase has a massive
-   number of existing warnings, but you do want to fix issues locally
-   while you touch the code.
+!!! Note
+   Baselines are enabled when you run inspections in batch mode in the
+   IDE, but they are ignored for the in-editor checks that run in the
+   background when you are editing a file. The reason is that baselines
+   are intended for the case where a codebase has a massive number of
+   existing warnings, but you do want to fix issues locally while you
+   touch the code.
 
 [Official documentation](https://developer.android.com/studio/write/lint#snapshot)
 

@@ -83,7 +83,7 @@ override fun visitMethodCall(context: JavaContext, node: UCallExpression, method
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Aas you can see, the `DataFlowAnalyzer` is a visitor, so when we find a
+As you can see, the `DataFlowAnalyzer` is a visitor, so when we find a
 call we're interested in, we construct a `DataFlowAnalyzer` and
 initialize it with the instance we want to track, and then we visit the
 surrounding method with this visitor.
@@ -254,8 +254,8 @@ no longer know for certain whether it gets committed is via a method
 call.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
-fun test) {
-     val transaction = getFragmentManager().beginTransaction()
+fun test() {
+    val transaction = getFragmentManager().beginTransaction()
     process(transaction)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

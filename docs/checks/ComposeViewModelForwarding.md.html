@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Forwarding a ViewModel through multiple @Composable functions should be avoided
+(#) Don't forward ViewModels through composables
 
-!!! ERROR: Forwarding a ViewModel through multiple @Composable functions should be avoided
+!!! ERROR: Don't forward ViewModels through composables
    This is an error.
 
 Id
 :   `ComposeViewModelForwarding`
 Summary
-:   Forwarding a ViewModel through multiple @Composable functions should be avoided
+:   Don't forward ViewModels through composables
 Severity
 :   Error
 Category
@@ -38,10 +38,10 @@ Tests
 Copyright Year
 :   2023
 
-Forwarding a ViewModel through multiple @Composable functions should be
-avoided. Consider using state hoisting.
-See https://slackhq.github.io/compose-lints/rules/#hoist-all-the-things
-for more information.
+Forwarding a `ViewModel` through multiple `@Composable` functions should
+be avoided. Consider using state hoisting.See
+https://slackhq.github.io/compose-lints/rules/#hoist-all-the-things for
+more information.
 
 (##) Example
 
@@ -89,17 +89,17 @@ https://github.com/slackhq/compose-lints/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose-lint-checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.2.0"
+compose-lint-checks = "1.3.1"
 [libraries]
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
@@ -107,7 +107,7 @@ compose-lint-checks = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).

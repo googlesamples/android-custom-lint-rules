@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Please provide a string for the lazyMessage parameter
+(#) Please provide a string for the `lazyMessage` parameter
 
-!!! ERROR: Please provide a string for the lazyMessage parameter
+!!! ERROR: Please provide a string for the `lazyMessage` parameter
    This is an error.
 
 Id
 :   `ExceptionMessage`
 Summary
-:   Please provide a string for the lazyMessage parameter
+:   Please provide a string for the `lazyMessage` parameter
 Severity
 :   Error
 Category
@@ -40,15 +40,15 @@ Tests
 Copyright Year
 :   2023
 
-Calls to check(), checkNotNull(), require() and requireNotNull() should
-include a message string that can be used to debug issues experienced
-by users.
+Calls to `check()`, `checkNotNull()`, `require()` and `requireNotNull()`
+should include a message string that can be used to debug issues
+experienced by users.
 
-When we read user-supplied logs, the line numbers are sometimes not
-sufficient to determine the cause of a bug. Inline functions can
-sometimes make it hard to determine which file threw an exception.
-Consider supplying a lazyMessage parameter to identify the check()
-or require() call.
+When we read user-supplied logs, the line numbers are sometimes
+notsufficient to determine the cause of a bug. Inline functions
+cansometimes make it hard to determine which file threw an
+exception.Consider supplying a `lazyMessage` parameter to identify the
+`check()`or `require()` call.
 
 (##) Example
 
@@ -90,17 +90,17 @@ https://github.com/slackhq/slack-lints.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.3")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.3'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.0"
+slack-lint-checks = "0.7.3"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -108,7 +108,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.0 is the version this documentation was generated from;
+0.7.3 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).

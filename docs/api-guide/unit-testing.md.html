@@ -174,7 +174,7 @@ test files as sources:
 ## Trimming indents?
 
 Notice how in the above Kotlin unit tests we used raw strings, **and**
-we indented the sources to be flush with the opening “”“ string
+we indented the sources to be flush with the opening `"""` string
 delimiter.
 
 You might be tempted to call `.trimIndent()` on the raw string.
@@ -412,7 +412,7 @@ fun testVulnerableCordovaVersionInClasses() {
                 "BwAAAAIAAQAIAAkAAQAKAAAAHQABAAEAAAAFKrcAAbEAAAABAAsAAAAGAAEA" +
                 "AAAEAAgADAAJAAEACgAAAB4AAQAAAAAABhICswADsQAAAAEACwAAAAYAAQAA" +
                 "AAUAAQANAAAAAgAO"
-        )`
+        )
     ).run().expect(
 ```
 
@@ -450,7 +450,7 @@ has been provided, lint will instead attempt to compile the sources
 and emit the full test file registration.
 
 This isn't just a convenience; lint's test infrastructure also uses
-this to test some additional scenarios (for example, in a multi- module
+this to test some additional scenarios (for example, in a multi-module
 project it will only provide the binaries, not the sources, for
 upstream modules.)
 

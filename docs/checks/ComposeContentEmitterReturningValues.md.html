@@ -39,11 +39,10 @@ Copyright Year
 :   2023
 
 Composable functions should either emit content into the composition or
-return a value, but not both.
-If a composable should offer additional control surfaces to its caller,
-those control surfaces or callbacks should be provided as parameters to
-the composable function by the caller.
-See
+return a value, but not both.If a composable should offer additional
+control surfaces to its caller, those control surfaces or callbacks
+should be provided as parameters to the composable function by the
+caller.See
 https://slackhq.github.io/compose-lints/rules/#do-not-emit-content-and-return-a-result
 for more information.
 
@@ -131,17 +130,17 @@ https://github.com/slackhq/compose-lints/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose-lint-checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.2.0"
+compose-lint-checks = "1.3.1"
 [libraries]
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
@@ -149,7 +148,7 @@ compose-lint-checks = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).

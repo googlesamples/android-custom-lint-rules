@@ -17,46 +17,47 @@ This chapter describes the syntax of `lint.xml` files.
 
 The root tag is always `<lint>`, and it can contain one or more
 `<issue>` elements. Each <issue> can specify the following
-attributes: `id`: The issue id the following configuration applies
-to. Note that this can be a comma separated list of multiple id's, in
-which case the configuration applies to all of them. It can also be
-the special value “all”, which will match all issue id's. And when
-configuring severity, the id is also allowed to be a category, such
-as “Security”.
+attributes:
 
-`in`: Specifies that this configuration only applies when lint
-runs in the given hosts. There are predefined names for various
-integrations of lint; “gradle” refers to lint running in the Gradle
-plugin; “studio” refers to lint running in the IDE, “cli” refers to
-lint running from the command line tools “lint” binary, etc. Like
-with id's, this can be a comma separated list, which makes the rule
-match if the lint host is any of the listed hosts. Finally, note that
-you can also add a “!” in front of each host to negate the check. For
-example, to enable a check anywhere except when running in Studio,
-use `in="!studio"`.
+- `id`: The issue id the following configuration applies
+  to. Note that this can be a comma separated list of multiple id's, in
+  which case the configuration applies to all of them. It can also be
+  the special value “all”, which will match all issue id's. And when
+  configuring severity, the id is also allowed to be a category, such
+  as “Security”.
+- `in`: Specifies that this configuration only applies when lint
+  runs in the given hosts. There are predefined names for various
+  integrations of lint; “gradle” refers to lint running in the Gradle
+  plugin; “studio” refers to lint running in the IDE, “cli” refers to
+  lint running from the command line tools “lint” binary, etc. Like
+  with id's, this can be a comma separated list, which makes the rule
+  match if the lint host is any of the listed hosts. Finally, note that
+  you can also add a “!” in front of each host to negate the check. For
+  example, to enable a check anywhere except when running in Studio,
+  use `in="!studio"`.
 
 In addition, the <issue> element can specify one or more children:
 
-`<ignore path="...">`: Specifies a path to ignore. Can contain the
-globbing character “*” to match any substring in the path. `<ignore
-regexp="...">`: Specifies either a regular expression to ignore. The
-regular expression is matched against both the location of the error
-and the error message itself. `<option name="..." value="...">`:
-Specifies an option value. This can be used to configure some lint
-checks with options.
+- `<ignore path="...">`: Specifies a path to ignore. Can contain the
+  globbing character “*” to match any substring in the path.
+- `<ignore regexp="...">`: Specifies either a regular expression to
+  ignore. The regular expression is matched against both the location of
+  the error and the error message itself.
+- `<option name="..." value="...">`: Specifies an option value. This can
+  be used to configure some lint checks with options.
 
 Finally, on the root <lint> element you can specify a number of
 attributes, such as `lintJars` (a list of jar files containing custom
 lint checks, separated by a semicolon as a path separator), and
 flags like warningsAsErrors, checkTestSources, etc (matching most
-of the flags offered via the lintOptions block in Gradle files.)
+of the flags offered via the lintOptions block in Gradle files).
 
 ## Nesting & Precedence
 
 You can specify configurations for “all”, but these will be
 matched after an exact match has been done. E.g. if we have
 both `<issue id="all" severity="ignore">` and `<issue id="MyId"
-severity="error">`, the severity for `MyId` will be “error”“ since
+severity="error">`, the severity for `MyId` will be “error” since
 that's a more exact match.
 
 The lint.xml files can be nested in a directory structure, and when

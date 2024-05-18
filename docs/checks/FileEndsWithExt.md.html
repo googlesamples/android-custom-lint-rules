@@ -50,14 +50,14 @@ src/test.kt:7:Warning: File.extension does not include the leading dot;
 did you mean "json" ? [FileEndsWithExt]
 
 fun File.isJson() = extension == ".json"
-                                  -----
+                                 -------
 
 
 src/test.kt:8:Warning: File.extension does not include the leading dot;
 did you mean "webp" ? [FileEndsWithExt]
 
 fun isWebp(path: File) = path.extension.startsWith(".webp")
-                                                    -----
+                                                   -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:

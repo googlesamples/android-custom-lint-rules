@@ -41,9 +41,8 @@ Copyright Year
 :   2022
 
 Compose Material 2 (M2) is succeeded by Material 3 (M3). Please use M3
-APIs.
-See https://slackhq.github.io/compose-lints/rules/#use-material-3 for
-more information.
+APIs.See https://slackhq.github.io/compose-lints/rules/#use-material-3
+for more information.
 
 (##) Options
 
@@ -61,6 +60,23 @@ Example `lint.xml`:
 &lt;lint&gt;
     &lt;issue id="ComposeM2Api"&gt;
         &lt;option name="allowed-m2-apis" value="some string" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(###) enable-mangling-workaround
+
+Try to work around name mangling..
+See https://github.com/slackhq/compose-lints/issues/167
+
+Default is false.
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="ComposeM2Api"&gt;
+        &lt;option name="enable-mangling-workaround" value="false" /&gt;
     &lt;/issue&gt;
 &lt;/lint&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,17 +172,17 @@ https://github.com/slackhq/compose-lints/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose-lint-checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.2.0"
+compose-lint-checks = "1.3.1"
 [libraries]
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
@@ -174,7 +190,7 @@ compose-lint-checks = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).
