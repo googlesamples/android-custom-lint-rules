@@ -53,7 +53,7 @@ highlighting goes away. For test files you can instead call
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/MyKotlinLintDetector.kt:65:Error: No need to call
+src/test/pkg/MyKotlinLintDetector.kt:68:Error: No need to call
 .trimIndent() in issue registration strings; they are already trimmed by
 indent by lint when displaying to users [LintImplTrimIndent]
 
@@ -129,6 +129,9 @@ class MyKotlinLintDetector : Detector() {
                 explanation = """
                     Some description here.
                     Here's a call: foo.bar.baz(args).
+                    This line continuation is okay. \
+                    But this one is missing a space.\
+                    Okay?
                     """.trimIndent(),
                 category = Category.INTEROPERABILITY_KOTLIN,
                 moreInfo = "https://code.google.com/p/android/issues/detail?id=65351", // OBSOLETE

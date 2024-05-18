@@ -17,13 +17,15 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.wear.protolayout:protolayout:1.1.0-rc01
+:   androidx.wear.protolayout:protolayout:1.2.0-alpha03
 
 (##) Included Issues
 
-|Issue Id                                              |Issue Description                                                              |
-|------------------------------------------------------|-------------------------------------------------------------------------------|
-|[ProtoLayoutMinSchema](ProtoLayoutMinSchema-2.md.html)|ProtoLayout feature is not guaranteed to be available on the target device API.|
+|Issue Id                                                                                  |Issue Description                                                                                                                                    |
+|------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+|[ProtoLayoutMinSchema](ProtoLayoutMinSchema-3.md.html)                                    |ProtoLayout feature is not guaranteed to be available on the target device API.                                                                      |
+|[ProtoLayoutPrimaryLayoutResponsive](ProtoLayoutPrimaryLayoutResponsive-3.md.html)        |ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales.   |
+|[ProtoLayoutEdgeContentLayoutResponsive](ProtoLayoutEdgeContentLayoutResponsive-3.md.html)|ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales.|
 
 (##) Including
 
@@ -33,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.wear.protolayout:protolayout:1.1.0-rc01")
+implementation("androidx.wear.protolayout:protolayout:1.2.0-alpha03")
 
 // build.gradle
-implementation 'androidx.wear.protolayout:protolayout:1.1.0-rc01'
+implementation 'androidx.wear.protolayout:protolayout:1.2.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.protolayout)
 
 # libs.versions.toml
 [versions]
-protolayout = "1.1.0-rc01"
+protolayout = "1.2.0-alpha03"
 [libraries]
 protolayout = {
     module = "androidx.wear.protolayout:protolayout",
@@ -51,12 +53,14 @@ protolayout = {
 }
 ```
 
-1.1.0-rc01 is the version this documentation was generated from;
+1.2.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
 
-* 1.1.0-alpha04: First version includes ProtoLayoutMinSchema.
+* 1.1.0: First version includes ProtoLayoutMinSchema.
+* 1.2.0-alpha02: Adds ProtoLayoutEdgeContentLayoutResponsive,
+  ProtoLayoutPrimaryLayoutResponsive.
 
 (##) Version Compatibility
 
@@ -64,8 +68,9 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|          1.1.0-rc01|2024/01/24|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.1.0-beta01|2024/01/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.1.0-alpha04|2023/12/13|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.2.0-alpha03|2024/05/14|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.2.0-alpha02|2024/05/01|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.2.0-alpha01|2024/03/06|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.1.0|2024/02/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

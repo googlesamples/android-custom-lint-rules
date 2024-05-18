@@ -31,9 +31,9 @@ Editing
 See
 :   https://g.co/appindexing/applinks
 Implementation
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppLinksAutoVerifyDetector.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppLinksAutoVerifyDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksAutoVerifyDetectorTest.java)
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksAutoVerifyDetectorTest.kt)
 Copyright Year
 :   2015
 
@@ -43,12 +43,12 @@ Ensures that app links are correctly set and associated with website.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:12:Error: This host does not support app links to
-your app. Checks the Digital Asset Links JSON file:
-http://example.com/.well-known/assetlinks.json [AppLinksAutoVerify]
+AndroidManifest.xml:12:Warning: HTTP request for Digital Asset Links
+JSON file https://links.dropbox.com/.well-known/assetlinks.json fails.
+HTTP response code: 301 [AppLinksAutoVerify]
 
-    android:host="example.com"
-    --------------------------
+    android:host="links.dropbox.com"
+    --------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -57,7 +57,7 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.helloworld" &gt;
+    package="com.dropbox.links" &gt;
 
     &lt;application
         android:allowBackup="true"
@@ -66,7 +66,7 @@ Here is the source file referenced above:
             &lt;intent-filter android:autoVerify="true"&gt;
                 &lt;action android:name="android.intent.action.VIEW" /&gt;
                 &lt;data android:scheme="http"
-                    android:host="example.com"
+                    android:host="links.dropbox.com"
                     android:pathPrefix="/gizmos" /&gt;
                 &lt;category android:name="android.intent.category.DEFAULT" /&gt;
                 &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
@@ -78,11 +78,11 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksAutoVerifyDetectorTest.java)
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksAutoVerifyDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `AppLinksAutoVerifyDetector.testInvalidPackage`.
+found for this lint check, `AppLinksAutoVerifyDetector.testRedirect`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

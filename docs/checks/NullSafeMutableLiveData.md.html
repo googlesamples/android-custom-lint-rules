@@ -27,7 +27,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.lifecycle:lifecycle-livedata-core-ktx](androidx_lifecycle_lifecycle-livedata-core-ktx.md.html)
+:   [androidx.lifecycle:lifecycle-livedata-core](androidx_lifecycle_lifecycle-livedata-core.md.html)
 
 Affects
 :   Kotlin and Java files
@@ -54,6 +54,16 @@ non-nullable.
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Repackaged
+
+This lint check appears to have been packaged in other artifacts as
+well. Issue id's must be unique, so you cannot combine these libraries.
+Also defined in:
+* NullSafeMutableLiveData: LiveData value assignment nullability mismatch (this issue)
+* [NullSafeMutableLiveData from androidx.lifecycle:lifecycle-livedata-core:2.8.0](NullSafeMutableLiveData.md.html)
+* [NullSafeMutableLiveData from androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.0-alpha01](NullSafeMutableLiveData-2.md.html)
+
+
 (##) Including
 
 !!!
@@ -62,28 +72,28 @@ non-nullable.
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.0-alpha01")
+implementation("androidx.lifecycle:lifecycle-livedata-core:2.8.0")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.0-alpha01'
+implementation 'androidx.lifecycle:lifecycle-livedata-core:2.8.0'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.lifecycle-livedata-core-ktx)
+implementation(libs.lifecycle-livedata-core)
 
 # libs.versions.toml
 [versions]
-lifecycle-livedata-core-ktx = "2.8.0-alpha01"
+lifecycle-livedata-core = "2.8.0"
 [libraries]
-lifecycle-livedata-core-ktx = {
-    module = "androidx.lifecycle:lifecycle-livedata-core-ktx",
-    version.ref = "lifecycle-livedata-core-ktx"
+lifecycle-livedata-core = {
+    module = "androidx.lifecycle:lifecycle-livedata-core",
+    version.ref = "lifecycle-livedata-core"
 }
 ```
 
-2.8.0-alpha01 is the version this documentation was generated from;
+2.8.0 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.lifecycle:lifecycle-livedata-core-ktx](androidx_lifecycle_lifecycle-livedata-core-ktx.md.html).
+[Additional details about androidx.lifecycle:lifecycle-livedata-core](androidx_lifecycle_lifecycle-livedata-core.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

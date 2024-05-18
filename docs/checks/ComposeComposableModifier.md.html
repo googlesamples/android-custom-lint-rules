@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Using @Composable builder functions for modifiers is not recommended
+(#) Don't use @Composable builder functions for modifiers
 
-!!! ERROR: Using @Composable builder functions for modifiers is not recommended
+!!! ERROR: Don't use @Composable builder functions for modifiers
    This is an error.
 
 Id
 :   `ComposeComposableModifier`
 Summary
-:   Using @Composable builder functions for modifiers is not recommended
+:   Don't use @Composable builder functions for modifiers
 Severity
 :   Error
 Category
@@ -39,11 +39,9 @@ Copyright Year
 :   2023
 
 Using @Composable builder functions for modifiers is not recommended, as
-they cause unnecessary recompositions.
-You should use Modifier.composed { ... } instead, as it limits
-recomposition to just the modifier instance, rather than the whole
-function tree.
-See
+they cause unnecessary recompositions.You should use the Modifier.Node
+API instead, as it limits recomposition to just the modifier instance,
+rather than the whole function tree.See
 https://slackhq.github.io/compose-lints/rules/#avoid-modifier-extension-factory-functions
 for more information.
 
@@ -104,17 +102,17 @@ https://github.com/slackhq/compose-lints/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose-lint-checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.2.0"
+compose-lint-checks = "1.3.1"
 [libraries]
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
@@ -122,7 +120,7 @@ compose-lint-checks = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).

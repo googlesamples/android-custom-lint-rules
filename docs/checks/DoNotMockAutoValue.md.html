@@ -50,7 +50,7 @@ You can configure this lint checks using the following options:
 (###) mock-annotations
 
 A comma-separated list of mock annotations..
-This property should define comma-separated list of mock annotation class names (FQCN).
+This property should define comma-separated list of mock annotation class names (FQCN). Set this for all issues using this option.
 
 Default is "org.mockito.Mock,org.mockito.Spy".
 
@@ -67,7 +67,7 @@ Example `lint.xml`:
 (###) mock-factories
 
 A comma-separated list of mock factories (org.mockito.Mockito#methodName)..
-A comma-separated list of mock factories (org.mockito.Mockito#methodName).
+A comma-separated list of mock factories (org.mockito.Mockito#methodName). Set this for all issues using this option.
 
 Default is "org.mockito.Mockito#mock,org.mockito.Mockito#spy,slack.test.mockito.MockitoHelpers#mock,slack.test.mockito.MockitoHelpersKt#mock".
 
@@ -84,7 +84,7 @@ Example `lint.xml`:
 (###) mock-report
 
 If enabled, writes a mock report to <project-dir>/build/reports/mockdetector/mock-report.csv..
-If enabled, writes a mock report to <project-dir>/build/reports/mockdetector/mock-report.csv. The format of the file is a csv of (type,isError) of mocked classes.
+If enabled, writes a mock report to <project-dir>/build/reports/mockdetector/mock-report.csv. The format of the file is a csv of (type,isError) of mocked classes. Set this for all issues using this option.
 
 Default is "none".
 
@@ -107,17 +107,17 @@ Example `lint.xml`:
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.3")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.3'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.0"
+slack-lint-checks = "0.7.3"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -125,7 +125,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.0 is the version this documentation was generated from;
+0.7.3 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).

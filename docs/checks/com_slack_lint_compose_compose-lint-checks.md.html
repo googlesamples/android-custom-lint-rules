@@ -17,30 +17,33 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   com.slack.lint.compose:compose-lint-checks:1.2.0
+:   com.slack.lint.compose:compose-lint-checks:1.3.1
 
 (##) Included Issues
 
-|Issue Id                                                                            |Issue Description                                                              |
-|------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-|[ComposeNamingUppercase](ComposeNamingUppercase.md.html)                            |Unit Composables should be uppercase                                           |
-|[ComposeNamingLowercase](ComposeNamingLowercase.md.html)                            |Value-returning Composables should be lowercase                                |
-|[ComposeCompositionLocalUsage](ComposeCompositionLocalUsage.md.html)                |CompositionLocals are discouraged                                              |
-|[ComposeContentEmitterReturningValues](ComposeContentEmitterReturningValues.md.html)|Composable functions should emit XOR return                                    |
-|[ComposeComposableModifier](ComposeComposableModifier.md.html)                      |Using @Composable builder functions for modifiers is not recommended           |
-|[ComposeModifierMissing](ComposeModifierMissing.md.html)                            |Missing modifier parameter                                                     |
-|[ComposeModifierReused](ComposeModifierReused.md.html)                              |Modifiers should only be used once                                             |
-|[ComposeModifierWithoutDefault](ComposeModifierWithoutDefault.md.html)              |Missing Modifier default value                                                 |
-|[ComposeM2Api](ComposeM2Api.md.html)                                                |Using a Compose M2 API is not recommended                                      |
-|[ComposeMultipleContentEmitters](ComposeMultipleContentEmitters.md.html)            |Composables should only be emit from one source                                |
-|[ComposeMutableParameters](ComposeMutableParameters.md.html)                        |Mutable objects in Compose will break state                                    |
-|[ComposeParameterOrder](ComposeParameterOrder.md.html)                              |Composable function parameters should be ordered                               |
-|[ComposePreviewNaming](ComposePreviewNaming.md.html)                                |Preview annotations require certain suffixes                                   |
-|[ComposePreviewPublic](ComposePreviewPublic.md.html)                                |Preview composables should be private                                          |
-|[ComposeRememberMissing](ComposeRememberMissing.md.html)                            |State values should be remembered                                              |
-|[ComposeUnstableCollections](ComposeUnstableCollections.md.html)                    |Immutable collections should ideally be used in Composables                    |
-|[ComposeViewModelForwarding](ComposeViewModelForwarding.md.html)                    |Forwarding a ViewModel through multiple @Composable functions should be avoided|
-|[ComposeViewModelInjection](ComposeViewModelInjection.md.html)                      |Implicit dependencies of composables should be made explicit                   |
+|Issue Id                                                                            |Issue Description                                           |
+|------------------------------------------------------------------------------------|------------------------------------------------------------|
+|[ComposeNamingUppercase](ComposeNamingUppercase.md.html)                            |Unit Composables should be uppercase                        |
+|[ComposeNamingLowercase](ComposeNamingLowercase.md.html)                            |Value-returning Composables should be lowercase             |
+|[ComposeCompositionLocalUsage](ComposeCompositionLocalUsage.md.html)                |CompositionLocals are discouraged                           |
+|[ComposeCompositionLocalGetter](ComposeCompositionLocalGetter.md.html)              |CompositionLocals should not use getters                    |
+|[ComposeContentEmitterReturningValues](ComposeContentEmitterReturningValues.md.html)|Composable functions should emit XOR return                 |
+|[ComposeComposableModifier](ComposeComposableModifier.md.html)                      |Don't use @Composable builder functions for modifiers       |
+|[ComposeModifierMissing](ComposeModifierMissing.md.html)                            |Missing modifier parameter                                  |
+|[ComposeModifierReused](ComposeModifierReused.md.html)                              |Modifiers should only be used once                          |
+|[ComposeModifierWithoutDefault](ComposeModifierWithoutDefault.md.html)              |Missing Modifier default value                              |
+|[ComposeM2Api](ComposeM2Api.md.html)                                                |Using a Compose M2 API is not recommended                   |
+|[ComposeMultipleContentEmitters](ComposeMultipleContentEmitters.md.html)            |Composables should only be emit from one source             |
+|[ComposeMutableParameters](ComposeMutableParameters.md.html)                        |Mutable objects in Compose will break state                 |
+|[ComposeParameterOrder](ComposeParameterOrder.md.html)                              |Composable function parameters should be ordered            |
+|[ComposePreviewNaming](ComposePreviewNaming.md.html)                                |Preview annotations require certain suffixes                |
+|[ComposePreviewPublic](ComposePreviewPublic.md.html)                                |Preview composables should be private                       |
+|[ComposeRememberMissing](ComposeRememberMissing.md.html)                            |State values should be remembered                           |
+|[ComposeUnstableCollections](ComposeUnstableCollections.md.html)                    |Immutable collections should ideally be used in Composables |
+|[ComposeViewModelForwarding](ComposeViewModelForwarding.md.html)                    |Don't forward ViewModels through composables                |
+|[ComposeViewModelInjection](ComposeViewModelInjection.md.html)                      |Implicit dependencies of composables should be made explicit|
+|[ComposeModifierComposed](ComposeModifierComposed.md.html)                          |Don't use Modifier.composed {}                              |
+|[ComposeUnstableReceiver](ComposeUnstableReceiver.md.html)                          |Unstable receivers will always be recomposed                |
 
 (##) Including
 
@@ -51,17 +54,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.2.0'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose-lint-checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.2.0"
+compose-lint-checks = "1.3.1"
 [libraries]
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
@@ -69,7 +72,7 @@ compose-lint-checks = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -84,6 +87,8 @@ there may be newer versions available.
   ComposeUnstableCollections, ComposeViewModelForwarding,
   ComposeViewModelInjection.
 * 1.1.0: Adds ComposeM2Api.
+* 1.3.0: Adds ComposeCompositionLocalGetter, ComposeModifierComposed,
+  ComposeUnstableReceiver.
 
 (##) Version Compatibility
 
@@ -91,6 +96,8 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               1.3.1|2024/01/25|      21|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.3.0|2024/01/25|      21|         Yes|           8.2+|      8.2+|
 |               1.2.0|2023/04/19|      18|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.1.1|2023/03/08|      18|         Yes|    7.3 and 7.4|7.3 and 7.4|
 |               1.1.0|2023/03/07|      18|         Yes|    7.3 and 7.4|7.3 and 7.4|

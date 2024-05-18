@@ -57,7 +57,7 @@ src/test/pkg/MyKotlinLintDetector.kt:60:Error: Lint issue IDs should use
 capitalized camel case, such as MyIssueId [LintImplIdFormat]
 
     id = "badlyCapitalized id",
-          -------------------
+         ---------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -128,6 +128,9 @@ class MyKotlinLintDetector : Detector() {
                 explanation = """
                     Some description here.
                     Here's a call: foo.bar.baz(args).
+                    This line continuation is okay. \
+                    But this one is missing a space.\
+                    Okay?
                     """.trimIndent(),
                 category = Category.INTEROPERABILITY_KOTLIN,
                 moreInfo = "https://code.google.com/p/android/issues/detail?id=65351", // OBSOLETE

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) @Binds functions should return a different type (including annotations) than the input type.
+(#) @Binds functions should return a different type
 
-!!! ERROR: @Binds functions should return a different type (including annotations) than the input type.
+!!! ERROR: @Binds functions should return a different type
    This is an error.
 
 Id
 :   `RedundantBinds`
 Summary
-:   @Binds functions should return a different type (including annotations) than the input type.
+:   @Binds functions should return a different type
 Severity
 :   Error
 Category
@@ -100,17 +100,17 @@ https://github.com/slackhq/slack-lints.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.0")
+lintChecks("com.slack.lint:slack-lint-checks:0.7.3")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.0'
+lintChecks 'com.slack.lint:slack-lint-checks:0.7.3'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack-lint-checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.0"
+slack-lint-checks = "0.7.3"
 [libraries]
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
@@ -118,7 +118,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.0 is the version this documentation was generated from;
+0.7.3 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).

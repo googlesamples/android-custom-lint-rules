@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.lifecycle:lifecycle-runtime-ktx](androidx_lifecycle_lifecycle-runtime-ktx.md.html)
+:   [androidx.lifecycle:lifecycle-runtime-android](androidx_lifecycle_lifecycle-runtime-android.md.html)
 
 Affects
 :   Kotlin and Java files
@@ -42,6 +42,16 @@ The repeatOnLifecycle APIs should be used when the View is created,
            that is in the `onCreate` lifecycle method for Activities, or
 `onViewCreated` in                 case you're using Fragments.
 
+(##) Repackaged
+
+This lint check appears to have been packaged in other artifacts as
+well. Issue id's must be unique, so you cannot combine these libraries.
+Also defined in:
+* RepeatOnLifecycleWrongUsage: Wrong usage of repeatOnLifecycle. (this issue)
+* [RepeatOnLifecycleWrongUsage from androidx.lifecycle:lifecycle-runtime-android:2.8.0](RepeatOnLifecycleWrongUsage.md.html)
+* [RepeatOnLifecycleWrongUsage from androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01](RepeatOnLifecycleWrongUsage-2.md.html)
+
+
 (##) Including
 
 !!!
@@ -50,28 +60,28 @@ The repeatOnLifecycle APIs should be used when the View is created,
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01")
+implementation("androidx.lifecycle:lifecycle-runtime-android:2.8.0")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01'
+implementation 'androidx.lifecycle:lifecycle-runtime-android:2.8.0'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.lifecycle-runtime-ktx)
+implementation(libs.lifecycle-runtime-android)
 
 # libs.versions.toml
 [versions]
-lifecycle-runtime-ktx = "2.8.0-alpha01"
+lifecycle-runtime-android = "2.8.0"
 [libraries]
-lifecycle-runtime-ktx = {
-    module = "androidx.lifecycle:lifecycle-runtime-ktx",
-    version.ref = "lifecycle-runtime-ktx"
+lifecycle-runtime-android = {
+    module = "androidx.lifecycle:lifecycle-runtime-android",
+    version.ref = "lifecycle-runtime-android"
 }
 ```
 
-2.8.0-alpha01 is the version this documentation was generated from;
+2.8.0 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.lifecycle:lifecycle-runtime-ktx](androidx_lifecycle_lifecycle-runtime-ktx.md.html).
+[Additional details about androidx.lifecycle:lifecycle-runtime-android](androidx_lifecycle_lifecycle-runtime-android.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
