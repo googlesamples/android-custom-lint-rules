@@ -1,7 +1,7 @@
 [versions]
-agp = '8.1.2'
-lint = '31.1.2' # = agp + 23.0.0
-kotlin = '1.9.10'
+agp = "8.4.1"
+lint = '31.4.1' # = agp + 23.0.0
+kotlin = '1.9.23'
 junit = '4.13.2'
 
 
