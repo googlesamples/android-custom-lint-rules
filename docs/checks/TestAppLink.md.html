@@ -39,7 +39,7 @@ checked for matches.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:12:Error: Validation nodes should be in the tools:
+AndroidManifest.xml:15:Error: Validation nodes should be in the tools:
 namespace to ensure they are removed from the manifest at build time
 [TestAppLink]
 
@@ -58,6 +58,9 @@ Here is the source file referenced above:
     &lt;application&gt;
         &lt;activity&gt;
             &lt;intent-filter android:autoVerify="true"&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
                 &lt;data android:scheme="http"
                     android:host="example.com"
                     android:pathPrefix="/gizmos" /&gt;

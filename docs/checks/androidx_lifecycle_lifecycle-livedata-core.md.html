@@ -17,7 +17,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.lifecycle:lifecycle-livedata-core:2.8.0
+:   androidx.lifecycle:lifecycle-livedata-core:2.8.3
 
 (##) Included Issues
 
@@ -33,17 +33,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-livedata-core:2.8.0")
+implementation("androidx.lifecycle:lifecycle-livedata-core:2.8.3")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-livedata-core:2.8.0'
+implementation 'androidx.lifecycle:lifecycle-livedata-core:2.8.3'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lifecycle-livedata-core)
 
 # libs.versions.toml
 [versions]
-lifecycle-livedata-core = "2.8.0"
+lifecycle-livedata-core = "2.8.3"
 [libraries]
 lifecycle-livedata-core = {
     module = "androidx.lifecycle:lifecycle-livedata-core",
@@ -51,8 +51,22 @@ lifecycle-livedata-core = {
 }
 ```
 
-2.8.0 is the version this documentation was generated from;
+2.8.3 is the version this documentation was generated from;
 there may be newer versions available.
 
+(##) Changes
+
+* 2.8.0: First version includes NullSafeMutableLiveData.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|               2.8.3|2024/07/01|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.2|2024/06/12|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.1|2024/05/29|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.0|2024/05/14|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

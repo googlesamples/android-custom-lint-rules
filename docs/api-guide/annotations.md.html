@@ -351,7 +351,7 @@ our detector had registered an interest in `@ThreadSafe`, it would be
 called for the second `pop` call as well, since it calls a method
 inside a `@ThreadSafe` annotation (on the outer class), but the `index`
 would be 1. The lint check can check all the annotations earlier than
-the one at the index to see if they "counteract" the annotation, which
+the one at the index to see if they “counteract” the annotation, which
 of course the `@NotThreadSafe` annotation does.
 
 Lint uses this mechanism for example for the `@CheckResult` annotation,
@@ -375,7 +375,7 @@ if (usageInfo.anyCloser { it.qualifiedName ==
    found in multiple nested contexts, lint *will* include all the
    annotations in the `AnnotationUsageInfo`, but it will not invoke
    your callback for any outer occurrences; only the closest one. This
-   is usually what detectors expect: the innermost one "overrides" the
+   is usually what detectors expect: the innermost one “overrides” the
    outer ones, so lint omits these to help avoid false positives where
    a lint check author forgot to handle and test this scenario. A good
    example of this situation is with the `@RequiresApi` annotation; a
@@ -405,7 +405,7 @@ However, there are exceptions to this. For example,
 for testing purposes, but you have a concrete subclass where you are
 deliberately supporting the operation, not just from tests. If
 annotations were always inherited, you would have to create some sort
-of annotation to "revert" the semantics, e.g.
+of annotation to “revert” the semantics, e.g.
 `@VisibleNotJustForTesting`, which would require a lot of noisy
 annotations.
 

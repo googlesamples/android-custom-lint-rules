@@ -45,30 +45,30 @@ counter-increment: h6;margin-right:10px}
 &nbsp;&nbsp;<a href="#combiningagpwithnewerlint/configuringthelintversion" class="level2"><span class="tocNumber">3.1&nbsp; </span>Configuring the Lint Version</a><br>
 &nbsp;&nbsp;<a href="#combiningagpwithnewerlint/updatinglint" class="level2"><span class="tocNumber">3.2&nbsp; </span>Updating Lint</a><br>
 <a href="#baselines" class="level1"><span class="tocNumber">4&nbsp; </span>Baselines</a><br>
-<a href="#creatingabaseline" class="level1"><span class="tocNumber">5&nbsp; </span>Creating a Baseline</a><br>
-&nbsp;&nbsp;<a href="#creatingabaseline/customizethebaseline" class="level2"><span class="tocNumber">5.1&nbsp; </span>Customize the baseline</a><br>
-&nbsp;&nbsp;<a href="#creatingabaseline/baselinewarning" class="level2"><span class="tocNumber">5.2&nbsp; </span>Baseline warning</a><br>
-<a href="#performancetuning" class="level1"><span class="tocNumber">6&nbsp; </span>Performance Tuning</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/use7.0andincrementallint" class="level2"><span class="tocNumber">6.1&nbsp; </span>Use 7.0 and Incremental Lint</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/usethelintdebugtarget,notlint" class="level2"><span class="tocNumber">6.2&nbsp; </span>Use the <code>lintDebug</code> target, not <code>lint</code></a><br>
-&nbsp;&nbsp;<a href="#performancetuning/onlyanalyzeapp/leafmodules" class="level2"><span class="tocNumber">6.3&nbsp; </span>Only analyze app/leaf modules</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/don'tanalyzetestsources" class="level2"><span class="tocNumber">6.4&nbsp; </span>Don't analyze test sources</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/don'tusecheckallwarnings" class="level2"><span class="tocNumber">6.5&nbsp; </span>Don't use checkAllWarnings</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/uselatestversion" class="level2"><span class="tocNumber">6.6&nbsp; </span>Use latest version</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/givelintalotofram" class="level2"><span class="tocNumber">6.7&nbsp; </span>Give lint a lot of RAM</a><br>
-&nbsp;&nbsp;<a href="#performancetuning/findingslowlintchecks" class="level2"><span class="tocNumber">6.8&nbsp; </span>Finding Slow Lint Checks</a><br>
-<a href="#suppressinglintchecks" class="level1"><span class="tocNumber">7&nbsp; </span>Suppressing Lint Checks</a><br>
-<a href="#configuringusinglint.xmlfiles" class="level1"><span class="tocNumber">8&nbsp; </span>Configuring Using lint.xml Files</a><br>
-&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/xmlsyntax" class="level2"><span class="tocNumber">8.1&nbsp; </span>XML Syntax</a><br>
-&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/nesting&amp;precedence" class="level2"><span class="tocNumber">8.2&nbsp; </span>Nesting &amp; Precedence</a><br>
-&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/samplelint.xmlfile" class="level2"><span class="tocNumber">8.3&nbsp; </span>Sample lint.xml file</a><br>
-<a href="#appendix:recentchanges" class="level1"><span class="tocNumber">9&nbsp; </span>Appendix: Recent Changes</a><br>
-<a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">10&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
-&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">10.1&nbsp; </span>Environment Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables" class="level3"><span class="tocNumber">10.1.1&nbsp; </span>Detector Configuration Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables" class="level3"><span class="tocNumber">10.1.2&nbsp; </span>Lint Configuration Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables" class="level3"><span class="tocNumber">10.1.3&nbsp; </span>Lint Development Variables</a><br>
-&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/systemproperties" class="level2"><span class="tocNumber">10.2&nbsp; </span>System Properties</a><br>
+&nbsp;&nbsp;<a href="#baselines/creatingabaseline" class="level2"><span class="tocNumber">4.1&nbsp; </span>Creating a Baseline</a><br>
+&nbsp;&nbsp;<a href="#baselines/customizethebaseline" class="level2"><span class="tocNumber">4.2&nbsp; </span>Customize the baseline</a><br>
+&nbsp;&nbsp;<a href="#baselines/baselinewarning" class="level2"><span class="tocNumber">4.3&nbsp; </span>Baseline warning</a><br>
+<a href="#performancetuning" class="level1"><span class="tocNumber">5&nbsp; </span>Performance Tuning</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/use7.0andincrementallint" class="level2"><span class="tocNumber">5.1&nbsp; </span>Use 7.0 and Incremental Lint</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/usethelintdebugtarget,notlint" class="level2"><span class="tocNumber">5.2&nbsp; </span>Use the <code>lintDebug</code> target, not <code>lint</code></a><br>
+&nbsp;&nbsp;<a href="#performancetuning/onlyanalyzeapp/leafmodules" class="level2"><span class="tocNumber">5.3&nbsp; </span>Only analyze app/leaf modules</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/don'tanalyzetestsources" class="level2"><span class="tocNumber">5.4&nbsp; </span>Don't analyze test sources</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/don'tusecheckallwarnings" class="level2"><span class="tocNumber">5.5&nbsp; </span>Don't use checkAllWarnings</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/uselatestversion" class="level2"><span class="tocNumber">5.6&nbsp; </span>Use latest version</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/givelintalotofram" class="level2"><span class="tocNumber">5.7&nbsp; </span>Give lint a lot of RAM</a><br>
+&nbsp;&nbsp;<a href="#performancetuning/findingslowlintchecks" class="level2"><span class="tocNumber">5.8&nbsp; </span>Finding Slow Lint Checks</a><br>
+<a href="#suppressinglintchecks" class="level1"><span class="tocNumber">6&nbsp; </span>Suppressing Lint Checks</a><br>
+<a href="#configuringusinglint.xmlfiles" class="level1"><span class="tocNumber">7&nbsp; </span>Configuring Using lint.xml Files</a><br>
+&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/xmlsyntax" class="level2"><span class="tocNumber">7.1&nbsp; </span>XML Syntax</a><br>
+&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/nesting&amp;precedence" class="level2"><span class="tocNumber">7.2&nbsp; </span>Nesting &amp; Precedence</a><br>
+&nbsp;&nbsp;<a href="#configuringusinglint.xmlfiles/samplelint.xmlfile" class="level2"><span class="tocNumber">7.3&nbsp; </span>Sample lint.xml file</a><br>
+<a href="#appendix:recentchanges" class="level1"><span class="tocNumber">8&nbsp; </span>Appendix: Recent Changes</a><br>
+<a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">9&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
+&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">9.1&nbsp; </span>Environment Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables" class="level3"><span class="tocNumber">9.1.1&nbsp; </span>Detector Configuration Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables" class="level3"><span class="tocNumber">9.1.2&nbsp; </span>Lint Configuration Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables" class="level3"><span class="tocNumber">9.1.3&nbsp; </span>Lint Development Variables</a><br>
+&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/systemproperties" class="level2"><span class="tocNumber">9.2&nbsp; </span>System Properties</a><br>
 </p></div>
 
 <p></p><p>
@@ -87,6 +87,27 @@ For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
 </p><p>
+
+<strong class="asterisk">8.6</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>AccessibilityFocus</code> </td><td style="text-align:left"> Forcing accessibility focus </td></tr>
+<tr><td style="text-align:left"> <code>AccessibilityScrollActions</code> </td><td style="text-align:left"> Incomplete Scroll Action support </td></tr>
+<tr><td style="text-align:left"> <code>AccessibilityWindowStateChangedEvent</code> </td><td style="text-align:left"> Use of accessibility window state change events </td></tr>
+<tr><td style="text-align:left"> <code>CredentialDependency</code> </td><td style="text-align:left"> <code>credentials-play-services-auth</code> is Required </td></tr>
+<tr><td style="text-align:left"> <code>PictureInPictureIssue</code> </td><td style="text-align:left"> Picture In Picture best practices not followed </td></tr>
+<tr><td style="text-align:left"> <code>SimilarGradleDependency</code> </td><td style="text-align:left"> Multiple Versions Gradle Dependency </td></tr>
+<tr><td style="text-align:left"> <code>UnclosedTrace</code> </td><td style="text-align:left"> Incorrect trace section usage </td></tr>
+</tbody></table></div>
+
+<p></p><p>
 
 <strong class="asterisk">8.4</strong>
 
@@ -1052,7 +1073,7 @@ yourself to stable versions, such as 8.0.0 while still building with
 <span class="line"></span>android.experimental.lint.version=8.0.0</code></pre>
 <a class="target" name="baselines">&nbsp;</a><a class="target" name="baselines">&nbsp;</a><a class="target" name="toc4">&nbsp;</a><h1>Baselines</h1>
 
-<a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Creating a Baseline</h1>
+<a class="target" name="creatingabaseline">&nbsp;</a><a class="target" name="baselines/creatingabaseline">&nbsp;</a><a class="target" name="toc4.1">&nbsp;</a><h2>Creating a Baseline</h2>
 <p>
 
 
@@ -1064,7 +1085,7 @@ address all existing issues first.
 
 </p><p>
 
-To create a baseline snapshot, modify your project's <code>build.gradle</code>``
+To create a baseline snapshot, modify your project's <code>build.gradle</code>
 file as follows.
 
 </p><pre class="listing tilde"><code><span class="line"></span>android {
@@ -1082,7 +1103,7 @@ baseline, manually delete the file and run lint again to recreate it.
 
 Then, run lint from the IDE (<strong class="asterisk">Analyze &gt; Inspect Code</strong>) or from
 the command line as follows. The output prints the location of the
-lint-baseline.xml file. The file location for your setup might be
+<code>lint-baseline.xml</code> file. The file location for your setup might be
 different from what is shown here.
 
 </p><pre class="listing backtick"><code><span class="line"></span>    $ ./gradlew lintDebug
@@ -1092,11 +1113,11 @@ different from what is shown here.
 
 Running lint records all of the current issues in the
 <code>lint-baseline.xml</code> file. The set of current issues is called the
-baseline, and you can check the lint-baseline.xml file into version
+baseline, and you can check the <code>lint-baseline.xml</code> file into version
 control if you want to share it with others.
 
 </p>
-<a class="target" name="customizethebaseline">&nbsp;</a><a class="target" name="creatingabaseline/customizethebaseline">&nbsp;</a><a class="target" name="toc5.1">&nbsp;</a><h2>Customize the baseline</h2>
+<a class="target" name="customizethebaseline">&nbsp;</a><a class="target" name="baselines/customizethebaseline">&nbsp;</a><a class="target" name="toc4.2">&nbsp;</a><h2>Customize the baseline</h2>
 <p>
 
 
@@ -1115,7 +1136,7 @@ After you create the baseline, if you add any new warnings to the
 codebase, lint lists only the newly introduced bugs.
 
 </p>
-<a class="target" name="baselinewarning">&nbsp;</a><a class="target" name="creatingabaseline/baselinewarning">&nbsp;</a><a class="target" name="toc5.2">&nbsp;</a><h2>Baseline warning</h2>
+<a class="target" name="baselinewarning">&nbsp;</a><a class="target" name="baselines/baselinewarning">&nbsp;</a><a class="target" name="toc4.3">&nbsp;</a><h2>Baseline warning</h2>
 <p>
 
 
@@ -1135,22 +1156,19 @@ the baseline to prevent the error from coming back undetected.
 
 </p><p>
 
-</p><div class="admonition note"><div class="admonition-title"> Baselines are enabled when you run inspections in batch</div>
-
-<p></p><p>
-
-   mode in the IDE, but they are ignored for the in-editor checks that
-   run in the background when you are editing a file. The reason is that
-   baselines are intended for the case where a codebase has a massive
-   number of existing warnings, but you do want to fix issues locally
-   while you touch the code.</p></div>
+</p><div class="admonition note">Baselines are enabled when you run inspections in batch mode in the
+   IDE, but they are ignored for the in-editor checks that run in the
+   background when you are editing a file. The reason is that baselines
+   are intended for the case where a codebase has a massive number of
+   existing warnings, but you do want to fix issues locally while you
+   touch the code.</div>
 
 <p></p><p>
 
 <a href="https://developer.android.com/studio/write/lint#snapshot">Official documentation</a>
 
 </p>
-<a class="target" name="performancetuning">&nbsp;</a><a class="target" name="performancetuning">&nbsp;</a><a class="target" name="toc6">&nbsp;</a><h1>Performance Tuning</h1>
+<a class="target" name="performancetuning">&nbsp;</a><a class="target" name="performancetuning">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Performance Tuning</h1>
 <p>
 
 
@@ -1175,7 +1193,7 @@ lint on CI servers.
    change is an improvement.</div>
 
 <p></p>
-<a class="target" name="use7.0andincrementallint">&nbsp;</a><a class="target" name="performancetuning/use7.0andincrementallint">&nbsp;</a><a class="target" name="toc6.1">&nbsp;</a><h2>Use 7.0 and Incremental Lint</h2>
+<a class="target" name="use7.0andincrementallint">&nbsp;</a><a class="target" name="performancetuning/use7.0andincrementallint">&nbsp;</a><a class="target" name="toc5.1">&nbsp;</a><h2>Use 7.0 and Incremental Lint</h2>
 <p>
 
 
@@ -1207,11 +1225,11 @@ relative such that this facility will also work for Gradle's remote
 cache; once that's done, this will work for clean builds as well.
 
 </p>
-<a class="target" name="usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="performancetuning/usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="toc6.2">&nbsp;</a><h2>Use the <code>lintDebug</code> target, not <code>lint</code></h2>
+<a class="target" name="usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="performancetuning/usethelintdebugtarget,notlint">&nbsp;</a><a class="target" name="toc5.2">&nbsp;</a><h2>Use the <code>lintDebug</code> target, not <code>lint</code></h2>
 <p>
 
 
-If you run “./gradlew tasks” you'll see that there's a <code>lint</code> task, and
+If you run <code>./gradlew tasks</code> you'll see that there's a <code>lint</code> task, and
 you may be tempted to run it. But lint also adds specific tasks for
 each variant. For example, if you only have “debug” and “release”
 variants (e.g. you haven't defined any product flavors or additional
@@ -1264,7 +1282,7 @@ to miss much.
 <p></p><p>
 
 If you have lots of variants this makes a huge difference; with 7
-variants, <code>lint</code> will take ~7x longer than <code>lintDebug</code> !! (modulo some
+variants, <code>lint</code> will take ~7x longer than <code>lintDebug</code>!! (modulo some
 minor caching)
 
 </p><p>
@@ -1274,12 +1292,12 @@ minor caching)
    update to 7.0 this is no longer a problem.</div>
 
 <p></p>
-<a class="target" name="onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="performancetuning/onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="toc6.3">&nbsp;</a><h2>Only analyze app/leaf modules</h2>
+<a class="target" name="onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="performancetuning/onlyanalyzeapp/leafmodules">&nbsp;</a><a class="target" name="toc5.3">&nbsp;</a><h2>Only analyze app/leaf modules</h2>
 <p>
 
 
-If you have divided your project into many smaller modules - a number
-of libraries and just a couple of app modules, it's much better to
+If you have divided your project into many smaller modules — a number
+of libraries and just a couple of app modules — it's much better to
 
 </p><p>
 
@@ -1352,7 +1370,7 @@ one separately.
    problems, so we will most likely turn this mode back on by default.</div>
 
 <p></p>
-<a class="target" name="don'tanalyzetestsources">&nbsp;</a><a class="target" name="performancetuning/don'tanalyzetestsources">&nbsp;</a><a class="target" name="toc6.4">&nbsp;</a><h2>Don't analyze test sources</h2>
+<a class="target" name="don'tanalyzetestsources">&nbsp;</a><a class="target" name="performancetuning/don'tanalyzetestsources">&nbsp;</a><a class="target" name="toc5.4">&nbsp;</a><h2>Don't analyze test sources</h2>
 <p>
 
 
@@ -1388,7 +1406,7 @@ analysis and type resolution:
 <span class="line"></span>        ...
 <span class="line"></span>    }
 <span class="line"></span>}</code></pre>
-<a class="target" name="don'tusecheckallwarnings">&nbsp;</a><a class="target" name="performancetuning/don'tusecheckallwarnings">&nbsp;</a><a class="target" name="toc6.5">&nbsp;</a><h2>Don't use checkAllWarnings</h2>
+<a class="target" name="don'tusecheckallwarnings">&nbsp;</a><a class="target" name="performancetuning/don'tusecheckallwarnings">&nbsp;</a><a class="target" name="toc5.5">&nbsp;</a><h2>Don't use checkAllWarnings</h2>
 <p>
 
 
@@ -1408,7 +1426,7 @@ though in recent versions we've specifically exempted this check from
 <code>checkAllWarnings</code>.)
 
 </p>
-<a class="target" name="uselatestversion">&nbsp;</a><a class="target" name="performancetuning/uselatestversion">&nbsp;</a><a class="target" name="toc6.6">&nbsp;</a><h2>Use latest version</h2>
+<a class="target" name="uselatestversion">&nbsp;</a><a class="target" name="performancetuning/uselatestversion">&nbsp;</a><a class="target" name="toc5.6">&nbsp;</a><h2>Use latest version</h2>
 <p>
 
 
@@ -1422,7 +1440,7 @@ happen and canaries go through less testing, but in general lint has
 really good coverage so regressions do not happen very often.)
 
 </p>
-<a class="target" name="givelintalotofram">&nbsp;</a><a class="target" name="performancetuning/givelintalotofram">&nbsp;</a><a class="target" name="toc6.7">&nbsp;</a><h2>Give lint a lot of RAM</h2>
+<a class="target" name="givelintalotofram">&nbsp;</a><a class="target" name="performancetuning/givelintalotofram">&nbsp;</a><a class="target" name="toc5.7">&nbsp;</a><h2>Give lint a lot of RAM</h2>
 <p>
 
 
@@ -1459,7 +1477,7 @@ One user reported this result:
  <code>./gradlew -Dorg.gradle.jvmargs=-Xmx8g app:lintDebug</code> takes 8m 57s!</p></blockquote>
 
 <p></p>
-<a class="target" name="findingslowlintchecks">&nbsp;</a><a class="target" name="performancetuning/findingslowlintchecks">&nbsp;</a><a class="target" name="toc6.8">&nbsp;</a><h2>Finding Slow Lint Checks</h2>
+<a class="target" name="findingslowlintchecks">&nbsp;</a><a class="target" name="performancetuning/findingslowlintchecks">&nbsp;</a><a class="target" name="toc5.8">&nbsp;</a><h2>Finding Slow Lint Checks</h2>
 <p>
 
 
@@ -1500,7 +1518,7 @@ post</a>.
 
 If you see a suspicious check, you can try to disable its issues
 (unless you find their value is worth the cost; after all, real world
-bugs are typically more expensive than server compute cycles.) But
+bugs are typically more expensive than server compute cycles). But
 don't forget to also report the bug to the lint check author!
 
 </p><p>
@@ -1511,13 +1529,13 @@ don't forget to also report the bug to the lint check author!
    unlucky detector that comes along has to perform the computation,
    and subsequent detectors just get to reuse the result. Because of
    this, it's not always the case that a particular detector is a
-   performance culprit, and as soon as you disable it, a new detector
-   moves to the top of the list paying the same initialization costs.
+   performance culprit. As soon as you disable it, a new detector may
+   move to the top of the list paying the same initialization costs.
    The main use for this tool is to find extreme or unusual performance
    behaviors.</div>
 
 <p></p>
-<a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="toc7">&nbsp;</a><h1>Suppressing Lint Checks</h1>
+<a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="suppressinglintchecks">&nbsp;</a><a class="target" name="toc6">&nbsp;</a><h1>Suppressing Lint Checks</h1>
 <p>
 
 
@@ -1538,9 +1556,9 @@ Lint errors can be suppressed in a variety of ways:
 <li class="number">With a <code>lint.xml</code> configuration file in the project
 </li>
 <li class="number">With a <code>lint.xml</code> configuration file passed to lint
-   via the —config flag
+   via the <code>--config</code> flag
 </li>
-<li class="number">With the —ignoreflag passed to lint
+<li class="number">With the <code>--ignore</code> flag passed to lint
 </li>
 <li class="number">With a <a href="#baselines">baseline</a></li></ol>
 
@@ -1608,7 +1626,7 @@ For more information, see
 <a href="https://developer.android.com/studio/write/lint.html#config" class="url">https://developer.android.com/studio/write/lint.html#config</a>
 
 </p>
-<a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="toc8">&nbsp;</a><h1>Configuring Using lint.xml Files</h1>
+<a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles">&nbsp;</a><a class="target" name="toc7">&nbsp;</a><h1>Configuring Using lint.xml Files</h1>
 <p>
 
 
@@ -1628,61 +1646,68 @@ warning.
 This chapter describes the syntax of <code>lint.xml</code> files.
 
 </p>
-<a class="target" name="xmlsyntax">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/xmlsyntax">&nbsp;</a><a class="target" name="toc8.1">&nbsp;</a><h2>XML Syntax</h2>
+<a class="target" name="xmlsyntax">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/xmlsyntax">&nbsp;</a><a class="target" name="toc7.1">&nbsp;</a><h2>XML Syntax</h2>
 <p>
 
 
 The root tag is always <code>&lt;lint&gt;</code>, and it can contain one or more
 <code>&lt;issue&gt;</code> elements. Each <issue> can specify the following
-attributes: <code>id</code>: The issue id the following configuration applies
-to. Note that this can be a comma separated list of multiple id's, in
-which case the configuration applies to all of them. It can also be
-the special value “all”, which will match all issue id's. And when
-configuring severity, the id is also allowed to be a category, such
-as “Security”.
+attributes:
 
 </issue></p><p>
 
-<code>in</code>: Specifies that this configuration only applies when lint
-runs in the given hosts. There are predefined names for various
-integrations of lint; “gradle” refers to lint running in the Gradle
-plugin; “studio” refers to lint running in the IDE, “cli” refers to
-lint running from the command line tools “lint” binary, etc. Like
-with id's, this can be a comma separated list, which makes the rule
-match if the lint host is any of the listed hosts. Finally, note that
-you can also add a “!” in front of each host to negate the check. For
-example, to enable a check anywhere except when running in Studio,
-use <code>in="!studio"</code>.
+</p><ul>
+<li class="minus"><code>id</code>: The issue id the following configuration applies
+  to. Note that this can be a comma separated list of multiple id's, in
+  which case the configuration applies to all of them. It can also be
+  the special value “all”, which will match all issue id's. And when
+  configuring severity, the id is also allowed to be a category, such
+  as “Security”.
+</li>
+<li class="minus"><code>in</code>: Specifies that this configuration only applies when lint
+  runs in the given hosts. There are predefined names for various
+  integrations of lint; “gradle” refers to lint running in the Gradle
+  plugin; “studio” refers to lint running in the IDE, “cli” refers to
+  lint running from the command line tools “lint” binary, etc. Like
+  with id's, this can be a comma separated list, which makes the rule
+  match if the lint host is any of the listed hosts. Finally, note that
+  you can also add a “!” in front of each host to negate the check. For
+  example, to enable a check anywhere except when running in Studio,
+  use <code>in="!studio"</code>.</li></ul>
 
-</p><p>
+<p></p><p>
 
 In addition, the <issue> element can specify one or more children:
 
 </issue></p><p>
 
-<code>&lt;ignore path="..."&gt;</code>: Specifies a path to ignore. Can contain the
-globbing character “*” to match any substring in the path. <code>&lt;ignore regexp="..."&gt;</code>: Specifies either a regular expression to ignore. The
-regular expression is matched against both the location of the error
-and the error message itself. <code>&lt;option name="..." value="..."&gt;</code>:
-Specifies an option value. This can be used to configure some lint
-checks with options.
+</p><ul>
+<li class="minus"><code>&lt;ignore path="..."&gt;</code>: Specifies a path to ignore. Can contain the
+  globbing character “*” to match any substring in the path.
+</li>
+<li class="minus"><code>&lt;ignore regexp="..."&gt;</code>: Specifies either a regular expression to
+  ignore. The regular expression is matched against both the location of
+  the error and the error message itself.
+</li>
+<li class="minus"><code>&lt;option name="..." value="..."&gt;</code>: Specifies an option value. This can
+  be used to configure some lint checks with options.</li></ul>
 
-</p><p>
+<p></p><p>
 
 Finally, on the root <lint> element you can specify a number of
 attributes, such as <code>lintJars</code> (a list of jar files containing custom
 lint checks, separated by a semicolon as a path separator), and
 flags like warningsAsErrors, checkTestSources, etc (matching most
-of the flags offered via the lintOptions block in Gradle files.)
+of the flags offered via the lintOptions block in Gradle files).
 
 </lint></p>
-<a class="target" name="nesting&amp;precedence">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/nesting&amp;precedence">&nbsp;</a><a class="target" name="toc8.2">&nbsp;</a><h2>Nesting &amp; Precedence</h2>
+<a class="target" name="nesting&amp;precedence">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/nesting&amp;precedence">&nbsp;</a><a class="target" name="toc7.2">&nbsp;</a><h2>Nesting &amp; Precedence</h2>
 <p>
 
 
 You can specify configurations for “all”, but these will be
 matched after an exact match has been done. E.g. if we have
-both <code>&lt;issue id="all" severity="ignore"&gt;</code> and <code>&lt;issue id="MyId" severity="error"&gt;</code>, the severity for <code>MyId</code> will be “error”“ since
+both <code>&lt;issue id="all" severity="ignore"&gt;</code> and <code>&lt;issue id="MyId" severity="error"&gt;</code>, the severity for <code>MyId</code> will be “error” since
 that's a more exact match.
 
 </p><p>
@@ -1718,7 +1743,7 @@ in this order:
    ”!gradle“, this will match after the other attempts.</li></ol>
 
 <p></p>
-<a class="target" name="samplelint.xmlfile">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/samplelint.xmlfile">&nbsp;</a><a class="target" name="toc8.3">&nbsp;</a><h2>Sample lint.xml file</h2>
+<a class="target" name="samplelint.xmlfile">&nbsp;</a><a class="target" name="configuringusinglint.xmlfiles/samplelint.xmlfile">&nbsp;</a><a class="target" name="toc7.3">&nbsp;</a><h2>Sample lint.xml file</h2>
 <p>
 
 
@@ -1764,7 +1789,7 @@ so if you're going to copy/paste go to the source file.)
 
 
 </p>
-<a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="toc9">&nbsp;</a><h1>Appendix: Recent Changes</h1>
+<a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="toc8">&nbsp;</a><h1>Appendix: Recent Changes</h1>
 <p>
 
            
@@ -1777,6 +1802,27 @@ For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
 </p><p>
+
+<strong class="asterisk">8.6</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">New built-in lint checks:</li></ul>
+
+<p></p><p>
+
+</p><div class="table"><table class="table"><tbody><tr><th style="text-align:left"> Issue ID </th><th style="text-align:left"> Summary </th></tr>
+<tr><td style="text-align:left"> <code>AccessibilityFocus</code> </td><td style="text-align:left"> Forcing accessibility focus </td></tr>
+<tr><td style="text-align:left"> <code>AccessibilityScrollActions</code> </td><td style="text-align:left"> Incomplete Scroll Action support </td></tr>
+<tr><td style="text-align:left"> <code>AccessibilityWindowStateChangedEvent</code> </td><td style="text-align:left"> Use of accessibility window state change events </td></tr>
+<tr><td style="text-align:left"> <code>CredentialDependency</code> </td><td style="text-align:left"> <code>credentials-play-services-auth</code> is Required </td></tr>
+<tr><td style="text-align:left"> <code>PictureInPictureIssue</code> </td><td style="text-align:left"> Picture In Picture best practices not followed </td></tr>
+<tr><td style="text-align:left"> <code>SimilarGradleDependency</code> </td><td style="text-align:left"> Multiple Versions Gradle Dependency </td></tr>
+<tr><td style="text-align:left"> <code>UnclosedTrace</code> </td><td style="text-align:left"> Incorrect trace section usage </td></tr>
+</tbody></table></div>
+
+<p></p><p>
 
 <strong class="asterisk">8.4</strong>
 
@@ -2146,7 +2192,7 @@ lint check authors, see the API Guide.
   visualized in a unified way on CI servers.</li></ul>
 
 <p></p>
-<a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc10">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
+<a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc9">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
 <p>
 
 
@@ -2156,9 +2202,9 @@ be used or guaranteed to be supported in the future, but documenting
 what they are seems useful.
 
 </p>
-<a class="target" name="environmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables">&nbsp;</a><a class="target" name="toc10.1">&nbsp;</a><h2>Environment Variables</h2>
+<a class="target" name="environmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables">&nbsp;</a><a class="target" name="toc9.1">&nbsp;</a><h2>Environment Variables</h2>
 
-<a class="target" name="detectorconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables">&nbsp;</a><a class="target" name="toc10.1.1">&nbsp;</a><h3>Detector Configuration Variables</h3>
+<a class="target" name="detectorconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables">&nbsp;</a><a class="target" name="toc9.1.1">&nbsp;</a><h3>Detector Configuration Variables</h3>
 <p>
 
 
@@ -2190,7 +2236,7 @@ what they are seems useful.
   for that check.
 
 </p></dd></dl><p></p>
-<a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc10.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>
+<a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc9.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>
 <p>
 
 
@@ -2244,7 +2290,7 @@ what they are seems useful.
   Corresponding system property: <code>android.lint.skip.bytecode.verifier</code>
 
 </p></dd></dl><p></p>
-<a class="target" name="lintdevelopmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables">&nbsp;</a><a class="target" name="toc10.1.3">&nbsp;</a><h3>Lint Development Variables</h3>
+<a class="target" name="lintdevelopmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables">&nbsp;</a><a class="target" name="toc9.1.3">&nbsp;</a><h3>Lint Development Variables</h3>
 <p>
 
 
@@ -2278,7 +2324,7 @@ what they are seems useful.
   server or by the rest of the development team.
 
 </p></dd></dl><p></p>
-<a class="target" name="systemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/systemproperties">&nbsp;</a><a class="target" name="toc10.2">&nbsp;</a><h2>System Properties</h2>
+<a class="target" name="systemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/systemproperties">&nbsp;</a><a class="target" name="toc9.2">&nbsp;</a><h2>System Properties</h2>
 <p>
 
 
@@ -2349,4 +2395,4 @@ what they are seems useful.
   Corresponding system property: <code>android.lint.skip.bytecode.verifier</code>
 
 </p></dd></dl><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility=&ldquo;visible&rdquo;)</script>
-<p></p></span><div id="mdContextMenu" style="visibility:hidden"></div><div class="markdeepFooter"><i>formatted by <a href="https://casual-effects.com/markdeep" style="color:#999">Markdeep&nbsp;1.16&nbsp;&nbsp;</a></i><div style="display:inline-block;font-size:13px;font-family:'Times New Roman',serif;vertical-align:middle;transform:translate(-3px,-1px)rotate(135deg);">✒</div></div></body></html>
+<p></p></span><div id="mdContextMenu" style="visibility:hidden"></div><div class="markdeepFooter"><i>formatted by <a href="https://casual-effects.com/markdeep" style="color:#999">Markdeep&nbsp;1.17&nbsp;&nbsp;</a></i><div style="display:inline-block;font-size:13px;font-family:'Times New Roman',serif;vertical-align:middle;transform:translate(-3px,-1px)rotate(135deg);">✒</div></div></body></html>

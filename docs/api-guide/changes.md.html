@@ -5,6 +5,19 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**8.6**
+
+* UAST repeats @JvmOverloaded methods in the AST. Lint now looks for
+  and skips these duplications, and a new test mode also looks for
+  potential problems in third party checks.
+* Added a new chapter to the api-guide on AST analysis, and in
+  particular, using the Kotlin Analysis API.
+* The `UElementHandler` now supports recently added UAST element
+  types: `UPatternExpression` and `UBinaryExpressionWithPattern`.
+* There's a new test mode checking for issues related to
+  `@JvmOverloads`. See the [test modes](test-modes.md.html) chapter
+  for more.
+
 **8.4**
 
 * You can now use `~~` in text messages (error messages, issue
