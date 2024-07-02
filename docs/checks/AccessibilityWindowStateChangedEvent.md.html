@@ -1,0 +1,190 @@
+<meta charset="utf-8">
+(#) Use of accessibility window state change events
+
+!!! WARNING: Use of accessibility window state change events
+   This is a warning.
+
+Id
+:   `AccessibilityWindowStateChangedEvent`
+Summary
+:   Use of accessibility window state change events
+Severity
+:   Warning
+Category
+:   Accessibility
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AccessibilityWindowStateChangedDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AccessibilityWindowStateChangedDetectorTest.kt)
+Copyright Year
+:   2024
+
+Sending or populating `TYPE_WINDOW_STATE_CHANGED` events in your code is
+strongly discouraged. Instead, prefer to use or extend system-provided
+widgets that are as far down Android's class hierarchy as possible.
+System-provided widgets that are far down the hierarchy already have
+most of the accessibility capabilities your app needs. If you must
+extend `View` or `Canvas` directly, then still prefer to: set UI
+metadata by calling `Activity.setTitle`,
+`ViewCompat.setAccessibilityPaneTitle`, or
+`ViewCompat.setAccessibilityLiveRegion`; implement
+`View.onInitializeAccessibilityNodeInfo`; and (for very specialized
+custom controls) implement `View.getAccessibilityNodeProvider` to
+provide a virtual view hierarchy. These approaches allow accessibility
+services to inspect the view hierarchy, rather than relying on
+incomplete information provided by events. Events like
+`TYPE_WINDOW_STATE_CHANGED` will be sent automatically when updating
+this metadata, and so trying to manually send this event will result in
+duplicate events, or the event may be ignored entirely.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/com/my/app/MyView.kt:12:Warning: Manually populating or sending
+TYPE_WINDOW_STATE_CHANGED events should be avoided. They may be ignored
+on certain versions of Android. Prefer setting UI metadata using
+View.onInitializeAccessibilityNodeInfo, Activity.setTitle,
+ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
+changes to the UI. [AccessibilityWindowStateChangedEvent]
+
+    sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+    --------------------------------------------------------------------
+
+
+src/com/my/app/MyView.kt:16:Warning: Manually populating or sending
+TYPE_WINDOW_STATE_CHANGED events should be avoided. They may be ignored
+on certain versions of Android. Prefer setting UI metadata using
+View.onInitializeAccessibilityNodeInfo, Activity.setTitle,
+ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
+changes to the UI. [AccessibilityWindowStateChangedEvent]
+
+    if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                                              -------------------------
+
+
+src/com/my/app/MyView.kt:23:Warning: Manually populating or sending
+TYPE_WINDOW_STATE_CHANGED events should be avoided. They may be ignored
+on certain versions of Android. Prefer setting UI metadata using
+View.onInitializeAccessibilityNodeInfo, Activity.setTitle,
+ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
+changes to the UI. [AccessibilityWindowStateChangedEvent]
+
+    if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                                              -------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/com/my/app/MyView.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.my.app
+
+import android.content.Context
+import android.view.View
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
+import android.widget.ScrollView
+
+class MyView(context: Context) : View(context) {
+
+  fun foo() {
+    sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
+  }
+
+  override fun dispatchPopulateAccessibilityEvent(event: AccessibilityEvent): Boolean {
+    if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+      event.contentChangeTypes = AccessibilityEvent.CONTENT_CHANGE_TYPE_TEXT
+    }
+    return super.dispatchPopulateAccessibilityEvent(event)
+  }
+
+  override fun onPopulateAccessibilityEvent(event: AccessibilityEvent) {
+    if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+      event.contentChangeTypes = AccessibilityEvent.CONTENT_CHANGE_TYPE_TEXT
+    }
+    super.onPopulateAccessibilityEvent(event)
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AccessibilityWindowStateChangedDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("AccessibilityWindowStateChangedEvent")
+  fun method() {
+     sendAccessibilityEvent(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("AccessibilityWindowStateChangedEvent")
+  void method() {
+     sendAccessibilityEvent(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection AccessibilityWindowStateChangedEvent
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AccessibilityWindowStateChangedEvent" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AccessibilityWindowStateChangedEvent'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AccessibilityWindowStateChangedEvent ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

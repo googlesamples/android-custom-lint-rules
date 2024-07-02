@@ -43,7 +43,7 @@ web links, or Android App Links.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:12:Error: Expected testUrl attribute
+AndroidManifest.xml:15:Error: Expected testUrl attribute
 [AppLinkUrlError]
 
     &lt;tools:validation /&gt;
@@ -61,6 +61,9 @@ Here is the source file referenced above:
     &lt;application&gt;
         &lt;activity&gt;
             &lt;intent-filter android:autoVerify="true"&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
                 &lt;data android:scheme="http"
                     android:host="example.com"
                     android:pathPrefix="/gizmos" /&gt;

@@ -14,11 +14,11 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=527362
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.activity:activity:1.9.0
+:   androidx.activity:activity:1.10.0-alpha01
 
 (##) Included Issues
 
@@ -35,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.activity:activity:1.9.0")
+implementation("androidx.activity:activity:1.10.0-alpha01")
 
 // build.gradle
-implementation 'androidx.activity:activity:1.9.0'
+implementation 'androidx.activity:activity:1.10.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.activity)
 
 # libs.versions.toml
 [versions]
-activity = "1.9.0"
+activity = "1.10.0-alpha01"
 [libraries]
 activity = {
     module = "androidx.activity:activity",
@@ -53,7 +53,7 @@ activity = {
 }
 ```
 
-1.9.0 is the version this documentation was generated from;
+1.10.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -68,6 +68,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|      1.10.0-alpha01|2024/06/26|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.9.0|2024/04/17|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.8.2|2023/12/13|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.8.1|2023/11/15|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|

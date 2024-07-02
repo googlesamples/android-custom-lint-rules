@@ -75,129 +75,157 @@ long book, suitable for printing or reading on a tablet.
 &nbsp;&nbsp;<a href="#example:samplelintcheckgithubproject/issueregistry" class="level2"><span class="tocNumber">3.7&nbsp; </span>IssueRegistry</a><br>
 &nbsp;&nbsp;<a href="#example:samplelintcheckgithubproject/detector" class="level2"><span class="tocNumber">3.8&nbsp; </span>Detector</a><br>
 &nbsp;&nbsp;<a href="#example:samplelintcheckgithubproject/detectortest" class="level2"><span class="tocNumber">3.9&nbsp; </span>Detector Test</a><br>
-<a href="#publishingalintcheck" class="level1"><span class="tocNumber">4&nbsp; </span>Publishing a Lint Check</a><br>
-&nbsp;&nbsp;<a href="#publishingalintcheck/android" class="level2"><span class="tocNumber">4.1&nbsp; </span>Android</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/aarsupport" class="level3"><span class="tocNumber">4.1.1&nbsp; </span>AAR Support</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/lintpublishconfiguration" class="level3"><span class="tocNumber">4.1.2&nbsp; </span>lintPublish Configuration</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/localchecks" class="level3"><span class="tocNumber">4.1.3&nbsp; </span>Local Checks</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/unpublishing" class="level3"><span class="tocNumber">4.1.4&nbsp; </span>Unpublishing</a><br>
-<a href="#lintcheckunittesting" class="level1"><span class="tocNumber">5&nbsp; </span>Lint Check Unit Testing</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/creatingaunittest" class="level2"><span class="tocNumber">5.1&nbsp; </span>Creating a Unit Test</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/computingtheexpectedoutput" class="level2"><span class="tocNumber">5.2&nbsp; </span>Computing the Expected Output</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/testfiles" class="level2"><span class="tocNumber">5.3&nbsp; </span>Test Files</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/trimmingindents?" class="level2"><span class="tocNumber">5.4&nbsp; </span>Trimming indents?</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/dollarsinrawstrings" class="level2"><span class="tocNumber">5.5&nbsp; </span>Dollars in Raw Strings</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/quickfixes" class="level2"><span class="tocNumber">5.6&nbsp; </span>Quickfixes</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/librarydependenciesandstubs" class="level2"><span class="tocNumber">5.7&nbsp; </span>Library Dependencies and Stubs</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/binaryandcompiledsourcefiles" class="level2"><span class="tocNumber">5.8&nbsp; </span>Binary and Compiled Source Files</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/base64-encodedgzippedbytecode" class="level2"><span class="tocNumber">5.9&nbsp; </span>Base64-encoded gzipped byte code</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/mydetectorisn'tinvokedfromatest!" class="level2"><span class="tocNumber">5.10&nbsp; </span>My Detector Isn't Invoked From a Test!</a><br>
-&nbsp;&nbsp;<a href="#lintcheckunittesting/languagelevel" class="level2"><span class="tocNumber">5.11&nbsp; </span>Language Level</a><br>
-<a href="#testmodes" class="level1"><span class="tocNumber">6&nbsp; </span>Test Modes</a><br>
-&nbsp;&nbsp;<a href="#testmodes/howtodebug" class="level2"><span class="tocNumber">6.1&nbsp; </span>How to debug</a><br>
-&nbsp;&nbsp;<a href="#testmodes/handlingintentionalfailures" class="level2"><span class="tocNumber">6.2&nbsp; </span>Handling Intentional Failures</a><br>
-&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes" class="level2"><span class="tocNumber">6.3&nbsp; </span>Source-Modifying Test Modes</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/fullyqualifiednames" class="level3"><span class="tocNumber">6.3.1&nbsp; </span>Fully Qualified Names</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/importaliasing" class="level3"><span class="tocNumber">6.3.2&nbsp; </span>Import Aliasing</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/typealiasing" class="level3"><span class="tocNumber">6.3.3&nbsp; </span>Type Aliasing</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/parenthesismode" class="level3"><span class="tocNumber">6.3.4&nbsp; </span>Parenthesis Mode</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/argumentreordering" class="level3"><span class="tocNumber">6.3.5&nbsp; </span>Argument Reordering</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/bodyremoval" class="level3"><span class="tocNumber">6.3.6&nbsp; </span>Body Removal</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/iftowhenreplacement" class="level3"><span class="tocNumber">6.3.7&nbsp; </span>If to When Replacement</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/whitespacemode" class="level3"><span class="tocNumber">6.3.8&nbsp; </span>Whitespace Mode</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/cdatamode" class="level3"><span class="tocNumber">6.3.9&nbsp; </span>CDATA Mode</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/suppressiblemode" class="level3"><span class="tocNumber">6.3.10&nbsp; </span>Suppressible Mode</a><br>
-<a href="#addingquickfixes" class="level1"><span class="tocNumber">7&nbsp; </span>Adding Quick Fixes</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/introduction" class="level2"><span class="tocNumber">7.1&nbsp; </span>Introduction</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/thelintfixbuilderclass" class="level2"><span class="tocNumber">7.2&nbsp; </span>The LintFix builder class</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/creatingalintfix" class="level2"><span class="tocNumber">7.3&nbsp; </span>Creating a LintFix</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/availablefixes" class="level2"><span class="tocNumber">7.4&nbsp; </span>Available Fixes</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/combiningfixes" class="level2"><span class="tocNumber">7.5&nbsp; </span>Combining Fixes</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/refactoringjavaandkotlincode" class="level2"><span class="tocNumber">7.6&nbsp; </span>Refactoring Java and Kotlin code</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/regularexpressionsandbackreferences" class="level2"><span class="tocNumber">7.7&nbsp; </span>Regular Expressions and Back References</a><br>
-&nbsp;&nbsp;<a href="#addingquickfixes/emittingquickfixxmltoapplyonci" class="level2"><span class="tocNumber">7.8&nbsp; </span>Emitting quick fix XML to apply on CI</a><br>
-<a href="#partialanalysis" class="level1"><span class="tocNumber">8&nbsp; </span>Partial Analysis</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/about" class="level2"><span class="tocNumber">8.1&nbsp; </span>About</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/theproblem" class="level2"><span class="tocNumber">8.2&nbsp; </span>The Problem</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/overview" class="level2"><span class="tocNumber">8.3&nbsp; </span>Overview</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?" class="level2"><span class="tocNumber">8.4&nbsp; </span>Does My Detector Need Work?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:blockingaccesstomainproject" class="level3"><span class="tocNumber">8.4.1&nbsp; </span>Catching Mistakes: Blocking Access to Main Project</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:simulatedappmodule" class="level3"><span class="tocNumber">8.4.2&nbsp; </span>Catching Mistakes: Simulated App Module</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:diffingresults" class="level3"><span class="tocNumber">8.4.3&nbsp; </span>Catching Mistakes: Diffing Results</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:remainingissues" class="level3"><span class="tocNumber">8.4.4&nbsp; </span>Catching Mistakes: Remaining Issues</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/incidents" class="level2"><span class="tocNumber">8.5&nbsp; </span>Incidents</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/constraints" class="level2"><span class="tocNumber">8.6&nbsp; </span>Constraints</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/incidentlintmaps" class="level2"><span class="tocNumber">8.7&nbsp; </span>Incident LintMaps</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/modulelintmaps" class="level2"><span class="tocNumber">8.8&nbsp; </span>Module LintMaps</a><br>
-&nbsp;&nbsp;<a href="#partialanalysis/optimizations" class="level2"><span class="tocNumber">8.9&nbsp; </span>Optimizations</a><br>
-<a href="#dataflowanalyzer" class="level1"><span class="tocNumber">9&nbsp; </span>Data Flow Analyzer</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/usage" class="level2"><span class="tocNumber">9.1&nbsp; </span>Usage</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/self-referencingcalls" class="level2"><span class="tocNumber">9.2&nbsp; </span>Self-referencing Calls</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/kotlinscopingfunctions" class="level2"><span class="tocNumber">9.3&nbsp; </span>Kotlin Scoping Functions</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/limitations" class="level2"><span class="tocNumber">9.4&nbsp; </span>Limitations</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues" class="level2"><span class="tocNumber">9.5&nbsp; </span>Escaping Values</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues/returns" class="level3"><span class="tocNumber">9.5.1&nbsp; </span>Returns</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues/parameters" class="level3"><span class="tocNumber">9.5.2&nbsp; </span>Parameters</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues/fields" class="level3"><span class="tocNumber">9.5.3&nbsp; </span>Fields</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/nonlocalanalysis" class="level2"><span class="tocNumber">9.6&nbsp; </span>Non Local Analysis</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/examples" class="level2"><span class="tocNumber">9.7&nbsp; </span>Examples</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/examples/simpleexample" class="level3"><span class="tocNumber">9.7.1&nbsp; </span>Simple Example</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/examples/complexexample" class="level3"><span class="tocNumber">9.7.2&nbsp; </span>Complex Example</a><br>
-&nbsp;&nbsp;<a href="#dataflowanalyzer/targetmethoddataflowanalyzer" class="level2"><span class="tocNumber">9.8&nbsp; </span>TargetMethodDataFlowAnalyzer</a><br>
-<a href="#annotations" class="level1"><span class="tocNumber">10&nbsp; </span>Annotations</a><br>
-&nbsp;&nbsp;<a href="#annotations/basics" class="level2"><span class="tocNumber">10.1&nbsp; </span>Basics</a><br>
-&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage" class="level2"><span class="tocNumber">10.2&nbsp; </span>Annotation Usage Types and isApplicableAnnotationUsage</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/methodoverride" class="level3"><span class="tocNumber">10.2.1&nbsp; </span>Method Override</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/methodreturn" class="level3"><span class="tocNumber">10.2.2&nbsp; </span>Method Return</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/handlingusagetypes" class="level3"><span class="tocNumber">10.2.3&nbsp; </span>Handling Usage Types</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/usagetypesfilteredbydefault" class="level3"><span class="tocNumber">10.2.4&nbsp; </span>Usage Types Filtered By Default</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/scopes" class="level3"><span class="tocNumber">10.2.5&nbsp; </span>Scopes</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/inheritedannotations" class="level3"><span class="tocNumber">10.2.6&nbsp; </span>Inherited Annotations</a><br>
-<a href="#options" class="level1"><span class="tocNumber">11&nbsp; </span>Options</a><br>
-&nbsp;&nbsp;<a href="#options/usage" class="level2"><span class="tocNumber">11.1&nbsp; </span>Usage</a><br>
-&nbsp;&nbsp;<a href="#options/creatingoptions" class="level2"><span class="tocNumber">11.2&nbsp; </span>Creating Options</a><br>
-&nbsp;&nbsp;<a href="#options/readingoptions" class="level2"><span class="tocNumber">11.3&nbsp; </span>Reading Options</a><br>
-&nbsp;&nbsp;<a href="#options/specificconfigurations" class="level2"><span class="tocNumber">11.4&nbsp; </span>Specific Configurations</a><br>
-&nbsp;&nbsp;<a href="#options/files" class="level2"><span class="tocNumber">11.5&nbsp; </span>Files</a><br>
-&nbsp;&nbsp;<a href="#options/constraints" class="level2"><span class="tocNumber">11.6&nbsp; </span>Constraints</a><br>
-&nbsp;&nbsp;<a href="#options/testingoptions" class="level2"><span class="tocNumber">11.7&nbsp; </span>Testing Options</a><br>
-&nbsp;&nbsp;<a href="#options/supportinglint4.2,7.0and7.1" class="level2"><span class="tocNumber">11.8&nbsp; </span>Supporting Lint 4.2, 7.0 and 7.1</a><br>
-<a href="#errormessageconventions" class="level1"><span class="tocNumber">12&nbsp; </span>Error Message Conventions</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/length" class="level2"><span class="tocNumber">12.1&nbsp; </span>Length</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/formatting" class="level2"><span class="tocNumber">12.2&nbsp; </span>Formatting</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/punctuation" class="level2"><span class="tocNumber">12.3&nbsp; </span>Punctuation</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/includedetails" class="level2"><span class="tocNumber">12.4&nbsp; </span>Include Details</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/referenceandroidbynumber" class="level2"><span class="tocNumber">12.5&nbsp; </span>Reference Android By Number</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/keepmessagesstable" class="level2"><span class="tocNumber">12.6&nbsp; </span>Keep Messages Stable</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/plurals" class="level2"><span class="tocNumber">12.7&nbsp; </span>Plurals</a><br>
-&nbsp;&nbsp;<a href="#errormessageconventions/examples" class="level2"><span class="tocNumber">12.8&nbsp; </span>Examples</a><br>
-<a href="#frequentlyaskedquestions" class="level1"><span class="tocNumber">13&nbsp; </span>Frequently Asked Questions</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//mydetectorcallbacksaren'tinvoked" class="level3"><span class="tocNumber">13.0.1&nbsp; </span>My detector callbacks aren't invoked</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//mylintcheckworksfromtheunittestbutnotintheide" class="level3"><span class="tocNumber">13.0.2&nbsp; </span>My lint check works from the unit test but not in the IDE</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//visitannotationusageisn'tcalledforannotations" class="level3"><span class="tocNumber">13.0.3&nbsp; </span><code>visitAnnotationUsage</code> isn't called for annotations</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckifauastorpsielementisforjavaorkotlin?" class="level3"><span class="tocNumber">13.0.4&nbsp; </span>How do I check if a UAST or PSI element is for Java or Kotlin?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//whatifineedapsielementandihaveauelement?" class="level3"><span class="tocNumber">13.0.5&nbsp; </span>What if I need a <code>PsiElement</code> and I have a <code>UElement</code> ?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoigettheumethodforapsimethod?" class="level3"><span class="tocNumber">13.0.6&nbsp; </span>How do I get the <code>UMethod</code> for a <code>PsiMethod</code> ?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdogetajavaevaluator?" class="level3"><span class="tocNumber">13.0.7&nbsp; </span>How do get a <code>JavaEvaluator</code> ?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckwhetheranelementisinternal?" class="level3"><span class="tocNumber">13.0.8&nbsp; </span>How do I check whether an element is internal?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//iselementinline,sealed,operator,infix,suspend,data?" class="level3"><span class="tocNumber">13.0.9&nbsp; </span>Is element inline, sealed, operator, infix, suspend, data?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupaclassifihaveitsfullyqualifiedname?" class="level3"><span class="tocNumber">13.0.10&nbsp; </span>How do I look up a class if I have its fully qualified name?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupaclassifihaveapsitype?" class="level3"><span class="tocNumber">13.0.11&nbsp; </span>How do I look up a class if I have a PsiType?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookuphierarhcyannotationsforanelement?" class="level3"><span class="tocNumber">13.0.12&nbsp; </span>How do I look up hierarhcy annotations for an element?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupifaclassisasubclassofanother?" class="level3"><span class="tocNumber">13.0.13&nbsp; </span>How do I look up if a class is a subclass of another?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoiknowwhichparameteracallargumentcorrespondsto?" class="level3"><span class="tocNumber">13.0.14&nbsp; </span>How do I know which parameter a call argument corresponds to?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howcanmylintcheckstargettwodifferentversionsoflint?" class="level3"><span class="tocNumber">13.0.15&nbsp; </span>How can my lint checks target two different versions of lint?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D" class="level3"><span class="tocNumber">13.0.16&nbsp; </span>Can I make my lint check “not suppressible?”</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//whyareoverloadedoperatorsnothandled?" class="level3"><span class="tocNumber">13.0.17&nbsp; </span>Why are overloaded operators not handled?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?" class="level3"><span class="tocNumber">13.0.18&nbsp; </span>How do I check out the current lint source code?</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//wheredoifindexamplesoflintchecks?" class="level3"><span class="tocNumber">13.0.19&nbsp; </span>Where do I find examples of lint checks?</a><br>
-<a href="#appendix:recentchanges" class="level1"><span class="tocNumber">14&nbsp; </span>Appendix: Recent Changes</a><br>
-<a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">15&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
-&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">15.1&nbsp; </span>Environment Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables" class="level3"><span class="tocNumber">15.1.1&nbsp; </span>Detector Configuration Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables" class="level3"><span class="tocNumber">15.1.2&nbsp; </span>Lint Configuration Variables</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables" class="level3"><span class="tocNumber">15.1.3&nbsp; </span>Lint Development Variables</a><br>
-&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/systemproperties" class="level2"><span class="tocNumber">15.2&nbsp; </span>System Properties</a><br>
+<a href="#astanalysis" class="level1"><span class="tocNumber">4&nbsp; </span>AST Analysis</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/astanalysis" class="level2"><span class="tocNumber">4.1&nbsp; </span>AST Analysis</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/uast" class="level2"><span class="tocNumber">4.2&nbsp; </span>UAST</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/uast:thejavaview" class="level2"><span class="tocNumber">4.3&nbsp; </span>UAST: The Java View</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/expressions" class="level2"><span class="tocNumber">4.4&nbsp; </span>Expressions</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/uelement" class="level2"><span class="tocNumber">4.5&nbsp; </span>UElement</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/visiting" class="level2"><span class="tocNumber">4.6&nbsp; </span>Visiting</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/uelementtopsimapping" class="level2"><span class="tocNumber">4.7&nbsp; </span>UElement to PSI Mapping</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/psitouelement" class="level2"><span class="tocNumber">4.8&nbsp; </span>PSI to UElement</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/uastversuspsi" class="level2"><span class="tocNumber">4.9&nbsp; </span>UAST versus PSI</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/kotlinanalysisapi" class="level2"><span class="tocNumber">4.10&nbsp; </span>Kotlin Analysis API</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/kotlinanalysisapi/nothingtype?" class="level3"><span class="tocNumber">4.10.1&nbsp; </span>Nothing Type?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/kotlinanalysisapi/compiledmetadata" class="level3"><span class="tocNumber">4.10.2&nbsp; </span>Compiled Metadata</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/kotlinanalysisapi/configuringlinttousek2" class="level3"><span class="tocNumber">4.10.3&nbsp; </span>Configuring lint to use K2</a><br>
+&nbsp;&nbsp;<a href="#astanalysis/recipes" class="level2"><span class="tocNumber">4.11&nbsp; </span>Recipes</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/resolveafunctioncall" class="level3"><span class="tocNumber">4.11.1&nbsp; </span>Resolve a function call</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/resolveavariablereference" class="level3"><span class="tocNumber">4.11.2&nbsp; </span>Resolve a variable reference</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/getthecontainingclassofasymbol" class="level3"><span class="tocNumber">4.11.3&nbsp; </span>Get the containing class of a symbol</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/getthefullyqualifiednameofaclass" class="level3"><span class="tocNumber">4.11.4&nbsp; </span>Get the fully qualified name of a class</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/lookupthedeprecationstatusofasymbol" class="level3"><span class="tocNumber">4.11.5&nbsp; </span>Look up the deprecation status of a symbol</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/lookupvisibility" class="level3"><span class="tocNumber">4.11.6&nbsp; </span>Look up visibility</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/getthekttypeofaclasssymbol" class="level3"><span class="tocNumber">4.11.7&nbsp; </span>Get the KtType of a class symbol</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/resolveakttypeintoaclass" class="level3"><span class="tocNumber">4.11.8&nbsp; </span>Resolve a KtType into a class</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/seeiftwotypesrefertothesamerawclass(erasure):" class="level3"><span class="tocNumber">4.11.9&nbsp; </span>See if two types refer to the same raw class (erasure):</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/foranextensionmethod,getthereceivertype:" class="level3"><span class="tocNumber">4.11.10&nbsp; </span>For an extension method, get the receiver type:</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#astanalysis/recipes/getthepsifilecontainingasymboldeclaration" class="level3"><span class="tocNumber">4.11.11&nbsp; </span>Get the PsiFile containing a symbol declaration</a><br>
+<a href="#publishingalintcheck" class="level1"><span class="tocNumber">5&nbsp; </span>Publishing a Lint Check</a><br>
+&nbsp;&nbsp;<a href="#publishingalintcheck/android" class="level2"><span class="tocNumber">5.1&nbsp; </span>Android</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/aarsupport" class="level3"><span class="tocNumber">5.1.1&nbsp; </span>AAR Support</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/lintpublishconfiguration" class="level3"><span class="tocNumber">5.1.2&nbsp; </span>lintPublish Configuration</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/localchecks" class="level3"><span class="tocNumber">5.1.3&nbsp; </span>Local Checks</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#publishingalintcheck/android/unpublishing" class="level3"><span class="tocNumber">5.1.4&nbsp; </span>Unpublishing</a><br>
+<a href="#lintcheckunittesting" class="level1"><span class="tocNumber">6&nbsp; </span>Lint Check Unit Testing</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/creatingaunittest" class="level2"><span class="tocNumber">6.1&nbsp; </span>Creating a Unit Test</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/computingtheexpectedoutput" class="level2"><span class="tocNumber">6.2&nbsp; </span>Computing the Expected Output</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/testfiles" class="level2"><span class="tocNumber">6.3&nbsp; </span>Test Files</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/trimmingindents?" class="level2"><span class="tocNumber">6.4&nbsp; </span>Trimming indents?</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/dollarsinrawstrings" class="level2"><span class="tocNumber">6.5&nbsp; </span>Dollars in Raw Strings</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/quickfixes" class="level2"><span class="tocNumber">6.6&nbsp; </span>Quickfixes</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/librarydependenciesandstubs" class="level2"><span class="tocNumber">6.7&nbsp; </span>Library Dependencies and Stubs</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/binaryandcompiledsourcefiles" class="level2"><span class="tocNumber">6.8&nbsp; </span>Binary and Compiled Source Files</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/base64-encodedgzippedbytecode" class="level2"><span class="tocNumber">6.9&nbsp; </span>Base64-encoded gzipped byte code</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/mydetectorisn'tinvokedfromatest!" class="level2"><span class="tocNumber">6.10&nbsp; </span>My Detector Isn't Invoked From a Test!</a><br>
+&nbsp;&nbsp;<a href="#lintcheckunittesting/languagelevel" class="level2"><span class="tocNumber">6.11&nbsp; </span>Language Level</a><br>
+<a href="#testmodes" class="level1"><span class="tocNumber">7&nbsp; </span>Test Modes</a><br>
+&nbsp;&nbsp;<a href="#testmodes/howtodebug" class="level2"><span class="tocNumber">7.1&nbsp; </span>How to debug</a><br>
+&nbsp;&nbsp;<a href="#testmodes/handlingintentionalfailures" class="level2"><span class="tocNumber">7.2&nbsp; </span>Handling Intentional Failures</a><br>
+&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes" class="level2"><span class="tocNumber">7.3&nbsp; </span>Source-Modifying Test Modes</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/fullyqualifiednames" class="level3"><span class="tocNumber">7.3.1&nbsp; </span>Fully Qualified Names</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/importaliasing" class="level3"><span class="tocNumber">7.3.2&nbsp; </span>Import Aliasing</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/typealiasing" class="level3"><span class="tocNumber">7.3.3&nbsp; </span>Type Aliasing</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/parenthesismode" class="level3"><span class="tocNumber">7.3.4&nbsp; </span>Parenthesis Mode</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/argumentreordering" class="level3"><span class="tocNumber">7.3.5&nbsp; </span>Argument Reordering</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/bodyremoval" class="level3"><span class="tocNumber">7.3.6&nbsp; </span>Body Removal</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/iftowhenreplacement" class="level3"><span class="tocNumber">7.3.7&nbsp; </span>If to When Replacement</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/whitespacemode" class="level3"><span class="tocNumber">7.3.8&nbsp; </span>Whitespace Mode</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/cdatamode" class="level3"><span class="tocNumber">7.3.9&nbsp; </span>CDATA Mode</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/suppressiblemode" class="level3"><span class="tocNumber">7.3.10&nbsp; </span>Suppressible Mode</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#testmodes/source-modifyingtestmodes/@jvmoverloadstestmode" class="level3"><span class="tocNumber">7.3.11&nbsp; </span>@JvmOverloads Test Mode</a><br>
+<a href="#addingquickfixes" class="level1"><span class="tocNumber">8&nbsp; </span>Adding Quick Fixes</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/introduction" class="level2"><span class="tocNumber">8.1&nbsp; </span>Introduction</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/thelintfixbuilderclass" class="level2"><span class="tocNumber">8.2&nbsp; </span>The LintFix builder class</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/creatingalintfix" class="level2"><span class="tocNumber">8.3&nbsp; </span>Creating a LintFix</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/availablefixes" class="level2"><span class="tocNumber">8.4&nbsp; </span>Available Fixes</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/combiningfixes" class="level2"><span class="tocNumber">8.5&nbsp; </span>Combining Fixes</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/refactoringjavaandkotlincode" class="level2"><span class="tocNumber">8.6&nbsp; </span>Refactoring Java and Kotlin code</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/regularexpressionsandbackreferences" class="level2"><span class="tocNumber">8.7&nbsp; </span>Regular Expressions and Back References</a><br>
+&nbsp;&nbsp;<a href="#addingquickfixes/emittingquickfixxmltoapplyonci" class="level2"><span class="tocNumber">8.8&nbsp; </span>Emitting quick fix XML to apply on CI</a><br>
+<a href="#partialanalysis" class="level1"><span class="tocNumber">9&nbsp; </span>Partial Analysis</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/about" class="level2"><span class="tocNumber">9.1&nbsp; </span>About</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/theproblem" class="level2"><span class="tocNumber">9.2&nbsp; </span>The Problem</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/overview" class="level2"><span class="tocNumber">9.3&nbsp; </span>Overview</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?" class="level2"><span class="tocNumber">9.4&nbsp; </span>Does My Detector Need Work?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:blockingaccesstomainproject" class="level3"><span class="tocNumber">9.4.1&nbsp; </span>Catching Mistakes: Blocking Access to Main Project</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:simulatedappmodule" class="level3"><span class="tocNumber">9.4.2&nbsp; </span>Catching Mistakes: Simulated App Module</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:diffingresults" class="level3"><span class="tocNumber">9.4.3&nbsp; </span>Catching Mistakes: Diffing Results</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#partialanalysis/doesmydetectorneedwork?/catchingmistakes:remainingissues" class="level3"><span class="tocNumber">9.4.4&nbsp; </span>Catching Mistakes: Remaining Issues</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/incidents" class="level2"><span class="tocNumber">9.5&nbsp; </span>Incidents</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/constraints" class="level2"><span class="tocNumber">9.6&nbsp; </span>Constraints</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/incidentlintmaps" class="level2"><span class="tocNumber">9.7&nbsp; </span>Incident LintMaps</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/modulelintmaps" class="level2"><span class="tocNumber">9.8&nbsp; </span>Module LintMaps</a><br>
+&nbsp;&nbsp;<a href="#partialanalysis/optimizations" class="level2"><span class="tocNumber">9.9&nbsp; </span>Optimizations</a><br>
+<a href="#dataflowanalyzer" class="level1"><span class="tocNumber">10&nbsp; </span>Data Flow Analyzer</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/usage" class="level2"><span class="tocNumber">10.1&nbsp; </span>Usage</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/self-referencingcalls" class="level2"><span class="tocNumber">10.2&nbsp; </span>Self-referencing Calls</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/kotlinscopingfunctions" class="level2"><span class="tocNumber">10.3&nbsp; </span>Kotlin Scoping Functions</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/limitations" class="level2"><span class="tocNumber">10.4&nbsp; </span>Limitations</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues" class="level2"><span class="tocNumber">10.5&nbsp; </span>Escaping Values</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues/returns" class="level3"><span class="tocNumber">10.5.1&nbsp; </span>Returns</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues/parameters" class="level3"><span class="tocNumber">10.5.2&nbsp; </span>Parameters</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/escapingvalues/fields" class="level3"><span class="tocNumber">10.5.3&nbsp; </span>Fields</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/nonlocalanalysis" class="level2"><span class="tocNumber">10.6&nbsp; </span>Non Local Analysis</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/examples" class="level2"><span class="tocNumber">10.7&nbsp; </span>Examples</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/examples/simpleexample" class="level3"><span class="tocNumber">10.7.1&nbsp; </span>Simple Example</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#dataflowanalyzer/examples/complexexample" class="level3"><span class="tocNumber">10.7.2&nbsp; </span>Complex Example</a><br>
+&nbsp;&nbsp;<a href="#dataflowanalyzer/targetmethoddataflowanalyzer" class="level2"><span class="tocNumber">10.8&nbsp; </span>TargetMethodDataFlowAnalyzer</a><br>
+<a href="#annotations" class="level1"><span class="tocNumber">11&nbsp; </span>Annotations</a><br>
+&nbsp;&nbsp;<a href="#annotations/basics" class="level2"><span class="tocNumber">11.1&nbsp; </span>Basics</a><br>
+&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage" class="level2"><span class="tocNumber">11.2&nbsp; </span>Annotation Usage Types and isApplicableAnnotationUsage</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/methodoverride" class="level3"><span class="tocNumber">11.2.1&nbsp; </span>Method Override</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/methodreturn" class="level3"><span class="tocNumber">11.2.2&nbsp; </span>Method Return</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/handlingusagetypes" class="level3"><span class="tocNumber">11.2.3&nbsp; </span>Handling Usage Types</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/usagetypesfilteredbydefault" class="level3"><span class="tocNumber">11.2.4&nbsp; </span>Usage Types Filtered By Default</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/scopes" class="level3"><span class="tocNumber">11.2.5&nbsp; </span>Scopes</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#annotations/annotationusagetypesandisapplicableannotationusage/inheritedannotations" class="level3"><span class="tocNumber">11.2.6&nbsp; </span>Inherited Annotations</a><br>
+<a href="#options" class="level1"><span class="tocNumber">12&nbsp; </span>Options</a><br>
+&nbsp;&nbsp;<a href="#options/usage" class="level2"><span class="tocNumber">12.1&nbsp; </span>Usage</a><br>
+&nbsp;&nbsp;<a href="#options/creatingoptions" class="level2"><span class="tocNumber">12.2&nbsp; </span>Creating Options</a><br>
+&nbsp;&nbsp;<a href="#options/readingoptions" class="level2"><span class="tocNumber">12.3&nbsp; </span>Reading Options</a><br>
+&nbsp;&nbsp;<a href="#options/specificconfigurations" class="level2"><span class="tocNumber">12.4&nbsp; </span>Specific Configurations</a><br>
+&nbsp;&nbsp;<a href="#options/files" class="level2"><span class="tocNumber">12.5&nbsp; </span>Files</a><br>
+&nbsp;&nbsp;<a href="#options/constraints" class="level2"><span class="tocNumber">12.6&nbsp; </span>Constraints</a><br>
+&nbsp;&nbsp;<a href="#options/testingoptions" class="level2"><span class="tocNumber">12.7&nbsp; </span>Testing Options</a><br>
+&nbsp;&nbsp;<a href="#options/supportinglint4.2,7.0and7.1" class="level2"><span class="tocNumber">12.8&nbsp; </span>Supporting Lint 4.2, 7.0 and 7.1</a><br>
+<a href="#errormessageconventions" class="level1"><span class="tocNumber">13&nbsp; </span>Error Message Conventions</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/length" class="level2"><span class="tocNumber">13.1&nbsp; </span>Length</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/formatting" class="level2"><span class="tocNumber">13.2&nbsp; </span>Formatting</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/punctuation" class="level2"><span class="tocNumber">13.3&nbsp; </span>Punctuation</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/includedetails" class="level2"><span class="tocNumber">13.4&nbsp; </span>Include Details</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/referenceandroidbynumber" class="level2"><span class="tocNumber">13.5&nbsp; </span>Reference Android By Number</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/keepmessagesstable" class="level2"><span class="tocNumber">13.6&nbsp; </span>Keep Messages Stable</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/plurals" class="level2"><span class="tocNumber">13.7&nbsp; </span>Plurals</a><br>
+&nbsp;&nbsp;<a href="#errormessageconventions/examples" class="level2"><span class="tocNumber">13.8&nbsp; </span>Examples</a><br>
+<a href="#frequentlyaskedquestions" class="level1"><span class="tocNumber">14&nbsp; </span>Frequently Asked Questions</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//mydetectorcallbacksaren'tinvoked" class="level3"><span class="tocNumber">14.0.1&nbsp; </span>My detector callbacks aren't invoked</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//mylintcheckworksfromtheunittestbutnotintheide" class="level3"><span class="tocNumber">14.0.2&nbsp; </span>My lint check works from the unit test but not in the IDE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//visitannotationusageisn'tcalledforannotations" class="level3"><span class="tocNumber">14.0.3&nbsp; </span><code>visitAnnotationUsage</code> isn't called for annotations</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckifauastorpsielementisforjavaorkotlin?" class="level3"><span class="tocNumber">14.0.4&nbsp; </span>How do I check if a UAST or PSI element is for Java or Kotlin?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//whatifineedapsielementandihaveauelement?" class="level3"><span class="tocNumber">14.0.5&nbsp; </span>What if I need a <code>PsiElement</code> and I have a <code>UElement</code> ?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoigettheumethodforapsimethod?" class="level3"><span class="tocNumber">14.0.6&nbsp; </span>How do I get the <code>UMethod</code> for a <code>PsiMethod</code> ?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdogetajavaevaluator?" class="level3"><span class="tocNumber">14.0.7&nbsp; </span>How do get a <code>JavaEvaluator</code>?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckwhetheranelementisinternal?" class="level3"><span class="tocNumber">14.0.8&nbsp; </span>How do I check whether an element is internal?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//iselementinline,sealed,operator,infix,suspend,data?" class="level3"><span class="tocNumber">14.0.9&nbsp; </span>Is element inline, sealed, operator, infix, suspend, data?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupaclassifihaveitsfullyqualifiedname?" class="level3"><span class="tocNumber">14.0.10&nbsp; </span>How do I look up a class if I have its fully qualified name?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupaclassifihaveapsitype?" class="level3"><span class="tocNumber">14.0.11&nbsp; </span>How do I look up a class if I have a PsiType?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookuphierarchyannotationsforanelement?" class="level3"><span class="tocNumber">14.0.12&nbsp; </span>How do I look up hierarchy annotations for an element?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoilookupifaclassisasubclassofanother?" class="level3"><span class="tocNumber">14.0.13&nbsp; </span>How do I look up if a class is a subclass of another?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoiknowwhichparameteracallargumentcorrespondsto?" class="level3"><span class="tocNumber">14.0.14&nbsp; </span>How do I know which parameter a call argument corresponds to?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howcanmylintcheckstargettwodifferentversionsoflint?" class="level3"><span class="tocNumber">14.0.15&nbsp; </span>How can my lint checks target two different versions of lint?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D" class="level3"><span class="tocNumber">14.0.16&nbsp; </span>Can I make my lint check “not suppressible?”</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//whyareoverloadedoperatorsnothandled?" class="level3"><span class="tocNumber">14.0.17&nbsp; </span>Why are overloaded operators not handled?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?" class="level3"><span class="tocNumber">14.0.18&nbsp; </span>How do I check out the current lint source code?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//wheredoifindexamplesoflintchecks?" class="level3"><span class="tocNumber">14.0.19&nbsp; </span>Where do I find examples of lint checks?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#frequentlyaskedquestions//howdoianalyzedetailsaboutkotlin?" class="level3"><span class="tocNumber">14.0.20&nbsp; </span>How do I analyze details about Kotlin?</a><br>
+<a href="#appendix:recentchanges" class="level1"><span class="tocNumber">15&nbsp; </span>Appendix: Recent Changes</a><br>
+<a href="#appendix:environmentvariablesandsystemproperties" class="level1"><span class="tocNumber">16&nbsp; </span>Appendix: Environment Variables and System Properties</a><br>
+&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables" class="level2"><span class="tocNumber">16.1&nbsp; </span>Environment Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables" class="level3"><span class="tocNumber">16.1.1&nbsp; </span>Detector Configuration Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables" class="level3"><span class="tocNumber">16.1.2&nbsp; </span>Lint Configuration Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables" class="level3"><span class="tocNumber">16.1.3&nbsp; </span>Lint Development Variables</a><br>
+&nbsp;&nbsp;<a href="#appendix:environmentvariablesandsystemproperties/systemproperties" class="level2"><span class="tocNumber">16.2&nbsp; </span>System Properties</a><br>
 </p></div><a class="target" name="terminology">&nbsp;</a><a class="target" name="terminology">&nbsp;</a><a class="target" name="toc1">&nbsp;</a><h1>Terminology</h1>
 <p>
 
@@ -212,14 +240,14 @@ In alphabetical order:
 </p><p>
 
 </p><dl><dt>Configuration</dt><dd><p>  A configuration provides extra information or parameters to lint on a
-  per project, or even per directory basis. For example, the <code>lint.xml</code>
+  per-project, or even per-directory, basis. For example, the <code>lint.xml</code>
   files can change the severity for issues, or list incidents to ignore
   (matched for example by a regular expression), or even provide values
   for options read by a specific detector.
 
 </p></dd><dt>Context</dt><dd><p>  An object passed into detectors in many APIs, providing data about
   (for example) which file is being analyzed (and in which project),
-  and for specific types of analysis additional information; for
+  and (for specific types of analysis) additional information; for
   example, an XmlContext points to the DOM document, a JavaContext
   includes the AST, and so on.
 
@@ -290,7 +318,7 @@ In alphabetical order:
 </p><p>
 
   Typically lint cares about which <strong class="asterisk">set</strong> of scopes apply,
-  so most of the APIs take an <code>EnumSet&lt; Scope&gt;</code>, but we'll often
+  so most of the APIs take an <code>EnumSet&lt;Scope&gt;</code>, but we'll often
   refer to this as just “the scope” instead of the “scope set”.
 
 </p></dd><dt>Severity</dt><dd><p>  For an issue, whether the incident should be an error, or just a
@@ -511,7 +539,7 @@ included when lint processes Java or Kotin files.
 </p><div class="admonition tip">The name <code>Scope.JAVA_FILE</code> may make it sound like there should also
    be a <code>Scope.KOTLIN_FILE</code>. However, <code>JAVA_FILE</code> here really refers to
    both Java and Kotlin files since the analysis and APIs are identical
-   for both (using “UAST”, a universal abstract syntax tree). However,
+   for both (using “UAST”, a unified abstract syntax tree). However,
    at this point we don't want to rename it since it would break a lot
    of existing checks. We might introduce an alias and deprecate this
    one in the future.</div>
@@ -530,15 +558,15 @@ declaration” error, you can and should include both locations.
 
 Many detector methods will pass in a <code>Context</code>, or a more specific
 subclass of <code>Context</code> such as <code>JavaContext</code> or <code>XmlContext</code>. This
-allows lint to provide access to the detectors information they may
-need, without passing in a lot of parameters (and allowing lint to add
-additional data over time without breaking signatures).
+allows lint to give the detectors information they may need, without
+passing in a lot of parameters. It also allows lint to add additional data
+over time without breaking signatures.
 
 </p><p>
 
 The <code>Context</code> classes also provide many convenience APIs. For example,
 for <code>XmlContext</code> there are methods for creating locations for XML tags,
-XML attributes, just the name part of an XML attribute and just the
+XML attributes, just the name part of an XML attribute, and just the
 value part of an XML attribute. For a <code>JavaContext</code> there are also
 methods for creating locations, such as for a method call, including
 whether to include the receiver and/or the argument list.
@@ -576,7 +604,7 @@ Lint's API has two halves:
 
 </p><ul>
 <li class="minus">The <strong class="asterisk">Client API</strong>: “Integrate (and run) lint from within a tool”.
-  For example, both the IDE and the build system uses this API to embed
+  For example, both the IDE and the build system use this API to embed
   and invoke lint to analyze the code in the project or editor.
 
 <p></p><p>
@@ -593,7 +621,7 @@ called <code>LintClient</code>. This class is responsible for, among other thing
 </p><p>
 
 </p><ul>
-<li class="asterisk">Reporting incidents found by detectors. For example, in the IDE, it
+<li class="asterisk"><strong class="asterisk">Reporting incidents found by detectors</strong>. For example, in the IDE, it
   will place error markers into the source editor, and in a build
   system, it may write warnings to the console or generate a report or
   even fail the build.
@@ -601,7 +629,7 @@ called <code>LintClient</code>. This class is responsible for, among other thing
 <p></p><p>
 
 </p></li>
-<li class="asterisk">Handling I/O. Detectors should never read files from disk directly.
+<li class="asterisk"><strong class="asterisk">Handling I/O</strong>. Detectors should never read files from disk directly.
   This allows lint checks to work smoothly in for example the IDE. When
   lint runs on the fly, and a lint check asks for the source file
   contents (or other supporting files), the <code>LintClient</code> in the IDE
@@ -612,14 +640,13 @@ called <code>LintClient</code>. This class is responsible for, among other thing
 <p></p><p>
 
 </p></li>
-<li class="asterisk">Handling network traffic. Lint checks should never open
-  URLConnections themselves. By going through the lint API to request
-  data for a URL, not only can the LintClient for example use any
-  configured IDE proxy settings which is done in the IntelliJ
-  integration of lint, but even the lint check's own unit tests can
-  easily be tested because the special unit test implementation of a
-  <code>LintClient</code> provides a simple way to provide exact responses for
-  specific URLs:</li></ul>
+<li class="asterisk"><strong class="asterisk">Handling network traffic</strong>. Lint checks should never open
+  URLConnections themselves. Instead, they should go through the lint API
+  to request data for URLs. Among other things, this allows the
+  <code>LintClient</code> to use configured IDE proxy settings (as is done in the
+  IntelliJ integration of lint). This is also good for testing, because
+  the special unit test implementation of a <code>LintClient</code> has a simple way
+  to provide exact responses for specific URLs:</li></ul>
 
 <p></p><pre class="listing tilde"><code><span class="line"></span>lint()
 <span class="line"></span>  .files(...)
@@ -640,8 +667,8 @@ called <code>LintClient</code>. This class is responsible for, among other thing
 
 And much, much, more. <strong class="asterisk">However, most of the implementation of
 <code>LintClient</code> is intended for integration of lint itself, and as a check
-author you don't need to worry about it.</strong> It's the detector API that
-matters, and is also less likely to change than the client API.
+author you don't need to worry about it.</strong> The detector API will matter
+more, and it's also less likely to change than the client API.
 
 </p><p>
 
@@ -661,8 +688,8 @@ Also,
    for internal lint usage have been made <code>public</code> such that lint's
    code in one package can access it from the other. There's normally a
    comment explaining that this is for internal use only, but be aware
-   that just because something is <code>public</code> or not <code>final</code> it's a good
-   idea to call or override it.</div>
+   that even when something is <code>public</code> or not <code>final</code>, it might not be a
+   good idea to call or override it.</div>
 
 <p></p>
 <a class="target" name="creatinganissue">&nbsp;</a><a class="target" name="writingalintcheck:basics/creatinganissue">&nbsp;</a><a class="target" name="toc2.4">&nbsp;</a><h2>Creating an Issue</h2>
@@ -676,7 +703,7 @@ your lint checks, see the <a href="#example:samplelintcheckgithubproject">sample
 </p><p>
 
 <code>Issue</code> is a final class, so unlike <code>Detector</code>, you don't subclass
-it, you instantiate it via <code>Issue.create</code>.
+it; you instantiate it via <code>Issue.create</code>.
 
 </p><p>
 
@@ -755,7 +782,7 @@ The reason the id is made known to the user is that the ID is how
 they'll configure and/or suppress issues. For example, to suppress the
 warning in the current method, use
 
-</p><pre class="listing backtick"><code><span class="line"></span><span class="hljs-meta">@Suppress(<span class="hljs-params"><span class="hljs-string">"SdCardPath"</span></span>)</span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span><span class="hljs-meta">@Suppress(<span class="hljs-string">"SdCardPath"</span>)</span></code></pre><p>
 
 (or in Java, @SuppressWarnings). Note that there is an IDE quickfix to
 suppress an incident which will automatically add these annotations, so
@@ -1106,20 +1133,20 @@ For example:
 </li><li class="asterisk">When implementing <strong class="asterisk"><code>SourceCodeScanner</code></strong>, in Kotlin and Java files
   you can be called back
 <ul>
-  <li class="minus">When a method of a given name is invoked (<code>getApplicableMethodNames</code>
+  <li class="minus">when a method of a given name is invoked (<code>getApplicableMethodNames</code>
       and <code>visitMethodCall</code>)
 </li>
-  <li class="minus">When a class of the given type is instantiated
+  <li class="minus">when a class of the given type is instantiated
       (<code>getApplicableConstructorTypes</code> and <code>visitConstructor</code>)
 </li>
-  <li class="minus">When a new class is declared which extends (possibly indirectly)
+  <li class="minus">when a new class is declared which extends (possibly indirectly)
       a given class or interface (<code>applicableSuperClasses</code> and
       <code>visitClass</code>)
 </li>
-  <li class="minus">When annotated elements are referenced or combined
+  <li class="minus">when annotated elements are referenced or combined
       (<code>applicableAnnotations</code> and <code>visitAnnotationUsage</code>)
 </li>
-  <li class="minus">When any AST nodes of given types appear (<code>getApplicableUastTypes</code>
+  <li class="minus">when any AST nodes of given types appear (<code>getApplicableUastTypes</code>
       and <code>createUastHandler</code>)
 
 <p></p><p>
@@ -1135,7 +1162,7 @@ For example:
       (<code>getApplicableAsmNodeTypes</code> and <code>checkInstruction</code>)
 </li>
   <li class="minus">like with XmlScanner's <code>visitDocument</code>, you can perform your own
-      ASM bytecode iteration via <code>checkClass</code>.
+      ASM bytecode iteration via <code>checkClass</code>
 
 <p></p><p>
 
@@ -1172,9 +1199,9 @@ end.
 
 </p><p>
 
-There are some callbacks both before each individual file is analyzed
-(<code>beforeCheckFile</code> and <code>afterCheckFile</code>), as well as before and after
-analysis of all the modules (<code>beforeCheckRootProject</code> and
+There are some callbacks both before and after each individual file is
+analyzed (<code>beforeCheckFile</code> and <code>afterCheckFile</code>), as well as before and
+after analysis of all the modules (<code>beforeCheckRootProject</code> and
 <code>afterCheckRootProject</code>).
 
 </p><p>
@@ -1303,8 +1330,7 @@ to make implementation simpler. These include
 
 </p></li>
 <li class="asterisk">Finally, there are a number of utility methods; for example there is
-  an <code>editDistance</code> method used to find likely typos used by a number
-  of checks.</li></ul>
+  an <code>editDistance</code> method used to find likely typos.</li></ul>
 
 <p></p>
 <a class="target" name="scannerexample">&nbsp;</a><a class="target" name="writingalintcheck:basics/scannerexample">&nbsp;</a><a class="target" name="toc2.13">&nbsp;</a><h2>Scanner Example</h2>
@@ -1345,7 +1371,7 @@ older versions you can use the following API, which still works in 7.0:
 <span class="line"></span>    }
 <span class="line"></span>}</div></code></pre><p>
 
-The second, older form, may seem simpler, but the new API allows a lot
+The second (older) form may seem simpler, but the new API allows a lot
 more metadata to be attached to the report, such as an override
 severity. You don't have to convert to the builder syntax to do this;
 you could also have written the second form as
@@ -1372,7 +1398,7 @@ statements or whether the way an annotation class is declared is as
 </p><p>
 
 This makes it possible to write a single analyzer which works
-(”universally“) across all languages supported by UAST. And this is
+across all languages supported by UAST. And this is
 very useful; most lint checks are doing something API or data-flow
 specific, not something language specific. If however you do need to
 implement something very language specific, see the next section,
@@ -1582,7 +1608,7 @@ PSI element to try to convert it to UAST if source is available.
 </p><p>
 
 </p><div class="admonition warning">Resolving only works if lint has a correct classpath such that the
-   referenced method, field or class are actually present. If it is
+   referenced method, field, or class is actually present. If it is
    not, resolve will return null, and various lint callbacks will not
    be invoked. This is a common source of questions for lint checks
    ”not working“; it frequently comes up in lint unit tests where a
@@ -1954,11 +1980,11 @@ be published and consumed, and this is described in detail in the
 
 The lint checks source project is very simple
 
-</p><pre class="listing backtick"><code><span class="line"></span>checks/build<span class="hljs-selector-class">.gradle</span>
-<span class="line"></span>checks/<span class="hljs-attribute">src</span>/<span class="hljs-selector-tag">main</span>/resources/META-INF/services/com<span class="hljs-selector-class">.android</span><span class="hljs-selector-class">.tools</span><span class="hljs-selector-class">.lint</span><span class="hljs-selector-class">.client</span><span class="hljs-selector-class">.api</span><span class="hljs-selector-class">.IssueRegistry</span>
-<span class="line"></span>checks/<span class="hljs-attribute">src</span>/<span class="hljs-selector-tag">main</span>/java/com/example/lint/checks/SampleIssueRegistry<span class="hljs-selector-class">.kt</span>
-<span class="line"></span>checks/<span class="hljs-attribute">src</span>/<span class="hljs-selector-tag">main</span>/java/com/example/lint/checks/SampleCodeDetector<span class="hljs-selector-class">.kt</span>
-<span class="line"></span>checks/<span class="hljs-attribute">src</span>/test/java/com/example/lint/checks/SampleCodeDetectorTest<span class="hljs-selector-class">.kt</span></code></pre><p>
+</p><pre class="listing backtick"><code><span class="line"></span>checks<span class="hljs-operator">/</span>build.gradle
+<span class="line"></span>checks<span class="hljs-regexp">/src/</span>main<span class="hljs-regexp">/resources/</span><span class="hljs-type">META</span><span class="hljs-operator">-</span><span class="hljs-type">INF</span><span class="hljs-regexp">/services/</span>com.android.tools.lint.client.api.<span class="hljs-type">IssueRegistry</span>
+<span class="line"></span>checks<span class="hljs-regexp">/src/</span>main<span class="hljs-regexp">/java/</span>com<span class="hljs-regexp">/example/</span>lint<span class="hljs-regexp">/checks/</span><span class="hljs-type">SampleIssueRegistry</span>.kt
+<span class="line"></span>checks<span class="hljs-regexp">/src/</span>main<span class="hljs-regexp">/java/</span>com<span class="hljs-regexp">/example/</span>lint<span class="hljs-regexp">/checks/</span><span class="hljs-type">SampleCodeDetector</span>.kt
+<span class="line"></span>checks<span class="hljs-regexp">/src/</span>test<span class="hljs-regexp">/java/</span>com<span class="hljs-regexp">/example/</span>lint<span class="hljs-regexp">/checks/</span><span class="hljs-type">SampleCodeDetectorTest</span>.kt</code></pre><p>
 
 First is the build file, which we've discussed above.
 
@@ -2187,7 +2213,758 @@ explanation of the above test short here.
 
 
 </p>
-<a class="target" name="publishingalintcheck">&nbsp;</a><a class="target" name="publishingalintcheck">&nbsp;</a><a class="target" name="toc4">&nbsp;</a><h1>Publishing a Lint Check</h1>
+<a class="target" name="astanalysis">&nbsp;</a><a class="target" name="astanalysis">&nbsp;</a><a class="target" name="toc4">&nbsp;</a><h1>AST Analysis</h1>
+<p>
+
+
+To analyze Kotlin and Java files, lint offers many convenience callbacks
+to make it simple to accomplish common tasks:
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">Check calls to a particular method name
+</li>
+<li class="asterisk">Instantiating a particular class
+</li>
+<li class="asterisk">Extending a particular super class or interface
+</li>
+<li class="asterisk">Using a particular annotation, or calling an annotated method</li></ul>
+
+<p></p><p>
+
+And more. See the <code>SourceCodeScanner</code> interface for more information.
+
+</p><p>
+
+It also has various helpers, such as a <code>ConstantEvaluator</code> and a
+<code>DataFlowAnalyzer</code> to help analyze code.
+
+</p><p>
+
+But in some cases, you'll need to dig in and analyze the “AST” yourself.
+
+</p>
+<a class="target" name="astanalysis">&nbsp;</a><a class="target" name="astanalysis/astanalysis">&nbsp;</a><a class="target" name="toc4.1">&nbsp;</a><h2>AST Analysis</h2>
+<p>
+
+
+AST is short for “Abstract Syntax Tree” — a tree representation of the
+source code. Consider the following very simple Java program:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-comment">// MyTest.java</span>
+<span class="line"></span><span class="hljs-keyword">package</span> test.pkg;
+<span class="line"></span>
+<span class="line"></span><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyTest</span> {
+<span class="line"></span>   <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">"hello"</span>;
+<span class="line"></span>}</code></pre><p>
+
+Here's the AST for the above program, the way it's represented
+internally in IntelliJ.
+
+</p><p>
+
+</p><center><a href="api-guide/images/java-psi.png" target="_blank"><img class="markdeep" src="api-guide/images/java-psi.png"></a></center>
+
+<p></p><p>
+
+This is actually a simplified view; in reality, there are also
+whitespace nodes tracking all the spans of whitespace characters between
+these nodes.
+
+</p><p>
+
+Anyway, you can see there is quite a bit of detail here — tracking
+things like the keywords, the variables, references to for example the
+package — and higher level concepts like a class and a field which I've
+marked with a thicker border.
+
+</p><p>
+
+Here's the corresponding Kotlin program:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-comment">// MyTest.kt</span>
+<span class="line"></span><span class="hljs-keyword">package</span> test.pkg
+<span class="line"></span>
+<span class="line"></span><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyTest</span> {
+<span class="line"></span>   <span class="hljs-keyword">val</span> s: String = <span class="hljs-string">"hello"</span>
+<span class="line"></span>}</code></pre><p>
+
+And here's the corresponding AST in IntelliJ:
+
+</p><p>
+
+</p><center><a href="api-guide/images/kotlin-psi.png" target="_blank"><img class="markdeep" src="api-guide/images/kotlin-psi.png"></a></center>
+
+<p></p><p>
+
+This is for a program which is completely equivalent to the Java one.
+But notice that it has a completely different shape! They reference
+different element classes, <code>PsiClass</code> versus <code>KtClass</code>, and on and on
+all the way down.
+
+</p><p>
+
+But there's some commonality — they each have a node for the file, for
+the class, for the field, and for the initial value, the string.
+
+</p>
+<a class="target" name="uast">&nbsp;</a><a class="target" name="astanalysis/uast">&nbsp;</a><a class="target" name="toc4.2">&nbsp;</a><h2>UAST</h2>
+<p>
+
+
+We can construct a new AST which represents the same concepts:
+
+</p><p>
+
+</p><center><a href="api-guide/images/uast-java.png" target="_blank"><img class="markdeep" src="api-guide/images/uast-java.png"></a></center>
+
+<p></p><p>
+
+This is a unified AST, in something called “UAST”, short for Unified
+Abstract Syntax Tree. UAST is the primary AST representation we use for
+code in Lint. All the node classes here are prefixed with a capital U,
+for UAST. And this is the UAST for the first Java file example above.
+
+</p><p>
+
+Here's the UAST for the corresponding Kotlin example:
+
+</p><p>
+
+</p><center><a href="api-guide/images/uast-kotlin.png" target="_blank"><img class="markdeep" src="api-guide/images/uast-kotlin.png"></a></center>
+
+<p></p><p>
+
+As you can see, the ASTs are not always identical. For Strings, in
+Kotlin, we often end up with an extra parent <code>UiInjectionHost</code>. But for
+our purposes, you can see that the ASTs are mostly the same, so if you
+handle the Kotlin scenario, you'll handle the Java ones too.
+
+</p>
+<a class="target" name="uast:thejavaview">&nbsp;</a><a class="target" name="astanalysis/uast:thejavaview">&nbsp;</a><a class="target" name="toc4.3">&nbsp;</a><h2>UAST: The Java View</h2>
+<p>
+
+
+Note that “Unified” in the name here is a bit misleading. From the name
+you may assume that this is some sort of superset of the ASTs across
+languages — and AST that can represent everything needed by all
+languages. But that's not the case! Instead, a better way to think of it
+is as the <strong class="asterisk">Java view</strong> of the AST.
+
+</p><p>
+
+If you for example have the following Kotlin data class:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">data</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span>(
+<span class="line"></span>    <span class="hljs-keyword">var</span> id: String,
+<span class="line"></span>    <span class="hljs-keyword">var</span> name: String
+<span class="line"></span>)</code></pre><p>
+
+This is a Kotlin data class with two properties. So you might expect
+that UAST would have a way to represent these concepts — properties,
+and java classes. This should be a <code>UDataClass</code> with two <code>UProperty</code>
+children, right?
+
+</p><p>
+
+But Java doesn't support properties. If you try to access a <code>Person</code>
+instance from Java, you'll notice that it exposes a number of public
+methods that you don't see there in the Kotlin code — in addition to
+<code>getId</code>, <code>setId</code>, <code>getName</code> and <code>setName</code>, there's also <code>component1</code> and
+<code>component2</code> (for destructuring), and <code>copy</code>.
+
+</p><p>
+
+These methods are directly callable from Java, so they show up in UAST,
+and your analysis can reason about them.
+
+</p><p>
+
+Consider another complete Kotlin source file, <code>test.kt</code>:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">var</span> property = <span class="hljs-number">0</span></code></pre><p>
+
+Here's the UAST representation:
+
+</p><p>
+
+</p><center><a href="api-guide/images/uast-kotlin-val.png" target="_blank"><img class="markdeep" src="api-guide/images/uast-kotlin-val.png"></a></center>
+
+<p></p><p>
+
+Here we have a very simple Kotlin file — for a single Kotlin property.
+But notice at the UAST level, there's no such thing as top level methods
+and properties. In Java, everything is a class, so <code>kotlinc</code> will create
+a “facade class”, using the filename plus “Kt”. So we see our <code>TestKt</code>
+class. And there are three members here. There's the getter and the
+setter for this property, as <code>getProperty</code> and <code>setProperty</code>. And then
+there is the private field itself, where the property is stored.
+
+</p><p>
+
+This all shows up in UAST. It's the Java view of the Kotlin code. This
+may seem limiting, but in practice, for most lint checks, this is
+actually what you want. This makes it easy to reason about calls to APIs
+and so on.
+
+</p>
+<a class="target" name="expressions">&nbsp;</a><a class="target" name="astanalysis/expressions">&nbsp;</a><a class="target" name="toc4.4">&nbsp;</a><h2>Expressions</h2>
+<p>
+
+
+You may be getting the impression that the UAST tree is very shallow and
+only represents high level declarations, like files, classes, methods
+and properties.
+
+</p><p>
+
+That's not the case. While it <strong class="asterisk">does</strong> skip low-level, language-specific
+details things like whitespace nodes and individual keyword nodes, all
+the various expression types are represented and can be reasoned about.
+Take the following expression:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (s.length &gt; <span class="hljs-number">3</span>) <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> s.count { it.isUpperCase() }</code></pre><p>
+
+This maps to the following UAST tree:
+
+</p><p>
+
+</p><center><a href="api-guide/images/uast-if.png" target="_blank"><img class="markdeep" src="api-guide/images/uast-if.png"></a></center>
+
+<p></p><p>
+
+As you can see it's modeling the if, the comparison, the lambda, and so
+on.
+
+</p>
+<a class="target" name="uelement">&nbsp;</a><a class="target" name="astanalysis/uelement">&nbsp;</a><a class="target" name="toc4.5">&nbsp;</a><h2>UElement</h2>
+<p>
+
+
+Every node in UAST is a subclass of a UElement. There's a parent
+pointer, which is handy for navigating around in the AST.
+
+</p><p>
+
+The real skill you need for writing lint checks is understanding the
+AST, and then doing pattern matching on it. And a simple trick for this
+is to create the Kotlin or Java code you want, in a unit test, and then
+in your detector, recursively print out the UAST as a tree.
+
+</p><p>
+
+Or in the debugger, anytime you have a UElement, you can call
+<code>UElement.asRecursiveLogString</code> on it, evaluate and see what you find.
+
+</p><p>
+
+For example, for the following Kotlin code:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">import</span> java.util.Date
+<span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span> {
+<span class="line"></span>   <span class="hljs-keyword">val</span> warn1 = Date()
+<span class="line"></span>   <span class="hljs-keyword">val</span> ok = Date(<span class="hljs-number">0L</span>)
+<span class="line"></span>}</code></pre><p>
+
+here's the corresponding UAST <code>asRecursiveLogString</code> output:
+
+</p><pre class="listing tilde"><code><span class="line"></span>UFile (package = )
+<span class="line"></span>  UImportStatement (isOnDemand = false)
+<span class="line"></span>  UClass (name = JavaTest)
+<span class="line"></span>    UMethod (name = test)
+<span class="line"></span>      UBlockExpression
+<span class="line"></span>        UDeclarationsExpression
+<span class="line"></span>          ULocalVariable (name = warn1)
+<span class="line"></span>            UCallExpression (kind = UastCallKind(name='constructor_call'), …
+<span class="line"></span>              USimpleNameReferenceExpression (identifier = Date)
+<span class="line"></span>        UDeclarationsExpression
+<span class="line"></span>          ULocalVariable (name = ok)
+<span class="line"></span>            UCallExpression (kind = UastCallKind(name='constructor_call'), …
+<span class="line"></span>              USimpleNameReferenceExpression (identifier = Date)
+<span class="line"></span>              ULiteralExpression (value = 0)</code></pre>
+<a class="target" name="visiting">&nbsp;</a><a class="target" name="astanalysis/visiting">&nbsp;</a><a class="target" name="toc4.6">&nbsp;</a><h2>Visiting</h2>
+<p>
+
+
+You generally shouldn't visit a source file on your own. Lint has a
+special <code>UElementHandler</code> for that which is used to ensure that we don't
+repeat visiting a source file thousands of times, one per detector.
+
+</p><p>
+
+But when you're doing local analysis, you sometimes need to visit a
+subtree.
+
+</p><p>
+
+To do that, just extend <code>AbstractUastVisitor</code> and pass the visitor to
+the <code>accept</code> method of the corresponding <code>UElement</code>.
+
+</p><pre class="listing tilde"><code><span class="line"></span>method.accept(<span class="hljs-keyword">object</span> : AbstractUastVisitor() {
+<span class="line"></span>    <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">visitSimpleNameReferenceExpression</span><span class="hljs-params">(node: <span class="hljs-type">USimpleNameReferenceExpression</span>)</span></span>: <span class="hljs-built_in">Boolean</span> {
+<span class="line"></span>        <span class="hljs-comment">// your code here</span>
+<span class="line"></span>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.visitSimpleNameReferenceExpression(node)
+<span class="line"></span>    }
+<span class="line"></span>})</code></pre><p>
+
+In a visitor, you generally want to call <code>super</code> as shown above. You can
+also <code>return true</code> if you've “seen enough” and can stop visiting the
+remainder of the AST.
+
+</p><p>
+
+If you're visiting Java PSI elements, you use a
+<code>JavaRecursiveElementVisitor</code>, and in Kotlin PSI, use a <code>KtTreeVisitor</code>.
+
+</p>
+<a class="target" name="uelementtopsimapping">&nbsp;</a><a class="target" name="astanalysis/uelementtopsimapping">&nbsp;</a><a class="target" name="toc4.7">&nbsp;</a><h2>UElement to PSI Mapping</h2>
+<p>
+
+
+UAST is built on top of PSI, and each <code>UElement</code> has a <code>sourcePsi</code>
+property (which may be null). This lets you map from the general UAST
+node, down to the specific PSI elements.
+
+</p><p>
+
+Here's an illustration of that:
+
+</p><p>
+
+</p><center><a href="api-guide/images/uast-sourcepsi.png" target="_blank"><img class="markdeep" src="api-guide/images/uast-sourcepsi.png"></a></center>
+
+<p></p><p>
+
+We have our UAST tree in the top right corner. And here's the Java PSI
+AST behind the scenes. We can access the underlying PSI node for a
+UElement by accessing the sourcePsi element. So when you do need to dip
+into something language specific, that's trivial to do.
+
+</p><p>
+
+Note that in some cases, these references are null.
+
+</p><p>
+
+Each of the UElement nodes point back into the PSI AST - whether a Java
+AST or a Kotlin AST. Here's the same AST, but with the <strong class="asterisk">type</strong> of the
+<code>sourcePsi</code> attribute for each node added.
+
+</p><p>
+
+</p><center><a href="api-guide/images/uast-sourcepsi-type.png" target="_blank"><img class="markdeep" src="api-guide/images/uast-sourcepsi-type.png"></a></center>
+
+<p></p><p>
+
+You can see that the class generated to represent the top level
+functions here doesn't have a non-null <code>sourcePsi</code>, because in the
+Kotlin PSI, there is no real <code>KtClass</code> for a facade class. And for the
+three members, the private field and the getter and the setter, they all
+correspond to the exact same, single <code>KtProperty</code> instance, the single
+node in the Kotlin PSI that these methods were generated from.
+
+</p>
+<a class="target" name="psitouelement">&nbsp;</a><a class="target" name="astanalysis/psitouelement">&nbsp;</a><a class="target" name="toc4.8">&nbsp;</a><h2>PSI to UElement</h2>
+<p>
+
+
+In some cases, we can also map back to UAST from PSI elements, using the <code>toUElement</code> extension function.
+
+</p><p>
+
+For example, let's say we resolve a method call. This returns a
+<code>PsiMethod</code>, not a <code>UMethod</code>. But we can get the corresponding <code>UMethod</code>
+using the following:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> resolved = call.resolve() ?: <span class="hljs-keyword">return</span>
+<span class="line"></span><span class="hljs-keyword">val</span> uDeclaration = resolve.toUElement()</code></pre><p>
+
+Note however that <code>toUElement</code> may return null. For example, if you've
+resolved to a method call that is compiled (which you can check using
+<code>resolved is PsiCompiledElement</code>), UAST cannot convert it.
+
+</p>
+<a class="target" name="uastversuspsi">&nbsp;</a><a class="target" name="astanalysis/uastversuspsi">&nbsp;</a><a class="target" name="toc4.9">&nbsp;</a><h2>UAST versus PSI</h2>
+<p>
+
+
+UAST is the preferred AST to use when you're writing lint checks for
+Kotlin and Java. It lets you reason about things that are the same
+across the languages. Declarations. Function calls. Super classes.
+Assignments. If expressions. Return statements. And on and on.
+
+</p><p>
+
+There <em class="asterisk">are</em> lint checks which are language specific — for example, if
+you write a lint check which forbids the use of companion objects — in
+that case, there's no big advantage to using UAST over PSI; it's only
+ever going to run on Kotlin code. (Note however that lint's APIs and
+convenience callbacks are all targeting UAST, so it's easier to write
+UAST lint checks even for the language-specific checks.)
+
+</p><p>
+
+The vast majority of lint checks however aren't language specific,
+they're <strong class="asterisk">API</strong> or bug pattern specific. And if the API can be called
+from Java, you want your lint check to not only flag problems in Kotlin,
+but in Java code as well. You don't want to have to write the lint check
+twice — so if you use UAST, a single lint check can work for both. But
+while you generally want to use UAST for your analysis (and lint's APIs
+are generally oriented around UAST), there <strong class="asterisk">are</strong> cases where it's
+appropriate to dip into PSI.
+
+</p><p>
+
+In particular, you should use PSI when you're doing something highly
+language specific, and where the language details aren't exposed in UAST.
+
+</p><p>
+
+For example, let's say you need to determine if a <code>UClass</code> is a Kotlin
+“companion object“. You could cheat and look at the class name to see if
+it's ”Companion“. But that's not quite right; in Kotlin you can
+specify a custom companion object name, and of course users are free
+to create classes named ”Companion“ that aren't companion objects:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> {
+<span class="line"></span>  <span class="hljs-keyword">companion</span> <span class="hljs-keyword">object</span> MyName { <span class="hljs-comment">// Companion object not named "Companion"!</span>
+<span class="line"></span>  }
+<span class="line"></span>
+<span class="line"></span>  <span class="hljs-keyword">object</span> Companion { <span class="hljs-comment">// Named "Companion" but not a companion object!</span>
+<span class="line"></span>  }
+<span class="line"></span>}</code></pre><p>
+
+The right way to do this, is using Kotlin PSI, via the
+<code>UElement.sourcePsi</code> attribute:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-comment">// Skip companion objects</span>
+<span class="line"></span><span class="hljs-keyword">val</span> source = node.sourcePsi
+<span class="line"></span><span class="hljs-keyword">if</span> (source <span class="hljs-keyword">is</span> KtObjectDeclaration &amp;&amp; source.isCompanion()) {
+<span class="line"></span>   <span class="hljs-keyword">return</span>
+<span class="line"></span>}</code></pre><p>
+
+(To figure out how to write the above code, use a debugger on a test
+case and look at the <code>UClass.sourcePsi</code> attribute; you'll discover that
+it's some subclass of <code>KtObjectDeclaration</code>; look up its most general
+super interface or class, and then use code completion to discover
+available APIs, such as <code>isCompanion()</code>.)
+
+</p>
+<a class="target" name="kotlinanalysisapi">&nbsp;</a><a class="target" name="astanalysis/kotlinanalysisapi">&nbsp;</a><a class="target" name="toc4.10">&nbsp;</a><h2>Kotlin Analysis API</h2>
+<p>
+
+
+Using Kotlin PSI was the state of the art for correctly analyzing Kotlin
+code until recently. But when you look at the PSI, you'll discover that
+some things are really hard to accomplish — in particular, resolving
+reference, and dealing with Kotlin types.
+
+</p><p>
+
+Lint doesn't actually give you access to everything you need if you want
+to try to look up types in Kotlin PSI; you need something called the
+“binding context”, which is not exposed anywhere! And this omission is
+deliberate, because that was an implementation detail of the old
+compiler. The future is K2; a complete rewrite of the compiler front
+end, which is no longer using the old binding context. And as part of
+the tooling support for K2, there's a new API called the “Kotlin
+Analysis API” you can use to dig into details about Kotlin.
+
+</p><p>
+
+For most lint checks, you should just use UAST if you can. But when you
+need to know really <strong class="asterisk">detailed</strong> Kotlin information, especially around
+types, and smart casts, and null inference, and so on, the Kotlin
+Analysis API is your best friend (and only option...)
+
+</p><p>
+
+</p><div class="admonition warning">The Kotlin Analysis API is not yet final and may continue to change.
+   In fact, most of the symbols have been renamed recently. For example,
+   the <code>KtAnalysisSession</code> returned by <code>analyze</code>, has been renamed
+   <code>KaSession</code>. Most APIs now have the prefix <code>Ka</code>.</div>
+
+<p></p>
+<a class="target" name="nothingtype?">&nbsp;</a><a class="target" name="astanalysis/kotlinanalysisapi/nothingtype?">&nbsp;</a><a class="target" name="toc4.10.1">&nbsp;</a><h3>Nothing Type?</h3>
+<p>
+
+
+Here's a simple example:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">testTodo</span><span class="hljs-params">()</span></span> {
+<span class="line"></span>   <span class="hljs-keyword">if</span> (SDK_INT &lt; <span class="hljs-number">11</span>) {
+<span class="line"></span>       TODO() <span class="hljs-comment">// never returns</span>
+<span class="line"></span>   }
+<span class="line"></span>   <span class="hljs-keyword">val</span> actionBar = getActionBar() <span class="hljs-comment">// OK - SDK_INT must be &gt;= 11 !</span>
+<span class="line"></span>}</code></pre><p>
+
+Here we have a scenario where we know that the TODO call will never
+return, and lint can take advantage of that when analyzing the control
+flow — in particular, it should understand that after the TODO() call
+there's no chance of fallthrough, so it can conclude that SDK_INT must
+be at least 11 after the if block.
+
+</p><p>
+
+The way the Kotlin compiler can reason about this is that the <code>TODO</code>
+method in the standard library has a return type of <code>Nothing</code>.
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-meta">@kotlin</span>.<span class="hljs-keyword">internal</span>.InlineOnly
+<span class="line"></span><span class="hljs-keyword">public</span> <span class="hljs-keyword">inline</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">TODO</span><span class="hljs-params">()</span></span>: <span class="hljs-built_in">Nothing</span> = <span class="hljs-keyword">throw</span> NotImplementedError()</code></pre><p>
+
+The <code>Nothing</code> return type means it will never return.
+
+</p><p>
+
+Before the Kotlin lint analysis API, lint didn't have a way to reason
+about the <code>Nothing</code> type. UAST only returns Java types, which maps to
+void. So instead, lint had an ugly hack which just hardcoded well known
+names of methods that don't return:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (nextStatement <span class="hljs-keyword">is</span> UCallExpression) {
+<span class="line"></span> <span class="hljs-keyword">val</span> methodName = nextStatement.methodName
+<span class="line"></span> <span class="hljs-keyword">if</span> (methodName == <span class="hljs-string">"fail"</span> || methodName == <span class="hljs-string">"error"</span> || methodName == <span class="hljs-string">"TODO"</span>) {
+<span class="line"></span>   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+<span class="line"></span>}</code></pre><p>
+
+However, with the Kotlin analysis API, this is easy:
+
+</p><pre class="listing tilde"><code><div class=" linenumbers"><span class="line"></span><span class="hljs-comment">/**
+<span class="line"></span>* Returns true if this [call] node calls a method known to never
+<span class="line"></span>* return, such as Kotlin's standard library method "error".
+<span class="line"></span>*/</span>
+<span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">callNeverReturns</span><span class="hljs-params">(call: <span class="hljs-type">UCallExpression</span>)</span></span>: <span class="hljs-built_in">Boolean</span> {
+<span class="line"></span> <span class="hljs-keyword">val</span> sourcePsi = call.sourcePsi <span class="hljs-keyword">as</span>? KtCallExpression ?: <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+<span class="line"></span> analyze(sourcePsi) {
+<span class="line"></span>   <span class="hljs-keyword">val</span> callInfo = sourcePsi.resolveCall() ?: <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+<span class="line"></span>   <span class="hljs-keyword">val</span> returnType = callInfo.singleFunctionCallOrNull()?.symbol?.returnType
+<span class="line"></span>   <span class="hljs-keyword">if</span> (returnType != <span class="hljs-literal">null</span> &amp;&amp; returnType.isNothing) {
+<span class="line"></span>     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+<span class="line"></span>   }
+<span class="line"></span>}</div></code></pre><p>
+
+The entry point to all Kotlin Analysis API usages is to call the
+<code>analyze</code> method (see line 7) and pass in a Kotlin PSI element. This
+creates an “analysis session”. <strong class="asterisk">It's very important that you don't leak
+objects from inside the session out of it</strong> — to avoid memory leaks and
+other problems. If you do need to hold on to a symbol and compare later,
+you can create a special symbol pointer.
+
+</p><p>
+
+Anyway, there's a huge number of extension methods that take an analysis
+session as receiver, so inside the lambda on lines 7 to 13, there are
+many new methods available.
+
+</p><p>
+
+Here, we have a <code>KtCallExpression</code>, and inside the <code>analyze</code> block we
+can call <code>resolveCall()</code> on it to reach the called method's symbol.
+
+</p><p>
+
+Similarly on a <code>KtDeclaration</code> (such as a named function or property) I
+can call <code>getSymbol()</code> to get the symbol for that method or property, to
+for example look up parameter information. And on a <code>KtExpression</code> (such
+as an if statement) I can call <code>getKtType()</code> to get the Kotlin type.
+
+</p><p>
+
+<code>KtSymbol</code> and <code>KtType</code> are the basic primitives we're working with in
+the Kotlin Analysis API. There are a number of subclasses of symbol,
+such as <code>KtFileSymbol</code>, <code>KtFunctionSymbol</code>, <code>KtClassOrObjectSymbol</code>, and
+so on.
+
+</p><p>
+
+In the new implementation of <code>callNeverReturns</code>, we resolve the call,
+look up the corresponding function which of course is a <code>KtSymbol</code>
+itself, and from that we get the return type, and then we can just check
+if it's the <code>Nothing</code> type.
+
+</p><p>
+
+And this API works both with the old Kotlin compiler, used in lint right
+now, and K2, which can be turned on via a flag and will soon be the
+default (and may well be the default when you read this; we don't always
+remember to update the documentation...)
+
+</p>
+<a class="target" name="compiledmetadata">&nbsp;</a><a class="target" name="astanalysis/kotlinanalysisapi/compiledmetadata">&nbsp;</a><a class="target" name="toc4.10.2">&nbsp;</a><h3>Compiled Metadata</h3>
+<p>
+
+
+Accessing Kotlin-specific knowledge not available via Kotlin PSI is one
+use for the analysis API.
+
+</p><p>
+
+Another big advantage of the Kotlin analysis API is that it gives you
+access to reason about compiled Kotlin code, in the same way that the
+compiler does.
+
+</p><p>
+
+Normally, when you resolve with UAST, you just get a plain <code>PsiMethod</code>
+back. For example, if we have a reference to
+<code>kotlin.text.HexFormat.Companion</code>, and we resolve it in UAST, we get a
+<code>PsiMethod</code> back. This is <strong class="asterisk">not</strong> a Kotlin PSI element, so our earlier
+code to check if this is a companion object (<code>source is
+KtObjectDeclaration &amp;&amp; source.isCompanion()</code>) does not work — the first
+instance check fails. These compiled <code>PsiElement</code>s do not give us access
+to any of the special Kotlin payload we can usually check on
+<code>KtElement</code>s — modifiers like <code>inline</code> or <code>infix</code>, default parameters,
+and so on.
+
+</p><p>
+
+The analysis API handles this properly, even for compiled code. In fact,
+the earlier implementation of checking for the <code>Nothing</code> type
+demonstrated this, because the methods it's analyzing from the Kotlin
+standard library (<code>error</code>, <code>TODO</code>, and so on), are all compiled classes
+in the Kotlin standard library jar file!
+
+</p><p>
+
+Therefore, yes, we can use Kotlin PSI to check if a class is a companion
+object if we actually have the source code for the class. But if we're
+resolving a <em class="asterisk">reference</em> to a class, using the Kotlin analysis API is
+better; it will work for both source and compiled:
+
+</p><pre class="listing tilde"><code><span class="line"></span>symbol <span class="hljs-keyword">is</span> KtClassOrObjectSymbol &amp;&amp; symbol.classKind == KtClassKind.COMPANION_OBJECT</code></pre>
+<a class="target" name="kotlinanalysisapihowto">&nbsp;</a><a class="target" name="astanalysis/kotlinanalysisapi/compiledmetadata/kotlinanalysisapihowto">&nbsp;</a><a class="target" name="toc4.10.2.1">&nbsp;</a><h4>Kotlin Analysis API Howto</h4>
+<p>
+
+
+When you're using K2 with lint, a lot of UAST's handling of resolve and
+types in Kotlin is actually using the analysis API behind the scenes.
+
+</p><p>
+
+If you for example have a Kotlin PSI <code>KtThisExpression</code>, and you want to
+understand how to resolve the <code>this</code> reference to another PSI element,
+write the following Kotlin UAST code:
+
+</p><pre class="listing tilde"><code><span class="line"></span>thisReference.toUElement()?.tryResolve()</code></pre><p>
+
+You can now use a debugger to step into the <code>tryResolve</code> call, and
+you'll eventually wind up in code using the Kotlin Analysis API to look
+it up, and as it turns out, here's how:
+
+</p><pre class="listing tilde"><code><span class="line"></span>analyze(expression) {
+<span class="line"></span> <span class="hljs-keyword">val</span> reference = expression.getTargetLabel()?.mainReference
+<span class="line"></span>     ?: expression.instanceReference.mainReference
+<span class="line"></span> <span class="hljs-keyword">val</span> psi = reference.resolveToSymbol()?.psi
+<span class="line"></span> …
+<span class="line"></span>}</code></pre>
+<a class="target" name="configuringlinttousek2">&nbsp;</a><a class="target" name="astanalysis/kotlinanalysisapi/configuringlinttousek2">&nbsp;</a><a class="target" name="toc4.10.3">&nbsp;</a><h3>Configuring lint to use K2</h3>
+<p>
+
+
+To use K2 from a unit test, you can use the following lint test task override:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">lint</span><span class="hljs-params">()</span></span>: TestLintTask {
+<span class="line"></span>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.lint().configureOptions { flags -&gt; flags.setUseK2Uast(<span class="hljs-literal">true</span>) }
+<span class="line"></span>}</code></pre><p>
+
+Outside of tests, you can also set the <code>-Dlint.use.fir.uast=true</code> system property in your run configurations.
+
+</p><p>
+
+Note that at some point this flag may go away since we'll be switching
+over to K2 completely.
+
+</p>
+<a class="target" name="recipes">&nbsp;</a><a class="target" name="astanalysis/recipes">&nbsp;</a><a class="target" name="toc4.11">&nbsp;</a><h2>Recipes</h2>
+<p>
+
+
+Here are various other Kotlin Analysis scenarios and potential solutions:
+
+</p>
+<a class="target" name="resolveafunctioncall">&nbsp;</a><a class="target" name="astanalysis/recipes/resolveafunctioncall">&nbsp;</a><a class="target" name="toc4.11.1">&nbsp;</a><h3>Resolve a function call</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> call: KtCallExpression
+<span class="line"></span>…
+<span class="line"></span>analyze(call) {
+<span class="line"></span>    <span class="hljs-keyword">val</span> callInfo = call.resolveCall()
+<span class="line"></span>    <span class="hljs-keyword">if</span> (callInfo != <span class="hljs-literal">null</span>) {
+<span class="line"></span>      <span class="hljs-keyword">val</span> symbol: KtFunctionLikeSymbol = callInfo.singleFunctionCallOrNull()?.symbol
+<span class="line"></span>          ?: callInfo.singleConstructorCallOrNull()?.symbol
+<span class="line"></span>          ?: callInfo.singleCallOrNull&lt;ktannotationcall&gt;()?.symbol
+<span class="line"></span>      …
+<span class="line"></span>}</code></pre>
+<a class="target" name="resolveavariablereference">&nbsp;</a><a class="target" name="astanalysis/recipes/resolveavariablereference">&nbsp;</a><a class="target" name="toc4.11.2">&nbsp;</a><h3>Resolve a variable reference</h3>
+<p>
+
+
+Also use <code>resolveCall</code>, though it's not really a call:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> expression: KtNameReferenceExpression
+<span class="line"></span>…
+<span class="line"></span>analyze(expression) {
+<span class="line"></span>   <span class="hljs-keyword">val</span> symbol: KtVariableLikeSymbol = expression.resolveCall()?.singleVariableAccessCall()?.symbol
+<span class="line"></span>}</code></pre>
+<a class="target" name="getthecontainingclassofasymbol">&nbsp;</a><a class="target" name="astanalysis/recipes/getthecontainingclassofasymbol">&nbsp;</a><a class="target" name="toc4.11.3">&nbsp;</a><h3>Get the containing class of a symbol</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> containingSymbol = symbol.getContainingSymbol()
+<span class="line"></span><span class="hljs-keyword">if</span> (containingSymbol <span class="hljs-keyword">is</span> KtNamedClassOrObjectSymbol) {
+<span class="line"></span>  …
+<span class="line"></span>}</code></pre>
+<a class="target" name="getthefullyqualifiednameofaclass">&nbsp;</a><a class="target" name="astanalysis/recipes/getthefullyqualifiednameofaclass">&nbsp;</a><a class="target" name="toc4.11.4">&nbsp;</a><h3>Get the fully qualified name of a class</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> containing = declarationSymbol.getContainingSymbol()
+<span class="line"></span><span class="hljs-keyword">if</span> (containing <span class="hljs-keyword">is</span> KtClassOrObjectSymbol) {
+<span class="line"></span>    <span class="hljs-keyword">val</span> fqn = containing.classIdIfNonLocal?.asSingleFqName()
+<span class="line"></span>    …
+<span class="line"></span>}</code></pre>
+<a class="target" name="lookupthedeprecationstatusofasymbol">&nbsp;</a><a class="target" name="astanalysis/recipes/lookupthedeprecationstatusofasymbol">&nbsp;</a><a class="target" name="toc4.11.5">&nbsp;</a><h3>Look up the deprecation status of a symbol</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (symbol <span class="hljs-keyword">is</span> KtDeclarationSymbol) {
+<span class="line"></span>  symbol.deprecationStatus?.let { … }
+<span class="line"></span>}</code></pre>
+<a class="target" name="lookupvisibility">&nbsp;</a><a class="target" name="astanalysis/recipes/lookupvisibility">&nbsp;</a><a class="target" name="toc4.11.6">&nbsp;</a><h3>Look up visibility</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (symbol <span class="hljs-keyword">is</span> KtSymbolWithVisibility) {
+<span class="line"></span>    <span class="hljs-keyword">val</span> visibility = symbol.visibility
+<span class="line"></span>    <span class="hljs-keyword">if</span> (!visibility.isPublicAPI) {
+<span class="line"></span>        …
+<span class="line"></span>    }
+<span class="line"></span>}</code></pre>
+<a class="target" name="getthekttypeofaclasssymbol">&nbsp;</a><a class="target" name="astanalysis/recipes/getthekttypeofaclasssymbol">&nbsp;</a><a class="target" name="toc4.11.7">&nbsp;</a><h3>Get the KtType of a class symbol</h3>
+<pre class="listing tilde"><code><span class="line"></span>containingSymbol.buildSelfClassType()</code></pre>
+<a class="target" name="resolveakttypeintoaclass">&nbsp;</a><a class="target" name="astanalysis/recipes/resolveakttypeintoaclass">&nbsp;</a><a class="target" name="toc4.11.8">&nbsp;</a><h3>Resolve a KtType into a class</h3>
+<p>
+
+
+Example: is this <code>KtParameter</code> pointing to an interface?
+
+</p><pre class="listing tilde"><code><span class="line"></span>analyze(ktParameter) {
+<span class="line"></span>    <span class="hljs-keyword">val</span> parameterSymbol = ktParameter.getParameterSymbol()
+<span class="line"></span>    <span class="hljs-keyword">val</span> returnType = parameterSymbol.returnType
+<span class="line"></span>    <span class="hljs-keyword">val</span> typeSymbol = returnType.expandedClassSymbol
+<span class="line"></span>    <span class="hljs-keyword">if</span> (typeSymbol <span class="hljs-keyword">is</span> KtClassOrObjectSymbol) {
+<span class="line"></span>    <span class="hljs-keyword">val</span> classKind = typeSymbol.classKind
+<span class="line"></span>    <span class="hljs-keyword">if</span> (classKind == KtClassKind.INTERFACE) {
+<span class="line"></span>       …
+<span class="line"></span>    }
+<span class="line"></span>}</code></pre>
+<a class="target" name="seeiftwotypesrefertothesamerawclass(erasure):">&nbsp;</a><a class="target" name="astanalysis/recipes/seeiftwotypesrefertothesamerawclass(erasure):">&nbsp;</a><a class="target" name="toc4.11.9">&nbsp;</a><h3>See if two types refer to the same raw class (erasure):</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (type1 <span class="hljs-keyword">is</span> KtNonErrorClassType &amp;&amp; type2 <span class="hljs-keyword">is</span> KtNonErrorClassType &amp;&amp;
+<span class="line"></span>    type1.classId == type2.classId) {
+<span class="line"></span>    …
+<span class="line"></span>}</code></pre>
+<a class="target" name="foranextensionmethod,getthereceivertype:">&nbsp;</a><a class="target" name="astanalysis/recipes/foranextensionmethod,getthereceivertype:">&nbsp;</a><a class="target" name="toc4.11.10">&nbsp;</a><h3>For an extension method, get the receiver type:</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (declarationSymbol <span class="hljs-keyword">is</span> KtFunctionSymbol) {
+<span class="line"></span>  <span class="hljs-keyword">val</span> declarationReceiverType = declarationSymbol.receiverParameter?.type</code></pre>
+<a class="target" name="getthepsifilecontainingasymboldeclaration">&nbsp;</a><a class="target" name="astanalysis/recipes/getthepsifilecontainingasymboldeclaration">&nbsp;</a><a class="target" name="toc4.11.11">&nbsp;</a><h3>Get the PsiFile containing a symbol declaration</h3>
+<pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> file = symbol.getContainingFileSymbol()
+<span class="line"></span><span class="hljs-keyword">if</span> (file <span class="hljs-keyword">is</span> KtFileSymbol) {
+<span class="line"></span><span class="hljs-keyword">val</span> psi = file.psi
+<span class="line"></span><span class="hljs-keyword">if</span> (psi <span class="hljs-keyword">is</span> PsiFile) {
+<span class="line"></span>     …
+<span class="line"></span>}</code></pre><p>
+
+
+
+</p>
+<a class="target" name="publishingalintcheck">&nbsp;</a><a class="target" name="publishingalintcheck">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Publishing a Lint Check</h1>
 <p>
 
 
@@ -2209,9 +2986,9 @@ build systems that do not have direct support for lint or embedded lint
 libraries, such as the internal Google build system.
 
 </p>
-<a class="target" name="android">&nbsp;</a><a class="target" name="publishingalintcheck/android">&nbsp;</a><a class="target" name="toc4.1">&nbsp;</a><h2>Android</h2>
+<a class="target" name="android">&nbsp;</a><a class="target" name="publishingalintcheck/android">&nbsp;</a><a class="target" name="toc5.1">&nbsp;</a><h2>Android</h2>
 
-<a class="target" name="aarsupport">&nbsp;</a><a class="target" name="publishingalintcheck/android/aarsupport">&nbsp;</a><a class="target" name="toc4.1.1">&nbsp;</a><h3>AAR Support</h3>
+<a class="target" name="aarsupport">&nbsp;</a><a class="target" name="publishingalintcheck/android/aarsupport">&nbsp;</a><a class="target" name="toc5.1.1">&nbsp;</a><h3>AAR Support</h3>
 <p>
 
 
@@ -2244,7 +3021,7 @@ lint will pull in those checks and apply them. This gives library
 authors a way to provide their own additional checks enforcing usage.
 
 </p>
-<a class="target" name="lintpublishconfiguration">&nbsp;</a><a class="target" name="publishingalintcheck/android/lintpublishconfiguration">&nbsp;</a><a class="target" name="toc4.1.2">&nbsp;</a><h3>lintPublish Configuration</h3>
+<a class="target" name="lintpublishconfiguration">&nbsp;</a><a class="target" name="publishingalintcheck/android/lintpublishconfiguration">&nbsp;</a><a class="target" name="toc5.1.2">&nbsp;</a><h3>lintPublish Configuration</h3>
 <p>
 
 
@@ -2287,7 +3064,7 @@ run <code>./gradlew :app:lint</code> to analyze the app, the build will fail
 emitting the custom lint check.
 
 </p>
-<a class="target" name="localchecks">&nbsp;</a><a class="target" name="publishingalintcheck/android/localchecks">&nbsp;</a><a class="target" name="toc4.1.3">&nbsp;</a><h3>Local Checks</h3>
+<a class="target" name="localchecks">&nbsp;</a><a class="target" name="publishingalintcheck/android/localchecks">&nbsp;</a><a class="target" name="toc5.1.3">&nbsp;</a><h3>Local Checks</h3>
 <p>
 
 
@@ -2319,7 +3096,7 @@ provided from the given project.
    tracker for this.</div>
 
 <p></p>
-<a class="target" name="unpublishing">&nbsp;</a><a class="target" name="publishingalintcheck/android/unpublishing">&nbsp;</a><a class="target" name="toc4.1.4">&nbsp;</a><h3>Unpublishing</h3>
+<a class="target" name="unpublishing">&nbsp;</a><a class="target" name="publishingalintcheck/android/unpublishing">&nbsp;</a><a class="target" name="toc5.1.4">&nbsp;</a><h3>Unpublishing</h3>
 <p>
 
 
@@ -2335,7 +3112,7 @@ return your deleted issue id or ids:
 <span class="line"></span> * and is no longer registered, any existing mentions of the issue
 <span class="line"></span> * id in baselines, lint.xml files etc are gracefully handled.
 <span class="line"></span> */</span>
-<span class="line"></span><span class="hljs-keyword">open</span> val deletedIssues: <span class="hljs-type">List</span>&lt;string&gt; <span class="hljs-operator">=</span> emptyList()</code></pre><p>
+<span class="line"></span><span class="hljs-keyword">open</span> val deletedIssues: <span class="hljs-type">List</span>&lt;<span class="hljs-type">String</span>&gt; <span class="hljs-operator">=</span> emptyList()</code></pre><p>
 
 The reason you'll want to do this is listed right there in the doc: If
 you don't do this, and if users have for example listed your issue id
@@ -2344,17 +3121,13 @@ severity, then lint will report an error that it's an unknown id. This
 is done to catch issue id typos. And if the user has a baseline file
 listing incidents from your check, then if your issue id is not
 registered as deleted, lint will think this is an issue that has been
-“fixed“ since it's no longer reported, and lint will issue an
+“fixed” since it's no longer reported, and lint will issue an
 informational message that the baseline contains issues no longer
 reported (which is done such that users can update their baseline
 files, to ensure that the fixed issues aren't reintroduced again.)
 
-</p><p>
-
-
-
 </p>
-<a class="target" name="lintcheckunittesting">&nbsp;</a><a class="target" name="lintcheckunittesting">&nbsp;</a><a class="target" name="toc5">&nbsp;</a><h1>Lint Check Unit Testing</h1>
+<a class="target" name="lintcheckunittesting">&nbsp;</a><a class="target" name="lintcheckunittesting">&nbsp;</a><a class="target" name="toc6">&nbsp;</a><h1>Lint Check Unit Testing</h1>
 <p>
 
 
@@ -2370,7 +3143,7 @@ bug fix (often setting breakpoints and debugging through the unit test)
 until it passes.
 
 </p>
-<a class="target" name="creatingaunittest">&nbsp;</a><a class="target" name="lintcheckunittesting/creatingaunittest">&nbsp;</a><a class="target" name="toc5.1">&nbsp;</a><h2>Creating a Unit Test</h2>
+<a class="target" name="creatingaunittest">&nbsp;</a><a class="target" name="lintcheckunittesting/creatingaunittest">&nbsp;</a><a class="target" name="toc6.1">&nbsp;</a><h2>Creating a Unit Test</h2>
 <p>
 
 
@@ -2456,7 +3229,7 @@ most common operation is to call <code>expect(output)</code>.
    tweaks here and there.</p></div>
 
 <p></p>
-<a class="target" name="computingtheexpectedoutput">&nbsp;</a><a class="target" name="lintcheckunittesting/computingtheexpectedoutput">&nbsp;</a><a class="target" name="toc5.2">&nbsp;</a><h2>Computing the Expected Output</h2>
+<a class="target" name="computingtheexpectedoutput">&nbsp;</a><a class="target" name="lintcheckunittesting/computingtheexpectedoutput">&nbsp;</a><a class="target" name="toc6.2">&nbsp;</a><h2>Computing the Expected Output</h2>
 <p>
 
 
@@ -2471,7 +3244,7 @@ copy the actual output into the <code>expect</code> call as the expected
 output, provided of course that it's correct!
 
 </p>
-<a class="target" name="testfiles">&nbsp;</a><a class="target" name="lintcheckunittesting/testfiles">&nbsp;</a><a class="target" name="toc5.3">&nbsp;</a><h2>Test Files</h2>
+<a class="target" name="testfiles">&nbsp;</a><a class="target" name="lintcheckunittesting/testfiles">&nbsp;</a><a class="target" name="toc6.3">&nbsp;</a><h2>Test Files</h2>
 <p>
 
 
@@ -2577,12 +3350,12 @@ test files as sources:
   modes</a> chapter.</li></ul>
 
 <p></p>
-<a class="target" name="trimmingindents?">&nbsp;</a><a class="target" name="lintcheckunittesting/trimmingindents?">&nbsp;</a><a class="target" name="toc5.4">&nbsp;</a><h2>Trimming indents?</h2>
+<a class="target" name="trimmingindents?">&nbsp;</a><a class="target" name="lintcheckunittesting/trimmingindents?">&nbsp;</a><a class="target" name="toc6.4">&nbsp;</a><h2>Trimming indents?</h2>
 <p>
 
 
 Notice how in the above Kotlin unit tests we used raw strings, <strong class="asterisk">and</strong>
-we indented the sources to be flush with the opening “”“ string
+we indented the sources to be flush with the opening <code>"""</code> string
 delimiter.
 
 </p><p>
@@ -2598,7 +3371,7 @@ Note that we don't need to do anything with the <code>expect</code> call; lint
 will automatically call <code>trimIndent()</code> on the string passed in to it.
 
 </p>
-<a class="target" name="dollarsinrawstrings">&nbsp;</a><a class="target" name="lintcheckunittesting/dollarsinrawstrings">&nbsp;</a><a class="target" name="toc5.5">&nbsp;</a><h2>Dollars in Raw Strings</h2>
+<a class="target" name="dollarsinrawstrings">&nbsp;</a><a class="target" name="lintcheckunittesting/dollarsinrawstrings">&nbsp;</a><a class="target" name="toc6.5">&nbsp;</a><h2>Dollars in Raw Strings</h2>
 <p>
 
 
@@ -2614,7 +3387,7 @@ always converts the test output to use it (though it will convert in
 the opposite direction when creating the test sources on disk).
 
 </p>
-<a class="target" name="quickfixes">&nbsp;</a><a class="target" name="lintcheckunittesting/quickfixes">&nbsp;</a><a class="target" name="toc5.6">&nbsp;</a><h2>Quickfixes</h2>
+<a class="target" name="quickfixes">&nbsp;</a><a class="target" name="lintcheckunittesting/quickfixes">&nbsp;</a><a class="target" name="toc6.6">&nbsp;</a><h2>Quickfixes</h2>
 <p>
 
 
@@ -2667,7 +3440,7 @@ iterate through all of these too:
 <span class="line"></span>        <span class="hljs-operator">+</span> <span class="hljs-string">"+         android:importantForAutofill=<span class="hljs-subst">\"</span>no<span class="hljs-subst">\"</span><span class="hljs-subst">\n</span>"</span>
 <span class="line"></span>        <span class="hljs-operator">+</span> <span class="hljs-string">"          android:inputType=<span class="hljs-subst">\"</span>password<span class="hljs-subst">\"</span> &gt;<span class="hljs-subst">\n</span>"</span>
 <span class="line"></span>        <span class="hljs-operator">+</span> <span class="hljs-string">"  <span class="hljs-subst">\n</span>"</span>);</code></pre>
-<a class="target" name="librarydependenciesandstubs">&nbsp;</a><a class="target" name="lintcheckunittesting/librarydependenciesandstubs">&nbsp;</a><a class="target" name="toc5.7">&nbsp;</a><h2>Library Dependencies and Stubs</h2>
+<a class="target" name="librarydependenciesandstubs">&nbsp;</a><a class="target" name="lintcheckunittesting/librarydependenciesandstubs">&nbsp;</a><a class="target" name="toc6.7">&nbsp;</a><h2>Library Dependencies and Stubs</h2>
 <p>
 
 
@@ -2763,7 +3536,7 @@ Here's an example of a test failure for an unresolved import:
 <span class="line"></span>(This check only enforces import references, not all references, so if
 <span class="line"></span>it doesn't matter to the detector, you can just remove the import but
 <span class="line"></span>leave references to the class in the code.)</code></pre>
-<a class="target" name="binaryandcompiledsourcefiles">&nbsp;</a><a class="target" name="lintcheckunittesting/binaryandcompiledsourcefiles">&nbsp;</a><a class="target" name="toc5.8">&nbsp;</a><h2>Binary and Compiled Source Files</h2>
+<a class="target" name="binaryandcompiledsourcefiles">&nbsp;</a><a class="target" name="lintcheckunittesting/binaryandcompiledsourcefiles">&nbsp;</a><a class="target" name="toc6.8">&nbsp;</a><h2>Binary and Compiled Source Files</h2>
 <p>
 
 
@@ -2833,7 +3606,7 @@ files:
 <span class="line"></span>            ).indented()
 <span class="line"></span>        )
 <span class="line"></span>    ).run().expect(</code></pre>
-<a class="target" name="base64-encodedgzippedbytecode">&nbsp;</a><a class="target" name="lintcheckunittesting/base64-encodedgzippedbytecode">&nbsp;</a><a class="target" name="toc5.9">&nbsp;</a><h2>Base64-encoded gzipped byte code</h2>
+<a class="target" name="base64-encodedgzippedbytecode">&nbsp;</a><a class="target" name="lintcheckunittesting/base64-encodedgzippedbytecode">&nbsp;</a><a class="target" name="toc6.9">&nbsp;</a><h2>Base64-encoded gzipped byte code</h2>
 <p>
 
 
@@ -2853,7 +3626,7 @@ Cordova in the bytecode:
 <span class="line"></span>                <span class="hljs-string">"BwAAAAIAAQAIAAkAAQAKAAAAHQABAAEAAAAFKrcAAbEAAAABAAsAAAAGAAEA"</span> +
 <span class="line"></span>                <span class="hljs-string">"AAAEAAgADAAJAAEACgAAAB4AAQAAAAAABhICswADsQAAAAEACwAAAAYAAQAA"</span> +
 <span class="line"></span>                <span class="hljs-string">"AAUAAQANAAAAAgAO"</span>
-<span class="line"></span>        )`
+<span class="line"></span>        )
 <span class="line"></span>    ).run().<span class="hljs-keyword">expect</span>(</code></pre><p>
 
 Here, ”base64gzip“ means that the file is gzipped and then base64
@@ -2900,12 +3673,12 @@ and emit the full test file registration.
 </p><p>
 
 This isn't just a convenience; lint's test infrastructure also uses
-this to test some additional scenarios (for example, in a multi- module
+this to test some additional scenarios (for example, in a multi-module
 project it will only provide the binaries, not the sources, for
 upstream modules.)
 
 </p>
-<a class="target" name="mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="lintcheckunittesting/mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="toc5.10">&nbsp;</a><h2>My Detector Isn't Invoked From a Test!</h2>
+<a class="target" name="mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="lintcheckunittesting/mydetectorisn'tinvokedfromatest!">&nbsp;</a><a class="target" name="toc6.10">&nbsp;</a><h2>My Detector Isn't Invoked From a Test!</h2>
 <p>
 
 
@@ -2922,7 +3695,7 @@ Dependencies and Stubs“ section above, as well as the <a href="#frequentlyaske
 questions</a>.
 
 </p>
-<a class="target" name="languagelevel">&nbsp;</a><a class="target" name="lintcheckunittesting/languagelevel">&nbsp;</a><a class="target" name="toc5.11">&nbsp;</a><h2>Language Level</h2>
+<a class="target" name="languagelevel">&nbsp;</a><a class="target" name="lintcheckunittesting/languagelevel">&nbsp;</a><a class="target" name="toc6.11">&nbsp;</a><h2>Language Level</h2>
 <p>
 
 
@@ -2947,7 +3720,7 @@ Here's an example of a unit test setup for Java records:
 
 
 </p>
-<a class="target" name="testmodes">&nbsp;</a><a class="target" name="testmodes">&nbsp;</a><a class="target" name="toc6">&nbsp;</a><h1>Test Modes</h1>
+<a class="target" name="testmodes">&nbsp;</a><a class="target" name="testmodes">&nbsp;</a><a class="target" name="toc7">&nbsp;</a><h1>Test Modes</h1>
 <p>
 
 
@@ -2963,7 +3736,7 @@ There are a number of built-in test modes:
 </p><p>
 
 </p><ul>
-<li class="asterisk">Test modes which makes small tweaks to the source files which
+<li class="asterisk">Test modes which make small tweaks to the source files which
   should be compatible, such as
 <ul>
   <li class="asterisk">Inserting unnecessary parentheses
@@ -2980,12 +3753,7 @@ There are a number of built-in test modes:
 </li>
   <li class="asterisk">etc
 </li></ul>
-</li><li class="asterisk">A test mode which changes that detectors are correctly handling
-  Kotlin literal expressions by running them both with and without
-  the upcoming UiInjectionHost mode which will change the
-  representation of strings in an upcoming Kotlin version
-</li>
-<li class="asterisk">A partial analysis test mode which runs the tests in “partial
+</li><li class="asterisk">A partial analysis test mode which runs the tests in “partial
   analysis” mode; two phases, analysis and reporting, with
   minSdkVersion set to 1 during analysis and set to the true test
   value during reporting etc.
@@ -3005,7 +3773,7 @@ tests, but you can opt out of any test modes by invoking the
 </p><p>
 
 You can also add in your own test modes. For example, lint adds its own
-internal test mode for making sure the built-in annotation checks works
+internal test mode for making sure the built-in annotation checks work
 with Android platform annotations in the following test mode:
 
 </p><p>
@@ -3013,7 +3781,7 @@ with Android platform annotations in the following test mode:
 <a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidPlatformAnnotationsTestMode.kt"></a><a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidPlatformAnnotationsTestMode.kt" class="url">https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AndroidPlatformAnnotationsTestMode.kt</a>
 
 </p>
-<a class="target" name="howtodebug">&nbsp;</a><a class="target" name="testmodes/howtodebug">&nbsp;</a><a class="target" name="toc6.1">&nbsp;</a><h2>How to debug</h2>
+<a class="target" name="howtodebug">&nbsp;</a><a class="target" name="testmodes/howtodebug">&nbsp;</a><a class="target" name="toc7.1">&nbsp;</a><h2>How to debug</h2>
 <p>
 
 
@@ -3048,7 +3816,7 @@ having to figure out which mode you're currently being invoked in.
 </p><div class="admonition warning">Don't forget to remove that override when you're done!</div>
 
 <p></p>
-<a class="target" name="handlingintentionalfailures">&nbsp;</a><a class="target" name="testmodes/handlingintentionalfailures">&nbsp;</a><a class="target" name="toc6.2">&nbsp;</a><h2>Handling Intentional Failures</h2>
+<a class="target" name="handlingintentionalfailures">&nbsp;</a><a class="target" name="testmodes/handlingintentionalfailures">&nbsp;</a><a class="target" name="toc7.2">&nbsp;</a><h2>Handling Intentional Failures</h2>
 <p>
 
 
@@ -3076,7 +3844,7 @@ skipped is useful as well.
 <span class="line"></span>    .skipTestModes(TestMode.PARTIAL)
 <span class="line"></span>    .run()
 <span class="line"></span>    .expectClean()</code></pre>
-<a class="target" name="source-modifyingtestmodes">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes">&nbsp;</a><a class="target" name="toc6.3">&nbsp;</a><h2>Source-Modifying Test Modes</h2>
+<a class="target" name="source-modifyingtestmodes">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes">&nbsp;</a><a class="target" name="toc7.3">&nbsp;</a><h2>Source-Modifying Test Modes</h2>
 <p>
 
 
@@ -3119,7 +3887,7 @@ files include line numbers to help make it easy to correlate extra or
 missing warnings with their line numbers to the changed source code.
 
 </p>
-<a class="target" name="fullyqualifiednames">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/fullyqualifiednames">&nbsp;</a><a class="target" name="toc6.3.1">&nbsp;</a><h3>Fully Qualified Names</h3>
+<a class="target" name="fullyqualifiednames">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/fullyqualifiednames">&nbsp;</a><a class="target" name="toc7.3.1">&nbsp;</a><h3>Fully Qualified Names</h3>
 <p>
 
 
@@ -3217,7 +3985,7 @@ detector:
    something like <code>node as? UCallExpression</code>.</div>
 
 <p></p>
-<a class="target" name="importaliasing">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/importaliasing">&nbsp;</a><a class="target" name="toc6.3.2">&nbsp;</a><h3>Import Aliasing</h3>
+<a class="target" name="importaliasing">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/importaliasing">&nbsp;</a><a class="target" name="toc7.3.2">&nbsp;</a><h3>Import Aliasing</h3>
 <p>
 
 
@@ -3250,7 +4018,7 @@ to
 <span class="line"></span>    <span class="hljs-keyword">val</span> rv = IMPORT_ALIAS_1_REMOTEVIEWS(packageName, R.layout.test)
 <span class="line"></span>    <span class="hljs-keyword">val</span> ov = other <span class="hljs-keyword">as</span> IMPORT_ALIAS_1_REMOTEVIEWS
 <span class="line"></span>}</code></pre>
-<a class="target" name="typealiasing">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/typealiasing">&nbsp;</a><a class="target" name="toc6.3.3">&nbsp;</a><h3>Type Aliasing</h3>
+<a class="target" name="typealiasing">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/typealiasing">&nbsp;</a><a class="target" name="toc7.3.3">&nbsp;</a><h3>Type Aliasing</h3>
 <p>
 
 
@@ -3295,7 +4063,7 @@ to
 <span class="line"></span><span class="hljs-keyword">typealias</span> TYPE_ALIAS_1 = String
 <span class="line"></span><span class="hljs-keyword">typealias</span> TYPE_ALIAS_2 = Any
 <span class="line"></span><span class="hljs-keyword">typealias</span> TYPE_ALIAS_3 = RemoteViews</code></pre>
-<a class="target" name="parenthesismode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/parenthesismode">&nbsp;</a><a class="target" name="toc6.3.4">&nbsp;</a><h3>Parenthesis Mode</h3>
+<a class="target" name="parenthesismode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/parenthesismode">&nbsp;</a><a class="target" name="toc7.3.4">&nbsp;</a><h3>Parenthesis Mode</h3>
 <p>
 
 
@@ -3324,7 +4092,7 @@ parents. Let's say you're looking at a call and you want to see if the
 last argument is a literal expression such as a number or a String. You
 <em class="asterisk">can't</em> just use <code>if (call.valueArguments.lastOrNull() is
 ULiteralExpression)</code>, because that first argument could be a
-<code>UParenthesizedExpression</code>, as in `call(1, true, (“hello”)), so you'd
+<code>UParenthesizedExpression</code>, as in <code>call(1, true, ("hello"))</code>, so you'd
 need to look inside the parentheses.
 
 </p><p>
@@ -3379,7 +4147,7 @@ simple literals, like (1) or (false). You can explicitly construct
 parentheses.
 
 </p>
-<a class="target" name="argumentreordering">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/argumentreordering">&nbsp;</a><a class="target" name="toc6.3.5">&nbsp;</a><h3>Argument Reordering</h3>
+<a class="target" name="argumentreordering">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/argumentreordering">&nbsp;</a><a class="target" name="toc7.3.5">&nbsp;</a><h3>Argument Reordering</h3>
 <p>
 
 
@@ -3411,7 +4179,7 @@ For example, this mode will convert the following code:
 to
 
 </p><pre class="listing tilde"><code><span class="line"></span>test(n = <span class="hljs-number">5</span>, z = <span class="hljs-literal">true</span>, s = <span class="hljs-string">"test"</span>)</code></pre>
-<a class="target" name="bodyremoval">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/bodyremoval">&nbsp;</a><a class="target" name="toc6.3.6">&nbsp;</a><h3>Body Removal</h3>
+<a class="target" name="bodyremoval">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/bodyremoval">&nbsp;</a><a class="target" name="toc7.3.6">&nbsp;</a><h3>Body Removal</h3>
 <p>
 
 
@@ -3458,7 +4226,7 @@ making sure that detectors are properly handling the presence of
 absence of <code>UBlockExpression</code> around the child nodes.
 
 </p>
-<a class="target" name="iftowhenreplacement">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/iftowhenreplacement">&nbsp;</a><a class="target" name="toc6.3.7">&nbsp;</a><h3>If to When Replacement</h3>
+<a class="target" name="iftowhenreplacement">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/iftowhenreplacement">&nbsp;</a><a class="target" name="toc7.3.7">&nbsp;</a><h3>If to When Replacement</h3>
 <p>
 
 
@@ -3478,7 +4246,7 @@ in lint's built-in checks (spread across 5 detectors) needed some
 tweaks.
 
 </p>
-<a class="target" name="whitespacemode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/whitespacemode">&nbsp;</a><a class="target" name="toc6.3.8">&nbsp;</a><h3>Whitespace Mode</h3>
+<a class="target" name="whitespacemode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/whitespacemode">&nbsp;</a><a class="target" name="toc7.3.8">&nbsp;</a><h3>Whitespace Mode</h3>
 <p>
 
 
@@ -3509,7 +4277,7 @@ updated to be prepared for whitespace characters:
 <span class="line"></span>+                    .pattern("acquire\\s*\\(()\\s*\\)")
 <span class="line"></span>                     .with("10*60*1000L /*10 minutes*/")
 <span class="line"></span>                     .build();</code></pre>
-<a class="target" name="cdatamode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/cdatamode">&nbsp;</a><a class="target" name="toc6.3.9">&nbsp;</a><h3>CDATA Mode</h3>
+<a class="target" name="cdatamode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/cdatamode">&nbsp;</a><a class="target" name="toc7.3.9">&nbsp;</a><h3>CDATA Mode</h3>
 <p>
 
 
@@ -3545,7 +4313,7 @@ string resources, and will convert regular text into <code>CDATA</code> and make
 sure the results continue to be the same.
 
 </p>
-<a class="target" name="suppressiblemode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/suppressiblemode">&nbsp;</a><a class="target" name="toc6.3.10">&nbsp;</a><h3>Suppressible Mode</h3>
+<a class="target" name="suppressiblemode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/suppressiblemode">&nbsp;</a><a class="target" name="toc7.3.10">&nbsp;</a><h3>Suppressible Mode</h3>
 <p>
 
 
@@ -3565,14 +4333,80 @@ for each one, it looks up the corresponding error location's source file, and
 inserts a suppress directive at the nearest applicable location. It then
 re-runs the analysis, and makes sure that the warning no longer appears.
 
+</p>
+<a class="target" name="@jvmoverloadstestmode">&nbsp;</a><a class="target" name="testmodes/source-modifyingtestmodes/@jvmoverloadstestmode">&nbsp;</a><a class="target" name="toc7.3.11">&nbsp;</a><h3>@JvmOverloads Test Mode</h3>
+<p>
+
+
+When UAST comes across a method like this:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-meta">@JvmOverloads</span>
+<span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">test</span><span class="hljs-params">(parameter: <span class="hljs-type">Int</span> = <span class="hljs-number">0</span>)</span></span> {
+<span class="line"></span>    implementation()
+<span class="line"></span>}</code></pre><p>
+
+it will “inline” these two methods in the AST, such that we see the whole
+method body twice:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span> {
+<span class="line"></span>    implementation()
+<span class="line"></span>}
+<span class="line"></span>
+<span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">test</span><span class="hljs-params">(parameter: <span class="hljs-type">Int</span>)</span></span> {
+<span class="line"></span>    implementation()
+<span class="line"></span>}</code></pre><p>
+
+If there were additional default parameters, there would be additional
+repetitions.
+
+</p><p>
+
+This is similar to what the compiler does, since Java doesn't have
+default arguments, but the compiler will actually just generate some
+trampoline code to jump to the implementation with all the parameters;
+it will NOT repeat the method implementation:
+
+</p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">test</span><span class="hljs-params">(parameter: <span class="hljs-type">Int</span>)</span></span> {
+<span class="line"></span>    implementation()
+<span class="line"></span>}
+<span class="line"></span>
+<span class="line"></span><span class="hljs-comment">// $FF: synthetic method</span>
+<span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> `test$default`<span class="hljs-params">(var0: <span class="hljs-type">Int</span>, var1: <span class="hljs-type">Int</span>, var2: <span class="hljs-type">Any</span>?)</span></span> {
+<span class="line"></span>    <span class="hljs-keyword">var</span> var0 = var0
+<span class="line"></span>    <span class="hljs-keyword">if</span> ((var1 and <span class="hljs-number">1</span>) != <span class="hljs-number">0</span>) {
+<span class="line"></span>        var0 = <span class="hljs-number">0</span>
+<span class="line"></span>    }
+<span class="line"></span>
+<span class="line"></span>    test(var0)
+<span class="line"></span>}</code></pre><p>
+
+Again, UAST will instead just repeat the method body. And this means
+lint detectors may trigger repeatedly on the same code. In most cases
+this will result in duplicated warnings. But it can also lead to other
+problems; for example, a lint check which makes sure you don't have any
+code duplication would incorrectly believe code fragments are repeated.
+
+</p><p>
+
+Lint already looks for this situation and avoids visiting duplicated
+methods in its shared implementations (which is dispatching to most
+<code>Detector</code> callbacks). However, if you manually visit a class yourself,
+you can run into this problem.
+
+</p><p>
+
+This test mode simulates this situation by finding all methods where
+it can safely add at least one default parameter, and marks it
+@JvmOverloaded. It then makes sure the results are the same as before.
+
 </p><p>
 
 
 
 </p>
-<a class="target" name="addingquickfixes">&nbsp;</a><a class="target" name="addingquickfixes">&nbsp;</a><a class="target" name="toc7">&nbsp;</a><h1>Adding Quick Fixes</h1>
+<a class="target" name="addingquickfixes">&nbsp;</a><a class="target" name="addingquickfixes">&nbsp;</a><a class="target" name="toc8">&nbsp;</a><h1>Adding Quick Fixes</h1>
 
-<a class="target" name="introduction">&nbsp;</a><a class="target" name="addingquickfixes/introduction">&nbsp;</a><a class="target" name="toc7.1">&nbsp;</a><h2>Introduction</h2>
+<a class="target" name="introduction">&nbsp;</a><a class="target" name="addingquickfixes/introduction">&nbsp;</a><a class="target" name="toc8.1">&nbsp;</a><h2>Introduction</h2>
 <p>
 
 
@@ -3599,7 +4433,7 @@ that TODO string such that the user can type to replace without having
 to manually delete the TODO string first.)
 
 </p>
-<a class="target" name="thelintfixbuilderclass">&nbsp;</a><a class="target" name="addingquickfixes/thelintfixbuilderclass">&nbsp;</a><a class="target" name="toc7.2">&nbsp;</a><h2>The LintFix builder class</h2>
+<a class="target" name="thelintfixbuilderclass">&nbsp;</a><a class="target" name="addingquickfixes/thelintfixbuilderclass">&nbsp;</a><a class="target" name="toc8.2">&nbsp;</a><h2>The LintFix builder class</h2>
 <p>
 
 
@@ -3633,7 +4467,7 @@ later reuse; this is required for <a href="#partialanalysis">partial
 analysis</a>.
 
 </p>
-<a class="target" name="creatingalintfix">&nbsp;</a><a class="target" name="addingquickfixes/creatingalintfix">&nbsp;</a><a class="target" name="toc7.3">&nbsp;</a><h2>Creating a LintFix</h2>
+<a class="target" name="creatingalintfix">&nbsp;</a><a class="target" name="addingquickfixes/creatingalintfix">&nbsp;</a><a class="target" name="toc8.3">&nbsp;</a><h2>Creating a LintFix</h2>
 <p>
 
 
@@ -3703,7 +4537,7 @@ the <code>fix()</code> object:
   safe in this way.</p></li></ul>
 
 <p></p>
-<a class="target" name="availablefixes">&nbsp;</a><a class="target" name="addingquickfixes/availablefixes">&nbsp;</a><a class="target" name="toc7.4">&nbsp;</a><h2>Available Fixes</h2>
+<a class="target" name="availablefixes">&nbsp;</a><a class="target" name="addingquickfixes/availablefixes">&nbsp;</a><a class="target" name="toc8.4">&nbsp;</a><h2>Available Fixes</h2>
 <p>
 
 
@@ -3826,7 +4660,7 @@ The current set of available quick fix types are:
 <span class="line"></span><span class="hljs-keyword">val</span> fix = fix()
 <span class="line"></span>.url(<span class="hljs-string">"https://developer.android.com/topic/libraries/architecture/workmanager/migrating-gcm"</span>)
 <span class="line"></span>.build()</code></pre>
-<a class="target" name="combiningfixes">&nbsp;</a><a class="target" name="addingquickfixes/combiningfixes">&nbsp;</a><a class="target" name="toc7.5">&nbsp;</a><h2>Combining Fixes</h2>
+<a class="target" name="combiningfixes">&nbsp;</a><a class="target" name="addingquickfixes/combiningfixes">&nbsp;</a><a class="target" name="toc8.5">&nbsp;</a><h2>Combining Fixes</h2>
 <p>
 
 
@@ -3891,7 +4725,7 @@ description, which can be set either on the ”text“ attribute or the
 <span class="line"></span>    fix().<span class="hljs-keyword">set</span>().todo(ANDROID_URI, <span class="hljs-string">"text"</span>).build(),
 <span class="line"></span>    fix().<span class="hljs-keyword">set</span>().todo(ANDROID_URI, <span class="hljs-string">"contentDescription"</span>)
 <span class="line"></span>    .build())</code></pre>
-<a class="target" name="refactoringjavaandkotlincode">&nbsp;</a><a class="target" name="addingquickfixes/refactoringjavaandkotlincode">&nbsp;</a><a class="target" name="toc7.6">&nbsp;</a><h2>Refactoring Java and Kotlin code</h2>
+<a class="target" name="refactoringjavaandkotlincode">&nbsp;</a><a class="target" name="addingquickfixes/refactoringjavaandkotlincode">&nbsp;</a><a class="target" name="toc8.6">&nbsp;</a><h2>Refactoring Java and Kotlin code</h2>
 <p>
 
 
@@ -3918,7 +4752,7 @@ which would work for both; that's true for most of the built-in lint
 checks with quickfixes for Kotlin and Java.
 
 </p>
-<a class="target" name="regularexpressionsandbackreferences">&nbsp;</a><a class="target" name="addingquickfixes/regularexpressionsandbackreferences">&nbsp;</a><a class="target" name="toc7.7">&nbsp;</a><h2>Regular Expressions and Back References</h2>
+<a class="target" name="regularexpressionsandbackreferences">&nbsp;</a><a class="target" name="addingquickfixes/regularexpressionsandbackreferences">&nbsp;</a><a class="target" name="toc8.7">&nbsp;</a><h2>Regular Expressions and Back References</h2>
 <p>
 
 
@@ -3959,7 +4793,7 @@ Here's how this looks when applied, from its unit test:
 <span class="line"></span>    +         if (javaClass.desiredAssertionStatus()) { assert(expensive()) } // WARN
 <span class="line"></span>    """</span>
 <span class="line"></span>)</code></pre>
-<a class="target" name="emittingquickfixxmltoapplyonci">&nbsp;</a><a class="target" name="addingquickfixes/emittingquickfixxmltoapplyonci">&nbsp;</a><a class="target" name="toc7.8">&nbsp;</a><h2>Emitting quick fix XML to apply on CI</h2>
+<a class="target" name="emittingquickfixxmltoapplyonci">&nbsp;</a><a class="target" name="addingquickfixes/emittingquickfixxmltoapplyonci">&nbsp;</a><a class="target" name="toc8.8">&nbsp;</a><h2>Emitting quick fix XML to apply on CI</h2>
 <p>
 
 
@@ -3971,9 +4805,9 @@ integrate with code review tools such that the user can choose whether
 to auto-fix a suggestion right from within the code review tool.
 
 </p>
-<a class="target" name="partialanalysis">&nbsp;</a><a class="target" name="partialanalysis">&nbsp;</a><a class="target" name="toc8">&nbsp;</a><h1>Partial Analysis</h1>
+<a class="target" name="partialanalysis">&nbsp;</a><a class="target" name="partialanalysis">&nbsp;</a><a class="target" name="toc9">&nbsp;</a><h1>Partial Analysis</h1>
 
-<a class="target" name="about">&nbsp;</a><a class="target" name="partialanalysis/about">&nbsp;</a><a class="target" name="toc8.1">&nbsp;</a><h2>About</h2>
+<a class="target" name="about">&nbsp;</a><a class="target" name="partialanalysis/about">&nbsp;</a><a class="target" name="toc9.1">&nbsp;</a><h2>About</h2>
 <p>
 
 
@@ -4010,7 +4844,7 @@ system, see the lint internal docs folder.
    validate code reviews.</p></div>
 
 <p></p>
-<a class="target" name="theproblem">&nbsp;</a><a class="target" name="partialanalysis/theproblem">&nbsp;</a><a class="target" name="toc8.2">&nbsp;</a><h2>The Problem</h2>
+<a class="target" name="theproblem">&nbsp;</a><a class="target" name="partialanalysis/theproblem">&nbsp;</a><a class="target" name="toc9.2">&nbsp;</a><h2>The Problem</h2>
 <p>
 
 
@@ -4031,7 +4865,7 @@ This chapter describes lint's architecture for handling this, such
 that module results can be cached.
 
 </p>
-<a class="target" name="overview">&nbsp;</a><a class="target" name="partialanalysis/overview">&nbsp;</a><a class="target" name="toc8.3">&nbsp;</a><h2>Overview</h2>
+<a class="target" name="overview">&nbsp;</a><a class="target" name="partialanalysis/overview">&nbsp;</a><a class="target" name="toc9.3">&nbsp;</a><h2>Overview</h2>
 <p>
 
 
@@ -4135,7 +4969,7 @@ also listed in order of frequency. For lint's built-in checks (~385),
 <li class="asterisk">1% were updated to perform map recording and later reduce filtering</li></ul>
 
 <p></p>
-<a class="target" name="doesmydetectorneedwork?">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?">&nbsp;</a><a class="target" name="toc8.4">&nbsp;</a><h2>Does My Detector Need Work?</h2>
+<a class="target" name="doesmydetectorneedwork?">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?">&nbsp;</a><a class="target" name="toc9.4">&nbsp;</a><h2>Does My Detector Need Work?</h2>
 <p>
 
 
@@ -4152,7 +4986,7 @@ comprehensive, right?) should create unit test failures if your
 detector is doing something it shouldn't.
 
 </p>
-<a class="target" name="catchingmistakes:blockingaccesstomainproject">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:blockingaccesstomainproject">&nbsp;</a><a class="target" name="toc8.4.1">&nbsp;</a><h3>Catching Mistakes: Blocking Access to Main Project</h3>
+<a class="target" name="catchingmistakes:blockingaccesstomainproject">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:blockingaccesstomainproject">&nbsp;</a><a class="target" name="toc9.4.1">&nbsp;</a><h3>Catching Mistakes: Blocking Access to Main Project</h3>
 <p>
 
 
@@ -4214,7 +5048,7 @@ category:
 <li class="asterisk">Whether the main module is an Android project</li></ul>
 
 <p></p>
-<a class="target" name="catchingmistakes:simulatedappmodule">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:simulatedappmodule">&nbsp;</a><a class="target" name="toc8.4.2">&nbsp;</a><h3>Catching Mistakes: Simulated App Module</h3>
+<a class="target" name="catchingmistakes:simulatedappmodule">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:simulatedappmodule">&nbsp;</a><a class="target" name="toc9.4.2">&nbsp;</a><h3>Catching Mistakes: Simulated App Module</h3>
 <p>
 
 
@@ -4231,7 +5065,7 @@ will correctly use the <code>minSdkVersion</code> from the main project, not the
 library.
 
 </p>
-<a class="target" name="catchingmistakes:diffingresults">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:diffingresults">&nbsp;</a><a class="target" name="toc8.4.3">&nbsp;</a><h3>Catching Mistakes: Diffing Results</h3>
+<a class="target" name="catchingmistakes:diffingresults">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:diffingresults">&nbsp;</a><a class="target" name="toc9.4.3">&nbsp;</a><h3>Catching Mistakes: Diffing Results</h3>
 <p>
 
 
@@ -4241,7 +5075,7 @@ the results to always be identical, and in some cases if the module
 analysis is not written correctly, they're not.
 
 </p>
-<a class="target" name="catchingmistakes:remainingissues">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:remainingissues">&nbsp;</a><a class="target" name="toc8.4.4">&nbsp;</a><h3>Catching Mistakes: Remaining Issues</h3>
+<a class="target" name="catchingmistakes:remainingissues">&nbsp;</a><a class="target" name="partialanalysis/doesmydetectorneedwork?/catchingmistakes:remainingissues">&nbsp;</a><a class="target" name="toc9.4.4">&nbsp;</a><h3>Catching Mistakes: Remaining Issues</h3>
 <p>
 
 
@@ -4345,7 +5179,7 @@ sources).
    binaries (through a lint AST to PsiCompiled pretty printer.)</div>
 
 <p></p>
-<a class="target" name="incidents">&nbsp;</a><a class="target" name="partialanalysis/incidents">&nbsp;</a><a class="target" name="toc8.5">&nbsp;</a><h2>Incidents</h2>
+<a class="target" name="incidents">&nbsp;</a><a class="target" name="partialanalysis/incidents">&nbsp;</a><a class="target" name="toc9.5">&nbsp;</a><h2>Incidents</h2>
 <p>
 
 
@@ -4378,8 +5212,8 @@ is called an “incident”, and there is a new <code>Incident</code> class whic
 represents it. To report an incident you simply call
 <code>context.report(incident)</code>. There are several ways to create these
 incidents. The easiest is to simply edit your existing call above by
-adding <code>Incident(</code> (or from Java, <code>new Incident(</code>) inside the
-<code>context.report</code> block like this:
+putting it inside <code>Incident(...)</code> (in Java, <code>new Incident(...)</code>) inside
+the <code>context.report</code> block like this:
 
 </p><pre class="listing tilde"><code><span class="line"></span>    context.report(Incident(
 <span class="line"></span>        ISSUE,
@@ -4432,7 +5266,7 @@ internally, but since you don't need to attach data you don't have to
 make any changes
 
 </p>
-<a class="target" name="constraints">&nbsp;</a><a class="target" name="partialanalysis/constraints">&nbsp;</a><a class="target" name="toc8.6">&nbsp;</a><h2>Constraints</h2>
+<a class="target" name="constraints">&nbsp;</a><a class="target" name="partialanalysis/constraints">&nbsp;</a><a class="target" name="toc9.6">&nbsp;</a><h2>Constraints</h2>
 <p>
 
 
@@ -4475,7 +5309,7 @@ from the <code>Constraints</code> class.
 </p><p>
 
 Recording an incident with a constraint is easy; first construct the
-<code>Incident</code> as before, and then report them via
+<code>Incident</code> as before, and then report it via
 <code>context.report(incident, constraint)</code>:
 
 </p><pre class="listing tilde"><code><span class="line"></span>    <span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span>
@@ -4486,7 +5320,7 @@ Recording an incident with a constraint is easy; first construct the
 <span class="line"></span>    context.report(incident, minSdkAtLeast(<span class="hljs-number">18</span>));</code></pre><p>
 
 Finally, note that you can combine constraints; there are both “and”
-and “or” operators defined for the <code>Constraint</code> class. so the following
+and “or” operators defined for the <code>Constraint</code> class, so the following
 is valid:
 
 </p><pre class="listing tilde"><code><span class="line"></span>    <span class="hljs-keyword">val</span> constraint = targetSdkAtLeast(<span class="hljs-number">23</span>) and notLibraryProject()
@@ -4497,7 +5331,7 @@ and when it is performing reporting, it will evaluate these constraints
 on its own and only report incidents that meet the constraint.
 
 </p>
-<a class="target" name="incidentlintmaps">&nbsp;</a><a class="target" name="partialanalysis/incidentlintmaps">&nbsp;</a><a class="target" name="toc8.7">&nbsp;</a><h2>Incident LintMaps</h2>
+<a class="target" name="incidentlintmaps">&nbsp;</a><a class="target" name="partialanalysis/incidentlintmaps">&nbsp;</a><a class="target" name="toc9.7">&nbsp;</a><h2>Incident LintMaps</h2>
 <p>
 
 
@@ -4580,7 +5414,7 @@ many different app modules!)
    each time for new detector instances in the reporting task.</div>
 
 <p></p>
-<a class="target" name="modulelintmaps">&nbsp;</a><a class="target" name="partialanalysis/modulelintmaps">&nbsp;</a><a class="target" name="toc8.8">&nbsp;</a><h2>Module LintMaps</h2>
+<a class="target" name="modulelintmaps">&nbsp;</a><a class="target" name="partialanalysis/modulelintmaps">&nbsp;</a><a class="target" name="toc9.8">&nbsp;</a><h2>Module LintMaps</h2>
 <p>
 
 
@@ -4771,7 +5605,7 @@ them:
 <span class="line"></span>     * (via [Context.report]) to lint.
 <span class="line"></span>     */</span>
 <span class="line"></span>    <span class="hljs-keyword">open</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">checkPartialResults</span><span class="hljs-params">(context: <span class="hljs-type">Context</span>, partialResults: <span class="hljs-type">PartialResult</span>)</span></span> { ... }</code></pre>
-<a class="target" name="optimizations">&nbsp;</a><a class="target" name="partialanalysis/optimizations">&nbsp;</a><a class="target" name="toc8.9">&nbsp;</a><h2>Optimizations</h2>
+<a class="target" name="optimizations">&nbsp;</a><a class="target" name="partialanalysis/optimizations">&nbsp;</a><a class="target" name="toc9.9">&nbsp;</a><h2>Optimizations</h2>
 <p>
 
 
@@ -4793,7 +5627,7 @@ Do this by calling <code>isGlobalAnalysis()</code>:
 
 
 </p>
-<a class="target" name="dataflowanalyzer">&nbsp;</a><a class="target" name="dataflowanalyzer">&nbsp;</a><a class="target" name="toc9">&nbsp;</a><h1>Data Flow Analyzer</h1>
+<a class="target" name="dataflowanalyzer">&nbsp;</a><a class="target" name="dataflowanalyzer">&nbsp;</a><a class="target" name="toc10">&nbsp;</a><h1>Data Flow Analyzer</h1>
 <p>
 
 
@@ -4848,7 +5682,7 @@ anywhere; we have to make sure that it's invoked on all the instances
 we care about.
 
 </p>
-<a class="target" name="usage">&nbsp;</a><a class="target" name="dataflowanalyzer/usage">&nbsp;</a><a class="target" name="toc9.1">&nbsp;</a><h2>Usage</h2>
+<a class="target" name="usage">&nbsp;</a><a class="target" name="dataflowanalyzer/usage">&nbsp;</a><a class="target" name="toc10.1">&nbsp;</a><h2>Usage</h2>
 <p>
 
 
@@ -4896,7 +5730,7 @@ For the above transaction scenario, it might look like this:
 <span class="line"></span>    }
 <span class="line"></span>}</div></code></pre><p>
 
-Aas you can see, the <code>DataFlowAnalyzer</code> is a visitor, so when we find a
+As you can see, the <code>DataFlowAnalyzer</code> is a visitor, so when we find a
 call we're interested in, we construct a <code>DataFlowAnalyzer</code> and
 initialize it with the instance we want to track, and then we visit the
 surrounding method with this visitor.
@@ -4921,7 +5755,7 @@ correctly handle the following case:
 However, there's a lot that can go wrong, which we'll need to deal with. This is explained in the following sections
 
 </p>
-<a class="target" name="self-referencingcalls">&nbsp;</a><a class="target" name="dataflowanalyzer/self-referencingcalls">&nbsp;</a><a class="target" name="toc9.2">&nbsp;</a><h2>Self-referencing Calls</h2>
+<a class="target" name="self-referencingcalls">&nbsp;</a><a class="target" name="dataflowanalyzer/self-referencingcalls">&nbsp;</a><a class="target" name="toc10.2">&nbsp;</a><h2>Self-referencing Calls</h2>
 <p>
 
 
@@ -4982,7 +5816,7 @@ But there may be cases where you either don't want these heuristics, or you want
 <span class="line"></span>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.returnsSelf(call) || call.methodName == <span class="hljs-string">"copy"</span>
 <span class="line"></span>    }
 <span class="line"></span>}</div></code></pre>
-<a class="target" name="kotlinscopingfunctions">&nbsp;</a><a class="target" name="dataflowanalyzer/kotlinscopingfunctions">&nbsp;</a><a class="target" name="toc9.3">&nbsp;</a><h2>Kotlin Scoping Functions</h2>
+<a class="target" name="kotlinscopingfunctions">&nbsp;</a><a class="target" name="dataflowanalyzer/kotlinscopingfunctions">&nbsp;</a><a class="target" name="toc10.3">&nbsp;</a><h2>Kotlin Scoping Functions</h2>
 <p>
 
 
@@ -5010,7 +5844,7 @@ following:
 <span class="line"></span>        }
 <span class="line"></span>    }
 <span class="line"></span>}</div></code></pre>
-<a class="target" name="limitations">&nbsp;</a><a class="target" name="dataflowanalyzer/limitations">&nbsp;</a><a class="target" name="toc9.4">&nbsp;</a><h2>Limitations</h2>
+<a class="target" name="limitations">&nbsp;</a><a class="target" name="dataflowanalyzer/limitations">&nbsp;</a><a class="target" name="toc10.4">&nbsp;</a><h2>Limitations</h2>
 <p>
 
 
@@ -5018,7 +5852,7 @@ It doesn't try to “execute”, constant evaluation (maybe)
 if/else
 
 </p>
-<a class="target" name="escapingvalues">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues">&nbsp;</a><a class="target" name="toc9.5">&nbsp;</a><h2>Escaping Values</h2>
+<a class="target" name="escapingvalues">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues">&nbsp;</a><a class="target" name="toc10.5">&nbsp;</a><h2>Escaping Values</h2>
 <p>
 
 
@@ -5040,7 +5874,7 @@ currently possible. However, we <em class="asterisk">can</em> analyze some addit
 scenarios, and more importantly, we need to ensure that we don't offer false positive warnings in the above scenario.
 
 </p>
-<a class="target" name="returns">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues/returns">&nbsp;</a><a class="target" name="toc9.5.1">&nbsp;</a><h3>Returns</h3>
+<a class="target" name="returns">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues/returns">&nbsp;</a><a class="target" name="toc10.5.1">&nbsp;</a><h3>Returns</h3>
 <p>
 
 
@@ -5071,7 +5905,7 @@ The analyzer has a callback method to let us know when this is happening. We can
 <span class="line"></span><span class="hljs-keyword">if</span> (!escapes &amp;&amp; !foundCommit) {
 <span class="line"></span>    context.report(Incident(...))
 <span class="line"></span>}</div></code></pre>
-<a class="target" name="parameters">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues/parameters">&nbsp;</a><a class="target" name="toc9.5.2">&nbsp;</a><h3>Parameters</h3>
+<a class="target" name="parameters">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues/parameters">&nbsp;</a><a class="target" name="toc10.5.2">&nbsp;</a><h3>Parameters</h3>
 <p>
 
 
@@ -5079,8 +5913,8 @@ Another way our transaction can “escape” out of the method such that we
 no longer know for certain whether it gets committed is via a method
 call.
 
-</p><pre class="listing tilde"><code><div class=" linenumbers"><span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> test) {</span>
-<span class="line"></span>     <span class="hljs-keyword">val</span> transaction = getFragmentManager().beginTransaction()
+</p><pre class="listing tilde"><code><div class=" linenumbers"><span class="line"></span><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span> {
+<span class="line"></span>    <span class="hljs-keyword">val</span> transaction = getFragmentManager().beginTransaction()
 <span class="line"></span>    process(transaction)
 <span class="line"></span>}</div></code></pre><p>
 
@@ -5106,7 +5940,7 @@ in the general case, if a value escapes, we'll want to do something similar to a
 customize this by overriding <code>ignoreArgument()</code>.)
 
 </p>
-<a class="target" name="fields">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues/fields">&nbsp;</a><a class="target" name="toc9.5.3">&nbsp;</a><h3>Fields</h3>
+<a class="target" name="fields">&nbsp;</a><a class="target" name="dataflowanalyzer/escapingvalues/fields">&nbsp;</a><a class="target" name="toc10.5.3">&nbsp;</a><h3>Fields</h3>
 <p>
 
 
@@ -5141,7 +5975,7 @@ the next section.
    the method, and at the end you can just check its <code>escaped</code> property.</div>
 
 <p></p>
-<a class="target" name="nonlocalanalysis">&nbsp;</a><a class="target" name="dataflowanalyzer/nonlocalanalysis">&nbsp;</a><a class="target" name="toc9.6">&nbsp;</a><h2>Non Local Analysis</h2>
+<a class="target" name="nonlocalanalysis">&nbsp;</a><a class="target" name="dataflowanalyzer/nonlocalanalysis">&nbsp;</a><a class="target" name="toc10.6">&nbsp;</a><h2>Non Local Analysis</h2>
 <p>
 
 
@@ -5179,7 +6013,7 @@ we can do better than that.
 Complications: - storing in a field, returning, intermediate variables, self-referencing methods, scoping functions,
 
 </p>
-<a class="target" name="examples">&nbsp;</a><a class="target" name="dataflowanalyzer/examples">&nbsp;</a><a class="target" name="toc9.7">&nbsp;</a><h2>Examples</h2>
+<a class="target" name="examples">&nbsp;</a><a class="target" name="dataflowanalyzer/examples">&nbsp;</a><a class="target" name="toc10.7">&nbsp;</a><h2>Examples</h2>
 <p>
 
 
@@ -5187,7 +6021,7 @@ Here are some existing usages of the data flow analyzer in lint's
 built-in rules.
 
 </p>
-<a class="target" name="simpleexample">&nbsp;</a><a class="target" name="dataflowanalyzer/examples/simpleexample">&nbsp;</a><a class="target" name="toc9.7.1">&nbsp;</a><h3>Simple Example</h3>
+<a class="target" name="simpleexample">&nbsp;</a><a class="target" name="dataflowanalyzer/examples/simpleexample">&nbsp;</a><a class="target" name="toc10.7.1">&nbsp;</a><h3>Simple Example</h3>
 <p>
 
 
@@ -5200,7 +6034,7 @@ get enqueued:
 <a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WorkManagerDetectorTest.kt">Test</a>
 
 </p>
-<a class="target" name="complexexample">&nbsp;</a><a class="target" name="dataflowanalyzer/examples/complexexample">&nbsp;</a><a class="target" name="toc9.7.2">&nbsp;</a><h3>Complex Example</h3>
+<a class="target" name="complexexample">&nbsp;</a><a class="target" name="dataflowanalyzer/examples/complexexample">&nbsp;</a><a class="target" name="toc10.7.2">&nbsp;</a><h3>Complex Example</h3>
 <p>
 
 
@@ -5212,7 +6046,7 @@ For the Slices API, apply a number of checks on chained calls constructing slice
 <a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SliceDetectorTest.kt">Test</a>
 
 </p>
-<a class="target" name="targetmethoddataflowanalyzer">&nbsp;</a><a class="target" name="dataflowanalyzer/targetmethoddataflowanalyzer">&nbsp;</a><a class="target" name="toc9.8">&nbsp;</a><h2>TargetMethodDataFlowAnalyzer</h2>
+<a class="target" name="targetmethoddataflowanalyzer">&nbsp;</a><a class="target" name="dataflowanalyzer/targetmethoddataflowanalyzer">&nbsp;</a><a class="target" name="toc10.8">&nbsp;</a><h2>TargetMethodDataFlowAnalyzer</h2>
 <p>
 
 
@@ -5259,7 +6093,7 @@ correctly handles method references.
 
 
 </p>
-<a class="target" name="annotations">&nbsp;</a><a class="target" name="annotations">&nbsp;</a><a class="target" name="toc10">&nbsp;</a><h1>Annotations</h1>
+<a class="target" name="annotations">&nbsp;</a><a class="target" name="annotations">&nbsp;</a><a class="target" name="toc11">&nbsp;</a><h1>Annotations</h1>
 <p>
 
 
@@ -5303,7 +6137,7 @@ write your own annotations-based checks as well.
    <code>visitAnnotation</code>.</div>
 
 <p></p>
-<a class="target" name="basics">&nbsp;</a><a class="target" name="annotations/basics">&nbsp;</a><a class="target" name="toc10.1">&nbsp;</a><h2>Basics</h2>
+<a class="target" name="basics">&nbsp;</a><a class="target" name="annotations/basics">&nbsp;</a><a class="target" name="toc11.1">&nbsp;</a><h2>Basics</h2>
 <p>
 
 
@@ -5385,7 +6219,7 @@ end up calling our extension method, <code>get()</code>.
 
 </p><p>
 
-And the third case shows the most common scenario: a straight forward
+And the third case shows the most common scenario: a straightforward
 method call to an annotated method.
 
 </p><p>
@@ -5415,9 +6249,9 @@ another method call.
    <code>org.jetbrains.annotations.Nullable</code> will both match.</div>
 
 <p></p>
-<a class="target" name="annotationusagetypesandisapplicableannotationusage">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage">&nbsp;</a><a class="target" name="toc10.2">&nbsp;</a><h2>Annotation Usage Types and isApplicableAnnotationUsage</h2>
+<a class="target" name="annotationusagetypesandisapplicableannotationusage">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage">&nbsp;</a><a class="target" name="toc11.2">&nbsp;</a><h2>Annotation Usage Types and isApplicableAnnotationUsage</h2>
 
-<a class="target" name="methodoverride">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/methodoverride">&nbsp;</a><a class="target" name="toc10.2.1">&nbsp;</a><h3>Method Override</h3>
+<a class="target" name="methodoverride">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/methodoverride">&nbsp;</a><a class="target" name="toc11.2.1">&nbsp;</a><h3>Method Override</h3>
 <p>
 
 
@@ -5451,7 +6285,7 @@ annotated with <code>@CallSuper</code> is invoking <code>super</code> on the ove
 method somewhere in the method body.
 
 </p>
-<a class="target" name="methodreturn">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/methodreturn">&nbsp;</a><a class="target" name="toc10.2.2">&nbsp;</a><h3>Method Return</h3>
+<a class="target" name="methodreturn">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/methodreturn">&nbsp;</a><a class="target" name="toc11.2.2">&nbsp;</a><h3>Method Return</h3>
 <p>
 
 
@@ -5493,7 +6327,7 @@ method will not be of an incompatible resource type (such as
 <code>@StringRes</code>).
 
 </p>
-<a class="target" name="handlingusagetypes">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/handlingusagetypes">&nbsp;</a><a class="target" name="toc10.2.3">&nbsp;</a><h3>Handling Usage Types</h3>
+<a class="target" name="handlingusagetypes">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/handlingusagetypes">&nbsp;</a><a class="target" name="toc11.2.3">&nbsp;</a><h3>Handling Usage Types</h3>
 <p>
 
 
@@ -5530,7 +6364,7 @@ override the <code>isApplicableAnnotationUsage</code> method:
    types by default in the super implementation.</div>
 
 <p></p>
-<a class="target" name="usagetypesfilteredbydefault">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/usagetypesfilteredbydefault">&nbsp;</a><a class="target" name="toc10.2.4">&nbsp;</a><h3>Usage Types Filtered By Default</h3>
+<a class="target" name="usagetypesfilteredbydefault">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/usagetypesfilteredbydefault">&nbsp;</a><a class="target" name="toc11.2.4">&nbsp;</a><h3>Usage Types Filtered By Default</h3>
 <p>
 
 
@@ -5568,7 +6402,7 @@ half float check:
 <span class="line"></span>src/test/pkg/HalfFloatTest.java:50: Error: Half-float type in expression widened to int [HalfFloat]
 <span class="line"></span>        Math.round(float1); // Error: should use Half.round
 <span class="line"></span>                   ------</code></pre>
-<a class="target" name="scopes">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/scopes">&nbsp;</a><a class="target" name="toc10.2.5">&nbsp;</a><h3>Scopes</h3>
+<a class="target" name="scopes">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/scopes">&nbsp;</a><a class="target" name="toc11.2.5">&nbsp;</a><h3>Scopes</h3>
 <p>
 
 
@@ -5613,7 +6447,7 @@ with <code>@ThreadSafe</code>. Similarly for the <code>pop()</code> call on line
 
 The <code>fileStack.push</code> call on line 4 also resolves to the same method
 as the call on line 2 (even though the concrete type is a <code>FileStack</code>
-instead of a `Stack), so like on line 2, this call is taken to be
+instead of a <code>Stack</code>), so like on line 2, this call is taken to be
 thread safe.
 
 </p><p>
@@ -5689,7 +6523,7 @@ out using <code>@CanIgnoreReturnValue</code>. There is a method on the
    you are invoked for the innermost one.</div>
 
 <p></p>
-<a class="target" name="inheritedannotations">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/inheritedannotations">&nbsp;</a><a class="target" name="toc10.2.6">&nbsp;</a><h3>Inherited Annotations</h3>
+<a class="target" name="inheritedannotations">&nbsp;</a><a class="target" name="annotations/annotationusagetypesandisapplicableannotationusage/inheritedannotations">&nbsp;</a><a class="target" name="toc11.2.6">&nbsp;</a><h3>Inherited Annotations</h3>
 <p>
 
 
@@ -5736,9 +6570,9 @@ annotation when your detector applies to multiple annotations.)
 
 
 </p>
-<a class="target" name="options">&nbsp;</a><a class="target" name="options">&nbsp;</a><a class="target" name="toc11">&nbsp;</a><h1>Options</h1>
+<a class="target" name="options">&nbsp;</a><a class="target" name="options">&nbsp;</a><a class="target" name="toc12">&nbsp;</a><h1>Options</h1>
 
-<a class="target" name="usage">&nbsp;</a><a class="target" name="options/usage">&nbsp;</a><a class="target" name="toc11.1">&nbsp;</a><h2>Usage</h2>
+<a class="target" name="usage">&nbsp;</a><a class="target" name="options/usage">&nbsp;</a><a class="target" name="toc12.1">&nbsp;</a><h2>Usage</h2>
 <p>
 
 
@@ -5779,7 +6613,7 @@ folder.
 (See the <a href="#configuringusinglint.xmlfiles">lint.xml</a> documentation for more.)
 
 </p>
-<a class="target" name="creatingoptions">&nbsp;</a><a class="target" name="options/creatingoptions">&nbsp;</a><a class="target" name="toc11.2">&nbsp;</a><h2>Creating Options</h2>
+<a class="target" name="creatingoptions">&nbsp;</a><a class="target" name="options/creatingoptions">&nbsp;</a><a class="target" name="toc12.2">&nbsp;</a><h2>Creating Options</h2>
 <p>
 
 
@@ -5848,7 +6682,7 @@ and so on.
 </tbody></table></div>
 
 <p></p>
-<a class="target" name="readingoptions">&nbsp;</a><a class="target" name="options/readingoptions">&nbsp;</a><a class="target" name="toc11.3">&nbsp;</a><h2>Reading Options</h2>
+<a class="target" name="readingoptions">&nbsp;</a><a class="target" name="options/readingoptions">&nbsp;</a><a class="target" name="toc12.3">&nbsp;</a><h2>Reading Options</h2>
 <p>
 
 
@@ -5861,7 +6695,7 @@ This will return the <code>Int</code> value configured for this option by the
 user, or if not set, our original default value, in this case 80.
 
 </p>
-<a class="target" name="specificconfigurations">&nbsp;</a><a class="target" name="options/specificconfigurations">&nbsp;</a><a class="target" name="toc11.4">&nbsp;</a><h2>Specific Configurations</h2>
+<a class="target" name="specificconfigurations">&nbsp;</a><a class="target" name="options/specificconfigurations">&nbsp;</a><a class="target" name="toc12.4">&nbsp;</a><h2>Specific Configurations</h2>
 <p>
 
 
@@ -5898,7 +6732,7 @@ source file, use
 
 </p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">val</span> configuration = context.findConfiguration(context.file)
 <span class="line"></span><span class="hljs-keyword">val</span> maxCount = MAX_COUNT.getValue(configuration)</code></pre>
-<a class="target" name="files">&nbsp;</a><a class="target" name="options/files">&nbsp;</a><a class="target" name="toc11.5">&nbsp;</a><h2>Files</h2>
+<a class="target" name="files">&nbsp;</a><a class="target" name="options/files">&nbsp;</a><a class="target" name="toc12.5">&nbsp;</a><h2>Files</h2>
 <p>
 
 
@@ -5911,7 +6745,7 @@ location of the <code>lint.xml</code> file where the path is defined. For
 string as necessary.
 
 </p>
-<a class="target" name="constraints">&nbsp;</a><a class="target" name="options/constraints">&nbsp;</a><a class="target" name="toc11.6">&nbsp;</a><h2>Constraints</h2>
+<a class="target" name="constraints">&nbsp;</a><a class="target" name="options/constraints">&nbsp;</a><a class="target" name="toc12.6">&nbsp;</a><h2>Constraints</h2>
 <p>
 
 
@@ -5941,7 +6775,7 @@ location in the invalid <code>lint.xml</code> file:
 <span class="line"></span>        &lt;option name="duration" value="100.0"&gt;
 <span class="line"></span>        ----------------------------------------
 <span class="line"></span>1 errors, 0 warnings</code></pre>
-<a class="target" name="testingoptions">&nbsp;</a><a class="target" name="options/testingoptions">&nbsp;</a><a class="target" name="toc11.7">&nbsp;</a><h2>Testing Options</h2>
+<a class="target" name="testingoptions">&nbsp;</a><a class="target" name="options/testingoptions">&nbsp;</a><a class="target" name="toc12.7">&nbsp;</a><h2>Testing Options</h2>
 <p>
 
 
@@ -5958,7 +6792,7 @@ integers, booleans, floats and files as values. Here's an example:
 <span class="line"></span>.configureOption(MAX_COUNT, <span class="hljs-number">150</span>)
 <span class="line"></span>.run()
 <span class="line"></span>.expectClean()</code></pre>
-<a class="target" name="supportinglint4.2,7.0and7.1">&nbsp;</a><a class="target" name="options/supportinglint4.2,7.0and7.1">&nbsp;</a><a class="target" name="toc11.8">&nbsp;</a><h2>Supporting Lint 4.2, 7.0 and 7.1</h2>
+<a class="target" name="supportinglint4.2,7.0and7.1">&nbsp;</a><a class="target" name="options/supportinglint4.2,7.0and7.1">&nbsp;</a><a class="target" name="toc12.8">&nbsp;</a><h2>Supporting Lint 4.2, 7.0 and 7.1</h2>
 <p>
 
 
@@ -5988,9 +6822,9 @@ which is what users expect when editing <code>lint.xml</code> files.
 
 
 </p>
-<a class="target" name="errormessageconventions">&nbsp;</a><a class="target" name="errormessageconventions">&nbsp;</a><a class="target" name="toc12">&nbsp;</a><h1>Error Message Conventions</h1>
+<a class="target" name="errormessageconventions">&nbsp;</a><a class="target" name="errormessageconventions">&nbsp;</a><a class="target" name="toc13">&nbsp;</a><h1>Error Message Conventions</h1>
 
-<a class="target" name="length">&nbsp;</a><a class="target" name="errormessageconventions/length">&nbsp;</a><a class="target" name="toc12.1">&nbsp;</a><h2>Length</h2>
+<a class="target" name="length">&nbsp;</a><a class="target" name="errormessageconventions/length">&nbsp;</a><a class="target" name="toc13.1">&nbsp;</a><h2>Length</h2>
 <p>
 
 
@@ -6017,7 +6851,7 @@ explain an issue, but strive to make the error message as short as possible
 while still legible.
 
 </p>
-<a class="target" name="formatting">&nbsp;</a><a class="target" name="errormessageconventions/formatting">&nbsp;</a><a class="target" name="toc12.2">&nbsp;</a><h2>Formatting</h2>
+<a class="target" name="formatting">&nbsp;</a><a class="target" name="errormessageconventions/formatting">&nbsp;</a><a class="target" name="toc13.2">&nbsp;</a><h2>Formatting</h2>
 <p>
 
 
@@ -6040,11 +6874,11 @@ so on, use the code symbol formatting (`like this`), not simple or double
 quotes.
 
 </p>
-<a class="target" name="punctuation">&nbsp;</a><a class="target" name="errormessageconventions/punctuation">&nbsp;</a><a class="target" name="toc12.3">&nbsp;</a><h2>Punctuation</h2>
+<a class="target" name="punctuation">&nbsp;</a><a class="target" name="errormessageconventions/punctuation">&nbsp;</a><a class="target" name="toc13.3">&nbsp;</a><h2>Punctuation</h2>
 <p>
 
 
-One line error messages should not be punctuated - e.g. the error message
+One line error messages should not be punctuated — e.g. the error message
 should be “Unused import foo”, not “Unused import foo.”
 
 </p><p>
@@ -6058,7 +6892,7 @@ Note that there should be no space before an exclamation (!) or question mark
 (?) sign.
 
 </p>
-<a class="target" name="includedetails">&nbsp;</a><a class="target" name="errormessageconventions/includedetails">&nbsp;</a><a class="target" name="toc12.4">&nbsp;</a><h2>Include Details</h2>
+<a class="target" name="includedetails">&nbsp;</a><a class="target" name="errormessageconventions/includedetails">&nbsp;</a><a class="target" name="toc13.4">&nbsp;</a><h2>Include Details</h2>
 <p>
 
 
@@ -6078,7 +6912,7 @@ the better. If all unused import warnings were just “Unused import”, lint wo
 match them in order, which often would match the wrong import.
 
 </p>
-<a class="target" name="referenceandroidbynumber">&nbsp;</a><a class="target" name="errormessageconventions/referenceandroidbynumber">&nbsp;</a><a class="target" name="toc12.5">&nbsp;</a><h2>Reference Android By Number</h2>
+<a class="target" name="referenceandroidbynumber">&nbsp;</a><a class="target" name="errormessageconventions/referenceandroidbynumber">&nbsp;</a><a class="target" name="toc13.5">&nbsp;</a><h2>Reference Android By Number</h2>
 <p>
 
 
@@ -6087,7 +6921,7 @@ phrase “In Android 12 and higher”, instead of variations like “Android S�
 “API 31“.
 
 </p>
-<a class="target" name="keepmessagesstable">&nbsp;</a><a class="target" name="errormessageconventions/keepmessagesstable">&nbsp;</a><a class="target" name="toc12.6">&nbsp;</a><h2>Keep Messages Stable</h2>
+<a class="target" name="keepmessagesstable">&nbsp;</a><a class="target" name="errormessageconventions/keepmessagesstable">&nbsp;</a><a class="target" name="toc13.6">&nbsp;</a><h2>Keep Messages Stable</h2>
 <p>
 
 
@@ -6118,7 +6952,7 @@ matcher will handle:
 <li class="asterisk">Adding a prefix</li></ul>
 
 <p></p>
-<a class="target" name="plurals">&nbsp;</a><a class="target" name="errormessageconventions/plurals">&nbsp;</a><a class="target" name="toc12.7">&nbsp;</a><h2>Plurals</h2>
+<a class="target" name="plurals">&nbsp;</a><a class="target" name="errormessageconventions/plurals">&nbsp;</a><a class="target" name="toc13.7">&nbsp;</a><h2>Plurals</h2>
 <p>
 
 
@@ -6139,7 +6973,7 @@ just use the plural form,
     <em class="asterisk">”register your receivers in the manifest“</em>
 
 </p>
-<a class="target" name="examples">&nbsp;</a><a class="target" name="errormessageconventions/examples">&nbsp;</a><a class="target" name="toc12.8">&nbsp;</a><h2>Examples</h2>
+<a class="target" name="examples">&nbsp;</a><a class="target" name="errormessageconventions/examples">&nbsp;</a><a class="target" name="toc13.8">&nbsp;</a><h2>Examples</h2>
 <p>
 
 
@@ -6301,7 +7135,7 @@ to help cross reference the messages with the corresponding lint check.
 <li class="asterisk">[EnqueueWork] WorkContinuation `cont` not enqueued: did you forget to call `enqueue()`?</li></ul>
 
 <p></p>
-<a class="target" name="frequentlyaskedquestions">&nbsp;</a><a class="target" name="frequentlyaskedquestions">&nbsp;</a><a class="target" name="toc13">&nbsp;</a><h1>Frequently Asked Questions</h1>
+<a class="target" name="frequentlyaskedquestions">&nbsp;</a><a class="target" name="frequentlyaskedquestions">&nbsp;</a><a class="target" name="toc14">&nbsp;</a><h1>Frequently Asked Questions</h1>
 <p>
 
 
@@ -6309,7 +7143,7 @@ This chapter contains a random collection of questions people
 have asked in the past.
 
 </p>
-<a class="target" name="mydetectorcallbacksaren'tinvoked">&nbsp;</a><a class="target" name="frequentlyaskedquestions//mydetectorcallbacksaren'tinvoked">&nbsp;</a><a class="target" name="toc13.0.1">&nbsp;</a><h3>My detector callbacks aren't invoked</h3>
+<a class="target" name="mydetectorcallbacksaren'tinvoked">&nbsp;</a><a class="target" name="frequentlyaskedquestions//mydetectorcallbacksaren'tinvoked">&nbsp;</a><a class="target" name="toc14.0.1">&nbsp;</a><h3>My detector callbacks aren't invoked</h3>
 <p>
 
 
@@ -6344,7 +7178,7 @@ for the part of the API you care about. This is discussed in more
 detail in the <a href="#lintcheckunittesting">unit testing</a> chapter.
 
 </p>
-<a class="target" name="mylintcheckworksfromtheunittestbutnotintheide">&nbsp;</a><a class="target" name="frequentlyaskedquestions//mylintcheckworksfromtheunittestbutnotintheide">&nbsp;</a><a class="target" name="toc13.0.2">&nbsp;</a><h3>My lint check works from the unit test but not in the IDE</h3>
+<a class="target" name="mylintcheckworksfromtheunittestbutnotintheide">&nbsp;</a><a class="target" name="frequentlyaskedquestions//mylintcheckworksfromtheunittestbutnotintheide">&nbsp;</a><a class="target" name="toc14.0.2">&nbsp;</a><h3>My lint check works from the unit test but not in the IDE</h3>
 <p>
 
 
@@ -6390,7 +7224,7 @@ works correctly from your unit test but not in the IDE.
    information about this.</li></ol>
 
 <p></p>
-<a class="target" name="visitannotationusageisn'tcalledforannotations">&nbsp;</a><a class="target" name="frequentlyaskedquestions//visitannotationusageisn'tcalledforannotations">&nbsp;</a><a class="target" name="toc13.0.3">&nbsp;</a><h3><code>visitAnnotationUsage</code> isn't called for annotations</h3>
+<a class="target" name="visitannotationusageisn'tcalledforannotations">&nbsp;</a><a class="target" name="frequentlyaskedquestions//visitannotationusageisn'tcalledforannotations">&nbsp;</a><a class="target" name="toc14.0.3">&nbsp;</a><h3><code>visitAnnotationUsage</code> isn't called for annotations</h3>
 <p>
 
 
@@ -6409,7 +7243,7 @@ with <code>UAnnotation::class.java</code>, and a <code>UElementHandler</code> wh
 <code>visitAnnotation</code>.
 
 </p>
-<a class="target" name="howdoicheckifauastorpsielementisforjavaorkotlin?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckifauastorpsielementisforjavaorkotlin?">&nbsp;</a><a class="target" name="toc13.0.4">&nbsp;</a><h3>How do I check if a UAST or PSI element is for Java or Kotlin?</h3>
+<a class="target" name="howdoicheckifauastorpsielementisforjavaorkotlin?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckifauastorpsielementisforjavaorkotlin?">&nbsp;</a><a class="target" name="toc14.0.4">&nbsp;</a><h3>How do I check if a UAST or PSI element is for Java or Kotlin?</h3>
 <p>
 
 
@@ -6433,7 +7267,7 @@ If you have a <code>UElement</code> and need a <code>PsiElement</code> for the a
 see the next question.
 
 </p>
-<a class="target" name="whatifineedapsielementandihaveauelement?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//whatifineedapsielementandihaveauelement?">&nbsp;</a><a class="target" name="toc13.0.5">&nbsp;</a><h3>What if I need a <code>PsiElement</code> and I have a <code>UElement</code> ?</h3>
+<a class="target" name="whatifineedapsielementandihaveauelement?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//whatifineedapsielementandihaveauelement?">&nbsp;</a><a class="target" name="toc14.0.5">&nbsp;</a><h3>What if I need a <code>PsiElement</code> and I have a <code>UElement</code> ?</h3>
 <p>
 
 
@@ -6441,11 +7275,11 @@ If you have a <code>UElement</code>, you can get the underlying source PSI eleme
 by calling <code>element.sourcePsi</code>.
 
 </p>
-<a class="target" name="howdoigettheumethodforapsimethod?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoigettheumethodforapsimethod?">&nbsp;</a><a class="target" name="toc13.0.6">&nbsp;</a><h3>How do I get the <code>UMethod</code> for a <code>PsiMethod</code> ?</h3>
+<a class="target" name="howdoigettheumethodforapsimethod?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoigettheumethodforapsimethod?">&nbsp;</a><a class="target" name="toc14.0.6">&nbsp;</a><h3>How do I get the <code>UMethod</code> for a <code>PsiMethod</code> ?</h3>
 <p>
 
 
-Call <code>psiMethod.toUElementOfType&lt;umethod&gt;()</code>. Note that this may return
+Call <code>psiMethod.toUElementOfType&lt;UMethod&gt;()</code>. Note that this may return
 null if UAST cannot find valid Java or Kotlin source code for the
 method.
 
@@ -6455,7 +7289,7 @@ For <code>PsiField</code> and <code>PsiClass</code> instances use the equivalent
 <code>toUElementOfType</code> type arguments.
 
 </p>
-<a class="target" name="howdogetajavaevaluator?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdogetajavaevaluator?">&nbsp;</a><a class="target" name="toc13.0.7">&nbsp;</a><h3>How do get a <code>JavaEvaluator</code> ?</h3>
+<a class="target" name="howdogetajavaevaluator?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdogetajavaevaluator?">&nbsp;</a><a class="target" name="toc14.0.7">&nbsp;</a><h3>How do get a <code>JavaEvaluator</code>?</h3>
 <p>
 
 
@@ -6472,7 +7306,7 @@ constructor parameters are nullable, and are only needed for a couple
 of operations on the evaluator.
 
 </p>
-<a class="target" name="howdoicheckwhetheranelementisinternal?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckwhetheranelementisinternal?">&nbsp;</a><a class="target" name="toc13.0.8">&nbsp;</a><h3>How do I check whether an element is internal?</h3>
+<a class="target" name="howdoicheckwhetheranelementisinternal?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckwhetheranelementisinternal?">&nbsp;</a><a class="target" name="toc14.0.8">&nbsp;</a><h3>How do I check whether an element is internal?</h3>
 <p>
 
 
@@ -6485,7 +7319,7 @@ this evaluator method:
 <code>PsiMethod</code>, <code>PsiClass</code>, <code>PsiField</code>, <code>PsiMember</code>, <code>PsiVariable</code>, etc.)
 
 </p>
-<a class="target" name="iselementinline,sealed,operator,infix,suspend,data?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//iselementinline,sealed,operator,infix,suspend,data?">&nbsp;</a><a class="target" name="toc13.0.9">&nbsp;</a><h3>Is element inline, sealed, operator, infix, suspend, data?</h3>
+<a class="target" name="iselementinline,sealed,operator,infix,suspend,data?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//iselementinline,sealed,operator,infix,suspend,data?">&nbsp;</a><a class="target" name="toc14.0.9">&nbsp;</a><h3>Is element inline, sealed, operator, infix, suspend, data?</h3>
 <p>
 
 
@@ -6499,7 +7333,7 @@ evaluator method:
 <span class="line"></span><span class="hljs-keyword">open</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">isOperator</span><span class="hljs-params">(owner: <span class="hljs-type">PsiModifierListOwner</span>?)</span></span>: <span class="hljs-built_in">Boolean</span> { <span class="hljs-comment">/* ... */</span>
 <span class="line"></span><span class="hljs-keyword">open</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">isInfix</span><span class="hljs-params">(owner: <span class="hljs-type">PsiModifierListOwner</span>?)</span></span>: <span class="hljs-built_in">Boolean</span> { <span class="hljs-comment">/* ... */</span>
 <span class="line"></span><span class="hljs-keyword">open</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">isSuspend</span><span class="hljs-params">(owner: <span class="hljs-type">PsiModifierListOwner</span>?)</span></span>: <span class="hljs-built_in">Boolean</span> { <span class="hljs-comment">/* ... */</span></code></pre>
-<a class="target" name="howdoilookupaclassifihaveitsfullyqualifiedname?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookupaclassifihaveitsfullyqualifiedname?">&nbsp;</a><a class="target" name="toc13.0.10">&nbsp;</a><h3>How do I look up a class if I have its fully qualified name?</h3>
+<a class="target" name="howdoilookupaclassifihaveitsfullyqualifiedname?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookupaclassifihaveitsfullyqualifiedname?">&nbsp;</a><a class="target" name="toc14.0.10">&nbsp;</a><h3>How do I look up a class if I have its fully qualified name?</h3>
 <p>
 
 
@@ -6508,7 +7342,7 @@ Get the <code>JavaEvaluator</code> as explained above, then call
 nullable.
 
 </p>
-<a class="target" name="howdoilookupaclassifihaveapsitype?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookupaclassifihaveapsitype?">&nbsp;</a><a class="target" name="toc13.0.11">&nbsp;</a><h3>How do I look up a class if I have a PsiType?</h3>
+<a class="target" name="howdoilookupaclassifihaveapsitype?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookupaclassifihaveapsitype?">&nbsp;</a><a class="target" name="toc14.0.11">&nbsp;</a><h3>How do I look up a class if I have a PsiType?</h3>
 <p>
 
 
@@ -6518,7 +7352,7 @@ use <code>getClassType</code>.
 
 </p><pre class="listing tilde"><code><span class="line"></span>    <span class="hljs-keyword">abstract</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">getClassType</span><span class="hljs-params">(psiClass: <span class="hljs-type">PsiClass</span>?)</span></span>: PsiClassType?
 <span class="line"></span>    <span class="hljs-keyword">abstract</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">getTypeClass</span><span class="hljs-params">(psiType: <span class="hljs-type">PsiType</span>?)</span></span>: PsiClass?</code></pre>
-<a class="target" name="howdoilookuphierarhcyannotationsforanelement?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookuphierarhcyannotationsforanelement?">&nbsp;</a><a class="target" name="toc13.0.12">&nbsp;</a><h3>How do I look up hierarhcy annotations for an element?</h3>
+<a class="target" name="howdoilookuphierarchyannotationsforanelement?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookuphierarchyannotationsforanelement?">&nbsp;</a><a class="target" name="toc14.0.12">&nbsp;</a><h3>How do I look up hierarchy annotations for an element?</h3>
 <p>
 
 
@@ -6538,7 +7372,7 @@ one of these two evaluator methods:
 <span class="line"></span>        owner: <span class="hljs-type">PsiModifierListOwner</span>,
 <span class="line"></span>        inHierarchy: <span class="hljs-type">Boolean</span>
 <span class="line"></span>    )</span></span>: Array&lt;psiannotation&gt;</code></pre>
-<a class="target" name="howdoilookupifaclassisasubclassofanother?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookupifaclassisasubclassofanother?">&nbsp;</a><a class="target" name="toc13.0.13">&nbsp;</a><h3>How do I look up if a class is a subclass of another?</h3>
+<a class="target" name="howdoilookupifaclassisasubclassofanother?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoilookupifaclassisasubclassofanother?">&nbsp;</a><a class="target" name="toc14.0.13">&nbsp;</a><h3>How do I look up if a class is a subclass of another?</h3>
 <p>
 
 
@@ -6576,7 +7410,7 @@ class or super interface itself as a match.
 <span class="line"></span>        interfaceName: <span class="hljs-type">String</span>,
 <span class="line"></span>        strict: <span class="hljs-type">Boolean</span> = <span class="hljs-literal">false</span>
 <span class="line"></span>    )</span></span>: <span class="hljs-built_in">Boolean</span></code></pre>
-<a class="target" name="howdoiknowwhichparameteracallargumentcorrespondsto?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoiknowwhichparameteracallargumentcorrespondsto?">&nbsp;</a><a class="target" name="toc13.0.14">&nbsp;</a><h3>How do I know which parameter a call argument corresponds to?</h3>
+<a class="target" name="howdoiknowwhichparameteracallargumentcorrespondsto?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoiknowwhichparameteracallargumentcorrespondsto?">&nbsp;</a><a class="target" name="toc14.0.14">&nbsp;</a><h3>How do I know which parameter a call argument corresponds to?</h3>
 <p>
 
 
@@ -6600,7 +7434,7 @@ Lint has a utility method to help with this on the <code>JavaEvaluator</code>:
 </p><pre class="listing tilde"><code><span class="line"></span>    <span class="hljs-keyword">open</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">computeArgumentMapping</span><span class="hljs-params">(
 <span class="line"></span>        call: <span class="hljs-type">UCallExpression</span>,
 <span class="line"></span>        method: <span class="hljs-type">PsiMethod</span>
-<span class="line"></span>    )</span></span>: Map&lt;uexpression, psiparameter=<span class="hljs-string">""</span>&gt; { <span class="hljs-comment">/* ... */</span></code></pre><p>
+<span class="line"></span>    )</span></span>: Map&lt;UExpression, PsiParameter&gt; { <span class="hljs-comment">/* ... */</span></code></pre><p>
 
 This returns a map from UAST expressions (each argument to a UAST call
 is a <code>UExpression</code>, and these are the <code>valueArguments</code> property on the
@@ -6608,7 +7442,7 @@ is a <code>UExpression</code>, and these are the <code>valueArguments</code> pro
 <code>PsiMethod</code> that the method calls.
 
 </p>
-<a class="target" name="howcanmylintcheckstargettwodifferentversionsoflint?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howcanmylintcheckstargettwodifferentversionsoflint?">&nbsp;</a><a class="target" name="toc13.0.15">&nbsp;</a><h3>How can my lint checks target two different versions of lint?</h3>
+<a class="target" name="howcanmylintcheckstargettwodifferentversionsoflint?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howcanmylintcheckstargettwodifferentversionsoflint?">&nbsp;</a><a class="target" name="toc14.0.15">&nbsp;</a><h3>How can my lint checks target two different versions of lint?</h3>
 <p>
 
 
@@ -6625,7 +7459,7 @@ lint loads the issue registries it will ignore registries with a range
 outside of the current API level.
 
 </p>
-<a class="target" name="canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D">&nbsp;</a><a class="target" name="frequentlyaskedquestions//canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D">&nbsp;</a><a class="target" name="toc13.0.16">&nbsp;</a><h3>Can I make my lint check “not suppressible?”</h3>
+<a class="target" name="canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D">&nbsp;</a><a class="target" name="frequentlyaskedquestions//canimakemylintcheck%E2%80%9Cnotsuppressible?%E2%80%9D">&nbsp;</a><a class="target" name="toc14.0.16">&nbsp;</a><h3>Can I make my lint check “not suppressible?”</h3>
 <p>
 
 
@@ -6641,18 +7475,18 @@ This is possible as part of the issue registration. After creating your
 <code>Issue</code>, set the <code>suppressNames</code> property to an <strong class="asterisk">empty</strong> collection.
 
 </p>
-<a class="target" name="whyareoverloadedoperatorsnothandled?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//whyareoverloadedoperatorsnothandled?">&nbsp;</a><a class="target" name="toc13.0.17">&nbsp;</a><h3>Why are overloaded operators not handled?</h3>
+<a class="target" name="whyareoverloadedoperatorsnothandled?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//whyareoverloadedoperatorsnothandled?">&nbsp;</a><a class="target" name="toc14.0.17">&nbsp;</a><h3>Why are overloaded operators not handled?</h3>
 <p>
 
 
 Kotlin supports overloaded operators, but these are not handled as
-calls in the AST - instead, an implicit <code>get</code> or <code>set</code> method from an
+calls in the AST — instead, an implicit <code>get</code> or <code>set</code> method from an
 array access will show up as a <code>UArrayAccessExpression</code>. Lint has
 specific support to help handling these scenarios; see the “Implicit
 Calls” section in the <a href="#writingalintcheck:basics"></a><a href="#basics">basics</a> chapter.
 
 </p>
-<a class="target" name="howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="toc13.0.18">&nbsp;</a><h3>How do I check out the current lint source code?</h3>
+<a class="target" name="howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoicheckoutthecurrentlintsourcecode?">&nbsp;</a><a class="target" name="toc14.0.18">&nbsp;</a><h3>How do I check out the current lint source code?</h3>
 <pre class="listing backtick"><code><span class="line"></span><span class="hljs-meta prompt_">$ </span><span class="language-bash">git <span class="hljs-built_in">clone</span> --branch=mirror-goog-studio-main --single-branch \
 <span class="line"></span>   https://android.googlesource.com/platform/tools/base</span>
 <span class="line"></span>Cloning into 'base'...
@@ -6669,7 +7503,7 @@ Calls” section in the <a href="#writingalintcheck:basics"></a><a href="#basics
 <span class="line"></span>.gitignore              MODULE_LICENSE_APACHE2  cli/
 <span class="line"></span><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">ls</span> libs/</span>
 <span class="line"></span>intellij-core/   kotlin-compiler/ lint-api/        lint-checks/     lint-gradle/     lint-model/      lint-tests/      uast/</code></pre>
-<a class="target" name="wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="toc13.0.19">&nbsp;</a><h3>Where do I find examples of lint checks?</h3>
+<a class="target" name="wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//wheredoifindexamplesoflintchecks?">&nbsp;</a><a class="target" name="toc14.0.19">&nbsp;</a><h3>Where do I find examples of lint checks?</h3>
 <p>
 
 
@@ -6679,12 +7513,23 @@ as shown above and look in
 browse sources online:
 <a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/"></a><a href="https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/" class="url">https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/</a>
 
+</p>
+<a class="target" name="howdoianalyzedetailsaboutkotlin?">&nbsp;</a><a class="target" name="frequentlyaskedquestions//howdoianalyzedetailsaboutkotlin?">&nbsp;</a><a class="target" name="toc14.0.20">&nbsp;</a><h3>How do I analyze details about Kotlin?</h3>
+<p>
+
+
+The new Kotlin Analysis API offers access to detailed information about
+Kotlin (types, resolution, as well as information the compiler has
+figured out such as smart casts, nullability, deprecation info, and so
+on). There are more details about this, as well as a number of recipes,
+in the <a href="#astanalysis"></a><a href="#astanalysis">AST Analysis</a> chapter.
+
 </p><p>
 
 
 
 </p>
-<a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="toc14">&nbsp;</a><h1>Appendix: Recent Changes</h1>
+<a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="appendix:recentchanges">&nbsp;</a><a class="target" name="toc15">&nbsp;</a><h1>Appendix: Recent Changes</h1>
 <p>
 
            
@@ -6698,6 +7543,27 @@ information about user visible changes to lint, see the User
 Guide.
 
 </p><p>
+
+<strong class="asterisk">8.6</strong>
+
+</p><p>
+
+</p><ul>
+<li class="asterisk">UAST repeats @JvmOverloaded methods in the AST. Lint now looks for
+  and skips these duplications, and a new test mode also looks for
+  potential problems in third party checks.
+</li>
+<li class="asterisk">Added a new chapter to the api-guide on AST analysis, and in
+  particular, using the Kotlin Analysis API.
+</li>
+<li class="asterisk">The <code>UElementHandler</code> now supports recently added UAST element
+  types: <code>UPatternExpression</code> and <code>UBinaryExpressionWithPattern</code>.
+</li>
+<li class="asterisk">There's a new test mode checking for issues related to
+  <code>@JvmOverloads</code>. See the <a href="#testmodes">test modes</a> chapter
+  for more.</li></ul>
+
+<p></p><p>
 
 <strong class="asterisk">8.4</strong>
 
@@ -7232,7 +8098,7 @@ Guide.
 
 
 </p>
-<a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc15">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
+<a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties">&nbsp;</a><a class="target" name="toc16">&nbsp;</a><h1>Appendix: Environment Variables and System Properties</h1>
 <p>
 
 
@@ -7242,9 +8108,9 @@ be used or guaranteed to be supported in the future, but documenting
 what they are seems useful.
 
 </p>
-<a class="target" name="environmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables">&nbsp;</a><a class="target" name="toc15.1">&nbsp;</a><h2>Environment Variables</h2>
+<a class="target" name="environmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables">&nbsp;</a><a class="target" name="toc16.1">&nbsp;</a><h2>Environment Variables</h2>
 
-<a class="target" name="detectorconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables">&nbsp;</a><a class="target" name="toc15.1.1">&nbsp;</a><h3>Detector Configuration Variables</h3>
+<a class="target" name="detectorconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/detectorconfigurationvariables">&nbsp;</a><a class="target" name="toc16.1.1">&nbsp;</a><h3>Detector Configuration Variables</h3>
 <p>
 
 
@@ -7276,7 +8142,7 @@ what they are seems useful.
   for that check.
 
 </p></dd></dl><p></p>
-<a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc15.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>
+<a class="target" name="lintconfigurationvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintconfigurationvariables">&nbsp;</a><a class="target" name="toc16.1.2">&nbsp;</a><h3>Lint Configuration Variables</h3>
 <p>
 
 
@@ -7330,7 +8196,7 @@ what they are seems useful.
   Corresponding system property: <code>android.lint.skip.bytecode.verifier</code>
 
 </p></dd></dl><p></p>
-<a class="target" name="lintdevelopmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables">&nbsp;</a><a class="target" name="toc15.1.3">&nbsp;</a><h3>Lint Development Variables</h3>
+<a class="target" name="lintdevelopmentvariables">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/environmentvariables/lintdevelopmentvariables">&nbsp;</a><a class="target" name="toc16.1.3">&nbsp;</a><h3>Lint Development Variables</h3>
 <p>
 
 
@@ -7364,7 +8230,7 @@ what they are seems useful.
   server or by the rest of the development team.
 
 </p></dd></dl><p></p>
-<a class="target" name="systemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/systemproperties">&nbsp;</a><a class="target" name="toc15.2">&nbsp;</a><h2>System Properties</h2>
+<a class="target" name="systemproperties">&nbsp;</a><a class="target" name="appendix:environmentvariablesandsystemproperties/systemproperties">&nbsp;</a><a class="target" name="toc16.2">&nbsp;</a><h2>System Properties</h2>
 <p>
 
 
@@ -7435,4 +8301,4 @@ what they are seems useful.
   Corresponding system property: <code>android.lint.skip.bytecode.verifier</code>
 
 </p></dd></dl><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility=&ldquo;visible&rdquo;)</script>
-<p></p></span><div id="mdContextMenu" style="visibility:hidden"></div><div class="markdeepFooter"><i>formatted by <a href="https://casual-effects.com/markdeep" style="color:#999">Markdeep&nbsp;1.16&nbsp;&nbsp;</a></i><div style="display:inline-block;font-size:13px;font-family:'Times New Roman',serif;vertical-align:middle;transform:translate(-3px,-1px)rotate(135deg);">✒</div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>
+<p></p></span><div id="mdContextMenu" style="visibility:hidden"></div><div class="markdeepFooter"><i>formatted by <a href="https://casual-effects.com/markdeep" style="color:#999">Markdeep&nbsp;1.17&nbsp;&nbsp;</a></i><div style="display:inline-block;font-size:13px;font-family:'Times New Roman',serif;vertical-align:middle;transform:translate(-3px,-1px)rotate(135deg);">✒</div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>

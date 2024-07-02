@@ -18,10 +18,6 @@ There are a number of built-in test modes:
   * Reordering Kotlin named arguments
   * Replacing simple functions with Kotlin expression bodies
   * etc
-* A test mode which changes that detectors are correctly handling
-  Kotlin literal expressions by running them both with and without
-  the upcoming UiInjectionHost mode which will change the
-  representation of strings in an upcoming Kotlin version
 * A partial analysis test mode which runs the tests in “partial
   analysis” mode; two phases, analysis and reporting, with
   minSdkVersion set to 1 during analysis and set to the true test
@@ -360,7 +356,7 @@ to
 (("foo".chars()).allMatch { (it.dec() > 0) }).toString()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default the parenthesis mode limits itself to "likely" unnecessary
+By default the parenthesis mode limits itself to “likely” unnecessary
 parentheses; in particular, it won't put extra parenthesis around
 simple literals, like (1) or (false). You can explicitly construct
 `ParenthesizedTestMode(includeUnlikely=true)` if you want additional
@@ -458,7 +454,7 @@ tweaks.
 
 ### Whitespace Mode
 
-This test mode inserts a number of "unnecessary" whitespace characters
+This test mode inserts a number of “unnecessary” whitespace characters
 in valid places in the source code.
 
 This helps catch bugs where lint checks are improperly making
@@ -530,5 +526,68 @@ This test mode looks at the reported warnings from your unit tests, and then
 for each one, it looks up the corresponding error location's source file, and
 inserts a suppress directive at the nearest applicable location. It then
 re-runs the analysis, and makes sure that the warning no longer appears.
+
+### @JvmOverloads Test Mode
+
+When UAST comes across a method like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+@JvmOverloads
+fun test(parameter: Int = 0) {
+    implementation()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+it will “inline” these two methods in the AST, such that we see the whole
+method body twice:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+fun test() {
+    implementation()
+}
+
+fun test(parameter: Int) {
+    implementation()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If there were additional default parameters, there would be additional
+repetitions.
+
+This is similar to what the compiler does, since Java doesn't have
+default arguments, but the compiler will actually just generate some
+trampoline code to jump to the implementation with all the parameters;
+it will NOT repeat the method implementation:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+fun test(parameter: Int) {
+    implementation()
+}
+
+// $FF: synthetic method
+fun `test$default`(var0: Int, var1: Int, var2: Any?) {
+    var var0 = var0
+    if ((var1 and 1) != 0) {
+        var0 = 0
+    }
+
+    test(var0)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Again, UAST will instead just repeat the method body. And this means
+lint detectors may trigger repeatedly on the same code. In most cases
+this will result in duplicated warnings. But it can also lead to other
+problems; for example, a lint check which makes sure you don't have any
+code duplication would incorrectly believe code fragments are repeated.
+
+Lint already looks for this situation and avoids visiting duplicated
+methods in its shared implementations (which is dispatching to most
+`Detector` callbacks). However, if you manually visit a class yourself,
+you can run into this problem.
+
+This test mode simulates this situation by finding all methods where
+it can safely add at least one default parameter, and marks it
+@JvmOverloaded. It then makes sure the results are the same as before.
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

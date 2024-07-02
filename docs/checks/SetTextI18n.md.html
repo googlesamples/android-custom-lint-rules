@@ -102,6 +102,7 @@ class CustomScreen {
     Button btn = new Button(context);
     btn.setText("User " + getUserName());
     btn.setText(String.format("%s of %s users", Integer.toString(5), Integer.toString(10)));
+    view.setText("");
   }
 
   private static String getUserName() {

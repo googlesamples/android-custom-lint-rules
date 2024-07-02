@@ -637,6 +637,13 @@ AndroidManifest.xml:100:Error: Permission is only granted to system apps
 
     &lt;uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /&gt;
                      -------------------------------------------------------
+
+
+AndroidManifest.xml:101:Error: Permission is only granted to system apps
+[ProtectedPermissions]
+
+    &lt;uses-permission android:name="android.permission.BIND_CALL_STREAMING_SERVICE" /&gt;
+                     -------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -743,6 +750,7 @@ Here is the source file referenced above:
     &lt;uses-permission android:name="android.permission.WRITE_GSERVICES" /&gt;
     &lt;uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" /&gt;
     &lt;uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" /&gt;
+    &lt;uses-permission android:name="android.permission.BIND_CALL_STREAMING_SERVICE" /&gt;
 
     &lt;application
         android:icon="@drawable/ic_launcher"

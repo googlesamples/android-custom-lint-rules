@@ -154,7 +154,7 @@ included when lint processes Java or Kotin files.
    The name `Scope.JAVA_FILE` may make it sound like there should also
    be a `Scope.KOTLIN_FILE`. However, `JAVA_FILE` here really refers to
    both Java and Kotlin files since the analysis and APIs are identical
-   for both (using “UAST”, a universal abstract syntax tree). However,
+   for both (using “UAST”, a unified abstract syntax tree). However,
    at this point we don't want to rename it since it would break a lot
    of existing checks. We might introduce an alias and deprecate this
    one in the future.
@@ -829,7 +829,7 @@ statements or whether the way an annotation class is declared is as
 `@interface` or `annotation class`, and so on.
 
 This makes it possible to write a single analyzer which works
-(”universally“) across all languages supported by UAST. And this is
+across all languages supported by UAST. And this is
 very useful; most lint checks are doing something API or data-flow
 specific, not something language specific. If however you do need to
 implement something very language specific, see the next section,
