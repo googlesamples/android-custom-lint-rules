@@ -2276,7 +2276,7 @@ these nodes.
 
 Anyway, you can see there is quite a bit of detail here — tracking
 things like the keywords, the variables, references to for example the
-package — and higher level concepts like a class and a field which I've
+package — and higher level concepts like a class and a field, which I've
 marked with a thicker border.
 
 </p><p>
@@ -2298,7 +2298,7 @@ And here's the corresponding AST in IntelliJ:
 
 <p></p><p>
 
-This is for a program which is completely equivalent to the Java one.
+This program is equivalent to the Java one.
 But notice that it has a completely different shape! They reference
 different element classes, <code>PsiClass</code> versus <code>KtClass</code>, and on and on
 all the way down.
@@ -2313,7 +2313,7 @@ the class, for the field, and for the initial value, the string.
 <p>
 
 
-We can construct a new AST which represents the same concepts:
+We can construct a new AST that represents the same concepts:
 
 </p><p>
 
@@ -2337,7 +2337,7 @@ Here's the UAST for the corresponding Kotlin example:
 <p></p><p>
 
 As you can see, the ASTs are not always identical. For Strings, in
-Kotlin, we often end up with an extra parent <code>UiInjectionHost</code>. But for
+Kotlin, we often end up with an extra parent <code>UInjectionHost</code>. But for
 our purposes, you can see that the ASTs are mostly the same, so if you
 handle the Kotlin scenario, you'll handle the Java ones too.
 
@@ -2348,7 +2348,7 @@ handle the Kotlin scenario, you'll handle the Java ones too.
 
 Note that “Unified” in the name here is a bit misleading. From the name
 you may assume that this is some sort of superset of the ASTs across
-languages — and AST that can represent everything needed by all
+languages — an AST that can represent everything needed by all
 languages. But that's not the case! Instead, a better way to think of it
 is as the <strong class="asterisk">Java view</strong> of the AST.
 
@@ -2362,9 +2362,8 @@ If you for example have the following Kotlin data class:
 <span class="line"></span>)</code></pre><p>
 
 This is a Kotlin data class with two properties. So you might expect
-that UAST would have a way to represent these concepts — properties,
-and java classes. This should be a <code>UDataClass</code> with two <code>UProperty</code>
-children, right?
+that UAST would have a way to represent these concepts. This should
+be a <code>UDataClass</code> with two <code>UProperty</code> children, right?
 
 </p><p>
 
@@ -2442,7 +2441,7 @@ on.
 <p>
 
 
-Every node in UAST is a subclass of a UElement. There's a parent
+Every node in UAST is a subclass of a <code>UElement</code>. There's a parent
 pointer, which is handy for navigating around in the AST.
 
 </p><p>
@@ -2454,7 +2453,7 @@ in your detector, recursively print out the UAST as a tree.
 
 </p><p>
 
-Or in the debugger, anytime you have a UElement, you can call
+Or in the debugger, anytime you have a <code>UElement</code>, you can call
 <code>UElement.asRecursiveLogString</code> on it, evaluate and see what you find.
 
 </p><p>
@@ -2488,7 +2487,7 @@ here's the corresponding UAST <code>asRecursiveLogString</code> output:
 
 
 You generally shouldn't visit a source file on your own. Lint has a
-special <code>UElementHandler</code> for that which is used to ensure that we don't
+special <code>UElementHandler</code> for that, which is used to ensure we don't
 repeat visiting a source file thousands of times, one per detector.
 
 </p><p>
@@ -2538,7 +2537,7 @@ Here's an illustration of that:
 
 We have our UAST tree in the top right corner. And here's the Java PSI
 AST behind the scenes. We can access the underlying PSI node for a
-UElement by accessing the sourcePsi element. So when you do need to dip
+<code>UElement</code> by accessing the <code>sourcePsi</code> property. So when you do need to dip
 into something language specific, that's trivial to do.
 
 </p><p>
@@ -2547,9 +2546,9 @@ Note that in some cases, these references are null.
 
 </p><p>
 
-Each of the UElement nodes point back into the PSI AST - whether a Java
+Most <code>UElement</code> nodes point back to the PSI AST - whether a Java
 AST or a Kotlin AST. Here's the same AST, but with the <strong class="asterisk">type</strong> of the
-<code>sourcePsi</code> attribute for each node added.
+<code>sourcePsi</code> property for each node added.
 
 </p><p>
 
@@ -2557,8 +2556,8 @@ AST or a Kotlin AST. Here's the same AST, but with the <strong class="asterisk">
 
 <p></p><p>
 
-You can see that the class generated to represent the top level
-functions here doesn't have a non-null <code>sourcePsi</code>, because in the
+You can see that the facade class generated to contain the top level
+functions has a null <code>sourcePsi</code>, because in the
 Kotlin PSI, there is no real <code>KtClass</code> for a facade class. And for the
 three members, the private field and the getter and the setter, they all
 correspond to the exact same, single <code>KtProperty</code> instance, the single
@@ -2596,8 +2595,8 @@ Assignments. If expressions. Return statements. And on and on.
 
 </p><p>
 
-There <em class="asterisk">are</em> lint checks which are language specific — for example, if
-you write a lint check which forbids the use of companion objects — in
+There <em class="asterisk">are</em> lint checks that are language specific — for example, if
+you write a lint check that forbids the use of companion objects — in
 that case, there's no big advantage to using UAST over PSI; it's only
 ever going to run on Kotlin code. (Note however that lint's APIs and
 convenience callbacks are all targeting UAST, so it's easier to write
@@ -2622,10 +2621,10 @@ language specific, and where the language details aren't exposed in UAST.
 </p><p>
 
 For example, let's say you need to determine if a <code>UClass</code> is a Kotlin
-“companion object“. You could cheat and look at the class name to see if
-it's ”Companion“. But that's not quite right; in Kotlin you can
+“companion object”. You could cheat and look at the class name to see if
+it's “Companion”. But that's not quite right; in Kotlin you can
 specify a custom companion object name, and of course users are free
-to create classes named ”Companion“ that aren't companion objects:
+to create classes named “Companion” that aren't companion objects:
 
 </p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">class</span> <span class="hljs-title class_">Test</span> {
 <span class="line"></span>  <span class="hljs-keyword">companion</span> <span class="hljs-keyword">object</span> MyName { <span class="hljs-comment">// Companion object not named "Companion"!</span>
@@ -2635,8 +2634,8 @@ to create classes named ”Companion“ that aren't companion objects:
 <span class="line"></span>  }
 <span class="line"></span>}</code></pre><p>
 
-The right way to do this, is using Kotlin PSI, via the
-<code>UElement.sourcePsi</code> attribute:
+The right way to do this is using Kotlin PSI, via the
+<code>UElement.sourcePsi</code> property:
 
 </p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-comment">// Skip companion objects</span>
 <span class="line"></span><span class="hljs-keyword">val</span> source = node.sourcePsi
@@ -2645,7 +2644,7 @@ The right way to do this, is using Kotlin PSI, via the
 <span class="line"></span>}</code></pre><p>
 
 (To figure out how to write the above code, use a debugger on a test
-case and look at the <code>UClass.sourcePsi</code> attribute; you'll discover that
+case and look at the <code>UClass.sourcePsi</code> property; you'll discover that
 it's some subclass of <code>KtObjectDeclaration</code>; look up its most general
 super interface or class, and then use code completion to discover
 available APIs, such as <code>isCompanion()</code>.)
@@ -2665,7 +2664,7 @@ reference, and dealing with Kotlin types.
 Lint doesn't actually give you access to everything you need if you want
 to try to look up types in Kotlin PSI; you need something called the
 “binding context”, which is not exposed anywhere! And this omission is
-deliberate, because that was an implementation detail of the old
+deliberate, because this is an implementation detail of the old
 compiler. The future is K2; a complete rewrite of the compiler front
 end, which is no longer using the old binding context. And as part of
 the tooling support for K2, there's a new API called the “Kotlin
@@ -2719,7 +2718,7 @@ The <code>Nothing</code> return type means it will never return.
 
 Before the Kotlin lint analysis API, lint didn't have a way to reason
 about the <code>Nothing</code> type. UAST only returns Java types, which maps to
-void. So instead, lint had an ugly hack which just hardcoded well known
+void. So instead, lint had an ugly hack that just hardcoded well known
 names of methods that don't return:
 
 </p><pre class="listing tilde"><code><span class="line"></span><span class="hljs-keyword">if</span> (nextStatement <span class="hljs-keyword">is</span> UCallExpression) {
@@ -2764,7 +2763,7 @@ can call <code>resolveCall()</code> on it to reach the called method's symbol.
 
 </p><p>
 
-Similarly on a <code>KtDeclaration</code> (such as a named function or property) I
+Similarly, on a <code>KtDeclaration</code> (such as a named function or property) I
 can call <code>getSymbol()</code> to get the symbol for that method or property, to
 for example look up parameter information. And on a <code>KtExpression</code> (such
 as an if statement) I can call <code>getKtType()</code> to get the Kotlin type.
@@ -2779,7 +2778,7 @@ so on.
 </p><p>
 
 In the new implementation of <code>callNeverReturns</code>, we resolve the call,
-look up the corresponding function which of course is a <code>KtSymbol</code>
+look up the corresponding function, which of course is a <code>KtSymbol</code>
 itself, and from that we get the return type, and then we can just check
 if it's the <code>Nothing</code> type.
 
