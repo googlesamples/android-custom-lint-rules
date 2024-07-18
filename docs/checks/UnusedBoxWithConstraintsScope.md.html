@@ -49,28 +49,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/test.kt:9:Error: BoxWithConstraints scope is not used
 [UnusedBoxWithConstraintsScope]
-
     BoxWithConstraints { /**/ }
                        --------
-
-
 src/foo/test.kt:10:Error: BoxWithConstraints scope is not used
 [UnusedBoxWithConstraintsScope]
-
     BoxWithConstraints { foo }
                        -------
-
-
 src/foo/test.kt:11:Error: BoxWithConstraints scope is not used
 [UnusedBoxWithConstraintsScope]
-
     BoxWithConstraints(content = { /**/ })
                                  --------
-
-
 src/foo/test.kt:12:Error: BoxWithConstraints scope is not used
 [UnusedBoxWithConstraintsScope]
-
     BoxWithConstraints(propagateMinConstraints = false, content = { /**/ })
                                                                   --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,17 +101,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.foundation:foundation-android:1.7.0-beta04")
+implementation("androidx.compose.foundation:foundation-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.foundation:foundation-android:1.7.0-beta04'
+implementation 'androidx.compose.foundation:foundation-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.foundation-android)
 
 # libs.versions.toml
 [versions]
-foundation-android = "1.7.0-beta04"
+foundation-android = "1.7.0-beta05"
 [libraries]
 foundation-android = {
     module = "androidx.compose.foundation:foundation-android",
@@ -129,7 +119,7 @@ foundation-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.foundation:foundation-android](androidx_compose_foundation_foundation-android.md.html).

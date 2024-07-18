@@ -46,12 +46,19 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/AlarmTest.kt:7:Error: When scheduling exact alarms, apps
 should explicitly call AlarmManager#canScheduleExactAlarms or handle
 `SecurityException`s [ScheduleExactAlarm]
-
     alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, 5000, null)
     ----------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /&gt;
+    &lt;uses-sdk android:targetSdkVersion="33" /&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/AlarmTest.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -83,6 +90,21 @@ https://issuetracker.google.com/issues/new?component=192708.
 
 You can suppress false positives using one of the following mechanisms:
 
+* Adding the suppression attribute `tools:ignore="ScheduleExactAlarm"`
+  on the problematic XML element (or one of its enclosing elements).
+  You may also need to add the following namespace declaration on the
+  root element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;uses-permission tools:ignore="ScheduleExactAlarm" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
+
 * Using a suppression annotation like this on the enclosing
   element:
 
@@ -109,21 +131,6 @@ You can suppress false positives using one of the following mechanisms:
   ```kt
   //noinspection ScheduleExactAlarm
   problematicStatement()
-  ```
-
-* Adding the suppression attribute `tools:ignore="ScheduleExactAlarm"`
-  on the problematic XML element (or one of its enclosing elements).
-  You may also need to add the following namespace declaration on the
-  root element in the XML file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
-
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;uses-permission tools:ignore="ScheduleExactAlarm" .../&gt;
-    ...
-  &lt;/manifest&gt;
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

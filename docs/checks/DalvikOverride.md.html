@@ -50,12 +50,44 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/pkg2/Class2.java:7:Error: This package private method may be
 unintentionally overriding method in pkg1.Class1 [DalvikOverride]
-
     void method() { // Flag this as an accidental override
          ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/pkg1/Class1.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package pkg1;
+
+public class Class1 {
+    void method() {
+    }
+
+    void method2(int foo) {
+    }
+
+    void method3() {
+    }
+
+    void method4() {
+    }
+
+    void method5() {
+    }
+
+    void method6() {
+    }
+
+    void method7() {
+    }
+
+    public static class Class4 extends Class1 {
+        void method() { // Not an error: same package
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/pkg2/Class2.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

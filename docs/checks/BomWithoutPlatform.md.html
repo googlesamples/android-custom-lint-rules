@@ -40,33 +40,31 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:6:Warning: BOM should be added with a call to platform()
 [BomWithoutPlatform]
-
     implementation(libs.compose.bom)
                    ----------------
-
-
 build.gradle:7:Warning: BOM should be added with a call to platform()
 [BomWithoutPlatform]
-
     testImplementation(libs.compose.bom)
                        ----------------
-
-
 build.gradle:8:Warning: BOM should be added with a call to platform()
 [BomWithoutPlatform]
-
     testImplementation "androidx.compose:compose-bom:2023.01.00"
                        -----------------------------------------
-
-
 build.gradle:9:Warning: BOM should be added with a call to platform()
 [BomWithoutPlatform]
-
     api("androidx.compose:compose-bom:2023.01.00")
         -----------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+composeBom = "2023.01.00"
+[libraries]
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `build.gradle`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers

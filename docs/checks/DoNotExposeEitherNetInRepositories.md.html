@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Repository APIs should not expose EitherNet types directly.
+(#) Repository APIs should not expose EitherNet types directly
 
-!!! ERROR: Repository APIs should not expose EitherNet types directly.
+!!! ERROR: Repository APIs should not expose EitherNet types directly
    This is an error.
 
 Id
 :   `DoNotExposeEitherNetInRepositories`
 Summary
-:   Repository APIs should not expose EitherNet types directly.
+:   Repository APIs should not expose EitherNet types directly
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/eithernet/DoNotExposeEitherNetInRepositoriesDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/eithernet/DoNotExposeEitherNetInRepositoriesDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/eithernet/DoNotExposeEitherNetInRepositoriesDetectorTest.kt)
 Copyright Year
@@ -49,12 +49,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/MyRepository.java:8:Error: Repository APIs should not expose
 EitherNet types directly. [DoNotExposeEitherNetInRepositories]
-
   ApiResult&lt;String, Exception&gt; getResult();
   ----------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/com/slack/eithernet/ApiResult.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.slack.eithernet
+
+interface ApiResult<out T : Any, out E : Any>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/MyRepository.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -70,6 +76,30 @@ interface MyRepository {
   // Good
 
   String getString();
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/MyClassRepository.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test;
+
+import com.slack.eithernet.ApiResult;
+
+abstract class MyClassRepository {
+  // Bad
+
+  public abstract ApiResult<String, Exception> getResultPublic();
+  public ApiResult<String, Exception> resultField = null;
+
+  // Good
+
+  ApiResult<String, Exception> resultFieldPackagePrivate = null;
+  private final ApiResult<String, Exception> resultFieldPrivate = null;
+  protected ApiResult<String, Exception> resultFieldProtected = null;
+  abstract ApiResult<String, Exception> getResultPackagePrivate();
+  private ApiResult<String, Exception> getResultPrivate();
+  private ApiResult<String, Exception> getResultProtected();
+  public abstract String getString();
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

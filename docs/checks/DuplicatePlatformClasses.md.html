@@ -45,6 +45,92 @@ consider using `HttpUrlConnection` or a library like `okhttp`).
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:3:Error: xpp3 defines classes that conflict with classes
+now provided by Android. Solutions include finding newer versions or
+alternative libraries that don't have the same problem (for example, for
+httpclient use HttpUrlConnection or okhttp instead), or repackaging the
+library using something like jarjar. [DuplicatePlatformClasses]
+    implementation 'xpp3:xpp3:1.1.4c'
+    ---------------------------------
+build.gradle:4:Error: commons-logging defines classes that conflict with
+classes now provided by Android. Solutions include finding newer
+versions or alternative libraries that don't have the same problem (for
+example, for httpclient use HttpUrlConnection or okhttp instead), or
+repackaging the library using something like jarjar.
+[DuplicatePlatformClasses]
+    implementation 'commons-logging:commons-logging:1.2'
+    ----------------------------------------------------
+build.gradle:5:Error: xmlParserAPIs defines classes that conflict with
+classes now provided by Android. Solutions include finding newer
+versions or alternative libraries that don't have the same problem (for
+example, for httpclient use HttpUrlConnection or okhttp instead), or
+repackaging the library using something like jarjar.
+[DuplicatePlatformClasses]
+    implementation 'xerces:xmlParserAPIs:2.6.2'
+    -------------------------------------------
+build.gradle:6:Error: json defines classes that conflict with classes
+now provided by Android. Solutions include finding newer versions or
+alternative libraries that don't have the same problem (for example, for
+httpclient use HttpUrlConnection or okhttp instead), or repackaging the
+library using something like jarjar. [DuplicatePlatformClasses]
+    implementation 'org.json:json:20170516'
+    ---------------------------------------
+build.gradle:7:Error: opengl-api defines classes that conflict with
+classes now provided by Android. Solutions include finding newer
+versions or alternative libraries that don't have the same problem (for
+example, for httpclient use HttpUrlConnection or okhttp instead), or
+repackaging the library using something like jarjar.
+[DuplicatePlatformClasses]
+    implementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+    ------------------------------------------------------------
+build.gradle:8:Error: android defines classes that conflict with classes
+now provided by Android. Solutions include finding newer versions or
+alternative libraries that don't have the same problem (for example, for
+httpclient use HttpUrlConnection or okhttp instead), or repackaging the
+library using something like jarjar. [DuplicatePlatformClasses]
+    implementation 'com.google.android:android:4.1.1.4'
+    ---------------------------------------------------
+build.gradle:9:Error: httpclient defines classes that conflict with
+classes now provided by Android. Solutions include finding newer
+versions or alternative libraries that don't have the same problem (for
+example, for httpclient use HttpUrlConnection or okhttp instead), or
+repackaging the library using something like jarjar.
+[DuplicatePlatformClasses]
+    compile group: 'org.apache.httpcomponents',
+    ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    implementation 'my.indirect.dependency:myname:1.2.3'
+    implementation 'xpp3:xpp3:1.1.4c'
+    implementation 'commons-logging:commons-logging:1.2'
+    implementation 'xerces:xmlParserAPIs:2.6.2'
+    implementation 'org.json:json:20170516'
+    implementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
+    implementation 'com.google.android:android:4.1.1.4'
+    compile group: 'org.apache.httpcomponents',
+        name: 'httpclient',
+        version: '4.5.3'
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testDuplicateWarnings`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

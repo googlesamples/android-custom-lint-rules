@@ -50,28 +50,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/example/test.kt:8:Error: Arguments of createRefsFor (2) do not match
 assigned variables (3) [IncorrectReferencesDeclaration]
-
     val (box1, text1, image1) = createRefsFor("box", "text")
                                 -------------
-
-
 src/example/test.kt:9:Error: Arguments of createRefsFor (3) do not match
 assigned variables (2) [IncorrectReferencesDeclaration]
-
     val (box2, text2) = createRefsFor("box", "text", "image")
                         -------------
-
-
 src/example/test.kt:19:Error: Arguments of createRefsFor (2) do not
 match assigned variables (3) [IncorrectReferencesDeclaration]
-
     val (box1, text1, image1) = createRefsFor("box", "text")
                                 -------------
-
-
 src/example/test.kt:20:Error: Arguments of createRefsFor (3) do not
 match assigned variables (2) [IncorrectReferencesDeclaration]
-
     val (box2, text2) = createRefsFor("box", "text", "image")
                         -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -41,12 +41,22 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:3:Warning: Use the existing version catalog reference
 (libs.androidx.appCompat) instead [UseTomlInstead]
-
     implementation 'androidx.appcompat:appcompat:1.5.1'
                    ------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+appCompat = "1.5.1"
+androidxTest = "1.5.0"
+
+[libraries]
+androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `build.gradle`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers

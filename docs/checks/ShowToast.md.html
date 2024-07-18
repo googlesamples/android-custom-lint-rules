@@ -42,28 +42,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/ToastTest.java:32:Warning: Toast created but not shown: did
 you forget to call show()? [ShowToast]
-
     Toast.makeText(context, "foo", Toast.LENGTH_LONG);
     --------------
-
-
 src/test/pkg/ToastTest.java:33:Warning: Toast created but not shown: did
 you forget to call show()? [ShowToast]
-
     Toast toast = Toast.makeText(context, R.string.app_name, 5000);
                   --------------
-
-
 src/test/pkg/ToastTest.java:39:Warning: Toast created but not shown: did
 you forget to call show()? [ShowToast]
-
     Toast.makeText(context, "foo", Toast.LENGTH_LONG);
     --------------
-
-
 src/test/pkg/ToastTest.java:54:Warning: Toast created but not shown: did
 you forget to call show()? [ShowToast]
-
     Toast toast2 = Toast.makeText(context, "foo", Toast.LENGTH_LONG); // not shown
                    --------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

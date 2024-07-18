@@ -44,28 +44,21 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/Trivial.java:10:Warning: This formatting string is trivial.
 Rather than using String.format to create your String, it will be more
 performant to concatenate your arguments with +.  [StringFormatTrivial]
-
     String output1a = String.format("%s", "Hello world");
                                     ----
-
-
 src/test/pkg/Trivial.java:11:Warning: This formatting string is trivial.
 Rather than using String.format to create your String, it will be more
 performant to concatenate your arguments with +.  [StringFormatTrivial]
-
     String output2a = String.format("%s %c", "Hello world", '!');
                                     -------
-
-
 src/test/pkg/Trivial.java:12:Warning: This formatting string is trivial.
 Rather than using String.format to create your String, it will be more
 performant to concatenate your arguments with +.  [StringFormatTrivial]
-
     String output3a = String.format("%s %c %b", "Hello world", '!', true);
                                     ----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/Trivial.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -94,6 +87,17 @@ public class Trivial {
         }
     }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;string name="trivial1"&gt;%s&lt;/string&gt;
+    &lt;string name="trivial2"&gt;%s %c&lt;/string&gt;
+    &lt;string name="trivial3"&gt;%s %c %b&lt;/string&gt;
+&lt;/resources&gt;
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Module companion objects should not be annotated with @Module.
+(#) Module companion objects should not be annotated with @Module
 
-!!! WARNING: Module companion objects should not be annotated with @Module.
+!!! WARNING: Module companion objects should not be annotated with @Module
    This is a warning.
 
 Id
 :   `ModuleCompanionObjects`
 Summary
-:   Module companion objects should not be annotated with @Module.
+:   Module companion objects should not be annotated with @Module
 Severity
 :   Warning
 Category
@@ -49,21 +49,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/MyQualifier.kt:66:Warning: Module companion objects should not
 be annotated with @Module. [ModuleCompanionObjects]
-
   // This should fail because the companion object is part of ClassModule
   ^
-
-
 src/foo/MyQualifier.kt:78:Warning: Module companion objects should not
 be annotated with @Module. [ModuleCompanionObjects]
-
   // This should fail because the companion object is part of ClassModule
   ^
-
-
 src/foo/MyQualifier.kt:101:Warning: Module companion objects should not
 be annotated with @Module. [ModuleCompanionObjects]
-
   // This is should fail because this should be extracted to a standalone object.
   ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

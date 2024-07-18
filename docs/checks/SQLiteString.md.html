@@ -59,21 +59,48 @@ src/test/pkg/SQLiteTest.java:25:Warning: Using column type STRING; did
 you mean to use TEXT? (STRING is a numeric type and its value can be
 adjusted; for example, strings that look like integers can drop leading
 zeroes. See issue explanation for details.) [SQLiteString]
-
     db.execSQL("CREATE TABLE " + name + "(" + Tables.AppKeys.SCHEMA + ");"); // ERROR
     -----------------------------------------------------------------------
-
-
 src/test/pkg/SQLiteTest.java:30:Warning: Using column type STRING; did
 you mean to use TEXT? (STRING is a numeric type and its value can be
 adjusted; for example, strings that look like integers can drop leading
 zeroes. See issue explanation for details.) [SQLiteString]
-
     db.execSQL(TracksColumns.CREATE_TABLE); // ERROR
     --------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/TracksColumns.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.provider.BaseColumns;
+
+public interface TracksColumns extends BaseColumns {
+
+    String TABLE_NAME = "tracks";
+
+    String NAME = "name";
+    String CATEGORY = "category";
+    String STARTTIME = "starttime";
+    String MAXGRADE = "maxgrade";
+    String MAPID = "mapid";
+    String TABLEID = "tableid";
+    String ICON = "icon";
+
+    String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
+            + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + NAME + " STRING, "
+            + CATEGORY + " STRING, "
+            + STARTTIME + " INTEGER, "
+            + MAXGRADE + " FLOAT, "
+            + MAPID + " STRING, "
+            + TABLEID + " STRING, "
+            + ICON + " STRING"
+            + ");";
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/SQLiteTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

@@ -50,88 +50,54 @@ therefore an erroneous transition between the exact same content.`
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/foo/test.kt:11:Error: Target state parameter it is not used
+src/foo/test.kt:14:Error: Target state parameter it is not used
 [UnusedContentLambdaTargetStateParameter]
-
-    AnimatedContent(foo) { if (foo) { /**/ } else { /**/ } }
-                         -----------------------------------
-
-
-src/foo/test.kt:12:Error: Target state parameter it is not used
-[UnusedContentLambdaTargetStateParameter]
-
-    AnimatedContent(foo, content = { if (foo) { /**/ } else { /**/ } })
-                                   -----------------------------------
-
-
-src/foo/test.kt:13:Error: Target state parameter param is not used
-[UnusedContentLambdaTargetStateParameter]
-
-    AnimatedContent(foo) { param -&gt; if (foo) { /**/ } else { /**/ } }
-                           -----
-
-
-src/foo/test.kt:14:Error: Target state parameter param is not used
-[UnusedContentLambdaTargetStateParameter]
-
-    AnimatedContent(foo, content = { param -&gt; if (foo) { /**/ } else { /**/ } })
-                                     -----
-
-
-src/foo/test.kt:15:Error: Target state parameter _ is not used
-[UnusedContentLambdaTargetStateParameter]
-
-    AnimatedContent(foo) { _ -&gt; if (foo) { /**/ } else { /**/ } }
-                           -
-
-
-src/foo/test.kt:16:Error: Target state parameter _ is not used
-[UnusedContentLambdaTargetStateParameter]
-
-    AnimatedContent(foo, content = { _ -&gt; if (foo) { /**/ } else { /**/ } })
-                                     -
-
-
-src/foo/test.kt:17:Error: Target state parameter it is not used
-[UnusedContentLambdaTargetStateParameter]
-
-    Transition(foo).AnimatedContent { if (foo) { /**/ } else { /**/ } }
-                                    -----------------------------------
-
-
+    ) { if (foo) { /**/ } else { /**/ } }
+      -----------------------------------
 src/foo/test.kt:18:Error: Target state parameter it is not used
 [UnusedContentLambdaTargetStateParameter]
-
-    Transition(foo).AnimatedContent(content = { if (foo) { /**/ } else { /**/ } })
-                                              -----------------------------------
-
-
-src/foo/test.kt:19:Error: Target state parameter param is not used
+    content = { if (foo) { /**/ } else { /**/ } }
+              -----------------------------------
+src/foo/test.kt:23:Error: Target state parameter param is not used
 [UnusedContentLambdaTargetStateParameter]
-
-    Transition(foo).AnimatedContent { param -&gt; if (foo) { /**/ } else { /**/ } }
-                                      -----
-
-
-src/foo/test.kt:20:Error: Target state parameter param is not used
+    ) { param -&gt; if (foo) { /**/ } else { /**/ } }
+        -----
+src/foo/test.kt:27:Error: Target state parameter param is not used
 [UnusedContentLambdaTargetStateParameter]
-
-    Transition(foo).AnimatedContent(content = { param -&gt; if (foo) { /**/ } else { /**/ } })
-                                                -----
-
-
-src/foo/test.kt:21:Error: Target state parameter _ is not used
+    content = { param -&gt; if (foo) { /**/ } else { /**/ } }
+                -----
+src/foo/test.kt:32:Error: Target state parameter _ is not used
 [UnusedContentLambdaTargetStateParameter]
-
-    Transition(foo).AnimatedContent { _ -&gt; if (foo) { /**/ } else { /**/ } }
-                                      -
-
-
-src/foo/test.kt:22:Error: Target state parameter _ is not used
+    ) { _ -&gt; if (foo) { /**/ } else { /**/ } }
+        -
+src/foo/test.kt:36:Error: Target state parameter _ is not used
 [UnusedContentLambdaTargetStateParameter]
-
-    Transition(foo).AnimatedContent(content = { _ -&gt; if (foo) { /**/ } else { /**/ } })
-                                                -
+    content = { _ -&gt; if (foo) { /**/ } else { /**/ } }
+                -
+src/foo/test.kt:40:Error: Target state parameter it is not used
+[UnusedContentLambdaTargetStateParameter]
+    ) { if (foo) { /**/ } else { /**/ } }
+      -----------------------------------
+src/foo/test.kt:43:Error: Target state parameter it is not used
+[UnusedContentLambdaTargetStateParameter]
+    content = { if (foo) { /**/ } else { /**/ } }
+              -----------------------------------
+src/foo/test.kt:47:Error: Target state parameter param is not used
+[UnusedContentLambdaTargetStateParameter]
+    ) { param -&gt; if (foo) { /**/ } else { /**/ } }
+        -----
+src/foo/test.kt:50:Error: Target state parameter param is not used
+[UnusedContentLambdaTargetStateParameter]
+    content = { param -&gt; if (foo) { /**/ } else { /**/ } }
+                -----
+src/foo/test.kt:54:Error: Target state parameter _ is not used
+[UnusedContentLambdaTargetStateParameter]
+    ) { _ -&gt; if (foo) { /**/ } else { /**/ } }
+        -
+src/foo/test.kt:57:Error: Target state parameter _ is not used
+[UnusedContentLambdaTargetStateParameter]
+    content = { _ -&gt; if (foo) { /**/ } else { /**/ } }
+                -
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -147,18 +113,54 @@ val foo = false
 
 @Composable
 fun Test() {
-    AnimatedContent(foo) { if (foo) { /**/ } else { /**/ } }
-    AnimatedContent(foo, content = { if (foo) { /**/ } else { /**/ } })
-    AnimatedContent(foo) { param -> if (foo) { /**/ } else { /**/ } }
-    AnimatedContent(foo, content = { param -> if (foo) { /**/ } else { /**/ } })
-    AnimatedContent(foo) { _ -> if (foo) { /**/ } else { /**/ } }
-    AnimatedContent(foo, content = { _ -> if (foo) { /**/ } else { /**/ } })
-    Transition(foo).AnimatedContent { if (foo) { /**/ } else { /**/ } }
-    Transition(foo).AnimatedContent(content = { if (foo) { /**/ } else { /**/ } })
-    Transition(foo).AnimatedContent { param -> if (foo) { /**/ } else { /**/ } }
-    Transition(foo).AnimatedContent(content = { param -> if (foo) { /**/ } else { /**/ } })
-    Transition(foo).AnimatedContent { _ -> if (foo) { /**/ } else { /**/ } }
-    Transition(foo).AnimatedContent(content = { _ -> if (foo) { /**/ } else { /**/ } })
+    AnimatedContent(
+        foo,
+        contentKey = { if (foo) { /**/ } else { /**/ } }
+    ) { if (foo) { /**/ } else { /**/ } }
+    AnimatedContent(
+        foo,
+        contentKey = { if (foo) { /**/ } else { /**/ } },
+        content = { if (foo) { /**/ } else { /**/ } }
+    )
+    AnimatedContent(
+        foo,
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } }
+    ) { param -> if (foo) { /**/ } else { /**/ } }
+    AnimatedContent(
+        foo,
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } },
+        content = { param -> if (foo) { /**/ } else { /**/ } }
+    )
+    AnimatedContent(
+        foo,
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } }
+    ) { _ -> if (foo) { /**/ } else { /**/ } }
+    AnimatedContent(
+        foo,
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } },
+        content = { _ -> if (foo) { /**/ } else { /**/ } }
+    )
+    Transition(foo).AnimatedContent(
+        contentKey = { if (foo) { /**/ } else { /**/ } }
+    ) { if (foo) { /**/ } else { /**/ } }
+    Transition(foo).AnimatedContent(
+        contentKey = { if (foo) { /**/ } else { /**/ } },
+        content = { if (foo) { /**/ } else { /**/ } }
+    )
+    Transition(foo).AnimatedContent(
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } }
+    ) { param -> if (foo) { /**/ } else { /**/ } }
+    Transition(foo).AnimatedContent(
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } },
+        content = { param -> if (foo) { /**/ } else { /**/ } }
+    )
+    Transition(foo).AnimatedContent(
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } }
+    ) { _ -> if (foo) { /**/ } else { /**/ } }
+    Transition(foo).AnimatedContent(
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } },
+        content = { _ -> if (foo) { /**/ } else { /**/ } }
+    )
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -179,17 +181,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.animation:animation-android:1.7.0-beta04")
+implementation("androidx.compose.animation:animation-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.animation:animation-android:1.7.0-beta04'
+implementation 'androidx.compose.animation:animation-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.animation-android)
 
 # libs.versions.toml
 [versions]
-animation-android = "1.7.0-beta04"
+animation-android = "1.7.0-beta05"
 [libraries]
 animation-android = {
     module = "androidx.compose.animation:animation-android",
@@ -197,7 +199,7 @@ animation-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html).

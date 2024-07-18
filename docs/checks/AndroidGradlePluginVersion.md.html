@@ -43,32 +43,53 @@ find.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:7:Warning: A newer version of
-com.android.tools.build:gradle than 3.4.0-alpha3 is available: 3.5.0
+../gradle/libs.versions.toml:8:Warning: A newer version of
+com.android.application than 8.0.0 is available: 8.0.2
 [AndroidGradlePluginVersion]
-
-    classpath 'com.android.tools.build:gradle:3.4.0-alpha3'
-              ---------------------------------------------
+gradlePlugins-agp = "8.0.0"
+                    -------
+../gradle/libs.versions.toml:9:Warning: A newer version of
+com.android.application than 8.1.0-alpha01 is available: 8.1.0-rc01
+[AndroidGradlePluginVersion]
+gradlePlugins-agp-alpha = "8.1.0-alpha01"
+                          ---------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`build.gradle`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
-buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0-alpha3'
-    }
-}
-dependencies {
-    compile 'org.apache.httpcomponents:httpcomponents-core:4.2'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
-    compile 'com.google.firebase:firebase-messaging:10.2.1'
-}
+`../gradle/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+guavaVersion = "11.0.2"
+appCompatVersion="13.0.0"
+wearableVersion=" 1.2.0 "
+# Test comment suppression:
+#noinspection GradleDependency
+multi-dex="1.0.0"
+gradlePlugins-agp = "8.0.0"
+gradlePlugins-agp-alpha = "8.1.0-alpha01"
+gradlePlugins-agp-dev = "8.2.0-dev"
+gradlePlugins-crashlytics = "2.9.2"
+gradlePlugins-dependency-analysis = "1.0.0"
+
+[libraries]
+com-google-guava = { module = "com.google.guava:guava", version.ref = "guavaVersion"}
+appcompat = { module = "com.android.support:appcompat-v7", version.ref = "appCompatVersion" }
+wearable-support = { group = " com.google.android.support ", name =" wearable ", version.ref = " wearableVersion " }
+multidex-lib = { module = "com.android.support:multidex", version.ref = "multi-dex" }
+
+[bundles]
+misc = [
+    "com-google-guava",
+    "appcompat",
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradlePlugins-agp" }
+android-application2 = { id = "com.android.application", version.ref = "gradlePlugins-agp-alpha" }
+android-application3 = { id = "com.android.application", version.ref = "gradlePlugins-agp-dev" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "gradlePlugins-crashlytics" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "gradlePlugins-dependency-analysis" }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -76,7 +97,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testVersionsFromGradleCache`.
+found for this lint check, `GradleDetector.testTomlVersionCatalogFile`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

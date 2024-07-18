@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null.
+(#) Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null
 
-!!! ERROR: Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null.
+!!! ERROR: Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null
    This is an error.
 
 Id
 :   `UseRequireInsteadOfGet`
 Summary
-:   Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null.
+:   Use the 'require_____()' API rather than 'get____()' API for more descriptive error messages when it's null
 Severity
 :   Error
 Category
@@ -53,55 +53,51 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/Test.java:10:Error: Use fragment.requireArguments() instead of
 checkNotNull(fragment.getArguments()) [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getArguments());
     -------------------------------------
-
-
 src/foo/Test.java:11:Error: Use fragment.requireFragmentManager()
 instead of checkNotNull(fragment.getFragmentManager())
 [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getFragmentManager());
     -------------------------------------------
-
-
 src/foo/Test.java:12:Error: Use fragment.requireContext() instead of
 checkNotNull(fragment.getContext()) [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getContext());
     -----------------------------------
-
-
 src/foo/Test.java:13:Error: Use fragment.requireActivity() instead of
 checkNotNull(fragment.getActivity()) [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getActivity());
     ------------------------------------
-
-
 src/foo/Test.java:14:Error: Use fragment.requireHost() instead of
 checkNotNull(fragment.getHost()) [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getHost());
     --------------------------------
-
-
 src/foo/Test.java:15:Error: Use fragment.requireParentFragment() instead
 of checkNotNull(fragment.getParentFragment()) [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getParentFragment());
     ------------------------------------------
-
-
 src/foo/Test.java:16:Error: Use fragment.requireView() instead of
 checkNotNull(fragment.getView()) [UseRequireInsteadOfGet]
-
     checkNotNull(fragment.getView());
     --------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/util/Preconditions.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package util;
+
+public final class Preconditions {
+  public static <T> T checkNotNull(T value) {
+
+  }
+
+  public static <T> T checkNotNull(T value, String message) {
+
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/foo/Test.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

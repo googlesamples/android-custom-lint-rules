@@ -35,12 +35,61 @@ See
 :   https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture#ui-logic
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/main/java/androidx/activity/lint/OnBackPressedDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/test/java/androidx/activity/lint/OnBackPressedDispatcherTest.kt)
 Copyright Year
 :   2024
 
 You should not used OnBackPressedCallback for non-UI cases. If you
                 |add a callback, you have to handle back completely in
 the callback.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/com/example/test.kt:12:Warning: Should not call onBackPressed inside
+of OnBackPressedCallback.handledOnBackPressed
+[InvalidUseOfOnBackPressed]
+    activity.onBackPressed()
+    ------------------------
+src/com/example/test.kt:14:Warning: Should not call onBackPressed inside
+of OnBackPressedCallback.handledOnBackPressed
+[InvalidUseOfOnBackPressed]
+    dispatcher.onBackPressed()
+    --------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/com/example/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
+
+fun test() {
+    object: OnBackPressedCallback {
+        override fun handledOnBackPressed() {
+            val activity = ComponentActivity()
+            activity.onBackPressed()
+            val dispatcher = OnBackPressedDispatcher()
+            dispatcher.onBackPressed()
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/test/java/androidx/activity/lint/OnBackPressedDispatcherTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `OnBackPressedDetector.expectFailOnBackPressed`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=527362.
 
 (##) Including
 

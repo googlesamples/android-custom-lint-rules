@@ -39,49 +39,30 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/HalfFloatTest.java:23:Error: Expected a half float here,
 not a resource id [HalfFloat]
-
     method1(getDimension1()); // ERROR
             ---------------
-
-
 src/test/pkg/HalfFloatTest.java:24:Error: Expected a half float here,
 not a dimension [HalfFloat]
-
     method1(getDimension2()); // ERROR
             ---------------
-
-
 src/test/pkg/HalfFloatTest.java:25:Error: Expected a half float here,
 not a color [HalfFloat]
-
     method1(getActualColor()); // ERROR
             ----------------
-
-
 src/test/pkg/HalfFloatTest.java:26:Error: Expected a half float here,
 not a resource id [HalfFloat]
-
     method1(getTextId()); // ERROR
             -----------
-
-
 src/test/pkg/HalfFloatTest.java:43:Error: Half-float type in expression
 widened to int [HalfFloat]
-
     int result3 = float1 + 1; // error: widening
                   ------
-
-
 src/test/pkg/HalfFloatTest.java:44:Error: Half-float type in expression
 widened to int [HalfFloat]
-
     boolean result4 = float1 + 1 &gt; 5; // error: widening
                       ------
-
-
 src/test/pkg/HalfFloatTest.java:50:Error: Half-float type in expression
 widened to int [HalfFloat]
-
     Math.round(float1); // Error: should use Half.round
                ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

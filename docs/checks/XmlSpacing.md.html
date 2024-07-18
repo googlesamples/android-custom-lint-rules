@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) XML files should not contain any new lines.
+(#) XML files should not contain any new lines
 
-!!! WARNING: XML files should not contain any new lines.
+!!! WARNING: XML files should not contain any new lines
    This is a warning.
 
 Id
 :   `XmlSpacing`
 Summary
-:   XML files should not contain any new lines.
+:   XML files should not contain any new lines
 Severity
 :   Warning
 Category
@@ -29,9 +29,59 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/XmlSpacingDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/XmlSpacingDetectorTest.kt)
 
 Having newlines in xml files just adds noise and should be avoided. The
 only exception is the new lint at the end of the file.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/activity_home.xml:1:Warning: Unnecessary new line at line 1
+[XmlSpacing]
+^
+res/layout/activity_home.xml:3:Warning: Unnecessary new line at line 3
+[XmlSpacing]
+^
+res/layout/activity_home.xml:7:Warning: Unnecessary new line at line 7
+[XmlSpacing]
+^
+res/layout/activity_home.xml:9:Warning: Unnecessary new line at line 9
+[XmlSpacing]
+^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/activity_home.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+
+  &lt;TextView
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="wrap_content"
+
+      /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/XmlSpacingDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `XmlSpacingDetector.layoutXmlFileWithNewLines`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

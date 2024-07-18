@@ -45,19 +45,15 @@ Here is an example of lint warnings produced by this check:
 res/layout/layout1.xml:14:Error: The id "button5" is not defined
 anywhere. Did you mean one of {button1, button2, button3, button4} ?
 [UnknownId]
-
     android:layout_alignBottom="@+id/button5"
     -----------------------------------------
-
-
 res/layout/layout1.xml:17:Error: The id "my_id3" is not defined
 anywhere. Did you mean one of {my_id0, my_id1, my_id2} ? [UnknownId]
-
     android:layout_alignRight="@+id/my_id3"
     ---------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/layout/layout1.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -106,6 +102,33 @@ Here is the source file referenced above:
         android:text="Button" /&gt;
 
 &lt;/RelativeLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/layout2.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+
+    &lt;Button
+        android:id="@+id/my_id2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/ids.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+
+&lt;resources&gt;
+
+    &lt;item name="my_id0" type="id"/&gt;
+    &lt;item name="my_id1" type="id"/&gt;
+
+&lt;/resources&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -53,12 +53,11 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/test.kt:8:Warning: Consider also using
 StorageManager#getAllocatableBytes and allocateBytes which will consider
 clearable cached data [UsableSpace]
-
     return file.usableSpace
                 -----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -72,6 +71,20 @@ fun getFreeSpace(file: File): Long {
     return file.usableSpace
 }
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/StorageTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.io.File;
+
+@SuppressWarnings({"unused", "ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class StorageTest {
+    public long getFreeSpace(File file) {
+        return file.getUsableSpace();
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -33,32 +33,6 @@ Ensures that icons have the correct file extension (e.g. a `.png` file
 is really in the PNG format and not for example a GIF file named
 `.png`).
 
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/drawable-mdpi/foo.png:Warning: Misleading file extension; named .png
-but the file format is webp [IconExtension]
-
-0 errors, 1 warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/drawable-mdpi/foo.png`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
-H4sIAAAAAAAAAAvydHNTYWBgCHd1CggLsPARB7L1LQ/wMrBf2O/3ddt/RgXFP/XrXb/Yf2VkAABv2HPZLAAAAA==
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IconDetectorTest.java)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `IconDetector.testMisleadingWebpFileName`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
-
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

@@ -67,105 +67,19 @@ Example `lint.xml`:
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/Java.java:4:Error: Suspicious indentation: This is conditionally
-executed; expected it to be indented [SuspiciousIndentation]
-
-    System.out.println("test"); // WARN 1
-    --------------------------
-
-
-src/Java.java:7:Error: Suspicious indentation: This is indented but is
-not nested under the previous expression (if (context == null)...)
-[SuspiciousIndentation]
-
-    System.out.println("test"); // WARN 2
-    --------------------------
-
-
 src/Kotlin.kt:8:Error: Suspicious indentation: This is indented but is
 not nested under the previous expression (if (this[i] == '\n')...)
 [SuspiciousIndentation]
-
-    line++ // WARN 3
+    line++ // WARN1
     ------
-
-
 src/Kotlin.kt:15:Error: Suspicious indentation: This is indented but is
 not continuing the previous expression (var s = "The price i...)
 [SuspiciousIndentation]
-
-    price.toString() + // WARN 4
+    price.toString() + // WARN 2
     ----------------------------
-
-
-src/Kotlin.kt:23:Error: Suspicious indentation: This is indented but is
-not continuing the previous expression (s += "The price...)
-[SuspiciousIndentation]
-
-    price.toString() + // WARN 5
-    ----------------------------
-
-
-src/Kotlin.kt:32:Error: Suspicious indentation: This is indented but is
-not continuing the previous expression (s = "The price was...)
-[SuspiciousIndentation]
-
-    price.toString() + // WARN 6
-    ----------------------------
-
-
-src/Kotlin.kt:42:Error: Suspicious indentation: This is indented but is
-not nested under the previous expression (for (i in 0 until 10...)
-[SuspiciousIndentation]
-
-    y++ // WARN 7
-    ---
-
-
-src/Kotlin.kt:48:Error: Suspicious indentation: This is indented but is
-not nested under the previous expression (while (x > 0)       ...)
-[SuspiciousIndentation]
-
-    y++ // WARN 8
-    ---
-
-
-src/Kotlin.kt:55:Error: Suspicious indentation: This is conditionally
-executed; expected it to be indented [SuspiciousIndentation]
-
-   println("hello")     // WARN 9
-   ----------------
-
-
-src/Kotlin.kt:62:Error: Suspicious indentation: This is conditionally
-executed; expected it to be indented [SuspiciousIndentation]
-
-   println("hello")     // WARN 10
-   ----------------
-
-
-src/Kotlin.kt:73:Error: Suspicious indentation: This is indented but is
-not nested under the previous expression (if (this[i] != '\n')...)
-[SuspiciousIndentation]
-
-    line++ // WARN 11
-    ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here are the relevant source files:
-
-`src/Java.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-class Java {
-  public void test(Object context) {
-    if (context == null)
-    System.out.println("test"); // WARN 1
-    if (context == null)
-        System.out.println("test"); // OK
-        System.out.println("test"); // WARN 2
-  }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Here is the source file referenced above:
 
 `src/Kotlin.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -176,74 +90,15 @@ fun String.getLineAndColumn(offset: Int): Pair<Int,Int> {
         column++
         if (this[i] == '\n')
             column = 0
-            line++ // WARN 3
+            line++ // WARN1
     }
     return Pair(line, column)
 }
 
-fun getFooter1(price: Int) {
-    var s = "The price is: " // missing +
-        price.toString() + // WARN 4
+fun getPriceString(price: Int) {
+    var s = "The price is: "
+        price.toString() + // WARN 2
         "."
-}
-
-fun getFooter2(price: Int) {
-    var s = ""
-    if (price > 100) {
-        s += "The price " // missing +
-            price.toString() + // WARN 5
-            " is high."
-    }
-}
-
-fun getFooter3(price: Int) {
-    var s = ""
-    if (price < 1000) {
-        s = "The price was " // missing +
-          price.toString() + // WARN 6
-          "."
-    }
-}
-
-fun loops1() {
-    var x = 0
-    var y = 0
-    for (i in 0 until 100)
-        x++
-        y++ // WARN 7
-}
-
-fun loops2() {
-    while (x > 0)
-        x--
-        y++ // WARN 8
-}
-
-fun expectedIndent1(x: Int) {
-   if (x > 10)
-       println("hello") // OK
-   if (x < 10)
-   println("hello")     // WARN 9
-}
-
-fun expectedIndent2(x: Int) {
-   if (x < 10)
-       println("hello")
-   else
-   println("hello")     // WARN 10
-}
-
-fun String.getLineAndColumn2(offset: Int): Pair<Int,Int> {
-    var line = 1
-    var column = 1
-    for (i in 0 until offset) {
-        column++
-        if (this[i] != '\n') {
-        } else
-            column = 0
-            line++ // WARN 11
-    }
-    return Pair(line, column)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

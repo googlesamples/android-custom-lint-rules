@@ -44,30 +44,23 @@ src/test/pkg/application/ReflectionTestJava.java:11:Warning: Reflective
 access to addAssetPath, which is not part of the public SDK and
 therefore likely to change in future Android releases
 [DiscouragedPrivateApi]
-
     Method m1 = AssetManager.class.getDeclaredMethod("addAssetPath", String.class);
                 ------------------------------------------------------------------
-
-
 src/test/pkg/application/ReflectionTestJava.java:12:Warning: Reflective
 access to addAssetPath, which is not part of the public SDK and
 therefore likely to change in future Android releases
 [DiscouragedPrivateApi]
-
     Method m2 = assetManager.getClass().getDeclaredMethod("addAssetPath", String.class);
                 -----------------------------------------------------------------------
-
-
 src/test/pkg/application/ReflectionTestJava.java:13:Warning: Reflective
 access to addAssetPath, which is not part of the public SDK and
 therefore likely to change in future Android releases
 [DiscouragedPrivateApi]
-
     Method m3 = AssetManager.class.getDeclaredMethod("addAssetPath", path.getClass());
                 ---------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/application/ReflectionTestJava.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -90,6 +83,28 @@ public class ReflectionTestJava {
         Class<?> activityClass = Class.forName("android.app.Activity");
         Class<?> bundleClass = Class.forName("android.os.Bundle");
         Method m7 = activityClass.getDeclaredMethod("dispatchActivityPostCreated", bundleClass);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/application/ReflectionTestKotlin.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg.application;
+
+import android.content.res.AssetManager
+
+class ReflectionTestKotlin {
+    private fun addAssetPath(assetManager: AssetManager) {
+        val path = "foo/bar"
+        val m1 = AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+        val m2 = assetManager.javaClass.getDeclaredMethod("invalidateCachesLocked", Int::class.javaPrimitiveType)
+        val m3 = assetManager.javaClass.getDeclaredMethod("invalidateCachesLocked", Int::class.java) // OK, doesn't exist
+        val m4 = AssetManager::class.java.getDeclaredMethod("addAssetPath", path.javaClass)
+
+        val activityClass = Class.forName("android.app.Activity")
+        val bundleClass = Class.forName("android.os.Bundle")
+        val m5 = activityClass.getDeclaredMethod("dispatchActivityPostCreated", bundleClass)
+
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

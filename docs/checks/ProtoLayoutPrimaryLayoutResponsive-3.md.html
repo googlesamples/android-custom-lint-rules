@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales.
+(#) ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales
 
-!!! WARNING: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales.
+!!! WARNING: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales
    This is a warning.
 
 Id
 :   `ProtoLayoutPrimaryLayoutResponsive`
 Summary
-:   ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales.
+:   ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales
 Severity
 :   Warning
 Category
@@ -33,6 +33,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/wear/protolayout/protolayout-lint/src/main/java/androidx/wear/protolayout/lint/ResponsiveLayoutDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/wear/protolayout/protolayout-lint/src/test/java/PrimaryLayoutResponsiveDetectorTest.kt)
 Copyright Year
 :   2024
 
@@ -44,15 +46,118 @@ This is will take care of all inner padding to ensure that content of
 labels and bottom
 chip doesn't go off the screen (especially with different locales).
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Bar.kt:4:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+val layout = PrimaryLayout.Builder(null)
+             ---------------------
+src/foo/Bar.kt:9:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+ val layout = PrimaryLayout.Builder(null)
+              ---------------------
+src/foo/Bar.kt:12:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+ val layoutFalse = PrimaryLayout.Builder(null)
+                   ---------------------
+src/foo/Bar.kt:17:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+    val l = PrimaryLayout.Builder(null)
+            ---------------------
+src/foo/Bar.kt:24:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+    PrimaryLayout.Builder().setResponsiveContentInsetEnabled(enabled)
+    ---------------------
+src/foo/Bar.kt:32:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+    return PrimaryLayout.Builder().build()
+           ---------------------
+src/foo/Bar.kt:36:Warning: PrimaryLayout used, but responsiveness isn't
+set: Please call
+setResponsiveContentInsetEnabled(true) for the best results across
+different screen sizes. [ProtoLayoutPrimaryLayoutResponsive]
+    PrimaryLayout.Builder()
+    ---------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Bar.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import androidx.wear.protolayout.material.layouts.PrimaryLayout
+
+val layout = PrimaryLayout.Builder(null)
+        .setResponsiveContentInsetEnabled(false)
+        .build()
+
+class Bar {
+ val layout = PrimaryLayout.Builder(null)
+        .build()
+
+ val layoutFalse = PrimaryLayout.Builder(null)
+            .setResponsiveContentInsetEnabled(false)
+        .build()
+
+    fun buildFalse() {
+        val l = PrimaryLayout.Builder(null)
+            .setResponsiveContentInsetEnabled(false)
+        return l.build()
+    }
+
+    fun update() {
+        val enabled = false
+        PrimaryLayout.Builder().setResponsiveContentInsetEnabled(enabled)
+    }
+
+    fun build() {
+        update().build()
+    }
+
+    fun build2() {
+        return PrimaryLayout.Builder().build()
+    }
+
+    fun doubleFalse() {
+        PrimaryLayout.Builder()
+            .setResponsiveContentInsetEnabled(true)
+            .setResponsiveContentInsetEnabled(false)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/wear/protolayout/protolayout-lint/src/test/java/PrimaryLayoutResponsiveDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ResponsiveLayoutDetector.primaryLayout without responsiveness requires and fixes setter`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=1112273.
+
 (##) Repackaged
 
 This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
-* ProtoLayoutPrimaryLayoutResponsive: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales. (this issue)
-* [ProtoLayoutPrimaryLayoutResponsive from androidx.wear.protolayout:protolayout-expression:1.2.0-alpha05](ProtoLayoutPrimaryLayoutResponsive.md.html)
-* [ProtoLayoutPrimaryLayoutResponsive from androidx.wear.protolayout:protolayout-material:1.2.0-alpha05](ProtoLayoutPrimaryLayoutResponsive-2.md.html)
-* [ProtoLayoutPrimaryLayoutResponsive from androidx.wear.protolayout:protolayout:1.2.0-alpha05](ProtoLayoutPrimaryLayoutResponsive-3.md.html)
+* ProtoLayoutPrimaryLayoutResponsive: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales (this issue)
+* [ProtoLayoutPrimaryLayoutResponsive from androidx.wear.protolayout:protolayout-expression:1.2.0-beta01](ProtoLayoutPrimaryLayoutResponsive.md.html)
+* [ProtoLayoutPrimaryLayoutResponsive from androidx.wear.protolayout:protolayout-material:1.2.0-beta01](ProtoLayoutPrimaryLayoutResponsive-2.md.html)
+* [ProtoLayoutPrimaryLayoutResponsive from androidx.wear.protolayout:protolayout:1.2.0-beta01](ProtoLayoutPrimaryLayoutResponsive-3.md.html)
 
 
 (##) Including
@@ -63,17 +168,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.wear.protolayout:protolayout:1.2.0-alpha05")
+implementation("androidx.wear.protolayout:protolayout:1.2.0-beta01")
 
 // build.gradle
-implementation 'androidx.wear.protolayout:protolayout:1.2.0-alpha05'
+implementation 'androidx.wear.protolayout:protolayout:1.2.0-beta01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.protolayout)
 
 # libs.versions.toml
 [versions]
-protolayout = "1.2.0-alpha05"
+protolayout = "1.2.0-beta01"
 [libraries]
 protolayout = {
     module = "androidx.wear.protolayout:protolayout",
@@ -81,7 +186,7 @@ protolayout = {
 }
 ```
 
-1.2.0-alpha05 is the version this documentation was generated from;
+1.2.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.wear.protolayout:protolayout](androidx_wear_protolayout_protolayout.md.html).

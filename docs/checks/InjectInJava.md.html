@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Only Kotlin classes should be injected in order for Anvil to work.
+(#) Only Kotlin classes should be injected in order for Anvil to work
 
-!!! ERROR: Only Kotlin classes should be injected in order for Anvil to work.
+!!! ERROR: Only Kotlin classes should be injected in order for Anvil to work
    This is an error.
 
 Id
 :   `InjectInJava`
 Summary
-:   Only Kotlin classes should be injected in order for Anvil to work.
+:   Only Kotlin classes should be injected in order for Anvil to work
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/InjectInJavaDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/InjectInJavaDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/InjectInJavaDetectorTest.kt)
 Copyright Year
@@ -50,42 +50,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/JavaClass.java:9:Error: Only Kotlin classes should be
 injected in order for Anvil to work. [InjectInJava]
-
   @Inject String memberInjected;
   -------
-
-
 src/test/pkg/JavaClass.java:11:Error: Only Kotlin classes should be
 injected in order for Anvil to work. [InjectInJava]
-
   @Inject JavaClass(String constructorInjected) {
   -------
-
-
 src/test/pkg/JavaClass.java:15:Error: Only Kotlin classes should be
 injected in order for Anvil to work. [InjectInJava]
-
   @Inject void methodInject(String value) {
   -------
-
-
 src/test/pkg/JavaClass.java:21:Error: Only Kotlin classes should be
 injected in order for Anvil to work. [InjectInJava]
-
     @AssistedInject JavaAssistedClass(@Assisted String assistedParam) {
     ---------------
-
-
 src/test/pkg/JavaClass.java:25:Error: Only Kotlin classes should be
 injected in order for Anvil to work. [InjectInJava]
-
     @AssistedFactory
     ----------------
-
-
 src/test/pkg/JavaClass.java:31:Error: Only Kotlin classes should be
 injected in order for Anvil to work. [InjectInJava]
-
   @Module static abstract class ExampleModule {
   -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

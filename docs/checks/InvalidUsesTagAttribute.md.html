@@ -45,12 +45,45 @@ Here is an example of lint warnings produced by this check:
 res/xml/automotive_app_desc.xml:3:Error: Expecting one of media,
 notification, sms, or template for the name attribute in uses tag
 [InvalidUsesTagAttribute]
-
     &lt;uses name="medias"/&gt;
           -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.example.android.uamp"&gt;
+
+    &lt;application
+        android:name=".UAMPApplication"
+        android:label="@string/app_name"
+        android:theme="@style/UAmpAppTheme"&gt;
+
+    &lt;meta-data
+        android:name="com.google.android.gms.car.application"
+        android:resource="@xml/automotive_app_desc"/&gt;
+
+        &lt;service
+            android:name=".MusicService"
+            android:exported="true"
+            tools:ignore="ExportedService"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.media.browse.MediaBrowserService"/&gt;
+            &lt;/intent-filter&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/&gt;
+                &lt;category android:name="android.intent.category.DEFAULT"/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/service&gt;
+
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/xml/automotive_app_desc.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers

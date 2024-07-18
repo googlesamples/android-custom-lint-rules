@@ -55,19 +55,15 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/main/AndroidManifest.xml:8:Warning: Should use @mipmap instead of
 @drawable for launcher icons [MipmapIcons]
-
     android:icon="@drawable/ic_launcher"
     ------------------------------------
-
-
 src/main/AndroidManifest.xml:13:Warning: Should use @mipmap instead of
 @drawable for launcher icons [MipmapIcons]
-
     android:icon="@drawable/activity1"
     ----------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/main/AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -105,6 +101,26 @@ Here is the source file referenced above:
     &lt;/application&gt;
 
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+android {
+    defaultConfig {
+        resConfigs "cs"
+    }
+    flavorDimensions  "pricing", "releaseType"
+    productFlavors {
+        beta {
+            dimension "releaseType"
+            resConfig "en", "de"
+            resConfigs "nodpi", "hdpi"
+        }
+        normal { dimension "releaseType" }
+        free { dimension "pricing" }
+        paid { dimension "pricing" }
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

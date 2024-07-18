@@ -40,23 +40,16 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/SystemServiceTest.java:13:Error: Suspicious cast to
 DisplayManager for a DEVICE_POLICY_SERVICE: expected DevicePolicyManager
 [ServiceCast]
-
     DisplayManager displayServiceWrong = (DisplayManager) getSystemService(
                                          ^
-
-
 src/test/pkg/SystemServiceTest.java:16:Error: Suspicious cast to
 WallpaperService for a WALLPAPER_SERVICE: expected WallpaperManager
 [ServiceCast]
-
     WallpaperService wallPaperWrong = (WallpaperService) getSystemService(WALLPAPER_SERVICE);
                                       ------------------------------------------------------
-
-
 src/test/pkg/SystemServiceTest.java:22:Error: Suspicious cast to
 DisplayManager for a DEVICE_POLICY_SERVICE: expected DevicePolicyManager
 [ServiceCast]
-
     DisplayManager displayServiceWrong = (DisplayManager) context
                                          ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

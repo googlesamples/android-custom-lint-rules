@@ -41,12 +41,11 @@ Here is an example of lint warnings produced by this check:
 res/layout/constraint.xml:12:Warning: Using textAllCaps with a string
 (has_markup) that contains markup; the markup will be dropped by the
 caps conversion [AllCaps]
-
     android:textAllCaps="true"
     --------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/layout/constraint.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -76,6 +75,14 @@ Here is the source file referenced above:
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" /&gt;
 &lt;/merge&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;string name="plain"&gt;Home Sample&lt;/string&gt;
+    &lt;string name="has_markup"&gt;This is &lt;b&gt;bold&lt;/b&gt;&lt;/string&gt;
+&lt;/resources&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

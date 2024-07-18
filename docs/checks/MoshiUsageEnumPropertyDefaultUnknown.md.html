@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Suspicious default value to 'UNKNOWN' for a Moshi enum.
+(#) Suspicious default value to 'UNKNOWN' for a Moshi enum
 
-!!! ERROR: Suspicious default value to 'UNKNOWN' for a Moshi enum.
+!!! ERROR: Suspicious default value to 'UNKNOWN' for a Moshi enum
    This is an error.
 
 Id
 :   `MoshiUsageEnumPropertyDefaultUnknown`
 Summary
-:   Suspicious default value to 'UNKNOWN' for a Moshi enum.
+:   Suspicious default value to 'UNKNOWN' for a Moshi enum
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -52,21 +52,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:9:Error: Suspicious default value to
 'UNKNOWN' for a Moshi enum. [MoshiUsageEnumPropertyDefaultUnknown]
-
   val value3: TestEnum? = UNKNOWN,
                           -------
-
-
 src/slack/model/Example.kt:10:Error: Suspicious default value to
 'UNKNOWN' for a Moshi enum. [MoshiUsageEnumPropertyDefaultUnknown]
-
   val value4: TestEnum = UNKNOWN,
                          -------
-
-
 src/slack/model/Example.kt:11:Error: Suspicious default value to
 'UNKNOWN' for a Moshi enum. [MoshiUsageEnumPropertyDefaultUnknown]
-
   val value5: TestEnum = TestEnum.UNKNOWN,
                          ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

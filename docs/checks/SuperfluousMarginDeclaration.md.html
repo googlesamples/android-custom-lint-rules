@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags margin declarations that can be simplified.
+(#) Flags margin declarations that can be simplified
 
-!!! WARNING: Flags margin declarations that can be simplified.
+!!! WARNING: Flags margin declarations that can be simplified
    This is a warning.
 
 Id
 :   `SuperfluousMarginDeclaration`
 Summary
-:   Flags margin declarations that can be simplified.
+:   Flags margin declarations that can be simplified
 Severity
 :   Warning
 Category
@@ -29,9 +29,47 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/SuperfluousMarginDeclarationDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/SuperfluousMarginDeclarationDetectorTest.kt)
 
 Instead of using start-, end-, bottom- and top margins, layout_margin
 can be used.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/ids.xml:1:Warning: Should be using layout_margin instead.
+[SuperfluousMarginDeclaration]
+&lt;TextView
+^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/ids.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;TextView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_marginTop="16dp"
+  android:layout_marginBottom="16dp"
+  android:layout_marginStart="16dp"
+  android:layout_marginEnd="16dp"/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/SuperfluousMarginDeclarationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SuperfluousMarginDeclarationDetector.androidMarginSame`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

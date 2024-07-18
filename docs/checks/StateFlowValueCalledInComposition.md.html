@@ -47,18 +47,76 @@ the StateFlow, and recompose when it changes.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-                   
-src/androidx/compose/runtime/foo/TestFlow.kt:19:Error: StateFlow.value
+src/androidx/compose/runtime/foo/TestFlow.kt:20:Error: StateFlow.value
 should not be called within composition
 [StateFlowValueCalledInComposition]
-
+    testFlow.value
+             -----
+src/androidx/compose/runtime/foo/TestFlow.kt:24:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
     stateFlow.value
               -----
+src/androidx/compose/runtime/foo/TestFlow.kt:25:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    testFlow.value
+             -----
+src/androidx/compose/runtime/foo/TestFlow.kt:29:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    stateFlow.value
+              -----
+src/androidx/compose/runtime/foo/TestFlow.kt:30:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    testFlow.value
+             -----
+src/androidx/compose/runtime/foo/TestFlow.kt:39:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    stateFlow.value
+              -----
+src/androidx/compose/runtime/foo/TestFlow.kt:40:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    testFlow.value
+             -----
+src/androidx/compose/runtime/foo/TestFlow.kt:43:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    stateFlow.value
+              -----
+src/androidx/compose/runtime/foo/TestFlow.kt:44:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    testFlow.value
+             -----
+src/androidx/compose/runtime/foo/TestFlow.kt:50:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    stateFlow.value
+              -----
+src/androidx/compose/runtime/foo/TestFlow.kt:51:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    testFlow.value
+             -----
+src/androidx/compose/runtime/foo/TestFlow.kt:55:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    stateFlow.value
+              -----
+src/androidx/compose/runtime/foo/TestFlow.kt:56:Error: StateFlow.value
+should not be called within composition
+[StateFlowValueCalledInComposition]
+    testFlow.value
+             -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`                    src/androidx/compose/runtime/foo/TestFlow.kt`:
+`src/androidx/compose/runtime/foo/TestFlow.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package androidx.compose.runtime.foo
 
@@ -136,17 +194,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime-android:1.7.0-beta04")
+implementation("androidx.compose.runtime:runtime-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime-android:1.7.0-beta04'
+implementation 'androidx.compose.runtime:runtime-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.runtime-android)
 
 # libs.versions.toml
 [versions]
-runtime-android = "1.7.0-beta04"
+runtime-android = "1.7.0-beta05"
 [libraries]
 runtime-android = {
     module = "androidx.compose.runtime:runtime-android",
@@ -154,7 +212,7 @@ runtime-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html).

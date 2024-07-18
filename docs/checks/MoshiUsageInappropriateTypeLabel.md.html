@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Inappropriate @TypeLabel or @DefaultObject annotation.
+(#) Inappropriate @TypeLabel or @DefaultObject annotation
 
-!!! ERROR: Inappropriate @TypeLabel or @DefaultObject annotation.
+!!! ERROR: Inappropriate @TypeLabel or @DefaultObject annotation
    This is an error.
 
 Id
 :   `MoshiUsageInappropriateTypeLabel`
 Summary
-:   Inappropriate @TypeLabel or @DefaultObject annotation.
+:   Inappropriate @TypeLabel or @DefaultObject annotation
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -50,21 +50,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Subtype.kt:7:Error: Inappropriate @TypeLabel or
 @DefaultObject annotation. [MoshiUsageInappropriateTypeLabel]
-
 @TypeLabel(label = "one")
 -------------------------
-
-
 src/slack/model/Subtype.kt:11:Error: Inappropriate @TypeLabel or
 @DefaultObject annotation. [MoshiUsageInappropriateTypeLabel]
-
 @TypeLabel(label = "two")
 -------------------------
-
-
 src/slack/model/Subtype.kt:14:Error: Inappropriate @TypeLabel or
 @DefaultObject annotation. [MoshiUsageInappropriateTypeLabel]
-
 @DefaultObject
 --------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

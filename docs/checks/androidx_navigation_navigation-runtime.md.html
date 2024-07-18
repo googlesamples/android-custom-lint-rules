@@ -17,7 +17,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.navigation:navigation-runtime:2.8.0-beta04
+:   androidx.navigation:navigation-runtime:2.8.0-beta05
 
 (##) Included Issues
 
@@ -25,7 +25,7 @@ Artifact
 |----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |[DeepLinkInActivityDestination](DeepLinkInActivityDestination.md.html)|A <deeplink> should not be attached to an <activity> destination                                                                                                                                                                 |
 |[WrongStartDestinationType](WrongStartDestinationType-2.md.html)      |If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
-|[WrongNavigateRouteType](WrongNavigateRouteType.md.html)              |Navigation route should be an object literal or a destination class instance with arguments.                                                                                                                                     |
+|[WrongNavigateRouteType](WrongNavigateRouteType.md.html)              |Navigation route should be an object literal or a destination class instance with arguments                                                                                                                                      |
 
 (##) Including
 
@@ -35,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-runtime:2.8.0-beta04")
+implementation("androidx.navigation:navigation-runtime:2.8.0-beta05")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-runtime:2.8.0-beta04'
+implementation 'androidx.navigation:navigation-runtime:2.8.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation-runtime)
 
 # libs.versions.toml
 [versions]
-navigation-runtime = "2.8.0-beta04"
+navigation-runtime = "2.8.0-beta05"
 [libraries]
 navigation-runtime = {
     module = "androidx.navigation:navigation-runtime",
@@ -53,7 +53,7 @@ navigation-runtime = {
 }
 ```
 
-2.8.0-beta04 is the version this documentation was generated from;
+2.8.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -67,6 +67,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|        2.8.0-beta05|2024/07/10|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        2.8.0-beta04|2024/06/26|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        2.8.0-beta03|2024/06/12|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        2.8.0-beta02|2024/05/29|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|

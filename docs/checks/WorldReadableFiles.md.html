@@ -42,23 +42,16 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/WorldWriteableFile.java:27:Warning: Using
 MODE_WORLD_READABLE when creating files can be risky, review carefully
 [WorldReadableFiles]
-
     out = openFileOutput(mFile.getName(), MODE_WORLD_READABLE);
                                           -------------------
-
-
 src/test/pkg/WorldWriteableFile.java:32:Warning: Using
 MODE_WORLD_READABLE when creating files can be risky, review carefully
 [WorldReadableFiles]
-
     prefs = getSharedPreferences(mFile.getName(), MODE_WORLD_READABLE);
                                                   -------------------
-
-
 src/test/pkg/WorldWriteableFile.java:36:Warning: Using
 MODE_WORLD_READABLE when creating files can be risky, review carefully
 [WorldReadableFiles]
-
     dir = getDir(mFile.getName(), MODE_WORLD_READABLE);
                                   -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

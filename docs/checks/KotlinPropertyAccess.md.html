@@ -48,67 +48,48 @@ getError1 such that error1 can be accessed as a property from Kotlin;
 see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     public String hasError1() { return ""; }
                   ---------
-
-
 src/test/pkg/GetterSetter.java:34:Warning: This method should be called
 getError2 such that error2 can be accessed as a property from Kotlin;
 see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     public String error2() { return ""; }
                   ------
-
-
 src/test/pkg/GetterSetter.java:38:Warning: This method should be called
 getError3 such that error3 can be accessed as a property from Kotlin;
 see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     public String hazzError3() { return ""; }
                   ----------
-
-
 src/test/pkg/GetterSetter.java:42:Warning: The getter return type
 (Integer) and setter parameter type (String) getter and setter methods
 for property error4 should have exactly the same type to allow be
 accessed as a property from Kotlin; see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     public Integer getError4() { return 0; }
                    ---------
-
-
 src/test/pkg/GetterSetter.java:46:Warning: This getter should be public
 such that error5 can be accessed as a property from Kotlin; see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     protected String getError5() { return ""; }
                      ---------
-
-
 src/test/pkg/GetterSetter.java:50:Warning: This getter should not be
 static such that error6 can be accessed as a property from Kotlin; see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     public static String getError6() { return ""; }
            ------
-
-
 src/test/pkg/GetterSetter.java:70:Warning: The getter return type
 (Float) is not the same as the super return type (Number); they should
 have exactly the same type to allow number3 be accessed as a property
 from Kotlin; see
 https://android.github.io/kotlin-guides/interop.html#property-prefixes
 [KotlinPropertyAccess]
-
     @Override public Float getNumber3() { return 0.0f; } // ERROR (even though we have corresponding setter)
                            ----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

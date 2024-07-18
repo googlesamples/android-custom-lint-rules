@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) The ui-test-manifest library should be included using the debugImplementation configuration.
+(#) The ui-test-manifest library should be included using the debugImplementation configuration
 
-!!! WARNING: The ui-test-manifest library should be included using the debugImplementation configuration.
+!!! WARNING: The ui-test-manifest library should be included using the debugImplementation configuration
    This is a warning.
 
 Id
 :   `TestManifestGradleConfiguration`
 Summary
-:   The ui-test-manifest library should be included using the debugImplementation configuration.
+:   The ui-test-manifest library should be included using the debugImplementation configuration
 Severity
 :   Warning
 Category
@@ -51,49 +51,30 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:2:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     implementation("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     -------------------------------------------------------------------
-
-
 build.gradle:3:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     api("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     --------------------------------------------------------
-
-
 build.gradle:4:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     compileOnly("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     ----------------------------------------------------------------
-
-
 build.gradle:5:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     runtimeOnly("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     ----------------------------------------------------------------
-
-
 build.gradle:6:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     annotationProcessor("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     ------------------------------------------------------------------------
-
-
 build.gradle:7:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     lintChecks("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     ---------------------------------------------------------------
-
-
 build.gradle:8:Warning: Please use debugImplementation.
 [TestManifestGradleConfiguration]
-
     lintPublish("androidx.compose.ui:ui-test-manifest:1.2.0-beta02")
     ----------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -130,17 +111,17 @@ https://issuetracker.google.com/issues/new?component=741505.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-test-manifest:1.7.0-beta04")
+implementation("androidx.compose.ui:ui-test-manifest:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-test-manifest:1.7.0-beta04'
+implementation 'androidx.compose.ui:ui-test-manifest:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui-test-manifest)
 
 # libs.versions.toml
 [versions]
-ui-test-manifest = "1.7.0-beta04"
+ui-test-manifest = "1.7.0-beta05"
 [libraries]
 ui-test-manifest = {
     module = "androidx.compose.ui:ui-test-manifest",
@@ -148,7 +129,7 @@ ui-test-manifest = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.ui:ui-test-manifest](androidx_compose_ui_ui-test-manifest.md.html).

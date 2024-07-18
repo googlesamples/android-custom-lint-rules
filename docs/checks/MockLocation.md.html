@@ -51,12 +51,11 @@ Here is an example of lint warnings produced by this check:
 src/main/AndroidManifest.xml:8:Error: Mock locations should only be
 requested in a test or debug-specific manifest file (typically
 src/debug/AndroidManifest.xml) [MockLocation]
-
     &lt;uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /&gt;
                      ------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/main/AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -70,6 +69,48 @@ Here is the source file referenced above:
     &lt;uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /&gt;
 
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/debug/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="foo.bar2"
+    android:versionCode="1"
+    android:versionName="1.0" &gt;
+
+    &lt;uses-sdk android:minSdkVersion="14" /&gt;
+    &lt;uses-permission android:name="com.example.helloworld.permission" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="foo.bar2"
+    android:versionCode="1"
+    android:versionName="1.0" &gt;
+
+    &lt;uses-sdk android:minSdkVersion="14" /&gt;
+    &lt;uses-permission android:name="com.example.helloworld.permission" /&gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+android {
+    compileSdkVersion 25
+    defaultConfig {
+        applicationId "com.android.tools.test"
+        minSdkVersion 5
+        targetSdkVersion 16
+        versionCode 2
+        versionName "MyName"
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

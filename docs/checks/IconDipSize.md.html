@@ -34,34 +34,6 @@ compute to roughly the same density-independent pixel (`dip`) size. This
 catches errors where images are either placed in the wrong folder, or
 icons are changed to new sizes but some folders are forgotten.
 
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/drawable-mdpi/my_lossy_72dp.webp:Warning: Suspicious file name
-my_lossy_72dp.webp: The implied 72 dp size does not match the actual dp
-size (pixel size 58×56 in a drawable-mdpi folder computes to 58×56 dp)
-[IconDipSize]
-
-0 errors, 3 warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/drawable-mdpi/my_lossy_72dp.webp`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
-H4sIAAAAAAAAAAvydHPzYGBgCHd1CggLsFCwAbIvMDPMZdSyYrBgsJvoscBHdYmykhIHwwYhzkyGMgYGhbxlC7g+chcxMPw7vf3/Wx8ht6D//wV23zjUANTKAADVeQHzUAAAAA==
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IconDetectorTest.java)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `IconDetector.testClaimedSizeWebp`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
-
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

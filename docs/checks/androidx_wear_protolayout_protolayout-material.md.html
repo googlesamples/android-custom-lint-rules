@@ -17,15 +17,15 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.wear.protolayout:protolayout-material:1.2.0-alpha05
+:   androidx.wear.protolayout:protolayout-material:1.2.0-beta01
 
 (##) Included Issues
 
-|Issue Id                                                                                  |Issue Description                                                                                                                                    |
-|------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-|[ProtoLayoutMinSchema](ProtoLayoutMinSchema-2.md.html)                                    |ProtoLayout feature is not guaranteed to be available on the target device API.                                                                      |
-|[ProtoLayoutPrimaryLayoutResponsive](ProtoLayoutPrimaryLayoutResponsive-2.md.html)        |ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales.   |
-|[ProtoLayoutEdgeContentLayoutResponsive](ProtoLayoutEdgeContentLayoutResponsive-2.md.html)|ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales.|
+|Issue Id                                                                                  |Issue Description                                                                                                                                   |
+|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+|[ProtoLayoutMinSchema](ProtoLayoutMinSchema-2.md.html)                                    |ProtoLayout feature is not guaranteed to be available on the target device API                                                                      |
+|[ProtoLayoutPrimaryLayoutResponsive](ProtoLayoutPrimaryLayoutResponsive-2.md.html)        |ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales   |
+|[ProtoLayoutEdgeContentLayoutResponsive](ProtoLayoutEdgeContentLayoutResponsive-2.md.html)|ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales|
 
 (##) Including
 
@@ -35,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.wear.protolayout:protolayout-material:1.2.0-alpha05")
+implementation("androidx.wear.protolayout:protolayout-material:1.2.0-beta01")
 
 // build.gradle
-implementation 'androidx.wear.protolayout:protolayout-material:1.2.0-alpha05'
+implementation 'androidx.wear.protolayout:protolayout-material:1.2.0-beta01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.protolayout-material)
 
 # libs.versions.toml
 [versions]
-protolayout-material = "1.2.0-alpha05"
+protolayout-material = "1.2.0-beta01"
 [libraries]
 protolayout-material = {
     module = "androidx.wear.protolayout:protolayout-material",
@@ -53,7 +53,7 @@ protolayout-material = {
 }
 ```
 
-1.2.0-alpha05 is the version this documentation was generated from;
+1.2.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -68,6 +68,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|        1.2.0-beta01|2024/07/10|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.2.0-alpha05|2024/06/26|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.2.0-alpha04|2024/05/29|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.2.0-alpha03|2024/05/14|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|

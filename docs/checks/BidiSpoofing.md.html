@@ -45,21 +45,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/StretchedString.java:5:Error: String contains misleading Unicode
 bidirectional text [BidiSpoofing]
-
     if (accessLevel != "user‮ ⁦// Check if admin⁩ ⁦") {
                        -----------------------------
-
-
 src/CommentingOut.java:5:Error: Comment contains misleading Unicode
 bidirectional text [BidiSpoofing]
-
     /*‮ } ⁦if (isAdmin)⁩ ⁦ begin admins only */
     -------------------------------------------
-
-
 src/CommentingOut.java:7:Error: Comment contains misleading Unicode
 bidirectional text [BidiSpoofing]
-
     /* end admins only ‮ { ⁦*/
     --------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

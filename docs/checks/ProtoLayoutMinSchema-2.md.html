@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) ProtoLayout feature is not guaranteed to be available on the target device API.
+(#) ProtoLayout feature is not guaranteed to be available on the target device API
 
-!!! ERROR: ProtoLayout feature is not guaranteed to be available on the target device API.
+!!! ERROR: ProtoLayout feature is not guaranteed to be available on the target device API
    This is an error.
 
 Id
 :   `ProtoLayoutMinSchema`
 Summary
-:   ProtoLayout feature is not guaranteed to be available on the target device API.
+:   ProtoLayout feature is not guaranteed to be available on the target device API
 Severity
 :   Error
 Category
@@ -33,6 +33,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/wear/protolayout/protolayout-lint/src/main/java/androidx/wear/protolayout/lint/ProtoLayoutMinSchemaDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/wear/protolayout/protolayout-lint/src/test/java/ProtoLayoutMinSchemaDetectorTest.kt)
 Copyright Year
 :   2023
 
@@ -55,15 +57,88 @@ corresponding version.
 Note that @RequiresSchemaVersion annotation on classes are mostly
 ignored (except for Builder classes).
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Bar.kt:6:Error: This API is not guaranteed to be available on
+the device (requires schema 1.200). [ProtoLayoutMinSchema]
+  private val fieldAssignment = withAnnotation.annotatedMethod()
+                                --------------------------------
+src/foo/Bar.kt:12:Error: This API is not guaranteed to be available on
+the device (requires schema 1.200). [ProtoLayoutMinSchema]
+    bar()
+    -----
+src/foo/Bar.kt:14:Error: This API is not guaranteed to be available on
+the device (requires schema 1.200). [ProtoLayoutMinSchema]
+    withAnnotation.annotatedMethod()
+    --------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/foo/WithAnnotation.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import androidx.wear.protolayout.expression.RequiresSchemaVersion
+
+@RequiresSchemaVersion(major=1, minor=200)
+class WithAnnotation {
+  fun unAnnotatedMethod(){}
+
+  @RequiresSchemaVersion(major=1, minor=200)
+  fun annotatedMethod(){}
+
+  @RequiresSchemaVersion(major=1, minor=200)
+  fun unreferencedMethod(){}
+
+  companion object {
+    @RequiresSchemaVersion(major=1, minor=200)
+    const val ANNOTATED_CONST = 10
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/foo/Bar.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import androidx.wear.protolayout.expression.RequiresSchemaVersion
+
+class Bar {
+  private val withAnnotation = WithAnnotation()
+  private val fieldAssignment = withAnnotation.annotatedMethod()
+
+  @RequiresSchemaVersion(major=1, minor=200)
+  fun bar() {}
+
+  fun baz() {
+    bar()
+    withAnnotation.unAnnotatedMethod()
+    withAnnotation.annotatedMethod()
+    //TODO: b/308552481 - This should fail
+    val b = withAnnotation.ANNOTATED_CONST
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/wear/protolayout/protolayout-lint/src/test/java/ProtoLayoutMinSchemaDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ProtoLayoutMinSchemaDetector.calling V1_2 API requires SDK version check`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=1112273.
+
 (##) Repackaged
 
 This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
-* ProtoLayoutMinSchema: ProtoLayout feature is not guaranteed to be available on the target device API. (this issue)
-* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-expression:1.2.0-alpha05](ProtoLayoutMinSchema.md.html)
-* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-material:1.2.0-alpha05](ProtoLayoutMinSchema-2.md.html)
-* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout:1.2.0-alpha05](ProtoLayoutMinSchema-3.md.html)
+* ProtoLayoutMinSchema: ProtoLayout feature is not guaranteed to be available on the target device API (this issue)
+* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-expression:1.2.0-beta01](ProtoLayoutMinSchema.md.html)
+* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout-material:1.2.0-beta01](ProtoLayoutMinSchema-2.md.html)
+* [ProtoLayoutMinSchema from androidx.wear.protolayout:protolayout:1.2.0-beta01](ProtoLayoutMinSchema-3.md.html)
 
 
 (##) Including
@@ -74,17 +149,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.wear.protolayout:protolayout-material:1.2.0-alpha05")
+implementation("androidx.wear.protolayout:protolayout-material:1.2.0-beta01")
 
 // build.gradle
-implementation 'androidx.wear.protolayout:protolayout-material:1.2.0-alpha05'
+implementation 'androidx.wear.protolayout:protolayout-material:1.2.0-beta01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.protolayout-material)
 
 # libs.versions.toml
 [versions]
-protolayout-material = "1.2.0-alpha05"
+protolayout-material = "1.2.0-beta01"
 [libraries]
 protolayout-material = {
     module = "androidx.wear.protolayout:protolayout-material",
@@ -92,7 +167,7 @@ protolayout-material = {
 }
 ```
 
-1.2.0-alpha05 is the version this documentation was generated from;
+1.2.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.wear.protolayout:protolayout-material](androidx_wear_protolayout_protolayout-material.md.html).

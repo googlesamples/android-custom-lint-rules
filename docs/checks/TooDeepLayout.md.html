@@ -24,6 +24,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TooManyViewsDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TooManyViewsDetectorTest.kt)
 Copyright Year
 :   2011
 
@@ -31,6 +33,103 @@ Layouts with too much nesting is bad for performance. Consider using a
 flatter layout (such as `RelativeLayout` or `GridLayout`).The default
 maximum depth is 10 but can be configured with the environment variable
 `ANDROID_LINT_MAX_DEPTH`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/too_deep.xml:44:Warning: too_deep.xml has more than 10
+levels, bad for performance [TooDeepLayout]
+    &lt;LinearLayout
+     ------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/too_deep.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ok" /&gt;
+
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"&gt;
+
+        &lt;LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"&gt;
+
+            &lt;LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"&gt;
+
+                &lt;LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"&gt;
+
+                    &lt;LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"&gt;
+
+                        &lt;LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"&gt;
+
+                            &lt;LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"&gt;
+
+                                &lt;LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"&gt;
+
+                                    &lt;LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"&gt;
+
+                                        &lt;LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"&gt;
+
+                                            &lt;LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"&gt;
+
+                                                &lt;Button
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="Ok" /&gt;
+
+                                            &lt;/LinearLayout&gt;
+                                        &lt;/LinearLayout&gt;
+                                    &lt;/LinearLayout&gt;
+                                &lt;/LinearLayout&gt;
+                            &lt;/LinearLayout&gt;
+                        &lt;/LinearLayout&gt;
+                    &lt;/LinearLayout&gt;
+                &lt;/LinearLayout&gt;
+            &lt;/LinearLayout&gt;
+        &lt;/LinearLayout&gt;
+    &lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TooManyViewsDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TooManyViewsDetector.testTooDeep`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Json.name with the same value as the property/enum member name is redundant.
+(#) Json.name with the same value as the property/enum member name is redundant
 
-!!! WARNING: Json.name with the same value as the property/enum member name is redundant.
+!!! WARNING: Json.name with the same value as the property/enum member name is redundant
    This is a warning.
 
 Id
 :   `MoshiUsageRedundantJsonName`
 Summary
-:   Json.name with the same value as the property/enum member name is redundant.
+:   Json.name with the same value as the property/enum member name is redundant
 Severity
 :   Warning
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -51,7 +51,6 @@ Here is an example of lint warnings produced by this check:
 src/slack/model/Example.kt:7:Warning: Json.name with the same value as
 the property/enum member name is redundant.
 [MoshiUsageRedundantJsonName]
-
 data class Example(@Json(name = "value") val value: String)
                                  -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

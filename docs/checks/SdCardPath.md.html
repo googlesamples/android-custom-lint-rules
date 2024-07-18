@@ -45,101 +45,64 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/SdCardTest.java:13:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
  private static final String SDCARD_TEST_HTML = "/sdcard/test.html";
                                                 -------------------
-
-
 src/test/pkg/SdCardTest.java:14:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
  public static final String SDCARD_ROOT = "/sdcard";
                                           ---------
-
-
 src/test/pkg/SdCardTest.java:15:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
  public static final String PACKAGES_PATH = "/sdcard/o/packages/";
                                             ---------------------
-
-
 src/test/pkg/SdCardTest.java:16:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
  File deviceDir = new File("/sdcard/vr");
                            ------------
-
-
 src/test/pkg/SdCardTest.java:20:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
    android.os.Debug.startMethodTracing("/sdcard/launcher");
                                        ------------------
-
-
 src/test/pkg/SdCardTest.java:22:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
   if (new File("/sdcard").exists()) {
                ---------
-
-
 src/test/pkg/SdCardTest.java:24:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
   String FilePath = "/sdcard/" + new File("test");
                     ----------
-
-
 src/test/pkg/SdCardTest.java:29:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
   intent.setDataAndType(Uri.parse("file://sdcard/foo.json"), "application/bar-json");
                                   ------------------------
-
-
 src/test/pkg/SdCardTest.java:30:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
   intent.putExtra("path-filter", "/sdcard(/.+)*");
                                  ---------------
-
-
 src/test/pkg/SdCardTest.java:31:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
   intent.putExtra("start-dir", "/sdcard");
                                ---------
-
-
 src/test/pkg/SdCardTest.java:32:Warning: Do not hardcode "/data/"; use
 Context.getFilesDir().getPath() instead [SdCardPath]
-
   String mypath = "/data/data/foo";
                   ----------------
-
-
 src/test/pkg/SdCardTest.java:33:Warning: Do not hardcode "/data/"; use
 Context.getFilesDir().getPath() instead [SdCardPath]
-
   String base = "/data/data/foo.bar/test-profiling";
                 -----------------------------------
-
-
 src/test/pkg/SdCardTest.java:34:Warning: Do not hardcode "/sdcard/"; use
 Environment.getExternalStorageDirectory().getPath() instead
 [SdCardPath]
-
   String s = "file://sdcard/foo";
              -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

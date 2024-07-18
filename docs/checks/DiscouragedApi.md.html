@@ -40,12 +40,11 @@ src/test/pkg/Test1.java:9:Warning: Use of this function is discouraged.
 It is more efficient to retrieve resources by identifier than by name.
 See getValue(int id, TypedValue outValue, boolean resolveRefs).
 [DiscouragedApi]
-
     Resources.getValue("name", testValue, false);
               --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here are the relevant source files:
+Here is the source file referenced above:
 
 `src/test/pkg/Test1.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -60,42 +59,6 @@ public class Test1 {
         Resources.getValue("name", testValue, false);
         Resources.getValue(0, testValue, false);
     }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`src/android/content/res/Resources.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package android.content.res;
-
-import android.util.TypedValue;
-import androidx.annotation.Discouraged;
-
-public class Resources {
-
-    @Discouraged(message="Use of this function is discouraged. It is more efficient "
-                       + "to retrieve resources by identifier than by name.\n"
-                       + "See `getValue(int id, TypedValue outValue, boolean "
-                       + "resolveRefs)`.")
-    public int getValue(String name, TypedValue outValue, boolean resolveRefs) { }
-
-    public int getValue(int id, TypedValue outValue, boolean resolveRefs) { }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`src/androidx/annotation/Discouraged.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package androidx.annotation;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-// Stub annotation for unit test.
-@Retention(SOURCE)
-@Target({METHOD})
-public @interface Discouraged {
-    String message() default "";
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -54,27 +54,20 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/values/strings.xml:20:Error: "show_all_apps" is not translated in
 "nl" (Dutch) [MissingTranslation]
-
     &lt;string name="show_all_apps"&gt;All&lt;/string&gt;
             --------------------
-
-
 res/values/strings.xml:23:Error: "menu_wallpaper" is not translated in
 "nl" (Dutch) [MissingTranslation]
-
     &lt;string name="menu_wallpaper"&gt;Wallpaper&lt;/string&gt;
             ---------------------
-
-
 res/values/strings.xml:25:Error: "menu_settings" is not translated in
 "cs" (Czech), "de" (German), "es" (Spanish), "nl" (Dutch)
 [MissingTranslation]
-
     &lt;string name="menu_settings"&gt;Settings&lt;/string&gt;
             --------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/values/strings.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -109,6 +102,146 @@ Here is the source file referenced above:
     &lt;string name="wallpaper_instructions"&gt;Tap picture to set portrait wallpaper&lt;/string&gt;
 &lt;/resources&gt;
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-cs/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="home_title"&gt;"Domů"&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;"Vše"&lt;/string&gt;
+    &lt;string name="menu_wallpaper"&gt;"Tapeta"&lt;/string&gt;
+    &lt;string name="menu_search"&gt;"Hledat"&lt;/string&gt;
+    &lt;!-- no translation found for menu_settings (1769059051084007158) --&gt;
+    &lt;skip /&gt;
+    &lt;string name="wallpaper_instructions"&gt;"Klepnutím na obrázek nastavíte tapetu portrétu"&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-de-rDE/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="home_title"&gt;"Startseite"&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;"Alle"&lt;/string&gt;
+    &lt;string name="menu_wallpaper"&gt;"Bildschirmhintergrund"&lt;/string&gt;
+    &lt;string name="menu_search"&gt;"Suchen"&lt;/string&gt;
+    &lt;!-- no translation found for menu_settings (1769059051084007158) --&gt;
+    &lt;skip /&gt;
+    &lt;string name="wallpaper_instructions"&gt;"Tippen Sie auf Bild, um Porträt-Bildschirmhintergrund einzustellen"&lt;/string&gt;
+    &lt;string name="continue_skip_label"&gt;"Weiter"&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-es/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="home_title"&gt;"Casa"&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;"Todo"&lt;/string&gt;
+    &lt;string name="menu_wallpaper"&gt;"Papel tapiz"&lt;/string&gt;
+    &lt;string name="menu_search"&gt;"Búsqueda"&lt;/string&gt;
+    &lt;!-- no translation found for menu_settings (1769059051084007158) --&gt;
+    &lt;skip /&gt;
+    &lt;string name="wallpaper_instructions"&gt;"Puntee en la imagen para establecer papel tapiz vertical"&lt;/string&gt;
+
+  &lt;string-array name="security_questions"&gt;
+    &lt;item&gt;"Comida favorita"&lt;/item&gt;
+    &lt;item&gt;"Ciudad de nacimiento"&lt;/item&gt;
+    &lt;item&gt;"Nombre de tu mejor amigo/a de la infancia"&lt;/item&gt;
+    &lt;item&gt;"Nombre de tu colegio"&lt;/item&gt;
+  &lt;/string-array&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-es-rUS/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="menu_search"&gt;"Búsqueda"&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-land/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+--&gt;
+
+&lt;resources&gt;
+    &lt;!-- Wallpaper --&gt;
+    &lt;string name="wallpaper_instructions"&gt;Tap image to set landscape wallpaper&lt;/string&gt;
+&lt;/resources&gt;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-cs/arrays.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+  &lt;string-array name="security_questions"&gt;
+    &lt;item&gt;"Oblíbené jídlo?"&lt;/item&gt;
+    &lt;item&gt;"Město narození."&lt;/item&gt;
+    &lt;item&gt;"Jméno nejlepšího kamaráda z dětství?"&lt;/item&gt;
+    &lt;item&gt;"Název střední školy"&lt;/item&gt;
+  &lt;/string-array&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-es/donottranslate.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="full_wday_month_day_no_year"&gt;EEEE, d MMMM&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-nl-rNL/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="home_title"&gt;"Start"&lt;/string&gt;
+    &lt;!-- Commented out in the unit test to generate extra warnings:
+    &lt;string name="show_all_apps"&gt;"Alles"&lt;/string&gt;
+    &lt;string name="menu_wallpaper"&gt;"Achtergrond"&lt;/string&gt;
+    --&gt;
+    &lt;string name="menu_search"&gt;"Zoeken"&lt;/string&gt;
+    &lt;!-- no translation found for menu_settings (1769059051084007158) --&gt;
+    &lt;skip /&gt;
+    &lt;string name="wallpaper_instructions"&gt;"Tik op afbeelding om portretachtergrond in te stellen"&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/public.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;&lt;public /&gt;&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/foo.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;LinearLayout/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout-ja/foo.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;LinearLayout/&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

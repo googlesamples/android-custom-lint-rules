@@ -37,21 +37,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/main/AndroidManifest.xml:10:Warning: Instant Apps are not allowed to
 export services, receivers, and providers [InstantApps]
-
     &lt;service android:name=".WearMessageListenerService"&gt;
     ^
-
-
 src/main/AndroidManifest.xml:15:Warning: Instant Apps are not allowed to
 export services, receivers, and providers [InstantApps]
-
     &lt;provider android:name=".TestService" /&gt;
     ----------------------------------------
-
-
 src/main/AndroidManifest.xml:16:Warning: Instant Apps are not allowed to
 export services, receivers, and providers [InstantApps]
-
     &lt;receiver android:name=".DeviceAdminTestReceiver"
     ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

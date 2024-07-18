@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Use getLayoutInflater() to get the LayoutInflater instead of calling LayoutInflater.from(Context).
+(#) Use getLayoutInflater() to get the LayoutInflater instead of calling LayoutInflater.from(Context)
 
-!!! WARNING: Use getLayoutInflater() to get the LayoutInflater instead of calling LayoutInflater.from(Context).
+!!! WARNING: Use getLayoutInflater() to get the LayoutInflater instead of calling LayoutInflater.from(Context)
    This is a warning.
 
 Id
 :   `UseGetLayoutInflater`
 Summary
-:   Use getLayoutInflater() to get the LayoutInflater instead of calling LayoutInflater.from(Context).
+:   Use getLayoutInflater() to get the LayoutInflater instead of calling LayoutInflater.from(Context)
 Severity
 :   Warning
 Category
@@ -51,7 +51,6 @@ Here is an example of lint warnings produced by this check:
 src/foo/TestFragment.java:16:Warning: Use of
 LayoutInflater.from(requireContext()) detected. Consider using
 getLayoutInflater() instead [UseGetLayoutInflater]
-
     LayoutInflater li = LayoutInflater.from(requireContext());
                         -------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

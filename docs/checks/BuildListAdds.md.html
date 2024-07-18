@@ -38,7 +38,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/Cubic.kt:4:Warning: No add calls within buildList lambda; this is
 usually a mistake [BuildListAdds]
-
     return buildList { // ERROR
            ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,15 +51,7 @@ val _morphMatch = listOf(1)
 fun asCubics_broken(progress: Float): List<Cubic> {
     return buildList { // ERROR
         for (i in _morphMatch.indices) {
-            Cubic(i)
-        }
-    }
-}
-
-fun asCubics_correct(progress: Float): List<Cubic> {
-    return buildList { // OK
-        for (i in _morphMatch.indices) {
-            add(Cubic(i))
+            Cubic(i) // ERROR: Should have been wrapped in an add call.
         }
     }
 }

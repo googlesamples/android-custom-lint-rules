@@ -43,6 +43,52 @@ Copyright Year
 The interval duration for a `PeriodicWorkRequest` must be at least 15
 minutes.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/Test.kt:9:Error: Interval duration for
+`PeriodicWorkRequest`s must be at least 15 minutes.
+[InvalidPeriodicWorkRequestInterval]
+    val builder = PeriodicWorkRequest.Builder(TestWorker::class.java, 15L, TimeUnit.MILLISECONDS)
+                  -------------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`com/example/TestWorker.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.work.ListenableWorker
+
+class TestWorker: ListenableWorker()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`com/example/Test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.work.PeriodicWorkRequest
+import com.example.TestWorker
+import java.util.concurrent.TimeUnit
+
+class Test {
+    fun enqueue() {
+        val builder = PeriodicWorkRequest.Builder(TestWorker::class.java, 15L, TimeUnit.MILLISECONDS)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/InvalidPeriodicWorkRequestIntervalDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InvalidPeriodicWorkRequestIntervalDetector.testWithInvalidDurationTimeUnits`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409906.
+
 (##) Including
 
 !!!

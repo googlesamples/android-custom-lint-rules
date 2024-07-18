@@ -41,50 +41,31 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/X.java:40:Warning: Don't use a constant here; expected one
 of: LENGTH_INDEFINITE, LENGTH_LONG, LENGTH_SHORT [SwitchIntDef]
-
     case 5:
          -
-
-
 src/test/pkg/X.java:47:Warning: Switch statement on an int with known
 associated constant missing case LENGTH_LONG [SwitchIntDef]
-
     switch (duration) {
     ------
-
-
 src/test/pkg/X.java:56:Warning: Switch statement on an int with known
 associated constant missing case LENGTH_INDEFINITE, LENGTH_LONG,
 LENGTH_SHORT [SwitchIntDef]
-
     switch (duration) {
     ------
-
-
 src/test/pkg/X.java:66:Warning: Switch statement on an int with known
 associated constant missing case LENGTH_SHORT [SwitchIntDef]
-
     switch (duration) {
     ------
-
-
 src/test/pkg/X.java:75:Warning: Switch statement on an int with known
 associated constant missing case LENGTH_SHORT [SwitchIntDef]
-
     switch ((int)getDuration()) {
     ------
-
-
 src/test/pkg/X.java:85:Warning: Switch statement on an int with known
 associated constant missing case LENGTH_SHORT [SwitchIntDef]
-
     switch (true ? getDuration() : 0) {
     ------
-
-
 src/test/pkg/X.java:95:Warning: Switch statement on an int with known
 associated constant missing case X.LENGTH_SHORT [SwitchIntDef]
-
     switch (X.getDuration()) {
     ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

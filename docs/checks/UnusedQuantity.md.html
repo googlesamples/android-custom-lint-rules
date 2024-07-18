@@ -51,19 +51,15 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/values-zh-rCN/plurals3.xml:3:Warning: For language "zh" (Chinese)
 the following quantities are not relevant: one [UnusedQuantity]
-
   &lt;plurals name="draft"&gt;
   ^
-
-
 res/values-zh-rCN/plurals3.xml:7:Warning: For language "zh" (Chinese)
 the following quantities are not relevant: one [UnusedQuantity]
-
   &lt;plurals name="title_day_dialog_content"&gt;
   ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/values-zh-rCN/plurals3.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -76,6 +72,28 @@ Here is the source file referenced above:
   &lt;plurals name="title_day_dialog_content"&gt;
     &lt;item quantity="one"&gt;"天"&lt;/item&gt;
     &lt;item quantity="other"&gt;"天"&lt;/item&gt;
+  &lt;/plurals&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-cs/plurals3.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources&gt;
+  &lt;plurals name="draft"&gt;
+    &lt;item quantity="one"&gt;"Koncept"&lt;/item&gt;
+    &lt;item quantity="other"&gt;"Koncepty"&lt;/item&gt;
+  &lt;/plurals&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-fr/plurals.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;resources&gt;
+  &lt;plurals name="draft"&gt;
+    &lt;item quantity="one"&gt;"brouillon"&lt;/item&gt;
+    &lt;item quantity="other"&gt;"brouillons"&lt;/item&gt;
   &lt;/plurals&gt;
 &lt;/resources&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

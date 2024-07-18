@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Checks that Annotations comply with a certain order.
+(#) Checks that Annotations comply with a certain order
 
-!!! WARNING: Checks that Annotations comply with a certain order.
+!!! WARNING: Checks that Annotations comply with a certain order
    This is a warning.
 
 Id
 :   `WrongAnnotationOrder`
 Summary
-:   Checks that Annotations comply with a certain order.
+:   Checks that Annotations comply with a certain order
 Severity
 :   Warning
 Category
@@ -29,9 +29,48 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/AnnotationOrderDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/AnnotationOrderDetectorTest.kt)
 
 Annotations should always be applied with the same order to have
 consistency across the code base.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/MyTest.java:5:Warning: Annotations are in wrong order. Should be
+@Override @Test [WrongAnnotationOrder]
+    @Test @Override int something;
+                        ---------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/MyTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+public class MyTest {
+  void something() {
+    @Test @Override int something;
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/AnnotationOrderDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AnnotationOrderDetector.overrideComesFirstOnVariables`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

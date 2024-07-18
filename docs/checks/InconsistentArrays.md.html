@@ -50,20 +50,16 @@ Here is an example of lint warnings produced by this check:
 res/values/arrays.xml:3:Warning: Array security_questions has an
 inconsistent number of items (3 in values-nl-rNL/arrays.xml, 4 in
 values-cs/arrays.xml) [InconsistentArrays]
-
     &lt;string-array name="security_questions"&gt;
     ^
-
-
 res/values/arrays.xml:10:Warning: Array signal_strength has an
 inconsistent number of items (5 in values/arrays.xml, 6 in
 values-land/arrays.xml) [InconsistentArrays]
-
     &lt;array name="signal_strength"&gt;
     ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/values/arrays.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -85,6 +81,68 @@ Here is the source file referenced above:
     &lt;/array&gt;
 &lt;/resources&gt;
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-cs/arrays.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+  &lt;string-array name="security_questions"&gt;
+    &lt;item&gt;"Oblíbené jídlo?"&lt;/item&gt;
+    &lt;item&gt;"Město narození."&lt;/item&gt;
+    &lt;item&gt;"Jméno nejlepšího kamaráda z dětství?"&lt;/item&gt;
+    &lt;item&gt;"Název střední školy"&lt;/item&gt;
+  &lt;/string-array&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-land/arrays.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;array name="signal_strength"&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_0&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_1&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_2&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_3&lt;/item&gt;
+        &lt;item&gt;@drawable/ic_setups_signal_4&lt;/item&gt;
+        &lt;item&gt;@drawable/extra&lt;/item&gt;
+    &lt;/array&gt;
+&lt;/resources&gt;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-nl-rNL/arrays.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+  &lt;string-array name="security_questions"&gt;
+    &lt;item&gt;"Favoriete eten?"&lt;/item&gt;
+    &lt;item&gt;"Geboorteplaats?"&lt;/item&gt;
+    &lt;item&gt;"Naam van middelbare school?"&lt;/item&gt;
+  &lt;/string-array&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-es/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+
+&lt;resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;string name="home_title"&gt;"Casa"&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;"Todo"&lt;/string&gt;
+    &lt;string name="menu_wallpaper"&gt;"Papel tapiz"&lt;/string&gt;
+    &lt;string name="menu_search"&gt;"Búsqueda"&lt;/string&gt;
+    &lt;!-- no translation found for menu_settings (1769059051084007158) --&gt;
+    &lt;skip /&gt;
+    &lt;string name="wallpaper_instructions"&gt;"Puntee en la imagen para establecer papel tapiz vertical"&lt;/string&gt;
+
+  &lt;string-array name="security_questions"&gt;
+    &lt;item&gt;"Comida favorita"&lt;/item&gt;
+    &lt;item&gt;"Ciudad de nacimiento"&lt;/item&gt;
+    &lt;item&gt;"Nombre de tu mejor amigo/a de la infancia"&lt;/item&gt;
+    &lt;item&gt;"Nombre de tu colegio"&lt;/item&gt;
+  &lt;/string-array&gt;
+&lt;/resources&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

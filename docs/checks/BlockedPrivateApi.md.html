@@ -45,7 +45,6 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/TestReflection.java:12:Error: Reflective access to
 NETWORK_TYPES is forbidden when targeting API 28 and above
 [BlockedPrivateApi]
-
     Field deniedField = TelephonyManager.class.getDeclaredField("NETWORK_TYPES"); // ERROR 1
                         --------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

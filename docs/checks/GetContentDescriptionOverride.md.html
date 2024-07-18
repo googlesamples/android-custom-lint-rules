@@ -24,6 +24,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GetContentDescriptionOverrideDetector.java)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GetContentDescriptionOverrideDetectorTest.kt)
 Copyright Year
 :   2016
 
@@ -31,6 +33,42 @@ Overriding `getContentDescription()` may prevent some accessibility
 services from properly navigating content exposed by your view. Instead,
 call `setContentDescription()` when the content description needs to be
 changed.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyView.java:13:Error: Overriding getContentDescription() on
+a View is not recommended [GetContentDescriptionOverride]
+    public CharSequence getContentDescription() {
+                        ---------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/MyView.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.Context;
+import android.view.View;
+
+public class MyView extends View {
+
+    public MyView(Context context) {
+        super(context);
+    }
+
+    @Override
+    public CharSequence getContentDescription() {
+        return "";
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GetContentDescriptionOverrideDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
 
 (##) Suppressing
 

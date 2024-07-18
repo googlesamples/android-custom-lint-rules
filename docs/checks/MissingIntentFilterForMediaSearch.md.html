@@ -50,12 +50,11 @@ Here is an example of lint warnings produced by this check:
 AndroidManifest.xml:6:Error: Missing intent-filter for action
 android.media.action.MEDIA_PLAY_FROM_SEARCH.
 [MissingIntentFilterForMediaSearch]
-
     &lt;application
     ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -85,6 +84,14 @@ Here is the source file referenced above:
     &lt;/application&gt;
 
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml/automotive_app_desc.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;automotiveApp&gt;
+    &lt;uses name="media"/&gt;
+&lt;/automotiveApp&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

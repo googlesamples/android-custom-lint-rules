@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Moshi-sealed can only be applied to 'sealed' types.
+(#) Moshi-sealed can only be applied to 'sealed' types
 
-!!! ERROR: Moshi-sealed can only be applied to 'sealed' types.
+!!! ERROR: Moshi-sealed can only be applied to 'sealed' types
    This is an error.
 
 Id
 :   `MoshiUsageSealedMustBeSealed`
 Summary
-:   Moshi-sealed can only be applied to 'sealed' types.
+:   Moshi-sealed can only be applied to 'sealed' types
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -48,7 +48,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/BaseType.kt:6:Error: Moshi-sealed can only be applied to
 'sealed' types. [MoshiUsageSealedMustBeSealed]
-
 abstract class BaseType
                --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

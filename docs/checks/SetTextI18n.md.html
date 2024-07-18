@@ -49,29 +49,19 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/CustomScreen.java:13:Warning: String literal in setText can
 not be translated. Use Android resources instead. [SetTextI18n]
-
     view.setText("Hardcoded");
                  -----------
-
-
 src/test/pkg/CustomScreen.java:17:Warning: Number formatting does not
 take into account locale settings. Consider using String.format instead.
 [SetTextI18n]
-
     view.setText(Integer.toString(50) + "%");
                  --------------------
-
-
 src/test/pkg/CustomScreen.java:18:Warning: String literal in setText can
 not be translated. Use Android resources instead. [SetTextI18n]
-
     view.setText(Double.toString(12.5) + " miles");
                                          --------
-
-
 src/test/pkg/CustomScreen.java:21:Warning: String literal in setText can
 not be translated. Use Android resources instead. [SetTextI18n]
-
     btn.setText("User " + getUserName());
                 -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

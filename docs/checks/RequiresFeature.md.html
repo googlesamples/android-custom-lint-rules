@@ -39,76 +39,51 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/CheckFeatures.java:10:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 1 - ERROR
     ----------------
-
-
 src/test/pkg/CheckFeatures.java:12:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 2 - ERROR
     ----------------
-
-
 src/test/pkg/CheckFeatures.java:33:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 6 - ERROR - wrong name
     ----------------
-
-
 src/test/pkg/CheckFeatures.java:39:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 7 - ERROR - inverted logic
     ----------------
-
-
 src/test/pkg/CheckFeatures.java:52:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     return FeatureChecker.hasFeature("wrong.name") && api.someMethod(); // 10 - ERROR
                                                       ----------------
-
-
 src/test/pkg/CheckFeatures.java:56:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     return FeatureChecker.hasFeature("wrong.name") || api.someMethod(); // 11 - ERROR
                                                       ----------------
-
-
 src/test/pkg/CheckFeatures.java:70:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 13 - ERROR: inverted logic in earl exit
     ----------------
-
-
 src/test/pkg/CheckFeatures.java:92:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 16 - ERROR
     ----------------
-
-
 src/test/pkg/CheckFeatures.java:99:Warning: someMethod should only be
 called if the feature some.name is present; to check call
 test.framework.pkg.FeatureChecker#hasFeature [RequiresFeature]
-
     api.someMethod(); // 17 - ERROR
     ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/CheckFeatures.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -213,6 +188,72 @@ public class CheckFeatures {
             api.someMethod(); // 17 - ERROR
         }
     }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import test.framework.pkg.FeatureChecker
+
+fun testLambdas() {
+    val api = SomeApi()
+    api.applyIfHasFeatureX {
+        someMethod() // OK - checked in lambda
+    }
+    api.applyIfHasFeatureY {
+        someMethod() // ERROR - not checked in lambda
+    }
+}
+
+inline fun <T> T.applyIfHasFeatureX(block: T.() -> Unit): T {
+    if (FeatureChecker.hasFeature("some.name")) {
+        block()
+    }
+    return this
+}
+
+inline fun <T> T.applyIfHasFeatureY(block: T.() -> Unit): T {
+    if (FeatureChecker.hasFeature("some.other.feature")) {
+        block()
+    }
+    return this
+}
+
+fun testPropertySyntax() {
+    val api = SomeOtherApi()
+    if (api.supportsFeatureX) {
+        SomeApi().someMethod() // OK - checked via utility method accessed via property syntax
+    }
+}
+
+class SomeOtherApi {
+    val supportsFeatureX get() = FeatureChecker.hasFeature("some.name")
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/framework/pkg/FeatureChecker.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.framework.pkg;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class FeatureChecker {
+    public static boolean hasFeature(String name) { return true; }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/SomeApi.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import androidx.annotation.RequiresFeature;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class SomeApi {
+    @RequiresFeature(name = "some.name", enforcement = "test.framework.pkg.FeatureChecker#hasFeature")
+    public boolean someMethod() { return true; }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

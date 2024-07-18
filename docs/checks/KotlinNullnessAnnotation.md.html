@@ -44,25 +44,18 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/test.kt:7:Warning: Do not use @NonNull in Kotlin; the
 nullability is already implied by the Kotlin type String not ending with
 ? [KotlinNullnessAnnotation]
-
 fun testWarning(@NonNull string: String) { }
                 --------
-
-
 src/test/pkg/test.kt:11:Error: Do not use @Nullable in Kotlin; the
 nullability is determined by the Kotlin type String not ending with ?
 which declares it not nullable, contradicting the annotation
 [KotlinNullnessAnnotation]
-
 fun testError(@Nullable string: String) { }
               ---------
-
-
 src/test/pkg/test.kt:15:Error: Do not use @NonNull in Kotlin; the
 nullability is determined by the Kotlin type Number? ending with ? which
 declares it nullable, contradicting the annotation
 [KotlinNullnessAnnotation]
-
 fun testError(@NonNull number: Number?) { }
               --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

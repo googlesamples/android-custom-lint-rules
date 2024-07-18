@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Adapters targeted by @AdaptedBy must have @Keep.
+(#) Adapters targeted by @AdaptedBy must have @Keep
 
-!!! ERROR: Adapters targeted by @AdaptedBy must have @Keep.
+!!! ERROR: Adapters targeted by @AdaptedBy must have @Keep
    This is an error.
 
 Id
 :   `MoshiUsageAdaptedByRequiresKeep`
 Summary
-:   Adapters targeted by @AdaptedBy must have @Keep.
+:   Adapters targeted by @AdaptedBy must have @Keep
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -49,7 +49,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example1.kt:23:Error: Adapters targeted by @AdaptedBy
 must have @Keep. [MoshiUsageAdaptedByRequiresKeep]
-
 @AdaptedBy(CustomAdapterMissingKeep::class)
            -------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

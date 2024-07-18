@@ -45,22 +45,18 @@ as parameter 1, "run", in test.pkg.Test.error1) should be last to
 improve Kotlin interoperability; see
 https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions
 [LambdaLast]
-
     public void error1(Runnable run, int x) { }
                                      -----
-
-
 src/test/pkg/Test.java:12:Warning: Functional interface parameters (such
 as parameter 1, "sam", in test.pkg.Test.error2) should be last to
 improve Kotlin interoperability; see
 https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions
 [LambdaLast]
-
     public void error2(SamInterface sam, int x) { }
                                          -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/Test.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -83,6 +79,19 @@ public class Test {
         default void other() {  }
     }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+fun ok1(bar: (Int) -> Int) { }
+fun ok2(foo: Int) { }
+fun ok3(foo: Int, bar: (Int) -> Int) { }
+fun ok4(foo: Int, bar: (Int) -> Int, baz: (Int) -> Int) { }
+// Lamda not last, but we're not flagging issues in Kotlin files for the
+// interoperability issue
+fun error(bar: (Int) -> Int, foo: Int) { }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

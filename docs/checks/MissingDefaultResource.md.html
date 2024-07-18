@@ -68,12 +68,19 @@ res/values-land/dimen.xml:4:Error: The dimen "extra_dimen1" in
 values-land has no declaration in the base values folder; this can lead
 to crashes when the resource is queried in a configuration that does not
 match this qualifier [MissingDefaultResource]
-
     &lt;dimen name="extra_dimen1"&gt;1pt&lt;/dimen&gt; &lt;!-- error --&gt;
            -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`res/values/dimen.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;dimen name="ok_dimen"&gt;base&lt;/dimen&gt; &lt;!-- ok --&gt;
+    &lt;style name="ok_style"&gt;&lt;/style&gt; &lt;!-- ok --&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/values-land/dimen.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -83,6 +90,45 @@ Here is the source file referenced above:
     &lt;dimen name="extra_dimen1"&gt;1pt&lt;/dimen&gt; &lt;!-- error --&gt;
     &lt;style name="extra_style1"&gt;&lt;/style&gt; &lt;!-- ok --&gt;
 &lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-v21/dimen.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;!-- We allow common scenario of having dedicated
+         resources for API levels, often used for theming --&gt;
+    &lt;dimen name="ok_extra_dimen"&gt;1pt&lt;/dimen&gt; &lt;!-- ok --&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-land-v21/dimen.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;dimen name="ok_extra_dimen"&gt;2pt&lt;/dimen&gt; &lt;!-- ok --&gt;
+    &lt;dimen name="extra_dimen2"&gt;1pt&lt;/dimen&gt; &lt;!-- error --&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/drawable-mdpi/ok_drawable.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;drawable name="color_drawable"&gt;#ffffffff&lt;/drawable&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/color/ok_color.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;color xmlns:android="http://schemas.android.com/apk/res/android" android:color="#ff0000" /&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/color-port/extra_color.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;color xmlns:android="http://schemas.android.com/apk/res/android" android:color="#ff0000" /&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout-land/extra_layout.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;merge/&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

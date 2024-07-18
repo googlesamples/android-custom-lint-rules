@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Marks a wrong usage of the Constraint Layout.
+(#) Marks a wrong usage of the Constraint Layout
 
-!!! ERROR: Marks a wrong usage of the Constraint Layout.
+!!! ERROR: Marks a wrong usage of the Constraint Layout
    This is an error.
 
 Id
 :   `WrongConstraintLayoutUsage`
 Summary
-:   Marks a wrong usage of the Constraint Layout.
+:   Marks a wrong usage of the Constraint Layout
 Severity
 :   Error
 Category
@@ -29,8 +29,47 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/WrongConstraintLayoutUsageDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongConstraintLayoutUsageDetectorTest.kt)
 
 Instead of using left & right constraints start & end should be used.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/ids.xml:6:Error: This attribute won't work with RTL. Please
+use layout_constraintStart_toStartOf instead.
+[WrongConstraintLayoutUsage]
+    app:layout_constraintLeft_toLeftOf="parent"/&gt;
+    ----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/ids.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintLeft_toLeftOf="parent"/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongConstraintLayoutUsageDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WrongConstraintLayoutUsageDetector.constraintLeftToLeftOf`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

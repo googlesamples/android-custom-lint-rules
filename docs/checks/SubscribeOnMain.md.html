@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) subscribeOn called with the main thread scheduler.
+(#) subscribeOn called with the main thread scheduler
 
-!!! ERROR: subscribeOn called with the main thread scheduler.
+!!! ERROR: subscribeOn called with the main thread scheduler
    This is an error.
 
 Id
 :   `SubscribeOnMain`
 Summary
-:   subscribeOn called with the main thread scheduler.
+:   subscribeOn called with the main thread scheduler
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/rx/RxSubscribeOnMainDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/rx/RxSubscribeOnMainDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/rx/RxSubscribeOnMainDetectorTest.kt)
 Copyright Year
@@ -59,12 +59,24 @@ src/com/slack/lint/Foo.java:8:Error: This will make the code for the
 initial subscription (above this line) run on the main thread. You
 probably want observeOn(AndroidSchedulers.mainThread()).
 [SubscribeOnMain]
-
     obs.subscribeOn(AndroidSchedulers.mainThread());
         -------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/io/reactivex/rxjava3/android/schedulers/AndroidSchedulers.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package io.reactivex.rxjava3.android.schedulers;
+
+import io.reactivex.rxjava3.core.Scheduler;
+
+public final class AndroidSchedulers {
+    public static Scheduler mainThread() {
+        return null;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/com/slack/lint/Foo.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

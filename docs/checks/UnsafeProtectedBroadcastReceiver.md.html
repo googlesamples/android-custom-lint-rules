@@ -48,12 +48,37 @@ ensure that the received Intent's action string matches the expected
 value, potentially making it possible for another actor to send a
 spoofed intent with no action string or a different action string and
 cause undesired behavior. [UnsafeProtectedBroadcastReceiver]
-
     public void onReceive(Context context, Intent intent) {
                 ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"
+    android:versionCode="1"
+    android:versionName="1.0" &gt;
+
+    &lt;uses-sdk android:minSdkVersion="14" /&gt;
+
+    &lt;application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" &gt;
+        &lt;receiver
+            android:label="@string/app_name"
+            android:name=".TestReceiver" &gt;
+                &lt;intent-filter&gt;
+                    &lt;action android:name="android.intent.action.BOOT_COMPLETED"/&gt;
+                &lt;/intent-filter&gt;
+        &lt;/receiver&gt;
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/TestReceiver.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -93,6 +118,22 @@ https://issuetracker.google.com/issues/new?component=192708.
 
 You can suppress false positives using one of the following mechanisms:
 
+* Adding the suppression attribute
+  `tools:ignore="UnsafeProtectedBroadcastReceiver"` on the problematic
+  XML element (or one of its enclosing elements). You may also need to
+  add the following namespace declaration on the root element in the
+  XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;receiver tools:ignore="UnsafeProtectedBroadcastReceiver" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
+
 * Using a suppression annotation like this on the enclosing
   element:
 
@@ -119,22 +160,6 @@ You can suppress false positives using one of the following mechanisms:
   ```kt
   //noinspection UnsafeProtectedBroadcastReceiver
   problematicStatement()
-  ```
-
-* Adding the suppression attribute
-  `tools:ignore="UnsafeProtectedBroadcastReceiver"` on the problematic
-  XML element (or one of its enclosing elements). You may also need to
-  add the following namespace declaration on the root element in the
-  XML file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
-
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;receiver tools:ignore="UnsafeProtectedBroadcastReceiver" .../&gt;
-    ...
-  &lt;/manifest&gt;
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

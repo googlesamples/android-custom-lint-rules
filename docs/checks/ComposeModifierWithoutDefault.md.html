@@ -54,16 +54,12 @@ src/test.kt:5:Error: This @Composable function has a modifier parameter
 but it doesn't have a default value.See
 https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-parameters
 for more information. [ComposeModifierWithoutDefault]
-
 fun Something(modifier: Modifier) { }
               ------------------
-
-
 src/test.kt:7:Error: This @Composable function has a modifier parameter
 but it doesn't have a default value.See
 https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-parameters
 for more information. [ComposeModifierWithoutDefault]
-
 fun Something(modifier: Modifier = Modifier, modifier2: Modifier) { }
                                              -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

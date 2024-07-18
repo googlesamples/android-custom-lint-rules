@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Don't use blank names in `@Json`.
+(#) Don't use blank names in `@Json`
 
-!!! ERROR: Don't use blank names in `@Json`.
+!!! ERROR: Don't use blank names in `@Json`
    This is an error.
 
 Id
 :   `MoshiUsageBlankJsonName`
 Summary
-:   Don't use blank names in `@Json`.
+:   Don't use blank names in `@Json`
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -50,7 +50,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:7:Error: Don't use blank names in @Json.
 [MoshiUsageBlankJsonName]
-
 data class Example(@Json(name = "") val value: String)
                                 --
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

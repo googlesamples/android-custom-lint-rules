@@ -49,7 +49,6 @@ Here is an example of lint warnings produced by this check:
 proguard.cfg:21:Error: Obsolete ProGuard file; use
 -keepclasseswithmembers instead of -keepclasseswithmembernames
 [Proguard]
-
 -keepclasseswithmembernames class * {
 ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +56,7 @@ proguard.cfg:21:Error: Obsolete ProGuard file; use
 Here is the source file referenced above:
 
 `proguard.cfg`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~proguard linenumbers
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses

@@ -1,7 +1,7 @@
 <meta charset="utf-8">
-(#) Marks todos in any given file.
+(#) Marks todos in any given file
 
-!!! ERROR: Marks todos in any given file.
+!!! ERROR: Marks todos in any given file
    This is an error, and is also enforced at build time when
    supported by the build system. For Android this means it will
    run during release builds.
@@ -9,7 +9,7 @@
 Id
 :   `Todo`
 Summary
-:   Marks todos in any given file.
+:   Marks todos in any given file
 Severity
 :   Fatal
 Category
@@ -31,8 +31,41 @@ Affects
 :   Gradle build files, Kotlin and Java files, manifest files, resource files and shrinking configuration files
 Editing
 :   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/TodoDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/TodoDetectorTest.kt)
 
 Marks todo in any given file since they should be resolved.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Example.java:4:Error: Contains todo [Todo]
+  // TODO something
+     ----
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Example.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+class Example {
+  // TODO something
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/TodoDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TodoDetector.javaFile`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

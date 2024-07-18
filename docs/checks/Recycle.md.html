@@ -39,63 +39,38 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/RecycleTest.java:56:Warning: This TypedArray should be
 recycled after use with #recycle() [Recycle]
-
     final TypedArray a = getContext().obtainStyledAttributes(attrs,
                                       ----------------------
-
-
 src/test/pkg/RecycleTest.java:63:Warning: This TypedArray should be
 recycled after use with #recycle() [Recycle]
-
     final TypedArray a = getContext().obtainStyledAttributes(new int[0]);
                                       ----------------------
-
-
 src/test/pkg/RecycleTest.java:79:Warning: This VelocityTracker should be
 recycled after use with #recycle() [Recycle]
-
     VelocityTracker tracker = VelocityTracker.obtain();
                                               ------
-
-
 src/test/pkg/RecycleTest.java:92:Warning: This MotionEvent should be
 recycled after use with #recycle() [Recycle]
-
     MotionEvent event1 = MotionEvent.obtain(null);
                                      ------
-
-
 src/test/pkg/RecycleTest.java:93:Warning: This MotionEvent should be
 recycled after use with #recycle() [Recycle]
-
     MotionEvent event2 = MotionEvent.obtainNoHistory(null);
                                      ---------------
-
-
 src/test/pkg/RecycleTest.java:98:Warning: This MotionEvent should be
 recycled after use with #recycle() [Recycle]
-
     MotionEvent event2 = MotionEvent.obtainNoHistory(null); // Not recycled
                                      ---------------
-
-
 src/test/pkg/RecycleTest.java:103:Warning: This MotionEvent should be
 recycled after use with #recycle() [Recycle]
-
     MotionEvent event1 = MotionEvent.obtain(null);  // Not recycled
                                      ------
-
-
 src/test/pkg/RecycleTest.java:129:Warning: This Parcel should be
 recycled after use with #recycle() [Recycle]
-
     Parcel myparcel = Parcel.obtain();
                              ------
-
-
 src/test/pkg/RecycleTest.java:190:Warning: This TypedArray should be
 recycled after use with #recycle() [Recycle]
-
     final TypedArray a = getContext().obtainStyledAttributes(attrs,  // Not recycled
                                       ----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

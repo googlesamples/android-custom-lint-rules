@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Marks implicit placeholders in strings without an index.
+(#) Marks implicit placeholders in strings without an index
 
-!!! WARNING: Marks implicit placeholders in strings without an index.
+!!! WARNING: Marks implicit placeholders in strings without an index
    This is a warning.
 
 Id
 :   `ImplicitStringPlaceholder`
 Summary
-:   Marks implicit placeholders in strings without an index.
+:   Marks implicit placeholders in strings without an index
 Severity
 :   Warning
 Category
@@ -29,8 +29,43 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/ImplicitStringPlaceholderDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/ImplicitStringPlaceholderDetectorTest.kt)
 
 It's better and more explicit to use numbered placeholders.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values/strings.xml:2:Warning: Implicit placeholder
+[ImplicitStringPlaceholder]
+  &lt;string name="my_string"&gt;Hello %s&lt;/string&gt;
+                                 ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+  &lt;string name="my_string"&gt;Hello %s&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/ImplicitStringPlaceholderDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ImplicitStringPlaceholderDetector.invalid`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

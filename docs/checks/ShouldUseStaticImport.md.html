@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags declarations that should be statically imported.
+(#) Flags declarations that should be statically imported
 
-!!! WARNING: Flags declarations that should be statically imported.
+!!! WARNING: Flags declarations that should be statically imported
    This is a warning.
 
 Id
 :   `ShouldUseStaticImport`
 Summary
-:   Flags declarations that should be statically imported.
+:   Flags declarations that should be statically imported
 Severity
 :   Warning
 Category
@@ -29,9 +29,45 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/ShouldUseStaticImportDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/ShouldUseStaticImportDetectorTest.kt)
 
 Certain declarations like TimeUnit.SECONDS should be statically imported
 to increase the readability.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Example.java:5:Warning: Should statically import SECONDS
+[ShouldUseStaticImport]
+    TimeUnit.SECONDS.toDays(1);
+             -------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Example.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+import java.util.concurrent.TimeUnit;
+class Example {
+  public void foo() {
+    TimeUnit.SECONDS.toDays(1);
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/ShouldUseStaticImportDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ShouldUseStaticImportDetector.timeUnitSeconds`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

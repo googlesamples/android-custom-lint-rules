@@ -52,70 +52,42 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/test.kt:12:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val listProperty = mutableStateOf(list)
                        --------------
-
-
 src/test/test.kt:14:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val setFunction = mutableStateOf(mutableSetOf(1))
                       --------------
-
-
 src/test/test.kt:15:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val setProperty = mutableStateOf(set)
                       --------------
-
-
 src/test/test.kt:17:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val mapFunction = mutableStateOf(mutableMapOf(1 to 1))
                       --------------
-
-
 src/test/test.kt:18:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val mapProperty = mutableStateOf(map)
                       --------------
-
-
 src/test/test.kt:20:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val collectionProperty = mutableStateOf(collection)
                              --------------
-
-
 src/test/test.kt:28:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val listParameter = mutableStateOf(listParam)
                         --------------
-
-
 src/test/test.kt:29:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val setParameter = mutableStateOf(setParam)
                        --------------
-
-
 src/test/test.kt:30:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val mapParameter = mutableStateOf(mapParam)
                        --------------
-
-
 src/test/test.kt:31:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
-
     val collectionProperty = mutableStateOf(collectionParam)
                              --------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,17 +146,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime-android:1.7.0-beta04")
+implementation("androidx.compose.runtime:runtime-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime-android:1.7.0-beta04'
+implementation 'androidx.compose.runtime:runtime-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.runtime-android)
 
 # libs.versions.toml
 [versions]
-runtime-android = "1.7.0-beta04"
+runtime-android = "1.7.0-beta05"
 [libraries]
 runtime-android = {
     module = "androidx.compose.runtime:runtime-android",
@@ -192,7 +164,7 @@ runtime-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html).

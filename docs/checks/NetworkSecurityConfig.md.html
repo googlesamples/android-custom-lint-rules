@@ -46,21 +46,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/xml/network_config.xml:4:Error: Unexpected element <include>
 [NetworkSecurityConfig]
-
     &lt;include domain="file"/&gt;
      -------
-
-
 res/xml/network_config.xml:7:Error: Nested <domain-config> elements are
 not allowed in base-config [NetworkSecurityConfig]
-
     &lt;domain-config&gt;
      -------------
-
-
 res/xml/network_config.xml:12:Error: No <domain> elements in
 <domain-config> [NetworkSecurityConfig]
-
     &lt;domain-config&gt;
      -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

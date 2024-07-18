@@ -57,29 +57,22 @@ on certain versions of Android. Prefer setting UI metadata using
 View.onInitializeAccessibilityNodeInfo, Activity.setTitle,
 ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
 changes to the UI. [AccessibilityWindowStateChangedEvent]
-
     sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
     --------------------------------------------------------------------
-
-
 src/com/my/app/MyView.kt:16:Warning: Manually populating or sending
 TYPE_WINDOW_STATE_CHANGED events should be avoided. They may be ignored
 on certain versions of Android. Prefer setting UI metadata using
 View.onInitializeAccessibilityNodeInfo, Activity.setTitle,
 ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
 changes to the UI. [AccessibilityWindowStateChangedEvent]
-
     if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                                               -------------------------
-
-
 src/com/my/app/MyView.kt:23:Warning: Manually populating or sending
 TYPE_WINDOW_STATE_CHANGED events should be avoided. They may be ignored
 on certain versions of Android. Prefer setting UI metadata using
 View.onInitializeAccessibilityNodeInfo, Activity.setTitle,
 ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
 changes to the UI. [AccessibilityWindowStateChangedEvent]
-
     if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                                               -------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

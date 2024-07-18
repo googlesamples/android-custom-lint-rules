@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Only use one of @AdaptedBy or @JsonClass.
+(#) Only use one of @AdaptedBy or @JsonClass
 
-!!! ERROR: Only use one of @AdaptedBy or @JsonClass.
+!!! ERROR: Only use one of @AdaptedBy or @JsonClass
    This is an error.
 
 Id
 :   `MoshiUsageDoubleClassAnnotation`
 Summary
-:   Only use one of @AdaptedBy or @JsonClass.
+:   Only use one of @AdaptedBy or @JsonClass
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -49,14 +49,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:8:Error: Only use one of @AdaptedBy or
 @JsonClass. [MoshiUsageDoubleClassAnnotation]
-
 @JsonClass(generateAdapter = true)
 ----------------------------------
-
-
 src/slack/model/Example.kt:9:Error: Only use one of @AdaptedBy or
 @JsonClass. [MoshiUsageDoubleClassAnnotation]
-
 @AdaptedBy(CustomFactory::class)
 --------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

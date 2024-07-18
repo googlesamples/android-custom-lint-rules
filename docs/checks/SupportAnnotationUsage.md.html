@@ -42,15 +42,11 @@ src/test/pkg/Annotation1.kt:14:Error: Use @kotlin.annotation.Target, not
 @java.lang.annotation.Target here; these targets will be ignored from
 Kotlin and the annotation will not be allowed on any element types from
 Java [SupportAnnotationUsage]
-
 @java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 1
                       ------
-
-
 src/test/pkg/Annotation1.kt:19:Error: Do not use
 @java.lang.annotation.Target here; it will cause the annotation to not
 be allowed on any element types from Java [SupportAnnotationUsage]
-
 @java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 2
                       ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

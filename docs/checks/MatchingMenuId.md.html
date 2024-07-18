@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags menu ids that don't match with the file name.
+(#) Flags menu ids that don't match with the file name
 
-!!! WARNING: Flags menu ids that don't match with the file name.
+!!! WARNING: Flags menu ids that don't match with the file name
    This is a warning.
 
 Id
 :   `MatchingMenuId`
 Summary
-:   Flags menu ids that don't match with the file name.
+:   Flags menu ids that don't match with the file name
 Severity
 :   Warning
 Category
@@ -29,10 +29,45 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/MatchingMenuIdDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/MatchingMenuIdDetectorTest.kt)
 
 When the layout file is named menu_home all of the containing ids should
 be prefixed with menuHome to avoid ambiguity between different menu
 files across different menu items.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/menu/menu_main.xml:2:Warning: Id should start with: menuMain
+[MatchingMenuId]
+  &lt;item android:id="@+id/something"/&gt;
+                    --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/menu/menu_main.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+  &lt;item android:id="@+id/something"/&gt;
+&lt;/menu&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/MatchingMenuIdDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `MatchingMenuIdDetector.idWithoutPrefix`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

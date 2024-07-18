@@ -35,7 +35,7 @@ The `<activity>` element should not be locked to any orientation so that
 users can take advantage of the multi-window environments and larger
 screens available on Android. To fix the issue, consider declaring the
 corresponding activity element with `screenOrientation="unspecified"`or
-`"fullSensor"` attribute.
+`fullSensor` attribute.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -49,7 +49,6 @@ android:screenOrientation="unspecified" or "fullSensor" for this
 activity so the user can use the application in any orientation and
 provide a great experience on Chrome OS devices
 [LockedOrientationActivity]
-
     &lt;activity android:name=".MainActivity" android:screenOrientation="portrait"/&gt;
                                            ------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -43,61 +43,42 @@ src/test/pkg/TestVisitor.kt:28:Warning:
 org.jetbrains.kotlin.resolve.BindingContext appears to be part of the
 old K1 Kotlin compiler. Avoid using it if possible; K1 will be going
 away soon. [KotlincFE10]
-
     val bindingContext = service.getBindingContext(declaration) // ERROR
                          --------------------------------------
-
-
 src/test/pkg/TestVisitor.kt:29:Warning:
 org.jetbrains.kotlin.resolve.BindingContext appears to be part of the
 old K1 Kotlin compiler. Avoid using it if possible; K1 will be going
 away soon. [KotlincFE10]
-
     val type = bindingContext.getType(expression) ?: return // ERROR
                --------------
-
-
 src/test/pkg/TestVisitor.kt:30:Warning:
 org.jetbrains.kotlin.types.KotlinType appears to be part of the old K1
 Kotlin compiler. Avoid using it if possible; K1 will be going away soon.
 [KotlincFE10]
-
     if (type.isDynamic()) return // ERROR
         ----
-
-
 src/test/pkg/TestVisitor.kt:37:Warning:
 org.jetbrains.kotlin.resolve.BindingContext appears to be part of the
 old K1 Kotlin compiler. Avoid using it if possible; K1 will be going
 away soon. [KotlincFE10]
-
     bindingContext: BindingContext, // ERROR
                     --------------
-
-
 src/test/pkg/TestVisitor.kt:41:Warning:
 org.jetbrains.kotlin.resolve.BindingContext appears to be part of the
 old K1 Kotlin compiler. Avoid using it if possible; K1 will be going
 away soon. [KotlincFE10]
-
     val descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, node.sourcePsi) // ERROR
                      --------------
-
-
 src/test/pkg/TestVisitor.kt:42:Warning:
 org.jetbrains.kotlin.descriptors.DeclarationDescriptorWithVisibility
 appears to be part of the old K1 Kotlin compiler. Avoid using it if
 possible; K1 will be going away soon. [KotlincFE10]
-
     if (descriptor is DeclarationDescriptorWithVisibility) { // ERROR
                       -----------------------------------
-
-
 src/test/pkg/TestVisitor.kt:43:Warning:
 org.jetbrains.kotlin.descriptors.DeclarationDescriptorWithVisibility
 appears to be part of the old K1 Kotlin compiler. Avoid using it if
 possible; K1 will be going away soon. [KotlincFE10]
-
     val effectiveVisibility = descriptor.visibility.effectiveVisibility(descriptor, false) // ERROR
                                          ----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

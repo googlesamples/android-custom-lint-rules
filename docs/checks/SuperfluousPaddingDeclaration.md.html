@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags padding declarations that can be simplified.
+(#) Flags padding declarations that can be simplified
 
-!!! WARNING: Flags padding declarations that can be simplified.
+!!! WARNING: Flags padding declarations that can be simplified
    This is a warning.
 
 Id
 :   `SuperfluousPaddingDeclaration`
 Summary
-:   Flags padding declarations that can be simplified.
+:   Flags padding declarations that can be simplified
 Severity
 :   Warning
 Category
@@ -29,9 +29,47 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/SuperfluousPaddingDeclarationDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/SuperfluousPaddingDeclarationDetectorTest.kt)
 
 Instead of using start-, end-, bottom- and top paddings, padding can be
 used.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/ids.xml:1:Warning: Should be using padding instead.
+[SuperfluousPaddingDeclaration]
+&lt;TextView
+^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/ids.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/SuperfluousPaddingDeclarationDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SuperfluousPaddingDeclarationDetector.androidPaddingSame`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

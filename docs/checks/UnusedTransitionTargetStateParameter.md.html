@@ -53,42 +53,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/test.kt:13:Error: Target state parameter it is not used
 [UnusedTransitionTargetStateParameter]
-
     transition.animateFloat { if (foo) 1f else 0f }
                             -----------------------
-
-
 src/foo/test.kt:14:Error: Target state parameter it is not used
 [UnusedTransitionTargetStateParameter]
-
     transition.animateFloat(targetValueByState = { if (foo) 1f else 0f })
                                                  -----------------------
-
-
 src/foo/test.kt:15:Error: Target state parameter param is not used
 [UnusedTransitionTargetStateParameter]
-
     transition.animateFloat { param -&gt; if (foo) 1f else 0f }
                               -----
-
-
 src/foo/test.kt:16:Error: Target state parameter param is not used
 [UnusedTransitionTargetStateParameter]
-
     transition.animateFloat(targetValueByState = { param -&gt; if (foo) 1f else 0f })
                                                    -----
-
-
 src/foo/test.kt:17:Error: Target state parameter _ is not used
 [UnusedTransitionTargetStateParameter]
-
     transition.animateFloat { _ -&gt; if (foo) 1f else 0f }
                               -
-
-
 src/foo/test.kt:18:Error: Target state parameter _ is not used
 [UnusedTransitionTargetStateParameter]
-
     transition.animateFloat(targetValueByState = { _ -&gt; if (foo) 1f else 0f })
                                                    -
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,17 +118,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.animation:animation-core-android:1.7.0-beta04")
+implementation("androidx.compose.animation:animation-core-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.animation:animation-core-android:1.7.0-beta04'
+implementation 'androidx.compose.animation:animation-core-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.animation-core-android)
 
 # libs.versions.toml
 [versions]
-animation-core-android = "1.7.0-beta04"
+animation-core-android = "1.7.0-beta05"
 [libraries]
 animation-core-android = {
     module = "androidx.compose.animation:animation-core-android",
@@ -152,7 +136,7 @@ animation-core-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.animation:animation-core-android](androidx_compose_animation_animation-core-android.md.html).

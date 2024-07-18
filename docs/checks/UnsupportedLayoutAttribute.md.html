@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Marks layout attributes which are not supported.
+(#) Marks layout attributes which are not supported
 
-!!! ERROR: Marks layout attributes which are not supported.
+!!! ERROR: Marks layout attributes which are not supported
    This is an error.
 
 Id
 :   `UnsupportedLayoutAttribute`
 Summary
-:   Marks layout attributes which are not supported.
+:   Marks layout attributes which are not supported
 Severity
 :   Error
 Category
@@ -29,11 +29,46 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/UnsupportedLayoutAttributeDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/UnsupportedLayoutAttributeDetectorTest.kt)
 
 Some layout attributes are not supported. Your app will still compile
 but it makes no sense to have them around. This can happen when
 refactoring a LinearLayout to a ScrollView. The orientation is no longer
 needed and can be removed.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/activity_home.xml:3:Error: orientation is not allowed in
+RelativeLayout [UnsupportedLayoutAttribute]
+    android:orientation="vertical"/&gt;
+    ------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/activity_home.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/UnsupportedLayoutAttributeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `UnsupportedLayoutAttributeDetector.orientationInRelativeLayout`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

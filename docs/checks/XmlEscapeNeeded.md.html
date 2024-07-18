@@ -41,14 +41,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/layout1.xml:8:Error: < must be escaped (as &lt;) in attribute
 values [XmlEscapeNeeded]
-
     type="test.langdb.calc.Calculator  &lt;  String&gt;" /&gt;
           ---------------------------------------
-
-
 res/layout/layout1.xml:16:Error: < must be escaped (as &lt;) in
 attribute values [XmlEscapeNeeded]
-
     android:text="@{calc.a  &lt;  calc.b ? calc.textA : calc.textB}"/&gt;
                   ----------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

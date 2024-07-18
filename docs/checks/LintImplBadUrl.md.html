@@ -43,19 +43,15 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/MyJavaLintDetector.java:30:Error: Don't point to old
 http://b.android.com links; should be using
 https://issuetracker.google.com instead [LintImplBadUrl]
-
     + "https://code.google.com/p/android/issues/detail?id=65351 blah blah blah.",
        --------------------------------------------------------
-
-
 src/test/pkg/MyJavaLintDetector.java:35:Error: Unexpected protocol file
 in file://explanation.doc [LintImplBadUrl]
-
     .addMoreInfo("file://explanation.doc")
                   ----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/MyJavaLintDetector.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -137,6 +133,201 @@ public class MyJavaLintDetector extends Detector {
         context.report(ISSUE, node, context.getLocation(node), message);
         context.report(ISSUE, node, context.getLocation(node),
             "Should you use `x ?: y` instead of ```foo ? 1 : 0``` ?");
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyKotlinLintDetector.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+/* Copyright (C) 2020 The Android Open Source Project */
+package test.pkg
+import com.intellij.psi.PsiCallExpression
+import com.intellij.psi.PsiExpression
+import com.intellij.psi.PsiField
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiTreeUtil
+import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Issue
+import com.android.tools.lint.detector.api.JavaContext
+import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity
+import org.jetbrains.uast.UCallExpression
+
+class MyKotlinLintDetector : Detector() {
+    fun testGetBody(method: PsiMethod) {
+        val body = method.body // ERROR - must use UAST
+    }
+    @Suppress("ReplaceCallWithBinaryOperator","ControlFlowWithEmptyBody")
+    fun testEquals(element1: PsiCallExpression, element2: PsiExpression) {
+        if (element1.equals(element2)) { }
+        if (element2.equals(element1)) { }
+        if (element1 == element2) { }
+        if (element1 === element2) { }
+        if (element1 != element2) { }
+        if (element1 !== element2) { }
+        if (element1 == null) { } // OK
+        if (element1 === null) { } // OK
+        if (element1 != null) { } // OK
+        if (element1 !== null) { } // OK
+    }
+    @Suppress("UsePropertyAccessSyntax")
+    fun testGetInitializer(field: PsiField) {
+        field.getInitializer() // ERROR - must use UAST
+        field.initializer // ERROR - must use UAST
+    }
+    fun testParents(field: PsiField) {
+        val parent = field.parent
+        val method = PsiTreeUtil.getParentOfType(field, PsiMethod::class.java)
+    }
+
+    fun testReport(context: JavaContext, node: UCallExpression) {
+        context.report(ISSUE, node, context.getLocation(node),
+             """
+                    |Instead you should call foo().bar().baz() here.
+                    |""".trimIndent())
+    }
+
+    companion object {
+        private val IMPLEMENTATION =
+            Implementation(
+                MyKotlinLintDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+
+        val ISSUE =
+            Issue.create(
+                id = "badlyCapitalized id",
+                briefDescription = "checks MyLintDetector.",
+                explanation = """
+                    Some description here.
+                    Here's a call: foo.bar.baz(args).
+                    This line continuation is okay. \
+                    But this one is missing a space.\
+                    Okay?
+                    """.trimIndent(),
+                category = Category.INTEROPERABILITY_KOTLIN,
+                moreInfo = "https://code.google.com/p/android/issues/detail?id=65351", // OBSOLETE
+                priority = 4,
+                severity = Severity.WARNING,
+                implementation = IMPLEMENTATION
+            )
+            .addMoreInfo("https://issuetracker.google.com/issues/3733548") // ERROR - missing digit
+            .addMoreInfo("https://issuetracker.google.com/issues/373354878") // OK - including digit
+            .addMoreInfo("http://issuetracker.google.com/issues/37335487") // ERROR - http instead of https
+            .addMoreInfo("https://b.corp.google.com/issues/139153781") // ERROR - don't point to buganizer with internal link
+            .addMoreInfo("https://goo.gle/policy-storage-help") // OK - regression test for goo.gle
+    }
+
+    override fun visitAnnotationUsage(
+        context: JavaContext,
+        element: org.jetbrains.uast.UElement.UElement,
+        annotationInfo: com.android.tools.lint.detector.api.AnnotationInfo,
+        usageInfo: com.android.tools.lint.detector.api.AnnotationUsageInfo
+    ) {
+        // Invalid recursion!
+        super.visitAnnotationUsage(context, element, annotationInfo, usageInfo)
+    }
+
+    fun misc() {
+        System.out.print("Debugging")
+        println("Debugging code")
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyIssueRegistry.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+import com.android.tools.lint.client.api.IssueRegistry
+class MyIssueRegistry : IssueRegistry() {
+    override val issues = listOf(
+        MyJavaLintDetector.ISSUE,
+        MyKotlinLintDetector.Companion.ISSUE
+    )
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyVendorIssueRegistry.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+import com.android.tools.lint.client.api.IssueRegistry
+import com.android.tools.lint.client.api.Vendor
+class MyVendorIssueRegistry : IssueRegistry() {
+    // Supplies a vendor: no warning
+    override var vendor: Vendor? = Vendor("Unit test")
+    override val issues = listOf(
+        MyJavaLintDetector.ISSUE,
+        MyKotlinLintDetector.Companion.ISSUE
+    )
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/InheritingRegistry.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+import com.android.tools.lint.client.api.IssueRegistry
+import com.android.tools.lint.client.api.Vendor
+class InheritingRegistry : MyVendorIssueRegistry() { // NO WARNING
+    // This registry doesn't supply a vendor but inherits one; no warning
+    override val issues = listOf(
+        MyJavaLintDetector.ISSUE,
+        MyKotlinLintDetector.Companion.ISSUE
+    )
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyKotlinLintDetectorTest.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+// Copyright (C) 2021 The Android Open Source Project
+package test.pkg
+import com.android.tools.lint.checks.infrastructure.LintDetectorTest
+import com.android.tools.lint.detector.api.Detector
+class MyKotlinLintDetectorTest : LintDetectorTest() {
+    override fun getDetector(): Detector {
+        return MyKotlinLintDetector()
+    }
+
+    fun testBasic() {
+        val expected = """
+            src/test/pkg/AlarmTest.java:9: Warning: Value will be forced up to 5000 as of Android 5.1; don't rely on this to be exact [ShortAlarm]
+                    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 50, 10, null); // ERROR
+                                                                             ~~
+            0 errors, 1 warnings
+            """
+
+        lint().files(
+            kotlin(
+                """
+                fun test() {
+                    println("Value=${"$"}")
+                }
+                """
+            ),
+            java(
+                "src/test/pkg/AlarmTest.java",
+                """
+                    package test.pkg;
+
+                    import android.app.AlarmManager;
+                    @SuppressWarnings("ClassNameDiffersFromFileName")
+                    public class AlarmTest {
+                        public void test(AlarmManager alarmManager) {
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000, 60000, null); // OK
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 6000, 70000, null); // OK
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 50, 10, null); // ERROR
+                            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, 5000,  // ERROR
+                                    OtherClass.MY_INTERVAL, null);                          // ERROR
+                        }
+
+                        private static class OtherClass {
+                            public static final long MY_INTERVAL = 1000L;
+                        }
+                    }
+                    """.trimIndent()
+            )
+        ).run().expect(expected)
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

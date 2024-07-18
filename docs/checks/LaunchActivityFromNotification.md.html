@@ -50,12 +50,31 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/NotificationTest.java:22:Warning: Notifications should only
 launch a Service from notification actions (addAction)
 [LaunchActivityFromNotification]
-
     .setContentIntent(serviceIntent)
      -------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/BroadcastTrampoline.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+public class BroadcastTrampoline extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // The start below will be blocked
+        Intent i = new Intent();
+        i.setClassName("test.pkg", "test.pkg.SecondActivity");
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/NotificationTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

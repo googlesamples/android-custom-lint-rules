@@ -113,15 +113,11 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/test.kt:12:Warning: The beginSection() call is not always
 closed with a matching endSection() because the code in between may
 suspend [UnclosedTrace]
-
     Trace.beginSection("Wrong-1")
           ------------
-
-
 src/test/pkg/test.kt:18:Warning: The beginSection() call is not always
 closed with a matching endSection() because the code in between may
 throw an exception [UnclosedTrace]
-
     Trace.beginSection("Wrong-2")
           ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

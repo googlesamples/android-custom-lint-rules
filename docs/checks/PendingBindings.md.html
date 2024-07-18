@@ -44,47 +44,34 @@ holder.dataBinder.executePendingBindings() before the onBind method
 exits, otherwise, the DataBinding library will update the UI in the next
 animation frame causing a delayed update & potential jumps if the item
 resizes. [PendingBindings]
-
     holder.dataBinder.someMethod(); // ERROR - no pending call
     ------------------------------
-
-
 src/test/pkg/RecyclerViewTest2.java:40:Error: You must call
 holder.dataBinder.executePendingBindings() before the onBind method
 exits, otherwise, the DataBinding library will update the UI in the next
 animation frame causing a delayed update & potential jumps if the item
 resizes. [PendingBindings]
-
     holder.dataBinder.someMethod(); // ERROR: After call
     ------------------------------
-
-
 src/test/pkg/RecyclerViewTest2.java:48:Error: You must call
 holder.dataBinder.executePendingBindings() before the onBind method
 exits, otherwise, the DataBinding library will update the UI in the next
 animation frame causing a delayed update & potential jumps if the item
 resizes. [PendingBindings]
-
     holder.dataBinder.someMethod(); // ERROR: can't reach pending
     ------------------------------
-
-
 src/test/pkg/RecyclerViewTest2.java:116:Error: You must call
 holder.dataBinder.executePendingBindings() before the onBind method
 exits, otherwise, the DataBinding library will update the UI in the next
 animation frame causing a delayed update & potential jumps if the item
 resizes. [PendingBindings]
-
     holder.dataBinder.someMethod(); // ERROR
     ------------------------------
-
-
 src/test/pkg/RecyclerViewTest2.java:139:Error: You must call
 holder.dataBinder.executePendingBindings() before the onBind method
 exits, otherwise, the DataBinding library will update the UI in the next
 animation frame causing a delayed update & potential jumps if the item
 resizes. [PendingBindings]
-
     holder.dataBinder.someMethod(); // ERROR: no fallthrough
     ------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

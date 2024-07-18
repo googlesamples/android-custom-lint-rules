@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/parcel/ParcelizeFunctionPropertyDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/parcel/ParcelizeFunctionPropertyDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/parcel/ParcelizeFunctionPropertyDetectorTest.kt)
 Copyright Year
@@ -54,57 +54,41 @@ supported by Parcelize, function types should not be used in Parcelize
 classes. There are only limited conditions where it will work and it's
 usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
-
   val functionType1: () -&gt; String,
                      ------------
-
-
 src/test/pkg/Example1.kt:13:Error: While technically (and surprisingly)
 supported by Parcelize, function types should not be used in Parcelize
 classes. There are only limited conditions where it will work and it's
 usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
-
   val functionType2: (String) -&gt; String,
                      ------------------
-
-
 src/test/pkg/Example1.kt:14:Error: While technically (and surprisingly)
 supported by Parcelize, function types should not be used in Parcelize
 classes. There are only limited conditions where it will work and it's
 usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
-
   val functionType3: String.() -&gt; String,
                      -------------------
-
-
 src/test/pkg/Example1.kt:15:Error: While technically (and surprisingly)
 supported by Parcelize, function types should not be used in Parcelize
 classes. There are only limited conditions where it will work and it's
 usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
-
   val functionType4: () -&gt; Unit,
                      ----------
-
-
 src/test/pkg/Example1.kt:16:Error: While technically (and surprisingly)
 supported by Parcelize, function types should not be used in Parcelize
 classes. There are only limited conditions where it will work and it's
 usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
-
   val functionType5: suspend () -&gt; Unit,
                      ------------------
-
-
 src/test/pkg/Example1.kt:17:Error: While technically (and surprisingly)
 supported by Parcelize, function types should not be used in Parcelize
 classes. There are only limited conditions where it will work and it's
 usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
-
   val aliasedFunction: FunctionType,
                        ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

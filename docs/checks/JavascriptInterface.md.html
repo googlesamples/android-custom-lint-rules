@@ -45,39 +45,83 @@ src/test/pkg/JavaScriptTest.java:11:Error: None of the methods in the
 added interface (NonAnnotatedObject) have been annotated with
 @android.webkit.JavascriptInterface; they will not be visible in API 17
 [JavascriptInterface]
-
     webview.addJavascriptInterface(new NonAnnotatedObject(), "myobj");
             ----------------------
-
-
 src/test/pkg/JavaScriptTest.java:14:Error: None of the methods in the
 added interface (NonAnnotatedObject) have been annotated with
 @android.webkit.JavascriptInterface; they will not be visible in API 17
 [JavascriptInterface]
-
     webview.addJavascriptInterface(o, "myobj");
             ----------------------
-
-
 src/test/pkg/JavaScriptTest.java:21:Error: None of the methods in the
 added interface (NonAnnotatedObject) have been annotated with
 @android.webkit.JavascriptInterface; they will not be visible in API 17
 [JavascriptInterface]
-
     webview.addJavascriptInterface(object2, "myobj");
             ----------------------
-
-
 src/test/pkg/JavaScriptTest.java:32:Error: None of the methods in the
 added interface (NonAnnotatedObject) have been annotated with
 @android.webkit.JavascriptInterface; they will not be visible in API 17
 [JavascriptInterface]
-
     webview.addJavascriptInterface(t, "myobj");
             ----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/AnnotatedObject.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.webkit.JavascriptInterface;
+
+@SuppressWarnings("ClassNameDiffersFromFileName")
+public class AnnotatedObject {
+    @JavascriptInterface
+    public void test1() {
+    }
+
+    public void test2() {
+    }
+
+    @JavascriptInterface
+    public void test3() {
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/InheritsFromAnnotated.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.webkit.JavascriptInterface;
+
+@SuppressWarnings("ClassNameDiffersFromFileName")
+public class InheritsFromAnnotated extends AnnotatedObject {
+
+    @Override
+    public void test1() {
+    }
+
+    @Override
+    public void test2() {
+    }
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/NonAnnotatedObject.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+@SuppressWarnings("ClassNameDiffersFromFileName")
+public class NonAnnotatedObject {
+    public void test1() {
+    }
+    public void test2() {
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/JavaScriptTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

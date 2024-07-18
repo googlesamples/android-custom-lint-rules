@@ -24,6 +24,8 @@ Editing
 :   This check runs on the fly in the IDE editor
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/InternalInsetResourceDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InternalInsetResourceDetectorTest.kt)
 Copyright Year
 :   2022
 
@@ -33,6 +35,32 @@ dynamic values that can change while your app is visible, and your app's
 window may not intersect with the system UI. To get the relevant value
 for your app and listen to updates, use
 `androidx.core.view.WindowInsetsCompat` and related APIs.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/test.kt:6:Warning: Using internal inset dimension resource
+status_bar_height is not supported [InternalInsetResource]
+    getIdentifier("status_bar_height", "dimen", "android")
+    ------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.content.res.Resources
+
+fun Resources.getStatusBarHeightIdentifier(): Int =
+    getIdentifier("status_bar_height", "dimen", "android")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InternalInsetResourceDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
 
 (##) Suppressing
 

@@ -42,22 +42,15 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/ThreadTest.java:15:Error: Method onPreExecute must be
 called from the main thread, currently inferred thread is worker thread
 [WrongThread]
-
     onPreExecute(); // ERROR
     --------------
-
-
 src/test/pkg/ThreadTest.java:16:Error: Method paint must be called from
 the UI thread, currently inferred thread is worker thread [WrongThread]
-
     view.paint(); // ERROR
     ------------
-
-
 src/test/pkg/ThreadTest.java:22:Error: Method publishProgress must be
 called from the worker thread, currently inferred thread is main thread
 [WrongThread]
-
     publishProgress(); // ERROR
     -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

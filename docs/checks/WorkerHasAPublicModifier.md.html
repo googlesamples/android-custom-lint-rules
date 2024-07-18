@@ -44,6 +44,36 @@ When you define a ListenableWorker which is constructed using the
 default WorkerFactory, the ListenableWorker sub-type needs to be
 public.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/Worker.kt:5:Error: com.example.Worker needs to be public
+[WorkerHasAPublicModifier]
+private class Worker: ListenableWorker()
+              ------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/Worker.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.work.ListenableWorker
+
+private class Worker: ListenableWorker()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/WorkerHasPublicModifierDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WorkerHasPublicModifierDetector.testWithPrivateWorker`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409906.
+
 (##) Including
 
 !!!

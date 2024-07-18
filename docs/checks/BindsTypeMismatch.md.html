@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DaggerIssuesDetectorTest.kt)
 Copyright Year
@@ -49,21 +49,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/TestModule.kt:18:Error: @Binds parameter/return must be
 type-assignable [BindsTypeMismatch]
-
   @Binds fun invalidBind(real: Long): String
   ------------------------------------------
-
-
 src/foo/TestModule.kt:19:Error: @Binds parameter/return must be
 type-assignable [BindsTypeMismatch]
-
   @Binds fun invalidBind(real: Long): Comparable&lt;Boolean&gt;
   -------------------------------------------------------
-
-
 src/foo/TestModule.kt:23:Error: @Binds parameter/return must be
 type-assignable [BindsTypeMismatch]
-
   @Binds fun invalidComplexBinding(real: DetailTypeAItemMapper): ItemMapper&lt;ItemDetail&gt;
   -------------------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

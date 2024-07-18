@@ -39,35 +39,22 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/WorkManagerTest.java:15:Warning: WorkContinuation cont not
 enqueued: did you forget to call enqueue()? [EnqueueWork]
-
     WorkContinuation cont = workManager.beginWith(workRequest1, workRequest2); // ERROR
                             -------------------------------------------------
-
-
 src/test/pkg/WorkManagerTest.java:22:Warning: WorkContinuation not
 enqueued: did you forget to call enqueue()? [EnqueueWork]
-
     workManager.beginWith(workRequest1, workRequest2); // ERROR
     -------------------------------------------------
-
-
 src/test/pkg/WorkManagerTest.java:46:Warning: WorkContinuation cont2 not
 enqueued: did you forget to call enqueue()? [EnqueueWork]
-
     WorkContinuation cont2 = cont1.then(workRequest3).then(workRequest4); // ERROR
                              -------------------------------------------
-
-
 src/test/pkg/WorkManagerTest.java:47:Warning: WorkContinuation cont3 not
 enqueued: did you forget to call enqueue()? [EnqueueWork]
-
     WorkContinuation cont3 = cont1.then(workRequest5); // ERROR
                              ------------------------
-
-
 src/test/pkg/WorkManagerTest.java:59:Warning: WorkContinuation cont4 not
 enqueued: did you forget to call enqueue()? [EnqueueWork]
-
     WorkContinuation cont4 = WorkContinuation.combine(workRequest6, cont2, cont3); // ERROR
                              ----------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -43,23 +43,16 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/myapplication/ReflectionTest1.java:8:Warning: Accessing
 internal APIs via reflection is not supported and may not work on all
 devices or in the future [PrivateApi]
-
     Class&lt;?&gt; c = Class.forName("com.android.internal.widget.LockPatternUtils"); // ERROR
                  -------------------------------------------------------------
-
-
 src/test/pkg/myapplication/ReflectionTest1.java:9:Warning: Accessing
 internal APIs via reflection is not supported and may not work on all
 devices or in the future [PrivateApi]
-
     int titleContainerId = (Integer) Class.forName("com.android.internal.R{$}id").getField("title_container").get(null);
                                      --------------------------------------------
-
-
 src/test/pkg/myapplication/ReflectionTest1.java:11:Warning: Accessing
 internal APIs via reflection is not supported and may not work on all
 devices or in the future [PrivateApi]
-
     Class SystemProperties = cl.loadClass("android.os.SystemProperties");
                              -------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

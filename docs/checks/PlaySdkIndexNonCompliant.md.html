@@ -41,99 +41,65 @@ Here is an example of lint warnings produced by this check:
 build.gradle:6:Warning: log4j:log4j version 1.2.14 has policy issues
 that will block publishing of your app to Play Console in the future
 [PlaySdkIndexNonCompliant]
-
     compile 'log4j:log4j:1.2.14' // Non compliant
             --------------------
-
-
 build.gradle:13:Warning: com.example.ads.third.party:example version
 7.2.0 has User Data policy issues that will block publishing of your app
 to Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.2.0' // Outdated + Critical + Policy (multiple issues), no severity
             -------------------------------------------
-
-
 build.gradle:14:Warning: com.example.ads.third.party:example version
 7.1.0 has Ads policy issues that will block publishing of your app to
 Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.0' // Policy (Ads), non-blocking
             -------------------------------------------
-
-
 build.gradle:15:Error: [Prevents app release in Google Play Console]
 com.example.ads.third.party:example version 7.1.1 has Device and Network
 Abuse policy issues that will block publishing of your app to Play
 Console [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.1' // Policy (Device and Network Abuse), blocking
             -------------------------------------------
-
-
 build.gradle:16:Warning: com.example.ads.third.party:example version
 7.1.2 has Deceptive Behavior policy issues that will block publishing of
 your app to Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.2' // Policy (Deceptive Behavior), no severity
             -------------------------------------------
-
-
 build.gradle:17:Warning: com.example.ads.third.party:example version
 7.1.3 has User Data policy issues that will block publishing of your app
 to Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.3' // Policy (User Data), non-blocking
             -------------------------------------------
-
-
 build.gradle:18:Error: [Prevents app release in Google Play Console]
 com.example.ads.third.party:example version 7.1.4 has Permissions policy
 issues that will block publishing of your app to Play Console
 [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.4' // Policy (Permissions), blocking
             -------------------------------------------
-
-
 build.gradle:19:Warning: com.example.ads.third.party:example version
 7.1.5 has Mobile Unwanted Software policy issues that will block
 publishing of your app to Play Console in the future
 [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.5' // Policy (Mobile Unwanted Software), no-severity
             -------------------------------------------
-
-
 build.gradle:20:Warning: com.example.ads.third.party:example version
 7.1.6 has Malware policy issues that will block publishing of your app
 to Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.6' // Policy (Malware), non-blocking
             -------------------------------------------
-
-
 build.gradle:21:Warning: com.example.ads.third.party:example version
 7.1.7 has User Data policy issues that will block publishing of your app
 to Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.7' // Policy (multiple types), non-blocking
             -------------------------------------------
-
-
 build.gradle:22:Error: [Prevents app release in Google Play Console]
 com.example.ads.third.party:example version 7.1.8 has User Data policy
 issues that will block publishing of your app to Play Console
 [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.8' // Policy (multiple types), blocking
             -------------------------------------------
-
-
 build.gradle:23:Warning: com.example.ads.third.party:example version
 7.1.9 has Permissions policy issues that will block publishing of your
 app to Play Console in the future [PlaySdkIndexNonCompliant]
-
     compile 'com.example.ads.third.party:example:7.1.9' // Policy (multiple types), no severity
             -------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

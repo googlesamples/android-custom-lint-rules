@@ -40,14 +40,13 @@ Here is an example of lint warnings produced by this check:
 res/private_key.pem:Error: The res/private_key.pem file seems to be a
 private key file. Please make sure not to embed this in your APK file.
 [PackagedPrivateKey]
-
 1 errors, 0 warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
 `res/private_key.pem`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text linenumbers
 -----BEGIN RSA PRIVATE KEY-----
 Proc-Type: 4,ENCRYPTED
 DEK-Info: DES-EDE3-CBC,77F426A58B274623

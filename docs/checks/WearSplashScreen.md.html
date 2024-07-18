@@ -42,6 +42,51 @@ color). If you do not migrate your app, your app launch experience on
 Android 12 and higher will be either degraded or may have unintended
 results.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:16:Warning: Applications using splash screens are
+strongly recommended to use the 'androidx.core:core-splashscreen'
+library [WearSplashScreen]
+    &lt;activity android:name=".SplashActivity"
+    ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"&gt;
+     &lt;uses-sdk android:minSdkVersion="30" /&gt;
+     &lt;uses-feature android:name="android.hardware.type.watch" /&gt;
+    &lt;application
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"&gt;
+        &lt;activity android:name=".MainActivity"
+            android:theme="@style/AppTheme"&gt;
+             &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+         &lt;/activity&gt;
+        &lt;activity android:name=".SplashActivity"
+            android:theme="@style/AppTheme"&gt;
+             &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WearSplashScreenDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

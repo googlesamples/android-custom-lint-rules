@@ -36,32 +36,6 @@ lossless encoding and transparency, requires Android 4.2.1 (API 18; API
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/drawable-mdpi/my_lossy.webp:Error: WebP requires Android 4.0 (API
-15); current minSdkVersion is 10 [WebpUnsupported]
-
-4 errors, 0 warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/drawable-mdpi/my_lossy.webp`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
-H4sIAAAAAAAAAAvydHPzYGBgCHd1CggLsFCwAbIvMDPMZdSyYrBgsJvoscBHdYmykhIHwwYhzkyGMgYGhbxlC7g+chcxMPw7vf3/Wx8ht6D//wV23zjUANTKAADVeQHzUAAAAA==
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IconDetectorTest.java)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `IconDetector.testWebpUnsupported`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
-
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

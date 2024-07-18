@@ -42,20 +42,16 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/LayoutInflationTest.java:13:Warning: Avoid passing null as
 the view root (needed to resolve layout parameters on the inflated
 layout's root element) [InflateParams]
-
     convertView = mInflater.inflate(R.layout.your_layout, null);
                                                           ----
-
-
 src/test/pkg/LayoutInflationTest.java:14:Warning: Avoid passing null as
 the view root (needed to resolve layout parameters on the inflated
 layout's root element) [InflateParams]
-
     convertView = mInflater.inflate(R.layout.your_layout, null, true);
                                                           ----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/LayoutInflationTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -99,6 +95,23 @@ public abstract class LayoutInflationTest extends BaseAdapter {
         public static View inflate(View view, Object params) { return null; }
     }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/your_layout.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" /&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout-port/your_layout.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/text1"
+    style="?android:attr/listSeparatorTextViewStyle" /&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

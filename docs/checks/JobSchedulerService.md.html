@@ -43,20 +43,16 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/JobSchedulerTest.java:21:Warning: Scheduled job class
 NotAJobService must extend android.app.job.JobService
 [JobSchedulerService]
-
     new ComponentName(this, NotAJobService.class));
     ---------------------------------------------
-
-
 src/test/pkg/JobSchedulerTest.java:29:Warning: Scheduled job class
 NotAJobService must extend android.app.job.JobService
 [JobSchedulerService]
-
     new ComponentName(this, NotAJobService.class));
     ---------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/JobSchedulerTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -94,6 +90,55 @@ public class JobSchedulerTest extends Activity {
                 .build());
     }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyJobService.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.TargetApi;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+public class MyJobService extends JobService {
+    @Override
+    public boolean onStartJob(JobParameters jobParameters) {
+        return false;
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters jobParameters) {
+        return false;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/NotAJobService.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Service;
+
+public abstract class NotAJobService extends Service {
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"&gt;
+
+    &lt;application&gt;
+        &lt;service android:name=".MyJobService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"
+                 android:exported="true" /&gt;
+        &lt;service android:name=".NotAJobService"
+                 android:exported="true" /&gt;
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -46,6 +46,41 @@ Use `setCompletableProgress(...)` instead of `setProgress(...) in
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/App.kt:8:Error: setProgress is deprecated. Use
+setCompletableProgress instead. [UseRxSetProgress2]
+    worker.setProgress()
+    --------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/App.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.work.RxWorker
+
+class App {
+    fun onCreate() {
+        val worker = RxWorker()
+        worker.setProgress()
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/RxWorkerSetProgressDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RxWorkerSetProgressDetector.setProgressDetectorTest`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409906.
+
 (##) Including
 
 !!!

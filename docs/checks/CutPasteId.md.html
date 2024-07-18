@@ -44,7 +44,6 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/PasteError.java:10:Warning: The id R.id.previous has
 already been looked up in this method; possible cut & paste error?
 [CutPasteId]
-
     next = (Button) findViewById(R.id.previous); // TYPO, meant R.id.next
                     ---------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,7 +67,7 @@ public class PasteError extends Activity {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `test.pkg`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text linenumbers
 @id/next
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

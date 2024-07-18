@@ -39,14 +39,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/MyActivity.kt:15:Error: @layout/activity_main does not
 contain a declaration with id text_field [MissingInflatedId]
-
     requireViewById&lt;EditText&gt;(R.id.text_field).isEnabled = false
                               ---------------
-
-
 src/test/pkg/MyActivity.kt:21:Error: @layout/list_item does not contain
 a declaration with id image_view [MissingInflatedId]
-
     val imgView = rootView.findViewById&lt;ImageView&gt;(R.id.image_view)
                                                    ---------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,7 +91,7 @@ class MyActivity : Activity() {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `test.pkg`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text linenumbers
 @id/text_field
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

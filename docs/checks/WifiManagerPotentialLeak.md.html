@@ -51,25 +51,18 @@ src/test/pkg/WifiManagerTest.java:32:Warning: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing foreignContext to
 foreignContext.getApplicationContext() [WifiManagerPotentialLeak]
-
     foreignContext.getSystemService(Context.WIFI_SERVICE); // UNKNOWN
     -----------------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:33:Warning: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing mContext to mContext.getApplicationContext()
 [WifiManagerPotentialLeak]
-
     mContext.getSystemService(Context.WIFI_SERVICE); // UNKNOWN
     -----------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:41:Warning: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing ctx to ctx.getApplicationContext()
 [WifiManagerPotentialLeak]
-
     ctx.getSystemService(Context.WIFI_SERVICE); // UNKNOWN (though likely)
     ------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -55,47 +55,31 @@ Here is an example of lint warnings produced by this check:
 src/androidx/compose/foundation/foo/test.kt:10:Warning: Frequently
 changing state should not be directly read in composable function
 [FrequentlyChangedStateReadInComposition]
-
     val index = state.firstVisibleItemIndex
                 ---------------------------
-
-
 src/androidx/compose/foundation/foo/test.kt:11:Warning: Frequently
 changing state should not be directly read in composable function
 [FrequentlyChangedStateReadInComposition]
-
     val offset = state.firstVisibleItemScrollOffset
                  ----------------------------------
-
-
 src/androidx/compose/foundation/foo/test.kt:12:Warning: Frequently
 changing state should not be directly read in composable function
 [FrequentlyChangedStateReadInComposition]
-
     val layoutInfo = state.layoutInfo
                      ----------------
-
-
 src/androidx/compose/foundation/foo/test.kt:17:Warning: Frequently
 changing state should not be directly read in composable function
 [FrequentlyChangedStateReadInComposition]
-
     val index = state.firstVisibleItemIndex
                 ---------------------------
-
-
 src/androidx/compose/foundation/foo/test.kt:18:Warning: Frequently
 changing state should not be directly read in composable function
 [FrequentlyChangedStateReadInComposition]
-
     val offset = state.firstVisibleItemScrollOffset
                  ----------------------------------
-
-
 src/androidx/compose/foundation/foo/test.kt:19:Warning: Frequently
 changing state should not be directly read in composable function
 [FrequentlyChangedStateReadInComposition]
-
     val layoutInfo = state.layoutInfo
                      ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,17 +126,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.foundation:foundation-android:1.7.0-beta04")
+implementation("androidx.compose.foundation:foundation-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.foundation:foundation-android:1.7.0-beta04'
+implementation 'androidx.compose.foundation:foundation-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.foundation-android)
 
 # libs.versions.toml
 [versions]
-foundation-android = "1.7.0-beta04"
+foundation-android = "1.7.0-beta05"
 [libraries]
 foundation-android = {
     module = "androidx.compose.foundation:foundation-android",
@@ -160,7 +144,7 @@ foundation-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.foundation:foundation-android](androidx_compose_foundation_foundation-android.md.html).

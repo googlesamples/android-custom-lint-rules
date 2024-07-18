@@ -37,7 +37,6 @@ example, calling `Resources.getColor(R.string.name)` is wrong.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test.kt:9:Error: Expected resource of type string [ResourceType]
-
     setLabels(iconId) // bug: should have passed descId. Both are ints but of wrong type.
               ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Wrong import alias for this R class.
+(#) Wrong import alias for this R class
 
-!!! ERROR: Wrong import alias for this R class.
+!!! ERROR: Wrong import alias for this R class
    This is an error.
 
 Id
 :   `WrongResourceImportAlias`
 Summary
-:   Wrong import alias for this R class.
+:   Wrong import alias for this R class
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/resources/WrongResourceImportAliasDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/resources/WrongResourceImportAliasDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/resources/WrongResourceImportAliasDetectorTest.kt)
 Copyright Year
@@ -74,7 +74,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/pkg/subpackage/MyClass.kt:3:Error: Use L10nR as an import
 alias here [WrongResourceImportAlias]
-
 import slack.l10n.R as L10R
 ---------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

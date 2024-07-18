@@ -45,12 +45,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 AndroidManifest.xml:7:Error: There should only be a single <uses-sdk>
 element in the manifest: merge these together [MultipleUsesSdk]
-
     &lt;uses-sdk android:targetSdkVersion="14" /&gt;
      --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -78,6 +77,40 @@ Here is the source file referenced above:
     &lt;/application&gt;
 
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+--&gt;
+
+&lt;resources&gt;
+    &lt;!-- Home --&gt;
+    &lt;string name="home_title"&gt;Home Sample&lt;/string&gt;
+    &lt;string name="show_all_apps"&gt;All&lt;/string&gt;
+
+    &lt;!-- Home Menus --&gt;
+    &lt;string name="menu_wallpaper"&gt;Wallpaper&lt;/string&gt;
+    &lt;string name="menu_search"&gt;Search&lt;/string&gt;
+    &lt;string name="menu_settings"&gt;Settings&lt;/string&gt;
+    &lt;string name="sample" translatable="false"&gt;Ignore Me&lt;/string&gt;
+
+    &lt;!-- Wallpaper --&gt;
+    &lt;string name="wallpaper_instructions"&gt;Tap picture to set portrait wallpaper&lt;/string&gt;
+&lt;/resources&gt;
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

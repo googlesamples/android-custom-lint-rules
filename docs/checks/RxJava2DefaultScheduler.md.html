@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Pass a scheduler instead of relying on the default Scheduler.
+(#) Pass a scheduler instead of relying on the default Scheduler
 
-!!! WARNING: Pass a scheduler instead of relying on the default Scheduler.
+!!! WARNING: Pass a scheduler instead of relying on the default Scheduler
    This is a warning.
 
 Id
 :   `RxJava2DefaultScheduler`
 Summary
-:   Pass a scheduler instead of relying on the default Scheduler.
+:   Pass a scheduler instead of relying on the default Scheduler
 Severity
 :   Warning
 Category
@@ -29,10 +29,49 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/main/kotlin/com/vanniktech/lintrules/rxjava2/RxJava2DefaultSchedulerDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/kotlin/com/vanniktech/lintrules/rxjava2/RxJava2DefaultSchedulerDetectorTest.kt)
 
 Calling this method will rely on a default scheduler. This is not
 necessary the best default. Being explicit and taking the overload for
 passing one is preferred.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/Example.java:8:Warning: interval() is using its default
+scheduler [RxJava2DefaultScheduler]
+    Observable.interval(5, TimeUnit.SECONDS);
+               --------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/Example.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+import java.util.concurrent.TimeUnit;
+import io.reactivex.Observable;
+
+class Example {
+  public void foo() {
+    Observable.interval(5, TimeUnit.SECONDS);
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/kotlin/com/vanniktech/lintrules/rxjava2/RxJava2DefaultSchedulerDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RxJava2DefaultSchedulerDetector.schedulerSupportComputation`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

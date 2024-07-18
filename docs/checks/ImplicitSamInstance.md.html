@@ -47,44 +47,31 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/test.kt:17:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-
     handler.stash(lambda, list) // WARN
                   ------
-
-
 src/test/pkg/test.kt:18:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-
     handler.store(lambda) // WARN
                   ------
-
-
 src/test/pkg/test.kt:19:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-
     handler.compareIdentity1(lambda) // WARN
                              ------
-
-
 src/test/pkg/test.kt:20:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-
     handler.compareIdentity2(lambda) // WARN
                              ------
-
-
 src/test/pkg/test.kt:27:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-
     handler.stash(lambda2, list) // WARN
                   -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -124,6 +111,90 @@ fun callback() {}
 
 fun viewpost(view: android.view.View) {
     view.postDelayed({ println ("Hello") }, 50)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/JavaTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.util.List;
+
+public class JavaTest {
+    public void test(MyHandler handler, List<MyInterface> list) {
+        handler.handle(() -> System.out.println("hello")); // OK
+        handler.stash(() -> System.out.println("hello"), list); // OK
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyInterface.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+public interface MyInterface {
+    void act();
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyHandler.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import java.util.List;
+
+public class MyHandler {
+    public void handle(MyInterface actor) {
+        actor.act();
+        System.out.println(actor);
+        MyInterface copy = actor;
+        System.out.println(copy);
+    }
+
+    public void stash(MyInterface actor, List<MyInterface> actors) {
+        actors.add(actor);
+    }
+
+    public void store(MyInterface actor) {
+        last = actor;
+    }
+
+    private MyInterface last;
+
+    public void compareIdentity1(MyInterface actor) {
+        if (actor == last) {
+            System.out.println("last");
+        }
+    }
+
+    public void compareIdentity2(MyInterface actor) {
+        if (actor != last) {
+            System.out.println("not last");
+        }
+    }
+
+    public void compareEquals1(MyInterface actor) {
+        if (actor.equals(last)) {
+            System.out.println("last");
+        }
+    }
+
+    public void compareEquals2(MyInterface actor) {
+        if (last.equals(actor)) {
+            System.out.println("last");
+        }
+    }
+
+    public void act(MyInterface actor) {
+        if (actor != null) {
+            actor.act();
+        }
+        //noinspection StatementWithEmptyBody
+        if (actor == null) {
+        } else {
+            actor.act();
+        }
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

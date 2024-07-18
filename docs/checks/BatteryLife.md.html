@@ -49,40 +49,37 @@ AndroidManifest.xml:9:Warning: Declaring a broadcastreceiver for
 android.net.conn.CONNECTIVITY_CHANGE is deprecated for apps targeting N
 and higher. In general, apps should not rely on this broadcast and
 instead use WorkManager. [BatteryLife]
-
     &lt;action android:name="android.net.conn.CONNECTIVITY_CHANGE" /&gt;
                           ------------------------------------
-
-
 AndroidManifest.xml:10:Warning: Use of
 REQUEST_IGNORE_BATTERY_OPTIMIZATIONS violates the Play Store Content
 Policy regarding acceptable use cases, as described in
 https://developer.android.com/training/monitoring-device-state/doze-standby.html
 [BatteryLife]
-
     &lt;action android:name="android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /&gt;
                           -----------------------------------------------------
-
-
 AndroidManifest.xml:11:Warning: Use of com.android.camera.NEW_PICTURE is
 deprecated for all apps starting with the N release independent of the
 target SDK. Apps should not rely on these broadcasts and instead use
 WorkManager [BatteryLife]
-
     &lt;action android:name="com.android.camera.NEW_PICTURE" /&gt;
                           ------------------------------
-
-
 AndroidManifest.xml:12:Warning: Use of
 android.hardware.action.NEW_PICTURE is deprecated for all apps starting
 with the N release independent of the target SDK. Apps should not rely
 on these broadcasts and instead use WorkManager [BatteryLife]
-
     &lt;action android:name="android.hardware.action.NEW_PICTURE" /&gt;
                           -----------------------------------
+src/test/pkg/BatteryTest.java:15:Warning: Use of
+REQUEST_IGNORE_BATTERY_OPTIMIZATIONS violates the Play Store Content
+Policy regarding acceptable use cases, as described in
+https://developer.android.com/training/monitoring-device-state/doze-standby.html
+[BatteryLife]
+    Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                                        -------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -104,14 +101,32 @@ Here is the source file referenced above:
 &lt;/manifest&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+`src/test/pkg/BatteryTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+
+@SuppressWarnings("unused")
+public class BatteryTest extends Activity {
+    @TargetApi(Build.VERSION_CODES.M)
+    public void testNoNo() throws ActivityNotFoundException {
+        Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+        intent.setData(Uri.parse("package:my.pkg"));
+        startActivity(intent);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/BatteryDetectorTest.java)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `BatteryDetector.testConnectivityChange`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

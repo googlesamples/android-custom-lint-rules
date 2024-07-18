@@ -47,14 +47,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/ObsoleteSdkInt.kt:4:Warning: Unnecessary; SDK_INT is always >= 23
 [ObsoleteSdkInt]
-
     if (Build.VERSION.SDK_INT &gt;= 21) { // UNNECESSARY, always true
         ---------------------------
-
-
 src/ObsoleteSdkInt.kt:7:Warning: Unnecessary; SDK_INT is never < 23
 [ObsoleteSdkInt]
-
     if (Build.VERSION.SDK_INT &lt; 21) { // UNNECESSARY, never true
         --------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

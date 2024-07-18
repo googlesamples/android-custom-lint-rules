@@ -40,7 +40,6 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/test.kt:5:Error: @layout/test includes views not allowed in
 a RemoteView: CheckBox, DatePicker, RadioButton, RadioGroup, Switch,
 androidx.appcompat.widget.AppCompatTextView [RemoteViewLayout]
-
     val remoteView = RemoteViews(packageName, R.layout.test)
                      ---------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +87,7 @@ fun test(packageName: String) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `test.pkg`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text linenumbers
 @layout/test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

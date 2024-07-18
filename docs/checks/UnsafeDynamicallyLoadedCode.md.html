@@ -45,15 +45,11 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/Load.java:12:Warning: Dynamically loading code using load
 is risky, please use loadLibrary instead when possible
 [UnsafeDynamicallyLoadedCode]
-
     Runtime.getRuntime().load("/data/data/test.pkg/files/libhello.so");
     ------------------------------------------------------------------
-
-
 src/test/pkg/Load.java:14:Warning: Dynamically loading code using load
 is risky, please use loadLibrary instead when possible
 [UnsafeDynamicallyLoadedCode]
-
     System.load("/data/data/test.pkg/files/libhello.so");
     ----------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,11 +84,6 @@ public class Load {
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UnsafeNativeCodeDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `UnsafeNativeCodeDetector.testLoad`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

@@ -47,22 +47,15 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/IntDefTest.java:9:Error: Constants STYLE_NO_INPUT and
 STYLE_NO_FRAME specify the same exact value (2); this is usually a cut &
 paste or merge error [UniqueConstants]
-
     @IntDef({STYLE_NORMAL, STYLE_NO_TITLE, STYLE_NO_FRAME, STYLE_NO_INPUT})
                                                            --------------
-
-
 src/test/pkg/IntDefTest.java:28:Error: Constants FLAG3 and FLAG2 specify
 the same exact value (0x2000000000000L); this is usually a cut & paste
 or merge error [UniqueConstants]
-
     @IntDef({FLAG2, FLAG3, FLAG1})
                     -----
-
-
 src/test/pkg/IntDefTest.java:32:Error: Constant FLAG1 has already been
 included [UniqueConstants]
-
     @IntDef({FLAG1, FLAG2, FLAG1})
                            -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

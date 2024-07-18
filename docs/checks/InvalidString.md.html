@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Marks invalid translation strings.
+(#) Marks invalid translation strings
 
-!!! WARNING: Marks invalid translation strings.
+!!! WARNING: Marks invalid translation strings
    This is a warning.
 
 Id
 :   `InvalidString`
 Summary
-:   Marks invalid translation strings.
+:   Marks invalid translation strings
 Severity
 :   Warning
 Category
@@ -29,9 +29,45 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/InvalidStringDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/InvalidStringDetectorTest.kt)
 
 A translation string is invalid if it contains new lines instead of the
 escaped \n or if it contains trailing whitespace.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/values/strings.xml:2:Warning: Text contains new line.
+[InvalidString]
+  &lt;string name="my_string"&gt;My string"
+  ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/values/strings.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+  &lt;string name="my_string"&gt;My string"
+&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/InvalidStringDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InvalidStringDetector.stringContainingNewLine`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

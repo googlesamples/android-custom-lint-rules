@@ -40,6 +40,45 @@ Copyright Year
 
 Use Compat loading of compound text view drawables.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/CustomActivity.kt:11:Warning: Use
+TextViewCompat.setCompoundDrawableTintList()
+[UseCompatTextViewDrawableApis]
+    textView.setCompoundDrawableTintList(csl)
+    -----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/CustomActivity.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+class CustomActivity: AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val textView = TextView(this)
+        val csl = getResources().getColorStateList(R.color.color_state_list)
+        textView.setCompoundDrawableTintList(csl)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/appcompat/appcompat-lint/src/test/kotlin/androidx/appcompat/lint/widget/TextViewCompoundDrawablesApiDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TextViewCompoundDrawablesApiDetector.testSetCompoundDrawableTintList`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=460343.
+
 (##) Including
 
 !!!

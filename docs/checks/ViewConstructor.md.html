@@ -47,12 +47,11 @@ Here is an example of lint warnings produced by this check:
 src/test/bytecode/CustomView1.java:5:Warning: Custom view CustomView1 is
 missing constructor used by tools: (Context) or (Context,AttributeSet)
 or (Context,AttributeSet,int) [ViewConstructor]
-
 public class CustomView1 extends View {
              -----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/bytecode/CustomView1.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -64,6 +63,39 @@ public class CustomView1 extends View {
 	public CustomView1() {
 		super(null);
 	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/bytecode/CustomView2.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.bytecode;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.Button;
+
+public class CustomView2 extends Button {
+	public CustomView2(boolean foo,
+			Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/bytecode/CustomView3.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.bytecode;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+
+public class CustomView3 extends View {
+
+	public CustomView3(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

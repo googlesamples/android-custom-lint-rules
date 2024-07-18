@@ -50,54 +50,35 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/buttonbar.xml:12:Warning: OK button should be on the right
 (was "OK | Cancel", should be "Cancel | OK") [ButtonOrder]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:44:Warning: OK button should be on the right
 (was "OK | Cancel", should be "Cancel | OK") [ButtonOrder]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:92:Warning: OK button should be on the right
 (was "OK | Cancel", should be "Cancel | OK") [ButtonOrder]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:124:Warning: OK button should be on the right
 (was "OK | Cancel", should be "Cancel | OK") [ButtonOrder]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:140:Warning: OK button should be on the right
 (was "Ok | CANCEL", should be "CANCEL | Ok") [ButtonOrder]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:156:Warning: OK button should be on the right
 (was "OK | Abort", should be "Abort | OK") [ButtonOrder]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:177:Warning: Cancel button should be on the
 left (was "Send | Cancel", should be "Cancel | Send") [ButtonOrder]
-
     &lt;Button
      ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/layout/buttonbar.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -289,6 +270,25 @@ Here is the source file referenced above:
         android:text="@string/goback" /&gt;
 
 &lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/buttonbar-values.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+
+    &lt;string name="button"&gt; Button &lt;/string&gt;
+    &lt;string name="ok"&gt; OK &lt;/string&gt;
+    &lt;string name="cancel"&gt; Cancel &lt;/string&gt;
+    &lt;string name="resume"&gt; OK &lt;/string&gt;
+    &lt;string name="giveup"&gt; Cancel &lt;/string&gt;
+    &lt;string name="resume2"&gt; Ok &lt;/string&gt;
+    &lt;string name="giveup2"&gt;"CANCEL"&lt;/string&gt;
+    &lt;string name="send"&gt; Send &lt;/string&gt;
+    &lt;string name="abort"&gt;Abort&lt;/string&gt;
+    &lt;string name="goback"&gt;'Back'&lt;/string&gt;
+
+&lt;/resources&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

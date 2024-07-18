@@ -45,12 +45,11 @@ AndroidManifest.xml:6:Error: A <queries> declaration should generally be
 used instead of QUERY_ALL_PACKAGES; see
 https://g.co/dev/packagevisibility for details
 [QueryAllPackagesPermission]
-
     &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/&gt;&lt;!-- ERROR --&gt;
                      ----------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -61,6 +60,41 @@ Here is the source file referenced above:
                     &lt;uses-permission android:name="android.permission.CAMERA"/&gt;&lt;!-- OK --&gt;
                     &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/&gt;&lt;!-- ERROR --&gt;
                 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MainActivity.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+
+class MainActivity : Activity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val context = applicationContext
+        val pm = context.packageManager
+
+        pm.getInstalledPackages(0) // ERROR
+        pm.getInstalledApplications(0) // ERROR
+
+        pm.queryBroadcastReceivers(Intent(), 0) // ERROR
+        pm.queryContentProviders("", 0, 0) // ERROR
+        pm.queryIntentServices(Intent(), 0) // ERROR
+        pm.queryIntentActivities(Intent(), 0) // ERROR
+
+        Intent().resolveActivity(pm) // ERROR
+        Intent().resolveActivityInfo(pm, 0) // ERROR
+
+        this.getInstalledPackages() // OK
+        this.resolveActivity() // OK
+    }
+
+    private fun getInstalledPackages() = Unit
+    private fun resolveActivity() = Unit
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

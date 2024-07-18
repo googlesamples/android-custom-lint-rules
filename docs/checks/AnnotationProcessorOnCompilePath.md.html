@@ -42,47 +42,31 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:2:Warning: Add annotation processor to processor path using
 annotationProcessor instead of api [AnnotationProcessorOnCompilePath]
-
     api 'com.jakewharton:butterknife-compiler:10.1.0'
     ---
-
-
 build.gradle:3:Warning: Add annotation processor to processor path using
 annotationProcessor instead of implementation
 [AnnotationProcessorOnCompilePath]
-
     implementation 'com.github.bumptech.glide:compiler:4.9.0'
     --------------
-
-
 build.gradle:4:Warning: Add annotation processor to processor path using
 annotationProcessor instead of compile
 [AnnotationProcessorOnCompilePath]
-
     compile "androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01"
     -------
-
-
 build.gradle:5:Warning: Add annotation processor to processor path using
 testAnnotationProcessor instead of testImplementation
 [AnnotationProcessorOnCompilePath]
-
     testImplementation "com.google.auto.value:auto-value:1.6.2"
     ------------------
-
-
 build.gradle:6:Warning: Add annotation processor to processor path using
 androidTestAnnotationProcessor instead of androidTestCompile
 [AnnotationProcessorOnCompilePath]
-
     androidTestCompile "org.projectlombok:lombok:1.18.8"
     ------------------
-
-
 build.gradle:8:Warning: Add annotation processor to processor path using
 debugAnnotationProcessor instead of debugCompile
 [AnnotationProcessorOnCompilePath]
-
     debugCompile "android.arch.persistence.room:compiler:1.1.1"
     ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

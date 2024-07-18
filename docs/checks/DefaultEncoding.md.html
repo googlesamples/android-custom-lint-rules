@@ -56,70 +56,48 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/Test.java:14:Error: This file will be written with the
 default system encoding instead of a specific charset which is usually a
 mistake; add StandardCharsets.UTF_8? [DefaultEncoding]
-
     new FileWriter("/path");                      // ERROR 1
     -----------------------
-
-
 src/test/pkg/Test.java:15:Error: This file will be written with the
 default system encoding instead of a specific charset which is usually a
 mistake; add charset argument, FileWriter(..., UTF_8)?
 [DefaultEncoding]
-
     new FileWriter(file);                         // ERROR 2
     --------------------
-
-
 src/test/pkg/Test.java:16:Error: This file will be written with the
 default system encoding instead of a specific charset which is usually a
 mistake; add charset argument, FileWriter(..., UTF_8)?
 [DefaultEncoding]
-
     new FileWriter(file, true);                   // ERROR 3
     --------------------------
-
-
 src/test/pkg/Test.java:17:Error: This file will be written with the
 default system encoding instead of a specific charset which is usually a
 mistake; add charset argument, FileWriter(..., UTF_8)?
 [DefaultEncoding]
-
     new PrintWriter(new BufferedWriter(new FileWriter(file))); // ERROR 4
                                        --------------------
-
-
 src/test/pkg/Test.java:24:Error: This PrintWriter will use the default
 system encoding instead of a specific charset which is usually a
 mistake; add charset argument, PrintWriter(..., UTF_8)?
 [DefaultEncoding]
-
     new PrintWriter(System.out, true);            // ERROR 5
     ---------------------------------
-
-
 src/test/pkg/Test.java:25:Error: This PrintWriter will use the default
 system encoding instead of a specific charset which is usually a
 mistake; add charset argument, PrintWriter(..., UTF_8)?
 [DefaultEncoding]
-
     new PrintWriter("/path");                     // ERROR 6
     ------------------------
-
-
 src/test/pkg/Test.java:26:Error: This PrintWriter will use the default
 system encoding instead of a specific charset which is usually a
 mistake; add charset argument, PrintWriter(..., UTF_8)?
 [DefaultEncoding]
-
     new PrintWriter(file);                        // ERROR 7
     ---------------------
-
-
 src/test/pkg/Test.java:36:Error: This string will be interpreted with
 the default system encoding instead of a specific charset which is
 usually a mistake; add charset argument, String(..., UTF_8)?
 [DefaultEncoding]
-
     new String(bytes);                         // ERROR 8
     -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

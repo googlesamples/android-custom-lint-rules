@@ -40,13 +40,9 @@ username and password.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/AuthDemo.java:2:Warning: Possible credential leak [AuthLeak]
-
   private static final String AUTH_IP = "scheme://user:pwd@127.0.0.1:8000"; // WARN 1
                                          ---------------------------
-
-
 src/AuthDemo.java:4:Warning: Possible credential leak [AuthLeak]
-
   private static final String LEAK = "http://someuser:%restofmypass@example.com"; // WARN 2
                                       -----------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

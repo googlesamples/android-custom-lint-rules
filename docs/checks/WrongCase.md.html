@@ -47,28 +47,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/case.xml:1:Error: Invalid tag <Merge>; should be <merge>
 [WrongCase]
-
 &lt;Merge xmlns:android="http://schemas.android.com/apk/res/android" &gt;
  -----
-
-
 res/layout/case.xml:3:Error: Invalid tag <Fragment>; should be
 <fragment> [WrongCase]
-
     &lt;Fragment android:name="foo.bar.Fragment" /&gt;
      --------
-
-
 res/layout/case.xml:4:Error: Invalid tag <Include>; should be <include>
 [WrongCase]
-
     &lt;Include layout="@layout/foo" /&gt;
      -------
-
-
 res/layout/case.xml:5:Error: Invalid tag <RequestFocus>; should be
 <requestFocus> [WrongCase]
-
     &lt;RequestFocus /&gt;
      ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -39,8 +39,60 @@ project. First, set
 `build.gradle` file, and second, use `app:srcCompat` instead of
 `android:src` to refer to vector drawables.
 
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/main/res/layout/main_activity.xml:3:Error: To use
+VectorDrawableCompat, you need to set
+android.defaultConfig.vectorDrawables.useSupportLibrary = true in
+test_project-appbuild.gradle [VectorDrawableCompat]
+    &lt;ImageView app:srcCompat="@drawable/foo" /&gt;
+               -------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.0.0'
+    }
+}
+android.defaultConfig.vectorDrawables.useSupportLibrary = false
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/main/res/drawable/foo.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:height="256dp"
+        android:width="256dp"
+        android:viewportWidth="32"
+        android:viewportHeight="32"&gt;
+    &lt;path android:fillColor="#8fff"
+          android:pathData="M20.5,9.5
+                        c-1.955,0,-3.83,1.268,-4.5,3
+                        c-0.67,-1.732,-2.547,-3,-4.5,-3
+                        C8.957,9.5,7,11.432,7,14
+                        c0,3.53,3.793,6.257,9,11.5
+                        c5.207,-5.242,9,-7.97,9,-11.5
+                        C25,11.432,23.043,9.5,20.5,9.5z" /&gt;
+&lt;/vector&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/main/res/layout/main_activity.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;RelativeLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"&gt;
+    &lt;ImageView app:srcCompat="@drawable/foo" /&gt;
+    &lt;ImageView app:srcCompat="@drawable/bitmap" /&gt;
+&lt;/RelativeLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDrawableCompatDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
 
 (##) Suppressing
 

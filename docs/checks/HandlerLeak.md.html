@@ -46,15 +46,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/HandlerTest.java:12:Warning: This Handler class should be
 static or leaks might occur (test.pkg.HandlerTest.Inner) [HandlerLeak]
-
     public class Inner extends Handler { // ERROR
                  -----
-
-
 src/test/pkg/HandlerTest.java:18:Warning: This Handler class should be
 static or leaks might occur (anonymous android.os.Handler)
 [HandlerLeak]
-
     Handler anonymous = new Handler() { // ERROR
                         ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

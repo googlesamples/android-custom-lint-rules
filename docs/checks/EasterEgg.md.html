@@ -42,15 +42,11 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/Hidden.java:5:Warning: Code might be hidden here; found
 unicode escape sequence which is interpreted as comment end, compiled
 code follows [EasterEgg]
-
     /* \u002a\u002f static { System.out.println("I'm executed on class load"); } \u002f\u002a */
        ------------
-
-
 src/test/pkg/Hidden.java:6:Warning: Code might be hidden here; found
 unicode escape sequence which is interpreted as comment end, compiled
 code follows [EasterEgg]
-
     /* \u002A\U002F static { System.out.println("I'm executed on class load"); } \u002f\u002a */
        ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

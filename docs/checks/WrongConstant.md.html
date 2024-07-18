@@ -39,14 +39,10 @@ Here is an example of lint warnings produced by this check:
 src/DetailInfoTab.kt:9:Error: Must be one of: View.LAYOUT_DIRECTION_LTR,
 View.LAYOUT_DIRECTION_RTL, View.LAYOUT_DIRECTION_INHERIT,
 View.LAYOUT_DIRECTION_LOCALE [WrongConstant]
-
     view.layoutDirection = View.TEXT_ALIGNMENT_TEXT_START // ERROR - not one of the allowed values
                            ------------------------------
-
-
 src/DetailInfoTab.kt:28:Error: Must be one of: DetailInfoTabKt.CONST_1,
 DetailInfoTabKt.CONST_2, DetailInfoTabKt.CONST_3 [WrongConstant]
-
     test(UNRELATED) // ERROR - not part of the @DetailsInfoTab list
          ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

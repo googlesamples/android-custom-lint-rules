@@ -44,6 +44,42 @@ When using the setForegroundAsync() API, the application must override
 <service /> entry for `SystemForegroundService` to include the
 foreground service type in the  `AndroidManifest.xml` file.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/App.kt:9:Error: Missing dataSync foregroundServiceType in
+the AndroidManifest.xml [SpecifyForegroundServiceType]
+    val info = ForegroundInfo(0, notification, 1)
+               ----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/App.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.app.Notification
+import androidx.work.ForegroundInfo
+
+class App {
+    fun onCreate() {
+        val notification = Notification()
+        val info = ForegroundInfo(0, notification, 1)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/SpecifyForegroundServiceTypeIssueDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SpecifyForegroundServiceTypeIssueDetector.failWhenServiceTypeIsNotSpecified`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409906.
+
 (##) Including
 
 !!!

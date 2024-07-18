@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Concrete Collection type '%HINT%' is not natively supported by Moshi.
+(#) Concrete Collection type '%HINT%' is not natively supported by Moshi
 
-!!! Tip: Concrete Collection type '%HINT%' is not natively supported by Moshi.
+!!! Tip: Concrete Collection type '%HINT%' is not natively supported by Moshi
    Advice from this check is just a tip.
 
 Id
 :   `MoshiUsageNonMoshiClassCollection`
 Summary
-:   Concrete Collection type '%HINT%' is not natively supported by Moshi.
+:   Concrete Collection type '%HINT%' is not natively supported by Moshi
 Severity
 :   Information
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -53,20 +53,33 @@ Here is an example of lint warnings produced by this check:
 src/slack/model/Example.kt:25:Information: Concrete Collection type
 'ArrayList' is not natively supported by Moshi.
 [MoshiUsageNonMoshiClassCollection]
-
   val concreteList: ArrayList&lt;Int&gt;,
                     --------------
-
-
 src/slack/model/Example.kt:26:Information: Concrete Collection type
 'HashSet' is not natively supported by Moshi.
 [MoshiUsageNonMoshiClassCollection]
-
   val concreteSet: HashSet&lt;Int&gt;,
                    ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/external/ExternalType.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package external
+
+class ExternalType
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/external/ExternalTypeAnnotated.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package external
+
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class ExternalTypeAnnotated(val value: String)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/slack/model/Example.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers

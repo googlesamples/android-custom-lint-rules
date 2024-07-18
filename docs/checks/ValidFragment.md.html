@@ -50,45 +50,29 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/FragmentTest.java:10:Error: This fragment class should be
 public (test.pkg.FragmentTest.Fragment1) [ValidFragment]
-
     private static class Fragment1 extends Fragment {
                          ---------
-
-
 src/test/pkg/FragmentTest.java:15:Error: This fragment inner class
 should be static (test.pkg.FragmentTest.Fragment2) [ValidFragment]
-
     public class Fragment2 extends Fragment {
                  ---------
-
-
 src/test/pkg/FragmentTest.java:21:Error: The default constructor must be
 public [ValidFragment]
-
     private Fragment3() {
             ---------
-
-
 src/test/pkg/FragmentTest.java:26:Error: This fragment should provide a
 default constructor (a public constructor with no arguments)
 (test.pkg.FragmentTest.Fragment4) [ValidFragment]
-
     public static class Fragment4 extends Fragment {
                         ---------
-
-
 src/test/pkg/FragmentTest.java:27:Error: Avoid non-default constructors
 in fragments: use a default constructor plus
 Fragment#setArguments(Bundle) instead [ValidFragment]
-
     private Fragment4(int sample) {
             ---------
-
-
 src/test/pkg/FragmentTest.java:36:Error: Avoid non-default constructors
 in fragments: use a default constructor plus
 Fragment#setArguments(Bundle) instead [ValidFragment]
-
     public Fragment5(int sample) {
            ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to.
+(#) Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to
 
-!!! ERROR: Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to.
+!!! ERROR: Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to
    This is an error.
 
 Id
 :   `SpanMarkPointMissingMask`
 Summary
-:   Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to.
+:   Check that Span flags use the bitwise mask SPAN_POINT_MARK_MASK when being compared to
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/text/SpanMarkPointMissingMaskDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/text/SpanMarkPointMissingMaskDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/text/SpanMarkPointMissingMaskDetectorTest.kt)
 Copyright Year
@@ -54,7 +54,6 @@ Here is an example of lint warnings produced by this check:
 src/slack/text/MyClass.kt:7:Error: Do not check against  directly.
 Instead mask flag with Spanned.SPAN_POINT_MARK_MASK to only check
 MARK_POINT flags. [SpanMarkPointMissingMask]
-
     return spanned.getSpanFlags(Object()) ==  || Spanned.x()
            ------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

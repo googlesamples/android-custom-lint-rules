@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) This class or method is deprecated; consider using an alternative.
+(#) This class or method is deprecated; consider using an alternative
 
-!!! WARNING: This class or method is deprecated; consider using an alternative.
+!!! WARNING: This class or method is deprecated; consider using an alternative
    This is a warning.
 
 Id
 :   `DeprecatedCall`
 Summary
-:   This class or method is deprecated; consider using an alternative.
+:   This class or method is deprecated; consider using an alternative
 Severity
 :   Warning
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/DeprecatedAnnotationDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/DeprecatedAnnotationDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DeprecatedAnnotationDetectorTest.kt)
 Copyright Year
@@ -49,12 +49,21 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/test/TestClass.java:8:Warning: This class or method is
 deprecated; consider using an alternative. [DeprecatedCall]
-
     new ThisIsDeprecated();
     ----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/slack/test/ThisIsDeprecated.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package slack.test;
+
+@Deprecated()
+class ThisIsDeprecated {
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/slack/test/TestClass.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

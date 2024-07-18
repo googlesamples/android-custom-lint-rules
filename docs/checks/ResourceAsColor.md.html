@@ -44,44 +44,31 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/WrongColor.java:9:Error: Should pass resolved color instead
 of resource id here: getResources().getColor(R.color.blue)
 [ResourceAsColor]
-
     paint2.setColor(R.color.blue);
                     ------------
-
-
 src/test/pkg/WrongColor.java:11:Error: Should pass resolved color
 instead of resource id here: getResources().getColor(R.color.red)
 [ResourceAsColor]
-
     textView.setTextColor(R.color.red);
                           -----------
-
-
 src/test/pkg/WrongColor.java:12:Error: Should pass resolved color
 instead of resource id here:
 getResources().getColor(android.R.color.black) [ResourceAsColor]
-
     textView.setTextColor(android.R.color.black);
                           ---------------------
-
-
 src/test/pkg/WrongColor.java:13:Error: Should pass resolved color
 instead of resource id here: getResources().getColor(R.color.green)
 [ResourceAsColor]
-
     textView.setTextColor(foo &gt; 0 ? R.color.green : R.color.blue);
                                     -------------
-
-
 src/test/pkg/WrongColor.java:21:Error: Should pass resolved color
 instead of resource id here: getResources().getColor(R.color.blue)
 [ResourceAsColor]
-
     foo2(R.color.blue);
          ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/WrongColor.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -114,6 +101,11 @@ public class WrongColor extends Activity {
     private void foo2(@androidx.annotation.ColorInt int c) {
     }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`test.pkg`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text linenumbers
+@color/blue
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -38,42 +38,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/CommitTest.java:25:Warning: This transaction should be
 completed with a commit() call [CommitTransaction]
-
     getFragmentManager().beginTransaction(); // ERROR 1
                          ----------------
-
-
 src/test/pkg/CommitTest.java:30:Warning: This transaction should be
 completed with a commit() call [CommitTransaction]
-
     FragmentTransaction transaction2 = getFragmentManager().beginTransaction(); // ERROR 2
                                                             ----------------
-
-
 src/test/pkg/CommitTest.java:39:Warning: This transaction should be
 completed with a commit() call [CommitTransaction]
-
     getFragmentManager().beginTransaction(); // ERROR 3
                          ----------------
-
-
 src/test/pkg/CommitTest.java:65:Warning: This transaction should be
 completed with a commit() call [CommitTransaction]
-
     getSupportFragmentManager().beginTransaction(); // ERROR 4
                                 ----------------
-
-
 src/test/pkg/CommitTest.java:123:Warning: This transaction should be
 completed with a commit() call [CommitTransaction]
-
     transaction = getFragmentManager().beginTransaction(); // ERROR 5
                                        ----------------
-
-
 src/test/pkg/CommitTest.java:132:Warning: This transaction should be
 completed with a commit() call [CommitTransaction]
-
     transaction = getFragmentManager().beginTransaction(); // ERROR 6
                                        ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

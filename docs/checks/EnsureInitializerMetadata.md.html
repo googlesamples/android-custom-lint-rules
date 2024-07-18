@@ -1,7 +1,7 @@
 <meta charset="utf-8">
-(#) Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file.
+(#) Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file
 
-!!! ERROR: Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file.
+!!! ERROR: Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file
    This is an error, and is also enforced at build time when
    supported by the build system. For Android this means it will
    run during release builds.
@@ -9,7 +9,7 @@
 Id
 :   `EnsureInitializerMetadata`
 Summary
-:   Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file.
+:   Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file
 Severity
 :   Fatal
 Category
@@ -33,8 +33,12 @@ Affects
 :   Kotlin and Java files and manifest files
 Editing
 :   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/startup/startup-runtime-lint/src/main/java/androidx/startup/lint/EnsureInitializerMetadataDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/startup/startup-runtime-lint/src/test/java/androidx/startup/lint/EnsureInitializerMetadataTest.kt)
+Copyright Year
+:   2020
 
 When a library defines a Initializer, it needs to be accompanied by a
 corresponding <meta-data> entry in the AndroidManifest.xml file.

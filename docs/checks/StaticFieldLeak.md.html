@@ -49,37 +49,24 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/LeakTest.java:18:Warning: Do not place Android context
 classes in static fields; this is a memory leak [StaticFieldLeak]
-
     private static Activity sField7; // LEAK!
             ------
-
-
 src/test/pkg/LeakTest.java:19:Warning: Do not place Android context
 classes in static fields; this is a memory leak [StaticFieldLeak]
-
     private static Fragment sField8; // LEAK!
             ------
-
-
 src/test/pkg/LeakTest.java:20:Warning: Do not place Android context
 classes in static fields; this is a memory leak [StaticFieldLeak]
-
     private static Button sField9; // LEAK!
             ------
-
-
 src/test/pkg/LeakTest.java:21:Warning: Do not place Android context
 classes in static fields (static reference to MyObject which has field
 mActivity pointing to Activity); this is a memory leak
 [StaticFieldLeak]
-
     private static MyObject sField10;
             ------
-
-
 src/test/pkg/LeakTest.java:30:Warning: Do not place Android context
 classes in static fields; this is a memory leak [StaticFieldLeak]
-
     private static Activity sAppContext1; // LEAK
             ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DaggerIssuesDetectorTest.kt)
 Copyright Year
@@ -48,28 +48,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/MyModule.kt:7:Error: @Binds/@Provides functions must be in
 modules [MustBeInModule]
-
   @Binds fun invalidBind(real: Int): Number
   -----------------------------------------
-
-
 src/foo/MyModule.kt:10:Error: @Binds/@Provides functions must be in
 modules [MustBeInModule]
-
     @Provides fun invalidBind(): Int = 3
     ------------------------------------
-
-
 src/foo/MyModule.kt:15:Error: @Binds/@Provides functions must be in
 modules [MustBeInModule]
-
   @Binds abstract fun invalidBind(real: Int): Number
   --------------------------------------------------
-
-
 src/foo/MyModule.kt:18:Error: @Binds/@Provides functions must be in
 modules [MustBeInModule]
-
     @Provides fun invalidBind(): Int = 3
     ------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

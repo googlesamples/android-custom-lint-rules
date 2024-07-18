@@ -1,0 +1,152 @@
+<meta charset="utf-8">
+(#) Application may have a debugging or development URL publicly exposed
+
+!!! WARNING: Application may have a debugging or development URL publicly exposed
+   This is a warning.
+
+Id
+:   `UnintendedExposedUrl`
+Summary
+:   Application may have a debugging or development URL publicly exposed
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Google - Android 3P Vulnerability Research
+Contact
+:   https://github.com/google/android-security-lints
+Feedback
+:   https://github.com/google/android-security-lints/issues
+Min
+:   Lint 4.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [google.android-security-lints](google_android-security-lints.md.html)
+
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   http://goo.gle/UnintendedExposedUrl
+Implementation
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/UnintendedExposedUrlDetector.kt)
+Tests
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/UnintendedExposedUrlDetectorTest.kt)
+Copyright Year
+:   2023
+
+URLs that look intended for debugging and development purposes only are
+exposed in the application, allowing attackers to gain access to parts
+of the application and server that should be kept secure.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/xml/network_security_config.xml:6:Warning: Exposing development /
+debugging URLs allows attackers to gain unintended access to the
+application and its resources [UnintendedExposedUrl]
+    &lt;domain&gt;http://staging-app.com&lt;/domain&gt;
+    ---------------------------------------
+res/xml/network_security_config.xml:7:Warning: Exposing development /
+debugging URLs allows attackers to gain unintended access to the
+application and its resources [UnintendedExposedUrl]
+    &lt;domain&gt;https://www.fakepreprodenvt.co.uk&lt;/domain&gt;
+    --------------------------------------------------
+res/xml/network_security_config.xml:8:Warning: Exposing development /
+debugging URLs allows attackers to gain unintended access to the
+application and its resources [UnintendedExposedUrl]
+    &lt;domain&gt;debug.io&lt;/domain&gt;
+    -------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/xml/network_security_config.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+                    &lt;network-security-config&gt;
+                        &lt;base-config cleartextTrafficPermitted="false"&gt;
+                        &lt;/base-config&gt;
+                        &lt;domain-config cleartextTrafficPermitted="false"&gt;
+                            &lt;domain&gt;http://staging-app.com&lt;/domain&gt;
+                            &lt;domain&gt;https://www.fakepreprodenvt.co.uk&lt;/domain&gt;
+                            &lt;domain&gt;debug.io&lt;/domain&gt;
+                        &lt;/domain-config&gt;
+                    &lt;/network-security-config&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/UnintendedExposedUrlDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `UnintendedExposedUrlDetector.testWhenExposedUrlInNetworkSecurityConfig_showsWarning`.
+To report a problem with this extracted sample, visit
+https://github.com/google/android-security-lints/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+!!! WARN
+   This library has not been published. Its documentation was
+   extracted by installing the project sources locally. Consult
+   the project's documentation on how to configure it with your
+   own projects: [](https://github.com/google/android-security-lints)
+
+
+[Additional details about google.android-security-lints](google_android-security-lints.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="UnintendedExposedUrl"` on the problematic XML element
+  (or one of its enclosing elements). You may also need to add the
+  following namespace declaration on the root element in the XML file
+  if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnintendedExposedUrl" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnintendedExposedUrl'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnintendedExposedUrl ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

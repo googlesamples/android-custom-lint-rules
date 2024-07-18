@@ -54,72 +54,47 @@ src/test/pkg/LocaleTest.java:11:Warning: Implicitly using the default
 locale is a common source of bugs: Use toUpperCase(Locale) instead. For
 strings meant to be internal use Locale.ROOT, otherwise
 Locale.getDefault(). [DefaultLocale]
-
     System.out.println("WRONG".toUpperCase());
                                -----------
-
-
 src/test/pkg/LocaleTest.java:16:Warning: Implicitly using the default
 locale is a common source of bugs: Use toLowerCase(Locale) instead. For
 strings meant to be internal use Locale.ROOT, otherwise
 Locale.getDefault(). [DefaultLocale]
-
     System.out.println("WRONG".toLowerCase());
                                -----------
-
-
 src/test/pkg/LocaleTest.java:20:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %f", 1.0f); // Implies locale
     --------------------------------
-
-
 src/test/pkg/LocaleTest.java:21:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %1$f", 1.0f);
     ----------------------------------
-
-
 src/test/pkg/LocaleTest.java:22:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %e", 1.0f);
     --------------------------------
-
-
 src/test/pkg/LocaleTest.java:23:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %d", 1.0f);
     --------------------------------
-
-
 src/test/pkg/LocaleTest.java:24:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %g", 1.0f);
     --------------------------------
-
-
 src/test/pkg/LocaleTest.java:25:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %g", 1.0f);
     --------------------------------
-
-
 src/test/pkg/LocaleTest.java:26:Warning: Implicitly using the default
 locale is a common source of bugs: Use String.format(Locale, ...)
 instead [DefaultLocale]
-
     String.format("WRONG: %1$tm %1$te,%1$tY",
     ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

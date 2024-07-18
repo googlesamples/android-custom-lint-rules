@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/DaggerIssuesDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DaggerIssuesDetectorTest.kt)
 Copyright Year
@@ -48,63 +48,38 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/MyQualifier.kt:25:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Int.bind(): Number = this@bind
   --------------------------------------------
-
-
 src/foo/MyQualifier.kt:26:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Long.bind(): Number = this@bind
   ---------------------------------------------
-
-
 src/foo/MyQualifier.kt:27:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Double.bind(): Number = this@bind
   -----------------------------------------------
-
-
 src/foo/MyQualifier.kt:28:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Float.bind(): Number = this@bind
   ----------------------------------------------
-
-
 src/foo/MyQualifier.kt:29:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Short.bind(): Number = this@bind
   ----------------------------------------------
-
-
 src/foo/MyQualifier.kt:30:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Byte.bind(): Number = this@bind
   ---------------------------------------------
-
-
 src/foo/MyQualifier.kt:31:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun Char.bind(): Comparable&lt;Char&gt; = this@bind
   -------------------------------------------------------
-
-
 src/foo/MyQualifier.kt:32:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun String.bind(): Comparable&lt;String&gt; = this@bind
   -----------------------------------------------------------
-
-
 src/foo/MyQualifier.kt:33:Error: @Provides functions cannot be abstract
 [ProvidesMustNotBeAbstract]
-
   @Provides fun @receiver:MyQualifier Boolean.bind(): Comparable&lt;Boolean&gt; = this@bind
   -----------------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

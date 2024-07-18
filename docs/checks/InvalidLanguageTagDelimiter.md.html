@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Undercore (_) is an unsupported delimiter for subtags
+(#) Underscore (`_`) is an unsupported delimiter for subtags
 
-!!! ERROR: Undercore (_) is an unsupported delimiter for subtags
+!!! ERROR: Underscore (`_`) is an unsupported delimiter for subtags
    This is an error.
 
 Id
 :   `InvalidLanguageTagDelimiter`
 Summary
-:   Undercore (_) is an unsupported delimiter for subtags
+:   Underscore (`_`) is an unsupported delimiter for subtags
 Severity
 :   Error
 Category
@@ -48,9 +48,8 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/test.kt:8:Error: A hyphen (-), not an underscore (_) delimiter
 should be used in a language tag [InvalidLanguageTagDelimiter]
-
     bar(Locale("en_UK"))
-                -----
+               -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -84,17 +83,17 @@ https://issuetracker.google.com/issues/new?component=779818.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-text-android:1.7.0-beta04")
+implementation("androidx.compose.ui:ui-text-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-text-android:1.7.0-beta04'
+implementation 'androidx.compose.ui:ui-text-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui-text-android)
 
 # libs.versions.toml
 [versions]
-ui-text-android = "1.7.0-beta04"
+ui-text-android = "1.7.0-beta05"
 [libraries]
 ui-text-android = {
     module = "androidx.compose.ui:ui-text-android",
@@ -102,7 +101,7 @@ ui-text-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.ui:ui-text-android](androidx_compose_ui_ui-text-android.md.html).

@@ -44,87 +44,56 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/SecureRandomTest.java:12:Warning: It is dangerous to seed
 SecureRandom with the current time because that value is more
 predictable to an attacker than the default seed [SecureRandom]
-
     random1.setSeed(System.currentTimeMillis()); // Wrong
     -------------------------------------------
-
-
 src/test/pkg/SecureRandomTest.java:13:Warning: It is dangerous to seed
 SecureRandom with the current time because that value is more
 predictable to an attacker than the default seed [SecureRandom]
-
     random1.setSeed(System.nanoTime()); // Wrong
     ----------------------------------
-
-
 src/test/pkg/SecureRandomTest.java:15:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random1.setSeed(0); // Wrong
     ------------------
-
-
 src/test/pkg/SecureRandomTest.java:16:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random1.setSeed(1); // Wrong
     ------------------
-
-
 src/test/pkg/SecureRandomTest.java:17:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random1.setSeed((int)1023); // Wrong
     --------------------------
-
-
 src/test/pkg/SecureRandomTest.java:18:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random1.setSeed(1023L); // Wrong
     ----------------------
-
-
 src/test/pkg/SecureRandomTest.java:19:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random1.setSeed(FIXED_SEED); // Wrong
     ---------------------------
-
-
 src/test/pkg/SecureRandomTest.java:29:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random3.setSeed(0); // Wrong: owner is java/util/Random, but applied to SecureRandom object
     ------------------
-
-
 src/test/pkg/SecureRandomTest.java:41:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random2.setSeed(seed); // Wrong
     ---------------------
-
-
 src/test/pkg/SecureRandomTest.java:47:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random2.setSeed(seedBytes); // Wrong
     --------------------------
-
-
 src/test/pkg/SecureRandomTest.java:55:Warning: Do not call setSeed() on
 a SecureRandom with a fixed seed: it is not secure. Use getSeed().
 [SecureRandom]
-
     random2.setSeed(fixedSeed); // Wrong
     --------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

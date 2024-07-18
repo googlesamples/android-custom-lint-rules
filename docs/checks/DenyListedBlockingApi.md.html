@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/denylistedapis/DenyListedApiDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/denylistedapis/DenyListedApiDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/denylistedapis/DenyListedApiDetectorTest.kt)
 Copyright Year
@@ -52,7 +52,6 @@ deadlocks and application jank. Prefer making the enclosing function a
 suspend function or refactoring this in a way to use non-blocking calls.
 If running in a test, use runTest {} or Turbine to test synchronous
 values. [DenyListedBlockingApi]
-
   val result = runBlocking {}
                -----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

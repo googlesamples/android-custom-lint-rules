@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Prefer List over Array.
+(#) Prefer List over Array
 
-!!! WARNING: Prefer List over Array.
+!!! WARNING: Prefer List over Array
    This is a warning.
 
 Id
 :   `MoshiUsageArray`
 Summary
-:   Prefer List over Array.
+:   Prefer List over Array
 Severity
 :   Warning
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -53,33 +53,40 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:43:Warning: Prefer List over Array.
 [MoshiUsageArray]
-
   val arrayType: Array&lt;String&gt;,
                  -------------
-
-
 src/slack/model/Example.kt:44:Warning: Prefer List over Array.
 [MoshiUsageArray]
-
   val intArray: IntArray,
                 --------
-
-
 src/slack/model/Example.kt:45:Warning: Prefer List over Array.
 [MoshiUsageArray]
-
   val boolArray: BooleanArray,
                  ------------
-
-
 src/slack/model/Example.kt:46:Warning: Prefer List over Array.
 [MoshiUsageArray]
-
   val complexArray: Array&lt;List&lt;String&gt;&gt;,
                     -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/external/ExternalType.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package external
+
+class ExternalType
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/external/ExternalTypeAnnotated.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package external
+
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class ExternalTypeAnnotated(val value: String)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/slack/model/Example.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers

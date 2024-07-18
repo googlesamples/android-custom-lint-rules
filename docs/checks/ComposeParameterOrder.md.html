@@ -57,11 +57,8 @@ Modifier = Modifier].
 See
 https://slackhq.github.io/compose-lints/rules/#ordering-composable-parameters-properly
 for more information. [ComposeParameterOrder]
-
 fun MyComposable(modifier: Modifier = Modifier, other: String, other2: String) { }
                 --------------------------------------------------------------
-
-
 src/test.kt:8:Error: Parameters in a composable function should be
 ordered following this pattern: params without defaults, modifiers,
 params with defaults and optionally, a trailing function that might not
@@ -72,11 +69,8 @@ Modifier] but should be [modifier: Modifier = Modifier, text: String =
 See
 https://slackhq.github.io/compose-lints/rules/#ordering-composable-parameters-properly
 for more information. [ComposeParameterOrder]
-
 fun MyComposable(text: String = "deffo", modifier: Modifier = Modifier) { }
                 -------------------------------------------------------
-
-
 src/test.kt:11:Error: Parameters in a composable function should be
 ordered following this pattern: params without defaults, modifiers,
 params with defaults and optionally, a trailing function that might not
@@ -87,11 +81,8 @@ Current params are: [modifier: Modifier = Modifier, text: String =
 See
 https://slackhq.github.io/compose-lints/rules/#ordering-composable-parameters-properly
 for more information. [ComposeParameterOrder]
-
 fun MyComposable(modifier: Modifier = Modifier, text: String = "123", modifier2: Modifier = Modifier) { }
                 -------------------------------------------------------------------------------------
-
-
 src/test.kt:14:Error: Parameters in a composable function should be
 ordered following this pattern: params without defaults, modifiers,
 params with defaults and optionally, a trailing function that might not
@@ -102,11 +93,8 @@ Modifier, text: String = "123", lambda: () -> Unit].
 See
 https://slackhq.github.io/compose-lints/rules/#ordering-composable-parameters-properly
 for more information. [ComposeParameterOrder]
-
 fun MyComposable(text: String = "123", modifier: Modifier = Modifier, lambda: () -&gt; Unit) { }
                 -------------------------------------------------------------------------
-
-
 src/test.kt:17:Error: Parameters in a composable function should be
 ordered following this pattern: params without defaults, modifiers,
 params with defaults and optionally, a trailing function that might not
@@ -118,7 +106,6 @@ Unit].
 See
 https://slackhq.github.io/compose-lints/rules/#ordering-composable-parameters-properly
 for more information. [ComposeParameterOrder]
-
 fun MyComposable(text1: String, m2: Modifier = Modifier, modifier: Modifier = Modifier, trailing: () -&gt; Unit) { }
                 ---------------------------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
