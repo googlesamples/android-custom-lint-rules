@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Use of site-targets on @Json are redundant.
+(#) Use of site-targets on @Json are redundant
 
-!!! ERROR: Use of site-targets on @Json are redundant.
+!!! ERROR: Use of site-targets on @Json are redundant
    This is an error.
 
 Id
 :   `MoshiUsageRedundantSiteTarget`
 Summary
-:   Use of site-targets on @Json are redundant.
+:   Use of site-targets on @Json are redundant
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -49,7 +49,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:8:Error: Use of site-targets on @Json are
 redundant. [MoshiUsageRedundantSiteTarget]
-
   @field:Json(name = "foo") val value: String
    -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

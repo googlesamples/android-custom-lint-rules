@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/mocking/MockDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/mocking/MockDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/mocking/DoNotMockMockDetectorTest.kt)
 Copyright Year
@@ -106,33 +106,23 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 test/test/slack/test/TestClass.kt:6:Error: Do not mock TestClass: Use
 fake() [DoNotMock]
-
   @Mock lateinit var mock1: TestClass
   -----------------------------------
-
-
 test/test/slack/test/TestClass.kt:7:Error: Do not mock TestClass2: Use
 fake() [DoNotMock]
-
   @Mock lateinit var mock2: TestClass2
   ------------------------------------
-
-
 test/test/slack/test/TestClass.kt:8:Error: Do not mock TestClass3:
 BECAUSE REASONS [DoNotMock]
-
   @Mock lateinit var mock3: TestClass3
   ------------------------------------
-
-
 test/test/slack/test/TestClass.kt:9:Error: Do not mock TestClass4:
 BECAUSE REASONS [DoNotMock]
-
   @Mock lateinit var mock4: TestClass4
   ------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `test/test/slack/test/TestClass.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -156,6 +146,20 @@ interface TestClass3 {
 @com.google.errorprone.annotations.DoNotMock
 interface TestClass4 {
   fun fake(): TestClass4? = null
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`test/test/slack/test/TestClass.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package slack.test
+
+import org.mockito.Mock
+
+class MyTests {
+  @Mock lateinit var mock1: TestClass
+  @Mock lateinit var mock2: TestClass2
+  @Mock lateinit var mock3: TestClass3
+  @Mock lateinit var mock4: TestClass4
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

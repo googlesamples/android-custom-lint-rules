@@ -43,69 +43,44 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/onclick.xml:10:Error: Corresponding method handler 'public
 void nonexistent(android.view.View)' not found [OnClick]
-
     android:onClick="nonexistent"
     -----------------------------
-
-
 res/layout/onclick.xml:16:Error: Corresponding method handler 'public
 void wrong1(android.view.View)' not found [OnClick]
-
     android:onClick="wrong1"
     ------------------------
-
-
 res/layout/onclick.xml:22:Error: Corresponding method handler 'public
 void wrong2(android.view.View)' not found [OnClick]
-
     android:onClick="wrong2"
     ------------------------
-
-
 res/layout/onclick.xml:28:Error: Corresponding method handler 'public
 void wrong3(android.view.View)' not found [OnClick]
-
     android:onClick="wrong3"
     ------------------------
-
-
 res/layout/onclick.xml:58:Error: Corresponding method handler 'public
 void simple_typo(android.view.View)' not found (did you mean
 OnClickActivity#simple_tyop ?) [OnClick]
-
     android:onClick="simple_typo"
     -----------------------------
-
-
 res/layout/onclick.xml:82:Error: onClick handler method name cannot
 start with the character '1' [OnClick]
-
     android:onClick="1invalidname"
                      ------------
-
-
 res/layout/onclick.xml:88:Error: There should be no spaces in the
 onClick handler name [OnClick]
-
     android:onClick="invalid name"
                      ------------
-
-
 res/layout/onclick.xml:94:Error: onClick handler method name cannot
 contain the character '(' [OnClick]
-
     android:onClick="invalidname()"
                      -------------
-
-
 res/layout/onclick.xml:100:Error: onClick handler method name cannot be
 a Java keyword [OnClick]
-
     android:onClick="new"
                      ---
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/layout/onclick.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -212,6 +187,58 @@ Here is the source file referenced above:
         android:text="Button" /&gt;
 
 &lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/OnClickActivity.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+import android.util.Log;
+import android.view.View;
+
+/** Test data for the OnClickDetector */
+public class OnClickActivity extends Activity {
+    // Wrong argument type 1
+    public void wrong1() {
+    }
+
+    // Wrong argument type 2
+    public void wrong2(int i) {
+    }
+
+    // Wrong argument type 3
+    public void wrong3(View view, int i) {
+    }
+
+    // Return type is allowed to not be void
+    public int ok2(View view) {
+        return 0;
+    }
+
+    // Wrong modifier (not public)
+    void wrong5(View view) {
+    }
+
+    // Wrong modifier (is static)
+    public static void wrong6(View view) {
+    }
+
+    public void ok(View view) {
+    }
+
+    // Ok: Unicode escapes
+    public void myሴmethod(View view) {
+    }
+
+    // Typo
+    public void simple_tyop(View view) {
+    }
+
+    void wrong7(View view) {
+        Log.i("x", "wrong7: called");
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

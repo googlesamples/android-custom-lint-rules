@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Marks usage of the requireNotNull method without lazy messages.
+(#) Marks usage of the requireNotNull method without lazy messages
 
-!!! WARNING: Marks usage of the requireNotNull method without lazy messages.
+!!! WARNING: Marks usage of the requireNotNull method without lazy messages
    This is a warning.
 
 Id
 :   `KotlinRequireNotNullUseMessage`
 Summary
-:   Marks usage of the requireNotNull method without lazy messages.
+:   Marks usage of the requireNotNull method without lazy messages
 Severity
 :   Warning
 Category
@@ -29,9 +29,41 @@ Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-kotlin-lint/src/main/kotlin/com/vanniktech/lintrules/kotlin/KotlinRequireNotNullUseMessageDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-kotlin-lint/src/test/kotlin/com/vanniktech/lintrules/rxjava2/KotlinRequireNotNullUseMessageDetectorTest.kt)
 
 The default generated message from requireNotNull often lacks context,
 hence it's best to provide a custom message.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:2:Warning: Provide a message
+[KotlinRequireNotNullUseMessage]
+  requireNotNull(value)
+  --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun test(value: Int?) {
+  requireNotNull(value)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-kotlin-lint/src/test/kotlin/com/vanniktech/lintrules/rxjava2/KotlinRequireNotNullUseMessageDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `KotlinRequireNotNullUseMessageDetector.requireNotNull`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

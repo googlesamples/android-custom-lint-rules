@@ -64,19 +64,12 @@ Example `lint.xml`:
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/Test.kt:3:Warning: This reference is unused: s === o [NoOp]
-
     s === o                // ERROR 1
     -------
-
-
 src/Test.kt:4:Warning: This call result is unused: toString [NoOp]
-
     o.toString()           // ERROR 2
     ------------
-
-
 src/Test.kt:5:Warning: This reference is unused: length [NoOp]
-
     s.length               // ERROR 3
       ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

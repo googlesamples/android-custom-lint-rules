@@ -53,73 +53,54 @@ Did you mean to call its constructor TestClass(...)?
 If the class TestClass does not contain arguments,
 you can also pass in its KClass reference TestClass::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = TestClass)
                                                      ---------
-
-
 src/com/example/test.kt:9:Error: StartDestination should not be a simple
 class name reference.
 Did you mean to call its constructor TestClassWithArg(...)?
 If the class TestClassWithArg does not contain arguments,
 you can also pass in its KClass reference TestClassWithArg::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = TestClassWithArg)
                                                      ----------------
-
-
 src/com/example/test.kt:10:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor InnerClass(...)?
 If the class InnerClass does not contain arguments,
 you can also pass in its KClass reference InnerClass::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = Outer.InnerClass)
                                                      ----------------
-
-
 src/com/example/test.kt:11:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor InterfaceChildClass(...)?
 If the class InterfaceChildClass does not contain arguments,
 you can also pass in its KClass reference InterfaceChildClass::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = InterfaceChildClass)
                                                      -------------------
-
-
 src/com/example/test.kt:12:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor AbstractChildClass(...)?
 If the class AbstractChildClass does not contain arguments,
 you can also pass in its KClass reference AbstractChildClass::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = AbstractChildClass)
                                                      ------------------
-
-
 src/com/example/test.kt:13:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor TestInterface(...)?
 If the class TestInterface does not contain arguments,
 you can also pass in its KClass reference TestInterface::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = TestInterface)
                                                      -------------
-
-
 src/com/example/test.kt:14:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor TestAbstract(...)?
 If the class TestAbstract does not contain arguments,
 you can also pass in its KClass reference TestAbstract::class
 [WrongStartDestinationType]
-
     builder.navigation&lt;TestGraph&gt;(startDestination = TestAbstract)
                                                      ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,8 +141,8 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class. (this issue)
-* [WrongStartDestinationType from androidx.navigation:navigation-compose:2.8.0-beta04](WrongStartDestinationType.md.html)
-* [WrongStartDestinationType from androidx.navigation:navigation-common:2.8.0-beta04](WrongStartDestinationType-3.md.html)
+* [WrongStartDestinationType from androidx.navigation:navigation-compose:2.8.0-beta05](WrongStartDestinationType.md.html)
+* [WrongStartDestinationType from androidx.navigation:navigation-common:2.8.0-beta05](WrongStartDestinationType-3.md.html)
 
 
 (##) Including
@@ -172,17 +153,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-common:2.8.0-beta04")
+implementation("androidx.navigation:navigation-common:2.8.0-beta05")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-common:2.8.0-beta04'
+implementation 'androidx.navigation:navigation-common:2.8.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation-common)
 
 # libs.versions.toml
 [versions]
-navigation-common = "2.8.0-beta04"
+navigation-common = "2.8.0-beta05"
 [libraries]
 navigation-common = {
     module = "androidx.navigation:navigation-common",
@@ -190,7 +171,7 @@ navigation-common = {
 }
 ```
 
-2.8.0-beta04 is the version this documentation was generated from;
+2.8.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html).

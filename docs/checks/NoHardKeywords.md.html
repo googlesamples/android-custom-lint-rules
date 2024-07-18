@@ -51,21 +51,17 @@ src/test/pkg/Test.java:5:Warning: Avoid method names that are Kotlin
 hard keywords ("fun"); see
 https://android.github.io/kotlin-guides/interop.html#no-hard-keywords
 [NoHardKeywords]
-
     public void fun() { }
                 ---
-
-
 src/test/pkg/Test.java:7:Warning: Avoid field names that are Kotlin hard
 keywords ("object"); see
 https://android.github.io/kotlin-guides/interop.html#no-hard-keywords
 [NoHardKeywords]
-
     public Object object = null;
                   ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/Test.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -76,6 +72,23 @@ public class Test {
     public void fun() { }
     public void foo(int fun, int internalName) { }
     public Object object = null;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/Keywords.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import org.json.JSONException;
+import org.json.JSONStringer;
+
+@SuppressWarnings("ClassNameDiffersFromFileName")
+ public class Keywords extends JSONStringer {
+    // Using Kotlin hard keyword, but can't be helped; overrides library name
+    @Override
+    public JSONStringer object() throws JSONException {
+        return super.object();
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

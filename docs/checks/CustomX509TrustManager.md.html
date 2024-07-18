@@ -42,7 +42,6 @@ custom X509TrustManager is error-prone and likely to be insecure. It is
 likely to disable certificate validation altogether, and is non-trivial
 to implement correctly without calling Android's default implementation.
 [CustomX509TrustManager]
-
     TrustManager[] trustAllCerts = new TrustManager[]{ new X509TrustManager() {
                                                            ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -80,12 +80,11 @@ src/test/pkg/AssertTest.kt:18:Warning: Kotlin assertion arguments are
 always evaluated, even when assertions are off. Consider surrounding
 assertion with if (javaClass.desiredAssertionStatus()) { assert(...) }
 [ExpensiveAssertion]
-
     assert(expensive()) // WARN
            -----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/AssertTest.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -126,6 +125,42 @@ class AssertTest {
     fun foo(x1: Boolean, x2: Boolean, x3: Number?) {
         assert(x1 == x2)  // ERROR
         assert(x3 != null) // ERROR
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun testExpensive() {
+    assert(expensive()) // no suggestion to surround with javaClass from toplevel
+    assert(cheap())
+    assert(cheap2(0))
+    assert(cheap3())
+}
+private fun expensive(): Boolean {
+    Thread.sleep(500)
+    return true
+}
+
+const val DEBUGGING = false
+private fun cheap(): Boolean {
+    return DEBUGGING
+}
+private fun cheap2(x: Int): Boolean = x < 10
+private fun cheap3() = test.pkg.Utils.isDiagnosing()
+
+fun castOkay(foo: Any) {
+    assert(foo is String) // OK
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/Utils.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+public class Utils {
+    public static final boolean DIAGNOSE = false;
+    public static boolean isDiagnosing() {
+        return DIAGNOSE;
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

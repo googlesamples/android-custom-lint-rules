@@ -40,12 +40,35 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:4:Warning: Using a version of the class that is not forward
 compatible [IncompatibleMediaBrowserServiceCompatVersion]
-
-    compile 'com.android.support:support-v4:23.4.0' 
+    compile 'com.android.support:support-v4:23.4.0'
              -------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/MyBrowserService.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.os.Bundle;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaBrowserServiceCompat;
+
+import java.util.List;
+
+public class MyBrowserService extends MediaBrowserServiceCompat {
+
+    @Override
+    public BrowserRoot onGetRoot(String clientPackageName, int clientUid, Bundle rootHints) {
+        return null;
+    }
+
+    @Override
+    public void onLoadChildren(String parentId, Result<List<MediaBrowserCompat.MediaItem>> result) {
+
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `build.gradle`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
@@ -69,13 +92,6 @@ https://issuetracker.google.com/issues/new?component=192708.
 
 You can suppress false positives using one of the following mechanisms:
 
-* Using a suppression comment like this on the line above:
-
-  ```kt
-  //noinspection IncompatibleMediaBrowserServiceCompatVersion
-  problematicStatement()
-  ```
-
 * Using a suppression annotation like this on the enclosing
   element:
 
@@ -95,6 +111,13 @@ You can suppress false positives using one of the following mechanisms:
   void method() {
      problematicStatement();
   }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection IncompatibleMediaBrowserServiceCompatVersion
+  problematicStatement()
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

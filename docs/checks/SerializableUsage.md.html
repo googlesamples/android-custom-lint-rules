@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Don't use Serializable.
+(#) Don't use Serializable
 
-!!! ERROR: Don't use Serializable.
+!!! ERROR: Don't use Serializable
    This is an error.
 
 Id
 :   `SerializableUsage`
 Summary
-:   Don't use Serializable.
+:   Don't use Serializable
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/SerializableDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/SerializableDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/SerializableDetectorTest.kt)
 Copyright Year
@@ -51,7 +51,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/ImplementsExplicitly.kt:6:Error: Don't use Serializable.
 [SerializableUsage]
-
 class ImplementsExplicitly : RuntimeException, Serializable
       --------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

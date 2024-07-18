@@ -40,6 +40,52 @@ Activities, services and content providers should be registered in the
 If your activity is simply a parent class intended to be subclassed by
 other "real" activities, make it an abstract class.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyActivity2.java:5:Warning: The <activity>
+test.pkg.MyActivity2 is not registered in the manifest [Registered]
+public class MyActivity2 extends Activity {
+             -----------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/test/pkg/MyActivity1.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+
+public class MyActivity1 extends Activity {
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyActivity2.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Activity;
+
+public class MyActivity2 extends Activity {
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.pkg"&gt;
+    &lt;application&gt;
+        &lt;activity android:name=".MyActivity1" /&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/RegistrationDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

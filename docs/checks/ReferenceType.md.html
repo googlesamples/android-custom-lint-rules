@@ -43,28 +43,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/values/refs.xml:3:Error: Unexpected resource reference type;
 expected value of type @string/ [ReferenceType]
-
     &lt;item name="invalid1" type="string"&gt;@layout/other&lt;/item&gt;
                                         -------------
-
-
 res/values/refs.xml:5:Error: Unexpected resource reference type;
 expected value of type @drawable/ [ReferenceType]
-
     @layout/other
     -------------
-
-
 res/values/refs.xml:10:Error: Unexpected resource reference type;
 expected value of type @string/ [ReferenceType]
-
     &lt;string name="invalid4"&gt;@layout/indirect&lt;/string&gt;
                             ----------------
-
-
 res/values/refs.xml:15:Error: Unexpected resource reference type;
 expected value of type @color/ [ReferenceType]
-
     &lt;item name="drawableAsColor" type="color"&gt;@drawable/my_drawable&lt;/item&gt;
                                               ---------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

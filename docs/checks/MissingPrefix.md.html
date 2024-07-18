@@ -46,14 +46,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/namespace.xml:2:Error: Attribute is missing the Android
 namespace prefix [MissingPrefix]
-
 &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:other="http://foo.bar" android:id="@+id/newlinear" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" orientation="true"&gt;
                                                                                                                                                                                                                                           ------------------
-
-
 res/layout/namespace.xml:3:Error: Attribute is missing the Android
 namespace prefix [MissingPrefix]
-
     &lt;Button style="@style/setupWizardOuterFrame" android.text="Button" android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content"/&gt;
                                                  ---------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

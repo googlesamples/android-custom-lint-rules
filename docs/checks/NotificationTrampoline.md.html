@@ -44,21 +44,37 @@ src/test/pkg/NotificationTest.java:36:Error: This intent launches a
 BroadcastReceiver (BroadcastTrampoline) which launches activities; this
 indirection is bad for performance, and activities should be launched
 directly from the notification [NotificationTrampoline]
-
     .setContentIntent(notificationPendingIntent)
      -------------------------------------------
-
-
 src/test/pkg/NotificationTest.java:38:Error: This intent launches a
 BroadcastReceiver (BroadcastTrampoline) which launches activities; this
 indirection is bad for performance, and activities should be launched
 directly from the notification [NotificationTrampoline]
-
     .addAction(android.R.drawable.ic_dialog_email, "Launch Receiver From Action",
      ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/BroadcastTrampoline.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+public class BroadcastTrampoline extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // The start below will be blocked
+        Intent i = new Intent();
+        i.setClassName("test.pkg", "test.pkg.SecondActivity");
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/NotificationTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Methods annotated with @RestrictedCallsTo should only be called from the specified scope.
+(#) Methods annotated with @RestrictedCallsTo should only be called from the specified scope
 
-!!! ERROR: Methods annotated with @RestrictedCallsTo should only be called from the specified scope.
+!!! ERROR: Methods annotated with @RestrictedCallsTo should only be called from the specified scope
    This is an error.
 
 Id
 :   `RestrictCallsTo`
 Summary
-:   Methods annotated with @RestrictedCallsTo should only be called from the specified scope.
+:   Methods annotated with @RestrictedCallsTo should only be called from the specified scope
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/RestrictCallsToDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/RestrictCallsToDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/RestrictCallsToDetectorTest.kt)
 Copyright Year
@@ -51,28 +51,55 @@ Here is an example of lint warnings produced by this check:
 src/foo/DifferentFile.kt:8:Error: Methods annotated with
 @RestrictedCallsTo should only be called from the specified scope.
 [RestrictCallsTo]
-
     api.annotatedExample()
     ----------------------
-
-
 src/foo/DifferentFile.kt:15:Error: Methods annotated with
 @RestrictedCallsTo should only be called from the specified scope.
 [RestrictCallsTo]
-
     annotatedExample()
     ------------------
-
-
 src/foo/DifferentFile.kt:26:Error: Methods annotated with
 @RestrictedCallsTo should only be called from the specified scope.
 [RestrictCallsTo]
-
     MyApiImpl().annotatedExample()
     ------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/foo/MyApi.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import slack.lint.annotations.RestrictCallsTo
+import slack.lint.annotations.RestrictCallsTo.Companion.FILE
+
+interface MyApi {
+  fun example()
+
+  @RestrictCallsTo(FILE)
+  fun annotatedExample()
+}
+
+class SameFile {
+  fun doStuffWith(api: MyApi) {
+    // This is ok
+    api.example()
+    api.annotatedExample()
+  }
+}
+
+class MyApiImpl : MyApi {
+  override fun example() {
+    annotatedExample()
+  }
+
+  // Note this is not annotated, ensures we check up the hierarchy
+  override fun annotatedExample() {
+    println("Hello")
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/foo/DifferentFile.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers

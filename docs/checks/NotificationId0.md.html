@@ -38,14 +38,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/ServiceTest.kt:13:Error: The notification id cannot be 0
 [NotificationId0]
-
     service.startForeground(0, notification) // ERROR 1: cannot be zero
                             -
-
-
 src/test/pkg/ServiceTest.kt:14:Error: The notification id cannot be 0
 [NotificationId0]
-
     service.startForeground(MY_ID, notification, 1) // ERROR 2: cannot be zero
                             -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

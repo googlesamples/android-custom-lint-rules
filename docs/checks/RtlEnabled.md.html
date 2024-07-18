@@ -44,11 +44,10 @@ Here is an example of lint warnings produced by this check:
 AndroidManifest.xml:Warning: The project references RTL attributes, but
 does not explicitly enable or disable RTL support with
 android:supportsRtl in the manifest [RtlEnabled]
-
 0 errors, 4 warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -56,6 +55,76 @@ Here is the source file referenced above:
     package="test.rtl"&gt;
     &lt;uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" /&gt;
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/rtl.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText" &gt;
+
+    &lt;!-- Warn: Use start instead of left --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="Button" /&gt;
+
+    &lt;!-- Warn: Use end instead of right with layout_gravity --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Button" /&gt;
+
+    &lt;!-- Warn: Use end instead of right with gravity --&gt;
+
+    &lt;TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="TextView" /&gt;
+
+    &lt;!-- OK: No warning --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="Button" /&gt;
+
+    &lt;!-- OK: No warning --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Button" /&gt;
+
+    &lt;!-- OK: No warning --&gt;
+
+    &lt;TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="TextView" /&gt;
+
+    &lt;!-- OK: Suppressed --&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Button"
+        tools:ignore="RtlHardcoded" /&gt;
+
+&lt;/LinearLayout&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

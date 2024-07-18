@@ -42,12 +42,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/Test.kt:9:Warning: Must call clearCommunicationDevice()
 after setCommunicationDevice() [SetAndClearCommunicationDevice]
-
     manager.setCommunicationDevice(AudioDeviceInfo())
     -------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here are the relevant source files:
+Here is the source file referenced above:
 
 `src/test/pkg/Test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -62,22 +61,6 @@ class Test {
     manager.setCommunicationDevice(AudioDeviceInfo())
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`src/AudioManager.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package android.media;
-
-public class AudioManager {
-  public boolean setCommunicationDevice(@NonNull AudioDeviceInfo device) {}
-  public void clearCommunicationDevice() {}
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`src/AudioDeviceInfo.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package android.media;
-public class AudioDeviceInfo {}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

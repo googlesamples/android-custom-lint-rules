@@ -57,26 +57,27 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/rtl.xml:14:Warning: Use "start" instead of "left" to ensure
 correct behavior in right-to-left locales [RtlHardcoded]
-
     android:layout_gravity="left"
                             ----
-
-
 res/layout/rtl.xml:22:Warning: Use "end" instead of "right" to ensure
 correct behavior in right-to-left locales [RtlHardcoded]
-
     android:layout_gravity="right"
                             -----
-
-
 res/layout/rtl.xml:30:Warning: Use "end" instead of "right" to ensure
 correct behavior in right-to-left locales [RtlHardcoded]
-
     android:gravity="right"
                      -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="test.rtl"&gt;
+    &lt;uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" /&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/layout/rtl.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers

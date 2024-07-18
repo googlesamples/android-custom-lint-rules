@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject.
+(#) Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject
 
-!!! ERROR: Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject.
+!!! ERROR: Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject
    This is an error.
 
 Id
 :   `MoshiUsageMissingTypeLabel`
 Summary
-:   Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject.
+:   Sealed Moshi subtypes must be annotated with @TypeLabel or @DefaultObject
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -50,15 +50,11 @@ Here is an example of lint warnings produced by this check:
 src/slack/model/BaseType.kt:9:Error: Sealed Moshi subtypes must be
 annotated with @TypeLabel or @DefaultObject.
 [MoshiUsageMissingTypeLabel]
-
 data class Subtype(val foo: String) : BaseType()
            -------
-
-
 src/slack/model/BaseType.kt:11:Error: Sealed Moshi subtypes must be
 annotated with @TypeLabel or @DefaultObject.
 [MoshiUsageMissingTypeLabel]
-
 object ObjectSubType : BaseType()
        -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

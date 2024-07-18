@@ -45,50 +45,48 @@ which makes it more flexible but also **much** slower.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:8:Warning: A newer version of com.google.guava:guava than
-24.1-android is available: 30.1-android [NewerVersionAvailable]
-
-    compile 'com.google.guava:guava:24.1-android'
-            -------------------------------------
-
-
-build.gradle:9:Warning: A newer version of com.google.guava:guava than
-24.1-jre is available: 30.1-jre [NewerVersionAvailable]
-
-    compile 'com.google.guava:guava:24.1-jre'
-            ---------------------------------
-
-
-build.gradle:10:Warning: A newer version of com.google.guava:guava than
-16.0-rc1 is available: 30.1-android [NewerVersionAvailable]
-
-    compile 'com.google.guava:guava:16.0-rc1'
-            ---------------------------------
-
-
-build.gradle:11:Warning: A newer version of com.google.guava:guava than
-16.0 is available: 30.1-android [NewerVersionAvailable]
-
-    compile 'com.google.guava:guava:16.0'
-            -----------------------------
+../gradle/libs.versions.toml:12:Warning: A newer version of
+com.autonomousapps.dependency-analysis than 1.0.0 is available: 1.20.0
+[NewerVersionAvailable]
+gradlePlugins-dependency-analysis = "1.0.0"
+                                    -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`build.gradle`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
-apply plugin: 'com.android.application'
+`../gradle/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+guavaVersion = "11.0.2"
+appCompatVersion="13.0.0"
+wearableVersion=" 1.2.0 "
+# Test comment suppression:
+#noinspection GradleDependency
+multi-dex="1.0.0"
+gradlePlugins-agp = "8.0.0"
+gradlePlugins-agp-alpha = "8.1.0-alpha01"
+gradlePlugins-agp-dev = "8.2.0-dev"
+gradlePlugins-crashlytics = "2.9.2"
+gradlePlugins-dependency-analysis = "1.0.0"
 
-android {
-    compileSdkVersion 29
-}
+[libraries]
+com-google-guava = { module = "com.google.guava:guava", version.ref = "guavaVersion"}
+appcompat = { module = "com.android.support:appcompat-v7", version.ref = "appCompatVersion" }
+wearable-support = { group = " com.google.android.support ", name =" wearable ", version.ref = " wearableVersion " }
+multidex-lib = { module = "com.android.support:multidex", version.ref = "multi-dex" }
 
-dependencies {
-    compile 'com.google.guava:guava:24.1-android'
-    compile 'com.google.guava:guava:24.1-jre'
-    compile 'com.google.guava:guava:16.0-rc1'
-    compile 'com.google.guava:guava:16.0'
-}
+[bundles]
+misc = [
+    "com-google-guava",
+    "appcompat",
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradlePlugins-agp" }
+android-application2 = { id = "com.android.application", version.ref = "gradlePlugins-agp-alpha" }
+android-application3 = { id = "com.android.application", version.ref = "gradlePlugins-agp-dev" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "gradlePlugins-crashlytics" }
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "gradlePlugins-dependency-analysis" }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -96,7 +94,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testGuavaVersionsAndroidVsJre`.
+found for this lint check, `GradleDetector.testTomlVersionCatalogFile`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

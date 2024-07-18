@@ -41,21 +41,14 @@ Here is an example of lint warnings produced by this check:
 src/test.kt:4:Warning: File.endsWith compares whole filenames, not just
 file extensions; did you mean file.path.endsWith(".xml") ?
 [FileEndsWithExt]
-
 fun File.isXml() = endsWith(".xml")
                    ----------------
-
-
 src/test.kt:7:Warning: File.extension does not include the leading dot;
 did you mean "json" ? [FileEndsWithExt]
-
 fun File.isJson() = extension == ".json"
                                  -------
-
-
 src/test.kt:8:Warning: File.extension does not include the leading dot;
 did you mean "webp" ? [FileEndsWithExt]
-
 fun isWebp(path: File) = path.extension.startsWith(".webp")
                                                    -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

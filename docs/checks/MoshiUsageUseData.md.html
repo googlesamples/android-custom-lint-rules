@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Model classes should be immutable data classes.
+(#) Model classes should be immutable data classes
 
-!!! ERROR: Model classes should be immutable data classes.
+!!! ERROR: Model classes should be immutable data classes
    This is an error.
 
 Id
 :   `MoshiUsageUseData`
 Summary
-:   Model classes should be immutable data classes.
+:   Model classes should be immutable data classes
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -52,7 +52,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:7:Error: Model classes should be immutable
 data classes. [MoshiUsageUseData]
-
 class Example(val value: String, nonProp: String, @Transient val transientProp: String)
       -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -40,15 +40,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 AndroidManifest.xml:3:Warning: The android:versionCode cannot be a
 resource url, it must be a literal integer [IllegalResourceRef]
-
     android:versionCode="@dimen/versionCode"
     ----------------------------------------
-
-
 AndroidManifest.xml:6:Warning: The android:targetSdkVersion cannot be a
 resource url, it must be a literal integer (or string if a preview
 codename) [IllegalResourceRef]
-
     &lt;uses-sdk android:minSdkVersion="@dimen/minSdkVersion" android:targetSdkVersion="@dimen/targetSdkVersion" /&gt;
                                                            --------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

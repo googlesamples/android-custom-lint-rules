@@ -43,12 +43,53 @@ src/com/example/android/uamp/MSessionCallback.java:5:Error: This class
 does not override onPlayFromSearch from MediaSession.Callback The method
 should be overridden and implemented to support Voice search on Android
 Auto. [MissingOnPlayFromSearch]
-
 public class MSessionCallback extends Callback {
              ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.example.android.uamp"&gt;
+
+    &lt;application
+        android:name=".UAMPApplication"
+        android:label="@string/app_name"
+        android:theme="@style/UAmpAppTheme"&gt;
+
+    &lt;meta-data
+        android:name="com.google.android.gms.car.application"
+        android:resource="@xml/automotive_app_desc"/&gt;
+
+        &lt;service
+            android:name=".MusicService"
+            android:exported="true"
+            tools:ignore="ExportedService"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.media.browse.MediaBrowserService"/&gt;
+            &lt;/intent-filter&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/&gt;
+                &lt;category android:name="android.intent.category.DEFAULT"/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/service&gt;
+
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml/automotive_app_desc.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;automotiveApp&gt;
+    &lt;uses name="media"/&gt;
+&lt;/automotiveApp&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/com/example/android/uamp/MSessionCallback.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -77,6 +118,22 @@ https://issuetracker.google.com/issues/new?component=192708.
 
 You can suppress false positives using one of the following mechanisms:
 
+* Adding the suppression attribute
+  `tools:ignore="MissingOnPlayFromSearch"` on the problematic XML
+  element (or one of its enclosing elements). You may also need to add
+  the following namespace declaration on the root element in the XML
+  file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;automotiveApp tools:ignore="MissingOnPlayFromSearch" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
+
 * Using a suppression annotation like this on the enclosing
   element:
 
@@ -103,22 +160,6 @@ You can suppress false positives using one of the following mechanisms:
   ```kt
   //noinspection MissingOnPlayFromSearch
   problematicStatement()
-  ```
-
-* Adding the suppression attribute
-  `tools:ignore="MissingOnPlayFromSearch"` on the problematic XML
-  element (or one of its enclosing elements). You may also need to add
-  the following namespace declaration on the root element in the XML
-  file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
-
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;automotiveApp tools:ignore="MissingOnPlayFromSearch" .../&gt;
-    ...
-  &lt;/manifest&gt;
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

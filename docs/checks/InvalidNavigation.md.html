@@ -38,12 +38,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/navigation/navigation.xml:5:Warning: Invalid start destination
 @id/includedId [InvalidNavigation]
-
     app:startDestination="@id/includedId"&gt;
                           --------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/navigation/navigation.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -53,6 +52,18 @@ Here is the source file referenced above:
                              xmlns:android="http://schemas.android.com/apk/res/android"
                              app:startDestination="@id/includedId"&gt;
                                &lt;include app:graph="@navigation/foo"/&gt;
+                           &lt;/navigation&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/navigation/foo.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+                           &lt;navigation
+                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                             xmlns:android="http://schemas.android.com/apk/res/android"
+                             android:id='@+id/includedId2'
+                             app:startDestination="@id/foo2"&gt;
+                               &lt;fragment android:id="@+id/foo2"/&gt;
                            &lt;/navigation&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

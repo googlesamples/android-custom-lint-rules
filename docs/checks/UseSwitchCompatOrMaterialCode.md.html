@@ -41,6 +41,37 @@ Copyright Year
 Use `SwitchCompat` from AppCompat or `MaterialSwitch` from Material
 library.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/CustomSwitch.kt:6:Warning: Use SwitchCompat from AppCompat
+or MaterialSwitch from Material library [UseSwitchCompatOrMaterialCode]
+class CustomSwitch(context: Context): Switch(context)
+                                      ------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/CustomSwitch.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.content.Context
+import android.widget.Switch
+
+class CustomSwitch(context: Context): Switch(context)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/appcompat/appcompat-lint/src/test/kotlin/androidx/appcompat/lint/widget/SwitchUsageCodeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SwitchUsageCodeDetector.testExtendCoreSwitch`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=460343.
+
 (##) Including
 
 !!!

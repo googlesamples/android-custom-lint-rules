@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/GuavaPreconditionsDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/GuavaPreconditionsDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/GuavaPreconditionsDetectorTest.kt)
 Copyright Year
@@ -49,35 +49,22 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/Foo.java:7:Error: Use Slack's JavaPreconditions instead of
 Guava's Preconditions checks [GuavaChecksUsed]
-
   boolean isTrue = Preconditions.checkState(1 == 1);
                                  ----------
-
-
 src/foo/Foo.java:10:Error: Use Slack's JavaPreconditions instead of
 Guava's Preconditions checks [GuavaChecksUsed]
-
     Preconditions.checkState(1 == 1);
                   ----------
-
-
 src/foo/Foo.java:11:Error: Use Slack's JavaPreconditions instead of
 Guava's Preconditions checks [GuavaChecksUsed]
-
     Preconditions.checkArgument(1 == 1);
                   -------------
-
-
 src/foo/Foo.java:12:Error: Use Slack's JavaPreconditions instead of
 Guava's Preconditions checks [GuavaChecksUsed]
-
     Preconditions.checkNotNull("Hello");
                   ------------
-
-
 src/foo/Foo.java:13:Error: Use Slack's JavaPreconditions instead of
 Guava's Preconditions checks [GuavaChecksUsed]
-
     Preconditions.checkElementIndex(0, 1);
                   -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

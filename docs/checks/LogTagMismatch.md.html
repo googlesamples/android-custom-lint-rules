@@ -42,7 +42,6 @@ Here is an example of lint warnings produced by this check:
 src/LogExample.kt:9:Error: Mismatched tags: the d() and isLoggable()
 calls typically should pass the same tag: TAG1 versus TAG2
 [LogTagMismatch]
-
     Log.d(TAG2, "message") // warn: mismatched tags - TAG1 and TAG2
           ----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

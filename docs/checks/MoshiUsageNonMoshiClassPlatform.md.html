@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Platform type '%HINT%' is not natively supported by Moshi.
+(#) Platform type '%HINT%' is not natively supported by Moshi
 
-!!! WARNING: Platform type '%HINT%' is not natively supported by Moshi.
+!!! WARNING: Platform type '%HINT%' is not natively supported by Moshi
    This is a warning.
 
 Id
 :   `MoshiUsageNonMoshiClassPlatform`
 Summary
-:   Platform type '%HINT%' is not natively supported by Moshi.
+:   Platform type '%HINT%' is not natively supported by Moshi
 Severity
 :   Warning
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -53,12 +53,28 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:29:Warning: Platform type 'Date' is not
 natively supported by Moshi. [MoshiUsageNonMoshiClassPlatform]
-
   val platformType: Date,
                     ----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/external/ExternalType.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package external
+
+class ExternalType
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/external/ExternalTypeAnnotated.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package external
+
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class ExternalTypeAnnotated(val value: String)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/slack/model/Example.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers

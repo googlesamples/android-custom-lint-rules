@@ -52,79 +52,54 @@ src/test/pkg/ParcelableDemo.java:10:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     Parcelable error1   = in.readParcelable(null);
                              --------------------
-
-
 src/test/pkg/ParcelableDemo.java:11:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     Parcelable[] error2 = in.readParcelableArray(null);
                              -------------------------
-
-
 src/test/pkg/ParcelableDemo.java:12:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     Bundle error3       = in.readBundle(null);
                              ----------------
-
-
 src/test/pkg/ParcelableDemo.java:13:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     Object[] error4     = in.readArray(null);
                              ---------------
-
-
 src/test/pkg/ParcelableDemo.java:14:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     SparseArray error5  = in.readSparseArray(null);
                              ---------------------
-
-
 src/test/pkg/ParcelableDemo.java:15:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     Object error6       = in.readValue(null);
                              ---------------
-
-
 src/test/pkg/ParcelableDemo.java:16:Warning: Passing null here (to use
 the default class loader) will not work if you are restoring your own
 classes. Consider using for example getClass().getClassLoader() instead.
 [ParcelClassLoader]
-
     Parcelable error7   = in.readPersistableBundle(null);
                              ---------------------------
-
-
 src/test/pkg/ParcelableDemo.java:17:Warning: Using the default class
 loader will not work if you are restoring your own classes. Consider
 using for example readBundle(getClass().getClassLoader()) instead.
 [ParcelClassLoader]
-
     Bundle error8       = in.readBundle();
                              ------------
-
-
 src/test/pkg/ParcelableDemo.java:18:Warning: Using the default class
 loader will not work if you are restoring your own classes. Consider
 using for example readPersistableBundle(getClass().getClassLoader())
 instead. [ParcelClassLoader]
-
     Parcelable error9   = in.readPersistableBundle();
                              -----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

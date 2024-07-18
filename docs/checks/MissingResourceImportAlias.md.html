@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Missing import alias for R class.
+(#) Missing import alias for R class
 
-!!! ERROR: Missing import alias for R class.
+!!! ERROR: Missing import alias for R class
    This is an error.
 
 Id
 :   `MissingResourceImportAlias`
 Summary
-:   Missing import alias for R class.
+:   Missing import alias for R class
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/resources/MissingResourceImportAliasDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/resources/MissingResourceImportAliasDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/resources/MissingResourceImportAliasDetectorTest.kt)
 Copyright Year
@@ -73,7 +73,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/lint/test/pkg/MyClass.kt:3:Error: Use an import alias for R classes
 from other modules [MissingResourceImportAlias]
-
 import slack.l10n.R
 -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

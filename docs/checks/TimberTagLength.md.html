@@ -44,12 +44,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/Example.java:5:Error: The logging tag can be at most 23
 characters, was 24 (abcdefghijklmnopqrstuvwx) [TimberTagLength]
-
     Timber.tag("abcdefghijklmnopqrstuvwx");
                --------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/foo/Example.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -58,6 +57,17 @@ import timber.log.Timber;
 public class Example {
   public void log() {
      Timber.tag("abcdefghijklmnopqrstuvwx");
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/foo/Example.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import timber.log.Timber
+class Example {
+  fun log() {
+     Timber.tag("abcdefghijklmnopqrstuvwx")
   }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

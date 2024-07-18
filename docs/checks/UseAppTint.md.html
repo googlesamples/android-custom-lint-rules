@@ -43,6 +43,42 @@ Copyright Year
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+layout/image_view.xml:10:Error: Must use app:tint instead of
+android:tint [UseAppTint]
+    android:tint="#FF0000" /&gt;
+    ----------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`layout/image_view.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"&gt;
+    &lt;ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_delete"
+        android:tint="#FF0000" /&gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/appcompat/appcompat-lint/src/test/kotlin/androidx/appcompat/lint/res/ImageViewTintDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ImageViewTintDetector.testUsageOfTintAttribute`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=460343.
+
 (##) Including
 
 !!!

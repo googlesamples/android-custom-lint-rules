@@ -38,275 +38,154 @@ arrays, Strings and collections this refers to the size or length.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/RangeTest.java:32:Error: Expected length 5 (was 4) [Range]
-
     printExact("1234"); // ERROR
                ------
-
-
 src/test/pkg/RangeTest.java:34:Error: Expected length 5 (was 6) [Range]
-
     printExact("123456"); // ERROR
                --------
-
-
 src/test/pkg/RangeTest.java:36:Error: Expected length ≥ 5 (was 4)
 [Range]
-
     printMin("1234"); // ERROR
              ------
-
-
 src/test/pkg/RangeTest.java:43:Error: Expected length ≤ 8 (was 9)
 [Range]
-
     printMax("123456789"); // ERROR
              -----------
-
-
 src/test/pkg/RangeTest.java:45:Error: Expected length ≥ 4 (was 3)
 [Range]
-
     printRange("123"); // ERROR
                -----
-
-
 src/test/pkg/RangeTest.java:49:Error: Expected length ≤ 6 (was 7)
 [Range]
-
     printRange("1234567"); // ERROR
                ---------
-
-
 src/test/pkg/RangeTest.java:53:Error: Expected size 5 (was 4) [Range]
-
     printExact(new int[]{1, 2, 3, 4}); // ERROR
                ---------------------
-
-
 src/test/pkg/RangeTest.java:55:Error: Expected size 5 (was 6) [Range]
-
     printExact(new int[]{1, 2, 3, 4, 5, 6}); // ERROR
                ---------------------------
-
-
 src/test/pkg/RangeTest.java:57:Error: Expected size ≥ 5 (was 4) [Range]
-
     printMin(new int[]{1, 2, 3, 4}); // ERROR
              ---------------------
-
-
 src/test/pkg/RangeTest.java:65:Error: Expected size ≤ 8 (was 9) [Range]
-
     printMax(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}); // ERROR
              ------------------------------------
-
-
 src/test/pkg/RangeTest.java:67:Error: Expected size ≥ 4 (was 3) [Range]
-
     printRange(new int[] {1,2,3}); // ERROR
                -----------------
-
-
 src/test/pkg/RangeTest.java:71:Error: Expected size ≤ 6 (was 7) [Range]
-
     printRange(new int[] {1,2,3,4,5,6,7}); // ERROR
                -------------------------
-
-
 src/test/pkg/RangeTest.java:74:Error: Expected size to be a multiple of
 3 (was 4 and should be either 3 or 6) [Range]
-
     printMultiple(new int[] {1,2,3,4}); // ERROR
                   -------------------
-
-
 src/test/pkg/RangeTest.java:75:Error: Expected size to be a multiple of
 3 (was 5 and should be either 3 or 6) [Range]
-
     printMultiple(new int[] {1,2,3,4,5}); // ERROR
                   ---------------------
-
-
 src/test/pkg/RangeTest.java:77:Error: Expected size to be a multiple of
 3 (was 7 and should be either 6 or 9) [Range]
-
     printMultiple(new int[] {1,2,3,4,5,6,7}); // ERROR
                   -------------------------
-
-
 src/test/pkg/RangeTest.java:80:Error: Expected size ≥ 4 (was 3) [Range]
-
     printMinMultiple(new int[]{1, 2, 3}); // ERROR
                      ------------------
-
-
 src/test/pkg/RangeTest.java:84:Error: Value must be ≥ 4 (was 3) [Range]
-
     printAtLeast(3); // ERROR
                  -
-
-
 src/test/pkg/RangeTest.java:91:Error: Value must be ≤ 7 (was 8) [Range]
-
     printAtMost(8); // ERROR
                 -
-
-
 src/test/pkg/RangeTest.java:93:Error: Value must be ≥ 4 (was 3) [Range]
-
     printBetween(3); // ERROR
                  -
-
-
 src/test/pkg/RangeTest.java:98:Error: Value must be ≤ 7 (was 8) [Range]
-
     printBetween(8); // ERROR
                  -
-
-
 src/test/pkg/RangeTest.java:102:Error: Value must be ≥ 2.5 (was 2.49)
 [Range]
-
     printAtLeastInclusive(2.49f); // ERROR
                           -----
-
-
 src/test/pkg/RangeTest.java:106:Error: Value must be > 2.5 (was 2.49)
 [Range]
-
     printAtLeastExclusive(2.49f); // ERROR
                           -----
-
-
 src/test/pkg/RangeTest.java:107:Error: Value must be > 2.5 (was 2.5)
 [Range]
-
     printAtLeastExclusive(2.5f); // ERROR
                           ----
-
-
 src/test/pkg/RangeTest.java:113:Error: Value must be ≤ 7.0 (was 7.1)
 [Range]
-
     printAtMostInclusive(7.1f); // ERROR
                          ----
-
-
 src/test/pkg/RangeTest.java:117:Error: Value must be < 7.0 (was 7.0)
 [Range]
-
     printAtMostExclusive(7.0f); // ERROR
                          ----
-
-
 src/test/pkg/RangeTest.java:118:Error: Value must be < 7.0 (was 7.1)
 [Range]
-
     printAtMostExclusive(7.1f); // ERROR
                          ----
-
-
 src/test/pkg/RangeTest.java:120:Error: Value must be ≥ 2.5 (was 2.4)
 [Range]
-
     printBetweenFromInclusiveToInclusive(2.4f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:124:Error: Value must be ≤ 5.0 (was 5.1)
 [Range]
-
     printBetweenFromInclusiveToInclusive(5.1f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:126:Error: Value must be > 2.5 (was 2.4)
 [Range]
-
     printBetweenFromExclusiveToInclusive(2.4f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:127:Error: Value must be > 2.5 (was 2.5)
 [Range]
-
     printBetweenFromExclusiveToInclusive(2.5f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:129:Error: Value must be ≤ 5.0 (was 5.1)
 [Range]
-
     printBetweenFromExclusiveToInclusive(5.1f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:131:Error: Value must be ≥ 2.5 (was 2.4)
 [Range]
-
     printBetweenFromInclusiveToExclusive(2.4f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:135:Error: Value must be < 5.0 (was 5.0)
 [Range]
-
     printBetweenFromInclusiveToExclusive(5.0f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:137:Error: Value must be > 2.5 (was 2.4)
 [Range]
-
     printBetweenFromExclusiveToExclusive(2.4f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:138:Error: Value must be > 2.5 (was 2.5)
 [Range]
-
     printBetweenFromExclusiveToExclusive(2.5f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:141:Error: Value must be < 5.0 (was 5.0)
 [Range]
-
     printBetweenFromExclusiveToExclusive(5.0f); // ERROR
                                          ----
-
-
 src/test/pkg/RangeTest.java:145:Error: Value must be ≥ 4 (was -7)
 [Range]
-
     printBetween(-7); // ERROR
                  --
-
-
 src/test/pkg/RangeTest.java:146:Error: Value must be > 2.5 (was -10.0)
 [Range]
-
     printAtLeastExclusive(-10.0f); // ERROR
                           ------
-
-
 src/test/pkg/RangeTest.java:156:Error: Value must be ≥ -1 (was -2)
 [Range]
-
     printIndirect(-2); // ERROR
                   --
-
-
 src/test/pkg/RangeTest.java:157:Error: Value must be ≤ 42 (was 43)
 [Range]
-
     printIndirect(43); // ERROR
                   --
-
-
 src/test/pkg/RangeTest.java:158:Error: Expected length 5 (was 7)
 [Range]
-
     printIndirectSize("1234567"); // ERROR
                       ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

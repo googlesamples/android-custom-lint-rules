@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags color that are not defined as resource.
+(#) Flags color that are not defined as resource
 
-!!! WARNING: Flags color that are not defined as resource.
+!!! WARNING: Flags color that are not defined as resource
    This is a warning.
 
 Id
 :   `RawColor`
 Summary
-:   Flags color that are not defined as resource.
+:   Flags color that are not defined as resource
 Severity
 :   Warning
 Category
@@ -29,11 +29,42 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/RawColorDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/RawColorDetectorTest.kt)
 
 Color value should all be defined as color resources. This has the
 benefit that you can easily see all of your colors in one file. One
 benefit is an easier addition to Dark Theme for instance. This check
 will run on layouts as well as xml drawables.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/layout/layout.xml:2:Warning: Should be using a color resource
+instead. [RawColor]
+    app:someCustomColor="#fff"/&gt;
+                         ----
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/layout/layout.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;TextView xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:someCustomColor="#fff"/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/RawColorDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RawColorDetector.appCustomColor`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

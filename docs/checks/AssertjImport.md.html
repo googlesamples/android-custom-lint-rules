@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags Java 6 incompatible imports.
+(#) Flags Java 6 incompatible imports
 
-!!! WARNING: Flags Java 6 incompatible imports.
+!!! WARNING: Flags Java 6 incompatible imports
    This is a warning.
 
 Id
 :   `AssertjImport`
 Summary
-:   Flags Java 6 incompatible imports.
+:   Flags Java 6 incompatible imports
 Severity
 :   Warning
 Category
@@ -29,11 +29,18 @@ Affects
 :   Kotlin and Java files and test sources
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/AssertjDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/AssertjDetectorTest.kt)
 
 Importing org.assertj.core.api.Assertions is not ideal. Since it can
 require Java 8. It's simple as instead
 org.assertj.core.api.Java6Assertions can be imported and provides
 guarantee to run on Java 6 as well.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
 
 (##) Including
 

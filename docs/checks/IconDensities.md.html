@@ -41,30 +41,6 @@ ldpi density. To force lint to include it, set the environment variable
 `ANDROID_LINT_INCLUDE_LDPI=true`. For more information on current
 density usage, see https://developer.android.com/about/dashboards.
 
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/drawable-hdpi/.svn:Warning: Missing the following drawables in
-drawable-hdpi: sample_icon.gif (found in drawable-mdpi) [IconDensities]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here is the source file referenced above:
-
-`res/drawable-hdpi/.svn`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IconDetectorTest.java)
-for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `IconDetector.test`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
-
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

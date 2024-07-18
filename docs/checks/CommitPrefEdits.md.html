@@ -41,14 +41,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/SharedPrefsTest.java:54:Warning: SharedPreferences.edit()
 without a corresponding commit() or apply() call [CommitPrefEdits]
-
     SharedPreferences.Editor editor = preferences.edit();
                                       ------------------
-
-
 src/test/pkg/SharedPrefsTest.java:62:Warning: SharedPreferences.edit()
 without a corresponding commit() or apply() call [CommitPrefEdits]
-
     SharedPreferences.Editor editor = preferences.edit();
                                       ------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

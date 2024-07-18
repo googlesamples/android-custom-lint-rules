@@ -51,12 +51,46 @@ one specific number in this locale (1, 101, 201, 301, 401, 501, 601,
 701, 1001, …), but the message did not include a formatting argument
 (such as %d). This is usually an internationalization error. See full
 issue explanation for more. [ImpliedQuantity]
-
     &lt;item quantity="one"&gt;Znaleziono jedną piosenkę.&lt;/item&gt;
     ------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`res/values/plurals.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;plurals name="my_plural"&gt;
+        &lt;item quantity="one"&gt;@string/hello&lt;/item&gt;
+        &lt;item quantity="few"&gt;@string/hello&lt;/item&gt;
+        &lt;item quantity="other"&gt;@string/hello&lt;/item&gt;
+    &lt;/plurals&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/plurals2.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;plurals name="numberOfSongsAvailable"&gt;
+        &lt;item quantity="one"&gt;One song found.&lt;/item&gt;
+        &lt;item quantity="other"&gt;%d songs found.&lt;/item&gt;
+    &lt;/plurals&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-pl/plurals2.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+    &lt;plurals name="numberOfSongsAvailable"&gt;
+        &lt;item quantity="one"&gt;Znaleziono jedną piosenkę.&lt;/item&gt;
+        &lt;item quantity="few"&gt;Znaleziono %d piosenki.&lt;/item&gt;
+        &lt;item quantity="other"&gt;Znaleziono %d piosenek.&lt;/item&gt;
+    &lt;/plurals&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/values-sl/plurals2.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers

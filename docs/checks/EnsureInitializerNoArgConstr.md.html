@@ -42,6 +42,38 @@ Copyright Year
 
 Every `Initializer` must have a no argument constructor.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/TestInitializer.kt:5:Error: Missing Initializer no-arg
+constructor [EnsureInitializerNoArgConstr]
+class TestInitializer(val int: Int): Initializer&lt;Unit&gt; {
+^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/TestInitializer.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.startup.Initializer
+
+class TestInitializer(val int: Int): Initializer<Unit> {
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/startup/startup-runtime-lint/src/test/java/androidx/startup/lint/InitializerConstructorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InitializerConstructorDetector.testFailureWhenZeroNoArgumentConstructorsArePresent`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=823348.
+
 (##) Including
 
 !!!

@@ -1,0 +1,167 @@
+<meta charset="utf-8">
+(#) Application uses non-cryptographically secure pseudorandom number generators
+
+!!! WARNING: Application uses non-cryptographically secure pseudorandom number generators
+   This is a warning.
+
+Id
+:   `WeakPrng`
+Summary
+:   Application uses non-cryptographically secure pseudorandom number generators
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Any
+Vendor
+:   Google - Android 3P Vulnerability Research
+Contact
+:   https://github.com/google/android-security-lints
+Feedback
+:   https://github.com/google/android-security-lints/issues
+Min
+:   Lint 4.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [google.android-security-lints](google_android-security-lints.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   http://goo.gle/WeakPrng
+Implementation
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/WeakPrngDetector.kt)
+Tests
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/WeakPrngDetectorTest.kt)
+Copyright Year
+:   2023
+
+If a non-cryptographically secure pseudorandom number generator (PRNG)
+is used in a security context like authentication, an attacker may be
+able to guess the randomly-generated numbers and gain access to
+privileged data or functionality.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/fake/pkg/TestWeakPrngDetector.java:7:Warning: Math.random relies on
+a weak PRNG, use java.util.Random for non-security contexts and
+java.security.SecureRandom for security / authentication purposes
+[WeakPrng]
+    int random = Math.random() * 100;
+                 -------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/fake/pkg/TestWeakPrngDetector.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package fake.pkg;
+
+import java.lang.Math;
+
+public class TestWeakPrngDetector {
+    private void foo() {
+        int random = Math.random() * 100;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/WeakPrngDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WeakPrngDetector.testWhenMathRandomUsed_showsWarningAndQuickFix`.
+To report a problem with this extracted sample, visit
+https://github.com/google/android-security-lints/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+!!! WARN
+   This library has not been published. Its documentation was
+   extracted by installing the project sources locally. Consult
+   the project's documentation on how to configure it with your
+   own projects: [](https://github.com/google/android-security-lints)
+
+
+[Additional details about google.android-security-lints](google_android-security-lints.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WeakPrng")
+  fun method() {
+     random(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WeakPrng")
+  void method() {
+     random(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WeakPrng
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WeakPrng" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WeakPrng'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WeakPrng ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

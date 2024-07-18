@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/GuavaPreconditionsDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/GuavaPreconditionsDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/GuavaPreconditionsDetectorTest.kt)
 Copyright Year
@@ -50,35 +50,22 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/Foo.kt:7:Error: Kotlin precondition checks should use the Kotlin
 standard library checks [GuavaPreconditionsUsedInKotlin]
-
   val isTrue = Preconditions.checkState(false)
                              ----------
-
-
 src/foo/Foo.kt:10:Error: Kotlin precondition checks should use the
 Kotlin standard library checks [GuavaPreconditionsUsedInKotlin]
-
     Preconditions.checkState(true)
                   ----------
-
-
 src/foo/Foo.kt:11:Error: Kotlin precondition checks should use the
 Kotlin standard library checks [GuavaPreconditionsUsedInKotlin]
-
     Preconditions.checkArgument(false)
                   -------------
-
-
 src/foo/Foo.kt:12:Error: Kotlin precondition checks should use the
 Kotlin standard library checks [GuavaPreconditionsUsedInKotlin]
-
     Preconditions.checkNotNull("Hello")
                   ------------
-
-
 src/foo/Foo.kt:13:Error: Kotlin precondition checks should use the
 Kotlin standard library checks [GuavaPreconditionsUsedInKotlin]
-
     Preconditions.checkElementIndex(0, 1)
                   -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -49,7 +49,6 @@ src/test/pkg/WakelockActivity3.java:13:Warning: The release() call is
 not always reached (because of a possible exception in the path
 acquire() → randomCall() → exit; use try/finally to ensure release is
 always called) [Wakelock]
-
     lock.release(); // Should be in finally block
          -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

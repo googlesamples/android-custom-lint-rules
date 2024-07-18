@@ -56,43 +56,27 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/accessibility.xml:4:Warning: Missing `contentDescription`
 attribute on image [ContentDescription]
-
     &lt;ImageView android:id="@+id/android_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/android_button" android:focusable="false" android:clickable="false" android:layout_weight="1.0" /&gt;
      ---------
-
-
 res/layout/accessibility.xml:5:Warning: Missing `contentDescription`
 attribute on image [ContentDescription]
-
     &lt;ImageButton android:importantForAccessibility="yes" android:id="@+id/android_logo2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/android_button" android:focusable="false" android:clickable="false" android:layout_weight="1.0" /&gt;
      -----------
-
-
 res/layout/accessibility.xml:9:Warning: Do not set both
 `contentDescription` and `hint`: the `contentDescription` will mask the
 `hint` [ContentDescription]
-
     &lt;EditText android:hint="@string/label" android:id="@+android:id/summary" android:contentDescription="@string/label" /&gt;
                                                                              ------------------------------------------
-
-
 res/layout/accessibility.xml:12:Warning: Empty `contentDescription`
 attribute on image [ContentDescription]
-
     &lt;ImageButton android:id="@+android:id/summary" android:contentDescription="TODO" /&gt;
                                                    ---------------------------------
-
-
 res/layout/accessibility.xml:13:Warning: Empty `contentDescription`
 attribute on image [ContentDescription]
-
     &lt;ImageButton android:id="@+id/summary2" android:contentDescription="" /&gt;
                                             -----------------------------
-
-
 res/layout/accessibility.xml:14:Warning: Empty `contentDescription`
 attribute on image [ContentDescription]
-
     &lt;ImageButton android:id="@+id/summary3" android:contentDescription="TODO" /&gt;
                                             ---------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

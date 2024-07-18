@@ -1,0 +1,146 @@
+<meta charset="utf-8">
+(#) Application's UI is vulnerable to tapjacking attacks
+
+!!! WARNING: Application's UI is vulnerable to tapjacking attacks
+   This is a warning.
+
+Id
+:   `TapjackingVulnerable`
+Summary
+:   Application's UI is vulnerable to tapjacking attacks
+Severity
+:   Warning
+Category
+:   Security
+Platform
+:   Android
+Vendor
+:   Google - Android 3P Vulnerability Research
+Contact
+:   https://github.com/google/android-security-lints
+Feedback
+:   https://github.com/google/android-security-lints/issues
+Min
+:   Lint 4.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [google.android-security-lints](google_android-security-lints.md.html)
+
+Affects
+:   Resource files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   http://goo.gle/TapjackingVulnerable
+Implementation
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/TapjackingDetector.kt)
+Tests
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/TapjackingDetectorTest.kt)
+Copyright Year
+:   2023
+
+Apps with sensitive UI elements should add the
+`filterTouchesWithObscured` attribute to protect it from tapjacking /
+overlay attacks.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/xml/switch.xml:3:Warning: Add the android:filterTouchesWhenObscured
+attribute to protect this UI element from tapjacking / overlay attacks
+[TapjackingVulnerable]
+    &lt;Switch android:id='enable_setting'&gt;
+     ------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/xml/switch.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;Switch android:id='enable_setting'&gt;
+    &lt;/Switch&gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/TapjackingDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `TapjackingDetector.testWhenNamedEnableUiElement_showsWarning`.
+To report a problem with this extracted sample, visit
+https://github.com/google/android-security-lints/issues.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project. This lint check is included in the lint documentation,
+   but the Android team may or may not agree with its recommendations.
+
+!!! WARN
+   This library has not been published. Its documentation was
+   extracted by installing the project sources locally. Consult
+   the project's documentation on how to configure it with your
+   own projects: [](https://github.com/google/android-security-lints)
+
+
+[Additional details about google.android-security-lints](google_android-security-lints.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute
+  `tools:ignore="TapjackingVulnerable"` on the problematic XML element
+  (or one of its enclosing elements). You may also need to add the
+  following namespace declaration on the root element in the XML file
+  if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;resources xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;ToggleButton tools:ignore="TapjackingVulnerable" .../&gt;
+    ...
+  &lt;/resources&gt;
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TapjackingVulnerable" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TapjackingVulnerable'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TapjackingVulnerable ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

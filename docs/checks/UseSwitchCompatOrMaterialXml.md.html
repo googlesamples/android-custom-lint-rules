@@ -41,6 +41,40 @@ Copyright Year
 Use `SwitchCompat` from AppCompat or `MaterialSwitch` from Material
 library.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+layout/switch.xml:6:Warning: Use SwitchCompat from AppCompat or
+MaterialSwitch from Material library [UseSwitchCompatOrMaterialXml]
+    &lt;Switch
+    ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`layout/switch.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"&gt;
+    &lt;Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /&gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/appcompat/appcompat-lint/src/test/kotlin/androidx/appcompat/lint/widget/SwitchUsageXmlDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SwitchUsageXmlDetector.testUsingCoreSwitch`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=460343.
+
 (##) Including
 
 !!!

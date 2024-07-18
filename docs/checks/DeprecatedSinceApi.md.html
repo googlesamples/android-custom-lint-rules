@@ -41,42 +41,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/Test.kt:9:Warning: This method is deprecated as of API
 level 21 [DeprecatedSinceApi]
-
     api.noLongerNecessary1(0) // WARN 1
     -------------------------
-
-
 src/test/pkg/Test.kt:10:Warning: This method is deprecated as of API
 level 23; Use AlarmManager.notify instead [DeprecatedSinceApi]
-
     api.noLongerNecessary2(0) // WARN 2
     -------------------------
-
-
 src/test/pkg/Test.kt:11:Warning: This method is deprecated as of API
 level 24 [DeprecatedSinceApi]
-
     api.noLongerNecessary3(0) // WARN 3
     -------------------------
-
-
 src/test/pkg/Test.kt:18:Warning: This class is deprecated as of API
 level 19 [DeprecatedSinceApi]
-
     val clz = Api2::class.java      // WARN 4
               -----------
-
-
 src/test/pkg/Test.kt:19:Warning: This method is deprecated as of API
 level 23 [DeprecatedSinceApi]
-
     val method1 = api2::someMethod1 // WARN 5
                   -----------------
-
-
 src/test/pkg/Test.kt:20:Warning: This method is deprecated as of API
 level 21 [DeprecatedSinceApi]
-
     val method2 = api2::someMethod2 // WARN 6
                   -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

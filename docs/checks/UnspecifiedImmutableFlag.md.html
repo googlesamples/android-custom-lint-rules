@@ -46,6 +46,46 @@ for a list of common exceptions to this rule.
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/PendingIntentTest.java:7:Error: Missing PendingIntent
+mutability flag [UnspecifiedImmutableFlag]
+    PendingIntent.getActivity(null, 0, null, 0);
+                                             -
+src/test/pkg/PendingIntentTest.java:8:Error: Missing PendingIntent
+mutability flag [UnspecifiedImmutableFlag]
+    PendingIntent.getActivities(null, 0, null, 0);
+                                               -
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/PendingIntentTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.PendingIntent;
+
+public class PendingIntentTest {
+    protected void test() {
+        PendingIntent.getActivity(null, 0, null, 0);
+        PendingIntent.getActivities(null, 0, null, 0);
+    }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PendingIntentMutableFlagDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `PendingIntentMutableFlagDetector.testNoFlag`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

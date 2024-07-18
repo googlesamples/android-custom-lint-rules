@@ -36,6 +36,53 @@ in the project must conform to. This makes it easier to ensure that you
 don't accidentally combine resources from different libraries, since
 they all end up in the same shared app namespace.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/main/res/layout/activity_main.xml:2:Error: Resource named
+'activity_main' does not start with the project's resource prefix
+'unit_test_prefix_'; rename to 'unit_test_prefix_activity_main' ?
+[ResourceName]
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ ------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+apply plugin: 'com.android.library'
+
+android {
+    resourcePrefix 'unit_test_prefix_'
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/main/res/layout/activity_main.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/main/res/layout/unit_test_prefix_ok.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ResourcePrefixDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

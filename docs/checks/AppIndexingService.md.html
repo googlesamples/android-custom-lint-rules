@@ -43,12 +43,11 @@ Here is an example of lint warnings produced by this check:
 src/main/AndroidManifest.xml:10:Warning: UPDATE_INDEX is configured as a
 service in your app, which is no longer supported for the API level
 you're targeting. Use a BroadcastReceiver instead. [AppIndexingService]
-
     &lt;action android:name="com.google.firebase.appindexing.UPDATE_INDEX" /&gt;
             -----------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/main/AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -67,6 +66,15 @@ Here is the source file referenced above:
     &lt;/application&gt;
 
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile 'com.google.firebase:firebase-appindexing:11.0.4'
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

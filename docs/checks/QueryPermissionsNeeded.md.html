@@ -49,63 +49,41 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/MainActivity.kt:14:Warning: As of Android 11, this method
 no longer returns information about all apps; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     pm.getInstalledPackages(0) // ERROR
        --------------------
-
-
 src/test/pkg/MainActivity.kt:15:Warning: As of Android 11, this method
 no longer returns information about all apps; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     pm.getInstalledApplications(0) // ERROR
        ------------------------
-
-
 src/test/pkg/MainActivity.kt:17:Warning: Consider adding a <queries>
 declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     pm.queryBroadcastReceivers(Intent(), 0) // ERROR
        -----------------------
-
-
 src/test/pkg/MainActivity.kt:18:Warning: Consider adding a <queries>
 declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     pm.queryContentProviders("", 0, 0) // ERROR
        ---------------------
-
-
 src/test/pkg/MainActivity.kt:19:Warning: Consider adding a <queries>
 declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     pm.queryIntentServices(Intent(), 0) // ERROR
        -------------------
-
-
 src/test/pkg/MainActivity.kt:20:Warning: Consider adding a <queries>
 declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     pm.queryIntentActivities(Intent(), 0) // ERROR
        ---------------------
-
-
 src/test/pkg/MainActivity.kt:22:Warning: Consider adding a <queries>
 declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     Intent().resolveActivity(pm) // ERROR
              ---------------
-
-
 src/test/pkg/MainActivity.kt:23:Warning: Consider adding a <queries>
 declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
-
     Intent().resolveActivityInfo(pm, 0) // ERROR
              -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

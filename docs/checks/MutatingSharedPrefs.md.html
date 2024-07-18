@@ -42,14 +42,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/test.kt:11:Warning: Do not modify the set returned by
 SharedPreferences.getStringSet()` [MutatingSharedPrefs]
-
     s.removeIf { it.length &lt; 3 }
     ----------------------------
-
-
 src/test/pkg/test.kt:12:Warning: Do not modify the set returned by
 SharedPreferences.getStringSet()` [MutatingSharedPrefs]
-
     s.add("error")
     --------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

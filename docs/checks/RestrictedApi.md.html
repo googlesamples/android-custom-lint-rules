@@ -46,14 +46,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/RestrictToSubclassTest.java:26:Error: Class1.onSomething
 can only be called from subclasses [RestrictedApi]
-
     cls.onSomething();         // ERROR: Not from subclass
         -----------
-
-
 src/test/pkg/RestrictToSubclassTest.java:27:Error: Class1.counter can
 only be accessed from subclasses [RestrictedApi]
-
     int counter = cls.counter; // ERROR: Not from subclass
                       -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

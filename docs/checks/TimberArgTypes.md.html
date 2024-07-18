@@ -47,12 +47,11 @@ Here is an example of lint warnings produced by this check:
 src/foo/Example.java:5:Error: Wrong argument type for formatting
 argument '#1' in %d: conversion is 'd', received String (argument #2 in
 method call) [TimberArgTypes]
-
     Timber.d("%d", "arg1");
                    ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/foo/Example.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -61,6 +60,17 @@ import timber.log.Timber;
 public class Example {
   public void log() {
      Timber.d("%d", "arg1");
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/foo/Example.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+import timber.log.Timber
+class Example {
+  fun log() {
+     Timber.d("%d", "arg1")
   }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

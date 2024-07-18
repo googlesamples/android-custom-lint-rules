@@ -52,28 +52,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/test.kt:8:Warning: Unnecessary use of Modifier.composed
 [UnnecessaryComposedModifier]
-
     fun Modifier.test(): Modifier = composed {
                                     --------
-
-
 src/test/test.kt:13:Warning: Unnecessary use of Modifier.composed
 [UnnecessaryComposedModifier]
-
     return composed {
            --------
-
-
 src/test/test.kt:18:Warning: Unnecessary use of Modifier.composed
 [UnnecessaryComposedModifier]
-
     fun Modifier.test3(): Modifier = composed(factory = {
                                      --------
-
-
 src/test/test.kt:22:Warning: Unnecessary use of Modifier.composed
 [UnnecessaryComposedModifier]
-
     fun Modifier.test4(): Modifier = composed({}, { this@test4})
                                      --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,7 +82,7 @@ fun Modifier.test(): Modifier = composed {
     this@test
 }
 
-fun Modifier.test(): Modifier {
+fun Modifier.test2(): Modifier {
     return composed {
         this@test
     }
@@ -122,17 +112,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-android:1.7.0-beta04")
+implementation("androidx.compose.ui:ui-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-android:1.7.0-beta04'
+implementation 'androidx.compose.ui:ui-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui-android)
 
 # libs.versions.toml
 [versions]
-ui-android = "1.7.0-beta04"
+ui-android = "1.7.0-beta05"
 [libraries]
 ui-android = {
     module = "androidx.compose.ui:ui-android",
@@ -140,7 +130,7 @@ ui-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.ui:ui-android](androidx_compose_ui_ui-android.md.html).

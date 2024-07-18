@@ -45,17 +45,13 @@ AllowAllHostnameVerifier HostnameVerifier is unsafe because it always
 returns true, which could cause insecure network traffic due to trusting
 TLS/SSL server certificates for wrong hostnames
 [AllowAllHostnameVerifier]
-
     connection.setHostnameVerifier(new AllowAllHostnameVerifier());
                                    ------------------------------
-
-
 src/test/pkg/InsecureHostnameVerifier.java:23:Warning: Using the
 ALLOW_ALL_HOSTNAME_VERIFIER HostnameVerifier is unsafe because it always
 returns true, which could cause insecure network traffic due to trusting
 TLS/SSL server certificates for wrong hostnames
 [AllowAllHostnameVerifier]
-
     connection.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
                                    --------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

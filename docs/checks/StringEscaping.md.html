@@ -41,35 +41,22 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/values/strings.xml:3:Error: Apostrophe not preceded by \
 [StringEscaping]
-
 &lt;string name="some_string"&gt;'ERROR'&lt;/string&gt;
                            ^
-
-
 res/values/strings.xml:5:Error: Apostrophe not preceded by \
 [StringEscaping]
-
 &lt;string name="some_string3"&gt;What's New&lt;/string&gt;
                                 ^
-
-
 res/values/strings.xml:12:Error: Bad character in \u unicode escape
 sequence [StringEscaping]
-
 &lt;string name="some_string10"&gt;Unicode\u12.&lt;/string&gt;
                                         ^
-
-
 res/values/strings.xml:19:Error: Apostrophe not preceded by \
 [StringEscaping]
-
   &lt;item&gt;It's incorrect&lt;/item&gt;
           ^
-
-
 res/values/strings.xml:23:Error: Apostrophe not preceded by \
 [StringEscaping]
-
     &lt;item quantity="few"&gt;%d piose'nki.&lt;/item&gt;
                                  ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -38,21 +38,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/Builder1.kt:10:Error: Builder1 should only be subclassed
 from tests [OpenForTesting]
-
 class MyBuilder1 : Builder1() {  // ERROR 1
                    --------
-
-
 src/test/pkg/Builder1.kt:22:Error: Builder2.someMethod should only be
 overridden from tests [OpenForTesting]
-
     override fun someMethod(arg: Int) { } // ERROR 2
                  ----------
-
-
 src/test/pkg/MyBuilder3.java:2:Error: Builder1 should only be subclassed
 from tests [OpenForTesting]
-
 class MyBuilder3 extends Builder1 { // ERROR 3
                          --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

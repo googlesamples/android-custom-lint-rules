@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Calls to @MustUseNamedParams-annotated methods must name all parameters.
+(#) Calls to @MustUseNamedParams-annotated methods must name all parameters
 
-!!! ERROR: Calls to @MustUseNamedParams-annotated methods must name all parameters.
+!!! ERROR: Calls to @MustUseNamedParams-annotated methods must name all parameters
    This is an error.
 
 Id
 :   `MustUseNamedParams`
 Summary
-:   Calls to @MustUseNamedParams-annotated methods must name all parameters.
+:   Calls to @MustUseNamedParams-annotated methods must name all parameters
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MustUseNamedParamsDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MustUseNamedParamsDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MustUseNamedParamsDetectorTest.kt)
 Copyright Year
@@ -49,7 +49,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/TestFile.kt:16:Error: Calls to @MustUseNamedParams-annotated
 methods must name all parameters. [MustUseNamedParams]
-
     methodWithAnnotation("Zac")
     ---------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

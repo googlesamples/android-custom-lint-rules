@@ -52,42 +52,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/test.kt:11:Error: Target state parameter it is not used
 [UnusedCrossfadeTargetStateParameter]
-
     Crossfade(foo) { if (foo) { /**/ } else { /**/ } }
                    -----------------------------------
-
-
 src/foo/test.kt:12:Error: Target state parameter it is not used
 [UnusedCrossfadeTargetStateParameter]
-
     Crossfade(foo, content = { if (foo) { /**/ } else { /**/ } })
                              -----------------------------------
-
-
 src/foo/test.kt:13:Error: Target state parameter param is not used
 [UnusedCrossfadeTargetStateParameter]
-
     Crossfade(foo) { param -&gt; if (foo) { /**/ } else { /**/ } }
                      -----
-
-
 src/foo/test.kt:14:Error: Target state parameter param is not used
 [UnusedCrossfadeTargetStateParameter]
-
     Crossfade(foo, content = { param -&gt; if (foo) { /**/ } else { /**/ } })
                                -----
-
-
 src/foo/test.kt:15:Error: Target state parameter _ is not used
 [UnusedCrossfadeTargetStateParameter]
-
     Crossfade(foo) { _ -&gt; if (foo) { /**/ } else { /**/ } }
                      -
-
-
 src/foo/test.kt:16:Error: Target state parameter _ is not used
 [UnusedCrossfadeTargetStateParameter]
-
     Crossfade(foo, content = { _ -&gt; if (foo) { /**/ } else { /**/ } })
                                -
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,17 +115,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.animation:animation-android:1.7.0-beta04")
+implementation("androidx.compose.animation:animation-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.animation:animation-android:1.7.0-beta04'
+implementation 'androidx.compose.animation:animation-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.animation-android)
 
 # libs.versions.toml
 [versions]
-animation-android = "1.7.0-beta04"
+animation-android = "1.7.0-beta05"
 [libraries]
 animation-android = {
     module = "androidx.compose.animation:animation-android",
@@ -149,7 +133,7 @@ animation-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html).

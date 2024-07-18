@@ -45,14 +45,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:4:Warning: Do not use Windows file separators in .gradle
 files; use / instead [GradlePath]
-
     compile files('my\\libs\\http.jar')
             ---------------------------
-
-
 build.gradle:5:Warning: Avoid using absolute paths in .gradle files
 [GradlePath]
-
     compile files('/libs/android-support-v4.jar')
             -------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

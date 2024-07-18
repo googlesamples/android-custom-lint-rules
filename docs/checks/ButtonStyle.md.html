@@ -46,164 +46,106 @@ Here is an example of lint warnings produced by this check:
 res/layout/buttonbar.xml:12:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:17:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:28:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:33:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:44:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:49:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:60:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:65:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:76:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:81:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:92:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:97:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:108:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:113:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:124:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:129:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:140:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:145:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:156:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
-
-
 res/layout/buttonbar.xml:161:Warning: Buttons in button bars should be
 borderless; use style="?android:attr/buttonBarButtonStyle" (and
 ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
-
     &lt;Button
      ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `res/layout/buttonbar.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -395,6 +337,120 @@ Here is the source file referenced above:
         android:text="@string/goback" /&gt;
 
 &lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/buttonbar2.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" &gt;
+
+    &lt;ProgressBar
+        android:id="@+id/loading_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="60dip"
+        android:layout_marginLeft="40dip"
+        android:layout_marginTop="40dip"
+        android:max="10000" /&gt;
+
+    &lt;TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginBottom="60dip"
+        android:layout_marginLeft="40dip"
+        android:layout_marginTop="40dip"
+        android:layout_toRightOf="@id/loading_progress"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:paddingRight="120dip"
+        android:text="@string/creating_instant_mix"
+        android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+
+    &lt;Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@id/text"
+        android:layout_below="@id/text"
+        android:background="@null"
+        android:text="@string/cancel" /&gt;
+
+    &lt;ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/cancel"
+        android:layout_alignLeft="@id/cancel"
+        android:layout_alignRight="@id/cancel"
+        android:scaleType="fitXY"
+        android:src="@drawable/menu_list_divider" /&gt;
+
+&lt;/RelativeLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/buttonbar3.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" &gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/weekpicker_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+
+    &lt;RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="6dip" &gt;
+
+        &lt;Button
+            android:id="@+id/set"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/weekpicker_set" /&gt;
+
+        &lt;Button
+            android:id="@+id/cancel"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/cancel" /&gt;
+    &lt;/RelativeLayout&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/buttonbar-values.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;resources&gt;
+
+    &lt;string name="button"&gt; Button &lt;/string&gt;
+    &lt;string name="ok"&gt; OK &lt;/string&gt;
+    &lt;string name="cancel"&gt; Cancel &lt;/string&gt;
+    &lt;string name="resume"&gt; OK &lt;/string&gt;
+    &lt;string name="giveup"&gt; Cancel &lt;/string&gt;
+    &lt;string name="resume2"&gt; Ok &lt;/string&gt;
+    &lt;string name="giveup2"&gt;"CANCEL"&lt;/string&gt;
+    &lt;string name="send"&gt; Send &lt;/string&gt;
+    &lt;string name="abort"&gt;Abort&lt;/string&gt;
+    &lt;string name="goback"&gt;'Back'&lt;/string&gt;
+
+&lt;/resources&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

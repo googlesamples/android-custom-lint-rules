@@ -70,29 +70,22 @@ Usages of  to acquire a ViewModel should be done in composable default
 parameters, so that it is more testable and flexible.
 See https://slackhq.github.io/compose-lints/rules/#viewmodels for more
 information. [ComposeViewModelInjection]
-
   val viewModel = &lt;MyVM&gt;()
   ------------------------
-
-
 src/test.kt:11:Error: Implicit dependencies of composables should be
 made explicit.
 Usages of  to acquire a ViewModel should be done in composable default
 parameters, so that it is more testable and flexible.
 See https://slackhq.github.io/compose-lints/rules/#viewmodels for more
 information. [ComposeViewModelInjection]
-
   val viewModel: MyVM = ()
   ------------------------
-
-
 src/test.kt:16:Error: Implicit dependencies of composables should be
 made explicit.
 Usages of  to acquire a ViewModel should be done in composable default
 parameters, so that it is more testable and flexible.
 See https://slackhq.github.io/compose-lints/rules/#viewmodels for more
 information. [ComposeViewModelInjection]
-
   val viewModel: MyVM = ()
   ------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

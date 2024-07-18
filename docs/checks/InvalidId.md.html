@@ -45,28 +45,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/invalid_ids.xml:23:Error: ID definitions must be of the form
 @+id/name; try using @+id/menu_Reload [InvalidId]
-
     android:id="@+menu/Reload"
     --------------------------
-
-
 res/layout/invalid_ids.xml:31:Error: ID definitions must be of the form
 @+id/name; try using @+id/_id_foo [InvalidId]
-
     android:id="@+/id_foo"
     ----------------------
-
-
 res/layout/invalid_ids.xml:37:Error: ID definitions must be of the form
 @+id/name; try using @+id/myid_button5 [InvalidId]
-
     android:id="@+myid/button5"
     ---------------------------
-
-
 res/layout/invalid_ids.xml:43:Error: ID definitions must be of the form
 @+id/name; try using @+id/string_whatevs [InvalidId]
-
     android:id="@+string/whatevs"
     -----------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

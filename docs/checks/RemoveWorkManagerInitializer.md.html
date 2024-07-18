@@ -1,7 +1,7 @@
 <meta charset="utf-8">
-(#) Remove androidx.work.WorkManagerInitializer from your AndroidManifest.xml when using on-demand initialization.
+(#) Remove androidx.work.WorkManagerInitializer from your AndroidManifest.xml when using on-demand initialization
 
-!!! ERROR: Remove androidx.work.WorkManagerInitializer from your AndroidManifest.xml when using on-demand initialization.
+!!! ERROR: Remove androidx.work.WorkManagerInitializer from your AndroidManifest.xml when using on-demand initialization
    This is an error, and is also enforced at build time when
    supported by the build system. For Android this means it will
    run during release builds.
@@ -9,7 +9,7 @@
 Id
 :   `RemoveWorkManagerInitializer`
 Summary
-:   Remove androidx.work.WorkManagerInitializer from your AndroidManifest.xml when using on-demand initialization.
+:   Remove androidx.work.WorkManagerInitializer from your AndroidManifest.xml when using on-demand initialization
 Severity
 :   Fatal
 Category
@@ -53,12 +53,11 @@ Here is an example of lint warnings produced by this check:
 AndroidManifest.xml:4:Error: Remove androidx.work.WorkManagerInitializer
 from your AndroidManifest.xml when using on-demand initialization.
 [RemoveWorkManagerInitializer]
-
    &lt;application /&gt;
    ---------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -67,6 +66,22 @@ Here is the source file referenced above:
    package="com.example"&gt;
    &lt;application /&gt;
  &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`com/example/App.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.app.Application
+import androidx.work.Configuration
+
+class App: Application(), Configuration.Provider {
+    override fun onCreate() {
+
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration = TODO()
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -45,6 +45,36 @@ For more information look at
 `androidx.work.Configuration.Builder.setJobSchedulerJobIdRange(int,
 int)`.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/TestJobService.kt:5:Warning: Specify a valid range of job
+id's for WorkManager to use. [SpecifyJobSchedulerIdRange]
+class TestJobService: JobService()
+      --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`com/example/TestJobService.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.app.job.JobService
+
+class TestJobService: JobService()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/SpecifyJobSchedulerIdRangeIssueDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SpecifyJobSchedulerIdRangeIssueDetector.failWhenUsingCustomJobServiceAndIdsAreNotSpecified`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409906.
+
 (##) Including
 
 !!!

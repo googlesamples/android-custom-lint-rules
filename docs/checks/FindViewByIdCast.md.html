@@ -49,12 +49,11 @@ Here is an example of lint warnings produced by this check:
 src/main/java/test/pkg/ImplicitCastTest2.java:9:Warning: Add explicit
 cast here; won't compile with Java language level 1.8 without it
 [FindViewByIdCast]
-
     checkNotNull1(findViewById(R.id.textView)).setAlpha(0.5f); // WARN
                   ---------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/main/java/test/pkg/ImplicitCastTest2.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -103,6 +102,16 @@ public class ImplicitCastTest2 extends MyActivityStub {
         } else {
             return reference;
         }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

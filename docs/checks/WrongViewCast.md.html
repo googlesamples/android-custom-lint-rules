@@ -42,12 +42,39 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/WrongCastActivity.java:13:Error: Unexpected cast to
 ToggleButton: layout tag was Button [WrongViewCast]
-
     ToggleButton toggleButton = (ToggleButton) findViewById(R.id.button);
                                 ----------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`res/layout/casts.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+
+    &lt;view class="Button"
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" /&gt;
+
+    &lt;EditText
+        android:id="@+id/edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EditText" /&gt;
+
+    &lt;view
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/WrongCastActivity.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

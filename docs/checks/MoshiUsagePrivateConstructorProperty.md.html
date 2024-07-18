@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Constructor parameter properties in Moshi classes cannot be private.
+(#) Constructor parameter properties in Moshi classes cannot be private
 
-!!! ERROR: Constructor parameter properties in Moshi classes cannot be private.
+!!! ERROR: Constructor parameter properties in Moshi classes cannot be private
    This is an error.
 
 Id
 :   `MoshiUsagePrivateConstructorProperty`
 Summary
-:   Constructor parameter properties in Moshi classes cannot be private.
+:   Constructor parameter properties in Moshi classes cannot be private
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -49,7 +49,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:6:Error: Constructor parameter properties in
 Moshi classes cannot be private. [MoshiUsagePrivateConstructorProperty]
-
 data class Example(private val value: String, protected val value2: String)
                                               ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

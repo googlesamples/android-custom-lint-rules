@@ -34,10 +34,10 @@ Copyright Year
 :   2016
 
 Allowing user certificates could allow eavesdroppers to intercept data
-sent by your app, 'which could impact the privacy of your users.
-Consider nesting your app's `trust-anchors` inside a `<debug-overrides>`
-element to make sure they are only available when `android:debuggable`
-is set to `"true"`.
+sent by your app, which could impact the privacy of your users. Consider
+nesting your app's `trust-anchors` inside a `<debug-overrides>` element
+to make sure they are only available when `android:debuggable` is set to
+`true`.
 
 (##) Example
 
@@ -46,7 +46,6 @@ Here is an example of lint warnings produced by this check:
 res/xml/network_config.xml:6:Warning: The Network Security Configuration
 allows the use of user certificates in the release version of your app
 [AcceptsUserCertificates]
-
     &lt;certificates src="user"/&gt;
     --------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

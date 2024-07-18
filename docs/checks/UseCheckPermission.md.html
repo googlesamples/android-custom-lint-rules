@@ -46,20 +46,16 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/CheckPermissions.java:10:Warning: The result of
 checkCallingOrSelfPermission is not used; did you mean to call
 #enforceCallingOrSelfPermission(String,String)? [UseCheckPermission]
-
     context.checkCallingOrSelfPermission(Manifest.permission.INTERNET); // WRONG
     ------------------------------------------------------------------
-
-
 src/test/pkg/CheckPermissions.java:11:Warning: The result of
 checkPermission is not used; did you mean to call
 #enforcePermission(String,int,int,String)? [UseCheckPermission]
-
     context.checkPermission(Manifest.permission.INTERNET, 1, 1);
     -----------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/CheckPermissions.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -97,6 +93,19 @@ public class CheckPermissions {
     }
     private void call(Bitmap bitmap) {
     }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/Intersect.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+import android.graphics.Rect;
+
+@SuppressWarnings({"ClassNameDiffersFromFileName", "MethodMayBeStatic"})
+public class Intersect {
+  void check(Rect rect, int aLeft, int aTop, int aRight, int aBottom) {
+    rect.intersect(aLeft, aTop, aRight, aBottom);
+  }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

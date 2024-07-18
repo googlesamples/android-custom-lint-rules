@@ -45,12 +45,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/bytecode/MyParcelable1.java:6:Error: This class implements
 Parcelable but does not provide a CREATOR field [ParcelCreator]
-
 public class MyParcelable1 implements Parcelable {
              -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/bytecode/MyParcelable1.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -68,6 +67,87 @@ public class MyParcelable1 implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel arg0, int arg1) {
 	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/bytecode/MyParcelable2.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.bytecode;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MyParcelable2 implements Parcelable {
+	public static final Parcelable.Creator<MyParcelable2> CREATOR = new Parcelable.Creator<MyParcelable2>() {
+		public MyParcelable2 createFromParcel(Parcel in) {
+			return new MyParcelable2();
+		}
+
+		public MyParcelable2[] newArray(int size) {
+			return new MyParcelable2[size];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel arg0, int arg1) {
+	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/bytecode/MyParcelable3.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.bytecode;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class MyParcelable3 implements Parcelable {
+	public static final int CREATOR = 0; // Wrong type
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel arg0, int arg1) {
+	}
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/bytecode/MyParcelable4.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.bytecode;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public abstract class MyParcelable4 implements Parcelable {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel arg0, int arg1) {
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/bytecode/MyParcelable5.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.bytecode;
+
+import android.os.Parcelable;
+
+public interface MyParcelable5 extends Parcelable {
+    @Override
+    public int describeContents();
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

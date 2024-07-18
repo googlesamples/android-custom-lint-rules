@@ -44,42 +44,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 AndroidManifest.xml:4:Error: true is not a valid permission value
 [KnownPermissionError]
-
   &lt;application android:permission="true"&gt;
                                    ----
-
-
 AndroidManifest.xml:5:Error: TRUE is not a valid permission value
 [KnownPermissionError]
-
     &lt;activity android:permission="TRUE" /&gt;
                                   ----
-
-
 AndroidManifest.xml:6:Error: True is not a valid permission value
 [KnownPermissionError]
-
     &lt;activity-alias android:permission="True" /&gt;
                                         ----
-
-
 AndroidManifest.xml:7:Error: true is not a valid permission value
 [KnownPermissionError]
-
     &lt;receiver android:permission="true" /&gt;
                                   ----
-
-
 AndroidManifest.xml:8:Error: false is not a valid permission value
 [KnownPermissionError]
-
     &lt;service android:permission="false" /&gt;
                                  -----
-
-
 AndroidManifest.xml:9:Error: false is not a valid permission value
 [KnownPermissionError]
-
     &lt;provider android:permission="false" /&gt;
                                   -----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -38,30 +38,20 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/layout/db.xml:5:Error: tools:viewBindingType is not applicable in
 data binding layouts. [ViewBindingType]
-
     &lt;EditText android:id="@+id/test_view" tools:viewBindingType="TextView" /&gt;
                                           --------------------------------
-
-
 res/layout/vb.xml:5:Error: tools:viewBindingType should be defined on a
 tag that also defines an android:id. Otherwise, its value won't have any
 effect. [ViewBindingType]
-
     &lt;EditText tools:viewBindingType="TextView" /&gt; &lt;!-- missing id --&gt;
               --------------------------------
-
-
 res/layout/vb.xml:6:Error: tools:viewBindingType is not applicable on
 <include> tags. [ViewBindingType]
-
     &lt;include android:id="@+id/included" layout="@layout/included" tools:viewBindingType="TextView" /&gt;
                                                                   --------------------------------
-
-
 res/layout/vb.xml:7:Error: tools:viewBindingType is not defined
 consistently, with the following types resolved across layouts:
 android.view.SurfaceView, android.widget.TextView [ViewBindingType]
-
     &lt;EditText android:id="@+id/inconsistent" tools:viewBindingType="TextView" /&gt;
     ----------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

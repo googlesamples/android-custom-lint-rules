@@ -41,47 +41,114 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/LayoutTest.java:23:Error: Suspicious method call; should
 probably call "layout" rather than "onLayout" [WrongCall]
-
   child.onLayout(changed, left, top, right, bottom); // Not OK
         --------
-
-
 src/test/pkg/LayoutTest.java:25:Error: Suspicious method call; should
 probably call "measure" rather than "onMeasure" [WrongCall]
-
   super.onMeasure(0, 0); // Not OK
         ---------
-
-
 src/test/pkg/LayoutTest.java:26:Error: Suspicious method call; should
 probably call "draw" rather than "onDraw" [WrongCall]
-
   super.onDraw(null); // Not OK
         ------
-
-
 src/test/pkg/LayoutTest.java:33:Error: Suspicious method call; should
 probably call "layout" rather than "onLayout" [WrongCall]
-
   super.onLayout(false, 0, 0, 0, 0); // Not OK
         --------
-
-
 src/test/pkg/LayoutTest.java:34:Error: Suspicious method call; should
 probably call "measure" rather than "onMeasure" [WrongCall]
-
   child.onMeasure(widthMeasureSpec, heightMeasureSpec); // Not OK
         ---------
-
-
 src/test/pkg/LayoutTest.java:41:Error: Suspicious method call; should
 probably call "draw" rather than "onDraw" [WrongCall]
-
   child.onDraw(canvas); // Not OK
         ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`res/layout/onclick.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="nonexistent"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong1"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong2"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong3"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong4"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong5"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong6"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ok"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="simple_typo"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="my\u1234method"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="wrong7"
+        android:text="Button" /&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@string/ok"
+        android:text="Button" /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/LayoutTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers

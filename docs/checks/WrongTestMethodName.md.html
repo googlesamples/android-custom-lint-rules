@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flags test methods that start with test.
+(#) Flags test methods that start with test
 
-!!! WARNING: Flags test methods that start with test.
+!!! WARNING: Flags test methods that start with test
    This is a warning.
 
 Id
 :   `WrongTestMethodName`
 Summary
-:   Flags test methods that start with test.
+:   Flags test methods that start with test
 Severity
 :   Warning
 Category
@@ -29,9 +29,48 @@ Affects
 :   Kotlin and Java files and test sources
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/WrongTestMethodNameDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongTestMethodNameDetectorTest.kt)
 
 The @Test annotation already states that this is a test hence the test
 prefix is not necessary.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/MyTest.java:6:Warning: Test method starts with test
+[WrongTestMethodName]
+  @Test public void testSomething() { }
+                    -------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/MyTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package foo;
+
+import org.junit.Test;
+
+public class MyTest {
+  @Test public void testSomething() { }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongTestMethodNameDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WrongTestMethodNameDetector.methodStartingWithTestAndJUnitTestAnnotation`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

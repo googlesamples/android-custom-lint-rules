@@ -1,18 +1,15 @@
 <meta charset="utf-8">
-(#) When using `setHasFixedSize() in an `RecyclerView`, `wrap_content` cannot be used as \
-a value for `size` in the scrolling direction.
+(#) When using `setHasFixedSize()` in an `RecyclerView`, `wrap_content` cannot be used as a value for `size` in the scrolling direction.
 
-                        !!! ERROR: When using `setHasFixedSize() in an `RecyclerView`, `wrap_content` cannot be used as \
-a value for `size` in the scrolling direction.
-                           This is an error, and is also enforced at build time when
-                           supported by the build system. For Android this means it will
-                           run during release builds.
+!!! ERROR: When using `setHasFixedSize()` in an `RecyclerView`, `wrap_content` cannot be used as a value for `size` in the scrolling direction.
+   This is an error, and is also enforced at build time when
+   supported by the build system. For Android this means it will
+   run during release builds.
 
 Id
 :   `InvalidSetHasFixedSize`
 Summary
-:   When using `setHasFixedSize() in an `RecyclerView`, `wrap_content` cannot be used as \
-a value for `size` in the scrolling direction.
+:   When using `setHasFixedSize()` in an `RecyclerView`, `wrap_content` cannot be used as a value for `size` in the scrolling direction.
 Severity
 :   Fatal
 Category
@@ -45,6 +42,65 @@ Copyright Year
 
 When a RecyclerView uses `setHasFixedSize(...)` you cannot use
 `wrap_content` for  size in the scrolling direction.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/Example.kt:10:Error: When using `setHasFixedSize() in an
+RecyclerView, wrap_content cannot be used as a value for size in the
+scrolling direction. [InvalidSetHasFixedSize]
+    recyclerView?.setHasFixedSize(true)
+    -----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`layout/recycler_view.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+                &lt;androidx.recyclerview.widget.RecyclerView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/my_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`com/example/R.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+object R {
+    object id {
+        const val my_recycler_view = 0
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`com/example/Example.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+
+class Example {
+    fun main() {
+        val view: View = TODO()
+        val recyclerView = view.findViewById<RecyclerView>(R.id.my_recycler_view)
+        recyclerView?.setHasFixedSize(true)
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/recyclerview/recyclerview-lint/src/test/java/androidx/recyclerview/lint/InvalidSetHasFixedSizeTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `InvalidSetHasFixedSizeDetector.testInCorrectUsageOfFixedSize`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=460887.
 
 (##) Including
 

@@ -55,7 +55,6 @@ res/navigation/nav_main.xml:17:Warning: Do not attach a <deeplink> to an
 <activity> destination. Attach the deeplink directly to the second
 activity or the start destination of a nav host in the second activity
 instead. [DeepLinkInActivityDestination]
-
     &lt;deepLink app:uri="www.example.com" /&gt;
     --------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,17 +101,17 @@ https://issuetracker.google.com/issues/new?component=409828.
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-runtime:2.8.0-beta04")
+implementation("androidx.navigation:navigation-runtime:2.8.0-beta05")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-runtime:2.8.0-beta04'
+implementation 'androidx.navigation:navigation-runtime:2.8.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation-runtime)
 
 # libs.versions.toml
 [versions]
-navigation-runtime = "2.8.0-beta04"
+navigation-runtime = "2.8.0-beta05"
 [libraries]
 navigation-runtime = {
     module = "androidx.navigation:navigation-runtime",
@@ -120,7 +119,7 @@ navigation-runtime = {
 }
 ```
 
-2.8.0-beta04 is the version this documentation was generated from;
+2.8.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.navigation:navigation-runtime](androidx_navigation_navigation-runtime.md.html).

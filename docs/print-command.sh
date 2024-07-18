@@ -16,6 +16,9 @@ echo lint \
     --generate-docs \
     --output $OUTPUT \
     --builtins \
+    --gmaven \
+    --maven-central \
+    --unpublished \
     --source-url $LINT_URI_PREFIX $STUDIO/tools/base/lint \
     --test-url $LINT_URI_PREFIX $STUDIO/tools/base/lint \
     --lint-jars $ANDROIDX_REPO/out \

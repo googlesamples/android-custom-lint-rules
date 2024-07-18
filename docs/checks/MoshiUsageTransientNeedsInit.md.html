@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Transient constructor properties must have default values.
+(#) Transient constructor properties must have default values
 
-!!! ERROR: Transient constructor properties must have default values.
+!!! ERROR: Transient constructor properties must have default values
    This is an error.
 
 Id
 :   `MoshiUsageTransientNeedsInit`
 Summary
-:   Transient constructor properties must have default values.
+:   Transient constructor properties must have default values
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/MoshiUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)
 Copyright Year
@@ -50,7 +50,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/slack/model/Example.kt:7:Error: Transient constructor properties
 must have default values. [MoshiUsageTransientNeedsInit]
-
 class Example(val value: String, nonProp: String, @Transient val transientProp: String)
                                                   ------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

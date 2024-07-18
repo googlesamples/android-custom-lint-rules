@@ -52,16 +52,12 @@ AndroidManifest.xml:5:Warning: test.pkg.JavaTestContentProvider
 implements {insert} write APIs but does not protect them with a
 permission. Update the <provider> tag to use android:permission or
 android:writePermission [ProviderReadPermissionOnly]
-
     &lt;provider android:name="test.pkg.JavaTestContentProvider" android:readPermission="android.permission.READ_DATA"/&gt;
                                                               ----------------------
-
-
 AndroidManifest.xml:6:Warning: test.pkg.KotlinTestContentProvider
 implements {insert} write APIs but does not protect them with a
 permission. Update the <provider> tag to use android:permission or
 android:writePermission [ProviderReadPermissionOnly]
-
     &lt;provider android:name="test.pkg.KotlinTestContentProvider" android:readPermission="android.permission.READ_DATA"/&gt;
                                                                 ----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,7 +106,7 @@ public class JavaTestContentProvider extends ContentProvider {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`src/KotlinTestContentProvider.kt`:
+`src/test/pkg/KotlinTestContentProvider.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package test.pkg
 

@@ -45,88 +45,60 @@ src/test/pkg/WifiManagerTest.java:14:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing someActivity to
 someActivity.getApplicationContext() [WifiManagerLeak]
-
     someActivity.getSystemService(Context.WIFI_SERVICE); // ERROR: Activity context
     ---------------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:15:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing someService to
 someService.getApplicationContext() [WifiManagerLeak]
-
     someService.getSystemService(Context.WIFI_SERVICE);  // ERROR: Service context
     --------------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:16:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing fragment.getActivity() to
 fragment.getActivity().getApplicationContext() [WifiManagerLeak]
-
     fragment.getActivity().getSystemService(Context.WIFI_SERVICE); // ERROR: Activity context
     -------------------------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:17:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing fragment.getContext() to
 fragment.getContext().getApplicationContext() [WifiManagerLeak]
-
     fragment.getContext().getSystemService(Context.WIFI_SERVICE); // ERROR: FragmentHost context
     ------------------------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:29:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing context to context.getApplicationContext()
 [WifiManagerLeak]
-
     context.getSystemService(Context.WIFI_SERVICE); // ERROR
     ----------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:34:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing mActivity to mActivity.getApplicationContext()
 [WifiManagerLeak]
-
     mActivity.getSystemService(Context.WIFI_SERVICE); // ERROR: activity service
     ------------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:53:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing getSystemService to
 getApplicationContext().getSystemService [WifiManagerLeak]
-
     getSystemService(WIFI_SERVICE); // ERROR: Activity context
     ------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:54:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing this to this.getApplicationContext()
 [WifiManagerLeak]
-
     this.getSystemService(Context.WIFI_SERVICE); // ERROR: Activity context
     -------------------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:66:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing getSystemService to
 getApplicationContext().getSystemService [WifiManagerLeak]
-
     getSystemService(WIFI_SERVICE); // ERROR: Service context
     ------------------------------
-
-
 src/test/pkg/WifiManagerTest.java:76:Error: The WIFI_SERVICE must be
 looked up on the Application context or memory will leak on devices <
 Android N. Try changing getContext() to
 getContext().getApplicationContext() [WifiManagerLeak]
-
     getContext().getSystemService(Context.WIFI_SERVICE); // ERROR: View context
     ---------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

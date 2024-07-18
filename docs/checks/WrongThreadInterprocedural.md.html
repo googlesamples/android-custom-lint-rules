@@ -45,58 +45,39 @@ src/test/pkg/Runnable.java:14:Error: Interprocedural thread annotation
 violation (UiThread to WorkerThread):
 Test#uiThreadStatic -> Test#unannotatedStatic -> Test#workerThreadStatic
 [WrongThreadInterprocedural]
-
   @UiThread static void uiThreadStatic() { unannotatedStatic(); }
                                            -------------------
-
-
 src/test/pkg/Runnable.java:18:Error: Interprocedural thread annotation
 violation (UiThread to WorkerThread):
 Test#uiThread -> Test#unannotated -> Test#workerThread
 [WrongThreadInterprocedural]
-
   @UiThread void uiThread() { unannotated(); }
                               -------------
-
-
 src/test/pkg/Runnable.java:25:Error: Interprocedural thread annotation
 violation (WorkerThread to UiThread):
 Test#callRunIt -> Test#runIt -> Test#callRunIt#lambda -> Test#runUi
 [WrongThreadInterprocedural]
-
     runIt(() -&gt; runUi());
     --------------------
-
-
 src/test/pkg/Runnable.java:39:Error: Interprocedural thread annotation
 violation (UiThread to WorkerThread):
 A#run -> Test#b [WrongThreadInterprocedural]
-
     public void run(Runnable r) { r.run(); }
                                     -----
-
-
 src/test/pkg/Runnable.java:44:Error: Interprocedural thread annotation
 violation (WorkerThread to UiThread):
 B#run -> Test#a [WrongThreadInterprocedural]
-
     public void run(Runnable r) { r.run(); }
                                     -----
-
-
 src/test/pkg/Runnable.java:71:Error: Interprocedural thread annotation
 violation (UiThread to WorkerThread):
 Test#callInvokeLater#lambda -> Test#c [WrongThreadInterprocedural]
-
     invokeLater(() -&gt; c());
                       ---
-
-
 src/test/pkg/Runnable.java:76:Error: Interprocedural thread annotation
 violation (WorkerThread to UiThread):
 Test#callInvokeInBackground#lambda -> Test#d
 [WrongThreadInterprocedural]
-
     invokeInBackground(() -&gt; d());
                              ---
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

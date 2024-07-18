@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Flag menu ids that are not in lowerCamelCase Format.
+(#) Flag menu ids that are not in lowerCamelCase Format
 
-!!! WARNING: Flag menu ids that are not in lowerCamelCase Format.
+!!! WARNING: Flag menu ids that are not in lowerCamelCase Format
    This is a warning.
 
 Id
 :   `WrongMenuIdFormat`
 Summary
-:   Flag menu ids that are not in lowerCamelCase Format.
+:   Flag menu ids that are not in lowerCamelCase Format
 Severity
 :   Warning
 Category
@@ -29,9 +29,44 @@ Affects
 :   Resource files
 Editing
 :   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/main/kotlin/com/vanniktech/lintrules/android/WrongMenuIdFormatDetector.kt)
+Tests
+:   [Source Code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongMenuIdFormatDetectorTest.kt)
 
 Menu ids should be in lowerCamelCase format. This has the benefit of
 saving an unnecessary underscore and also just looks nicer.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+res/menu/ids.xml:2:Warning: Id is not in lowerCamelCaseFormat
+[WrongMenuIdFormat]
+  &lt;item android:id="@+id/CamelCase"/&gt;
+                    --------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`res/menu/ids.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+  &lt;item android:id="@+id/CamelCase"/&gt;
+&lt;/menu&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongMenuIdFormatDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `WrongMenuIdFormatDetector.idCamelCase`.
+To report a problem with this extracted sample, visit
+https://github.com/vanniktech/lint-rules/issues.
 
 (##) Including
 

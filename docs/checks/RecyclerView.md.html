@@ -48,31 +48,21 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/RecyclerViewTest.java:69:Error: Do not treat position as
 fixed; only use immediately and call holder.getAdapterPosition() to look
 it up later [RecyclerView]
-
     public void onBindViewHolder(ViewHolder holder, int position) {
                                                     ------------
-
-
 src/test/pkg/RecyclerViewTest.java:82:Error: Do not treat position as
 fixed; only use immediately and call holder.getAdapterPosition() to look
 it up later [RecyclerView]
-
     public void onBindViewHolder(ViewHolder holder, final int position) {
                                                     ------------------
-
-
 src/test/pkg/RecyclerViewTest.java:102:Error: Do not treat position as
 fixed; only use immediately and call holder.getAdapterPosition() to look
 it up later [RecyclerView]
-
     public void onBindViewHolder(ViewHolder holder, final int position) {
                                                     ------------------
-
-
 src/test/pkg/RecyclerViewTest.java:111:Error: Do not treat position as
 fixed; only use immediately and call holder.getAdapterPosition() to look
 it up later [RecyclerView]
-
     public void onBindViewHolder(ViewHolder holder, final int position, List&lt;Object&gt; payloads) {
                                                     ------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

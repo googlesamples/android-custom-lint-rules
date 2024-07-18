@@ -49,42 +49,26 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/test.kt:10:Error: Content padding parameter it is not used
 [UnusedMaterial3ScaffoldPaddingParameter]
-
     Scaffold { /**/ }
              --------
-
-
 src/foo/test.kt:11:Error: Content padding parameter it is not used
 [UnusedMaterial3ScaffoldPaddingParameter]
-
     Scaffold(Modifier) { /**/ }
                        --------
-
-
 src/foo/test.kt:12:Error: Content padding parameter it is not used
 [UnusedMaterial3ScaffoldPaddingParameter]
-
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { /**/ }
                                                     --------
-
-
 src/foo/test.kt:13:Error: Content padding parameter it is not used
 [UnusedMaterial3ScaffoldPaddingParameter]
-
     Scaffold(Modifier, topBar = {}, bottomBar = {}, content = { /**/ })
                                                               --------
-
-
 src/foo/test.kt:14:Error: Content padding parameter _ is not used
 [UnusedMaterial3ScaffoldPaddingParameter]
-
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { _ -&gt; /**/ }
                                                       -
-
-
 src/foo/test.kt:15:Error: Content padding parameter innerPadding is not
 used [UnusedMaterial3ScaffoldPaddingParameter]
-
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { innerPadding -&gt; /**/ }
                                                       ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

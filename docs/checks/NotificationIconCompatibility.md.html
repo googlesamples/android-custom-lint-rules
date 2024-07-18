@@ -42,11 +42,53 @@ Here is an example of lint warnings produced by this check:
 res/drawable/icon1.xml:Warning: Notification icon icon1 has to have a
 raster image to support Android versions below 5.0 (API 21)
 [NotificationIconCompatibility]
-
 0 errors, 1 warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/NotificationTest.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import android.app.Notification;
+import android.app.Notification.Builder;
+import android.content.Context;
+import android.graphics.Bitmap;
+
+@SuppressWarnings({ "deprecation", "unused", "javadoc" })
+class NotificationTest {
+    public void test1() {
+        Notification notification = new Notification(R.drawable.icon1, "Test1", 0);
+    }
+
+    public void test2() {
+        int resource = R.drawable.icon2;
+        Notification notification = new Notification(resource, "Test1", 0);
+    }
+
+    public void test3() {
+        int icon = R.drawable.icon3;
+        CharSequence tickerText = "Hello";
+        long when = System.currentTimeMillis();
+        Notification notification = new Notification(icon, tickerText, when);
+    }
+
+    public void test4(Context context, String sender, String subject, Bitmap bitmap) {
+        Notification notification = new Notification.Builder(context)
+                .setContentTitle("New mail from " + sender.toString())
+                .setContentText(subject).setSmallIcon(R.drawable.icon4)
+                .setLargeIcon(bitmap).build();
+    }
+
+    public void test5(Context context, String sender, String subject, Bitmap bitmap) {
+        Notification notification = new Builder(context)
+                .setContentTitle("New mail from " + sender.toString())
+                .setContentText(subject).setSmallIcon(R.drawable.icon5)
+                .setLargeIcon(bitmap).build();
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/drawable/icon1.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -65,22 +107,6 @@ https://issuetracker.google.com/issues/new?component=192708.
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
-
-* Adding the suppression attribute
-  `tools:ignore="NotificationIconCompatibility"` on the problematic
-  XML element (or one of its enclosing elements). You may also need to
-  add the following namespace declaration on the root element in the
-  XML file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
-
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;application tools:ignore="NotificationIconCompatibility" .../&gt;
-    ...
-  &lt;/manifest&gt;
-  ```
 
 * Using a suppression annotation like this on the enclosing
   element:
@@ -108,6 +134,22 @@ You can suppress false positives using one of the following mechanisms:
   ```kt
   //noinspection NotificationIconCompatibility
   problematicStatement()
+  ```
+
+* Adding the suppression attribute
+  `tools:ignore="NotificationIconCompatibility"` on the problematic
+  XML element (or one of its enclosing elements). You may also need to
+  add the following namespace declaration on the root element in the
+  XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;application tools:ignore="NotificationIconCompatibility" .../&gt;
+    ...
+  &lt;/manifest&gt;
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

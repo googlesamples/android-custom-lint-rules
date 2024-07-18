@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) @Redacted is only supported in Kotlin classes!
+(#) @Redacted is only supported in Kotlin classes
 
-!!! ERROR: @Redacted is only supported in Kotlin classes!
+!!! ERROR: @Redacted is only supported in Kotlin classes
    This is an error.
 
 Id
 :   `RedactedInJavaUsage`
 Summary
-:   @Redacted is only supported in Kotlin classes!
+:   @Redacted is only supported in Kotlin classes
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/RedactedUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/RedactedUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/RedactedUsageDetectorTest.kt)
 Copyright Year
@@ -48,26 +48,33 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/RedactedClass.java:6:Error: @Redacted is only supported in
 Kotlin classes! [RedactedInJavaUsage]
-
 @Redacted
 ---------
-
-
 src/test/pkg/RedactedClass.java:8:Error: @Redacted is only supported in
 Kotlin classes! [RedactedInJavaUsage]
-
   @Redacted
   ---------
-
-
 src/test/pkg/RedactedClass.java:13:Error: @Redacted is only supported in
 Kotlin classes! [RedactedInJavaUsage]
-
   @Redacted
   ---------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`src/test/pkg/RedactedClass.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import slack.annotations.Redacted
+import slack.annotations.AnotherRedacted
+import slack.annotations.AnotherAnnotation
+
+@Redacted
+data class RedactedClass(val value: String)
+
+data class RedactedProps(@Redacted val value: String)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/RedactedClass.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -96,6 +103,25 @@ class RedactedClass {
   @AnotherAnnotation
   static class AnotherInner {
 
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/AnotherRedactedClass.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import slack.annotations.Redacted;
+import slack.annotations.AnotherRedacted;
+
+@AnotherRedacted
+class AnotherRedactedClass {
+  @AnotherRedacted
+  int value;
+
+  @AnotherRedacted
+  public int getValue() {
+    return value;
   }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

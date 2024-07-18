@@ -42,28 +42,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/IntDefTest.java:13:Warning: Consider declaring this
 constant using 1 << 44 instead [ShiftFlags]
-
     public static final long FLAG5 = 0x100000000000L;
                                      ---------------
-
-
 src/test/pkg/IntDefTest.java:14:Warning: Consider declaring this
 constant using 1 << 49 instead [ShiftFlags]
-
     public static final long FLAG6 = 0x0002000000000000L;
                                      -------------------
-
-
 src/test/pkg/IntDefTest.java:15:Warning: Consider declaring this
 constant using 1 << 3 instead [ShiftFlags]
-
     public static final long FLAG7 = 8L;
                                      --
-
-
 src/test/pkg/IntDefTest.java:20:Warning: Consider declaring this
 constant using 1 << 4 instead [ShiftFlags]
-
     public static final int  FLAG12 = 0x10;
                                       ----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

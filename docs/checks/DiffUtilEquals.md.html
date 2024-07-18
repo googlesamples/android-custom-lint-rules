@@ -42,12 +42,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/test.kt:10:Error: Suspicious equality check: Did you mean
 == instead of === ? [DiffUtilEquals]
-
     oldItem === newItem // ERROR
             ---
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -61,6 +60,34 @@ private val diffCallback = object : DiffUtil.ItemCallback<Cheese>() {
 
     override fun areContentsTheSame(oldItem: Cheese, newItem: Cheese): Boolean =
             oldItem === newItem // ERROR
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyCallback.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+import androidx.recyclerview.widget.DiffUtil;
+
+public class MyCallback extends DiffUtil.ItemCallback<Cheese> {
+    @Override
+    public boolean areItemsTheSame(Cheese oldItem, Cheese newItem) {
+        return oldItem.getId() == newItem.getId();
+    }
+
+    @Override
+    public boolean areContentsTheSame(Cheese oldItem, Cheese newItem) {
+        return oldItem == newItem;
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/Cheese.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package test.pkg;
+
+public class Cheese {
+    public String id;
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

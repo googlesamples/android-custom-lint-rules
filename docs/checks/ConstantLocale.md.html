@@ -40,12 +40,11 @@ src/test/pkg/TestLocaleJava.java:13:Warning: Assigning
 Locale.getDefault() to a final static field is suspicious; this code
 will not work correctly if the user changes locale while the app is
 running [ConstantLocale]
-
     static final Locale errorLocale = Locale.getDefault();
                                       -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/TestLocaleJava.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -62,6 +61,57 @@ public class TestLocaleJava {
         final Locale okLocale4 = Locale.getDefault();
     }
     static final Locale errorLocale = Locale.getDefault();
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/TestLocaleKotlin.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import java.util.Locale
+
+@Suppress("HasPlatformType","JoinDeclarationAndAssignment")
+class TestLocaleKotlin {
+    companion object {
+        var okLocale1 = Locale.getDefault()
+        val errorLocale = Locale.getDefault()
+    }
+    var okLocale2 = Locale.getDefault()
+    val okLocale3 = Locale.getDefault()
+    fun test() {
+        val okLocale4 = Locale.getDefault()
+    }
+    val okLocale5: Locale
+    init {
+        okLocale5 = Locale.getDefault()
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MainActivity.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.app.Activity
+import android.util.Log
+import java.text.SimpleDateFormat
+import java.util.*
+
+class MainActivity : Activity() {
+    companion object {
+        val PROBLEMATIC_DESCRIPTION_DATE_FORMAT = SimpleDateFormat("MMM dd", Locale.getDefault())
+        //same for the single parameter CTOR : SimpleDateFormat("MMM dd")
+    }
+
+    @Suppress("PropertyName")
+    val SAFE_DESCRIPTION_DATE_FORMAT = SimpleDateFormat("MMM dd", Locale.getDefault())
+
+    override fun onResume() {
+        super.onResume()
+        val today = Calendar.getInstance().time
+        Log.d("AppLog", "problematic:" + PROBLEMATIC_DESCRIPTION_DATE_FORMAT.format(today))
+        Log.d("AppLog", "safe:" + SAFE_DESCRIPTION_DATE_FORMAT.format(today))
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

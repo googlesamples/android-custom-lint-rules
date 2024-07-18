@@ -53,12 +53,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/main/kotlin/com/example/test.kt:6:Error: Upgrade Fragment version to
 at least . [InvalidFragmentVersionForActivityResult]
-
 val launcher = ActivityResultCaller().registerForActivityResult(ActivityResultContract())
                --------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    api("androidx.fragment:fragment:1.2.4")
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/main/kotlin/com/example/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -113,6 +119,13 @@ there may be newer versions available.
 
 You can suppress false positives using one of the following mechanisms:
 
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection InvalidFragmentVersionForActivityResult
+  problematicStatement()
+  ```
+
 * Using a suppression annotation like this on the enclosing
   element:
 
@@ -132,13 +145,6 @@ You can suppress false positives using one of the following mechanisms:
   void method() {
      problematicStatement();
   }
-  ```
-
-* Using a suppression comment like this on the line above:
-
-  ```kt
-  //noinspection InvalidFragmentVersionForActivityResult
-  problematicStatement()
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off

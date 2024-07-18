@@ -65,15 +65,14 @@ Android configuration: Inherit these settings instead? Modify
 project.properties to define
 proguard.config=${sdk.dir}/tools/proguard/proguard-android.txt:myfile.txt
 and then keep only project-specific configuration here [ProguardSplit]
-
 -keep public class * extends android.app.Activity
 ^
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `myfile.txt`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text linenumbers
 -optimizationpasses 5
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
@@ -110,6 +109,13 @@ Here is the source file referenced above:
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`project.properties`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~properties linenumbers
+target=android-14
+proguard.config=${sdk.dir}/foo.cfg:${user.home}/bar.pro;myfile.txt
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

@@ -44,56 +44,34 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/DateFormatTest.kt:16:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     DateTimeFormatter.ofPattern("'profile-'YYYY-MM-dd-HH-mm-ss-SSS'.rawproto'", Locale.US) // ERROR
                                            ----
-
-
 src/test/pkg/DateFormatTest.kt:29:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s1 =  DateTimeFormatter.ofPattern("MMMM d, YYYY") // ERROR
                                                    ----
-
-
 src/test/pkg/DateFormatTest.kt:30:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s2 =  SimpleDateFormat("MMMM d, YYYY") // ERROR
                                         ----
-
-
 src/test/pkg/DateFormatTest.kt:31:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s3 = DateTimeFormatter.ofPattern("""dd-MM-YYYY""") // ERROR
                                                   ----
-
-
 src/test/pkg/DateFormatTest.kt:32:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s4 = DateTimeFormatter.ofPattern("'$something'dd-MM-YYYY") // ERROR
                                          ------------------------
-
-
 src/test/pkg/DateFormatTest.kt:33:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s5 = DateTimeFormatter.ofPattern("'\u1234'dd-MM-YYYY") // ERROR
                                          --------------------
-
-
 src/test/pkg/DateFormatTest.kt:35:Warning: DateFormat character 'Y' in
 YYYY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s6 = DateTimeFormatter.ofPattern(constant) // ERROR
                                          --------
-
-
 src/test/pkg/DateFormatTest.kt:36:Warning: DateFormat character 'Y' in
 YY is the week-era-year; did you mean 'y'? [WeekBasedYear]
-
     val s7 = DateTimeFormatter.ofPattern("""dd-YY-MM""") // ERROR
                                                --
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Dagger provider methods should not be called directly by user code.
+(#) Dagger provider methods should not be called directly by user code
 
-!!! ERROR: Dagger provider methods should not be called directly by user code.
+!!! ERROR: Dagger provider methods should not be called directly by user code
    This is an error.
 
 Id
 :   `DoNotCallProviders`
 Summary
-:   Dagger provider methods should not be called directly by user code.
+:   Dagger provider methods should not be called directly by user code
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/DoNotCallProvidersDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/DoNotCallProvidersDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DoNotCallProvidersDetectorTest.kt)
 Copyright Year
@@ -50,28 +50,18 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/foo/MyModule.kt:15:Error: Dagger provider methods should not be
 called directly by user code. [DoNotCallProviders]
-
     binds1("this is bad")
     ---------------------
-
-
 src/foo/MyModule.kt:16:Error: Dagger provider methods should not be
 called directly by user code. [DoNotCallProviders]
-
     "this is bad".binds2()
      ---------------------
-
-
 src/foo/MyModule.kt:17:Error: Dagger provider methods should not be
 called directly by user code. [DoNotCallProviders]
-
     provider()
     ----------
-
-
 src/foo/MyModule.kt:18:Error: Dagger provider methods should not be
 called directly by user code. [DoNotCallProviders]
-
     producer()
     ----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

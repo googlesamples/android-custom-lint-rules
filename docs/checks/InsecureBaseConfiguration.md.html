@@ -36,7 +36,7 @@ Copyright Year
 Permitting cleartext traffic could allow eavesdroppers to intercept data
 sent by your app, which impacts the privacy of your users. Consider only
 allowing encrypted traffic by setting the `cleartextTrafficPermitted`
-tag to `"false"`.
+tag to `false`.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -47,7 +47,6 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 res/xml/network_config.xml:3:Warning: Insecure Base Configuration
 [InsecureBaseConfiguration]
-
     &lt;base-config cleartextTrafficPermitted="true"&gt;
                                             ----
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -54,167 +54,106 @@ Here is an example of lint warnings produced by this check:
 src/androidx/compose/runtime/foo/test.kt:10:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:11:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:12:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
-
-
 src/androidx/compose/runtime/foo/test.kt:16:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:17:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:18:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
-
-
 src/androidx/compose/runtime/foo/test.kt:22:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:23:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:24:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
-
-
 src/androidx/compose/runtime/foo/test.kt:33:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:34:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:35:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
-
-
 src/androidx/compose/runtime/foo/test.kt:38:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:39:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:40:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
-
-
 src/androidx/compose/runtime/foo/test.kt:46:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:47:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:48:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
-
-
 src/androidx/compose/runtime/foo/test.kt:52:Error: Calls to async should
 happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.async {}
                    -----
-
-
 src/androidx/compose/runtime/foo/test.kt:53:Error: Calls to launch
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     CoroutineScope.launch {}
                    ------
-
-
 src/androidx/compose/runtime/foo/test.kt:54:Error: Calls to launchIn
 should happen inside a LaunchedEffect and not composition
 [CoroutineCreationDuringComposition]
-
     flowOf(Unit).launchIn(CoroutineScope)
                  --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -297,17 +236,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime-android:1.7.0-beta04")
+implementation("androidx.compose.runtime:runtime-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime-android:1.7.0-beta04'
+implementation 'androidx.compose.runtime:runtime-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.runtime-android)
 
 # libs.versions.toml
 [versions]
-runtime-android = "1.7.0-beta04"
+runtime-android = "1.7.0-beta05"
 [libraries]
 runtime-android = {
     module = "androidx.compose.runtime:runtime-android",
@@ -315,7 +254,7 @@ runtime-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html).

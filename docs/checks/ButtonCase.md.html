@@ -40,20 +40,208 @@ Here is an example of lint warnings produced by this check:
 res/values/buttonbar-values.xml:9:Warning: The standard Android way to
 capitalize Ok is "OK" (tip: use @android:string/ok instead)
 [ButtonCase]
-
     &lt;string name="resume2"&gt; Ok &lt;/string&gt;
                             --
-
-
 res/values/buttonbar-values.xml:10:Warning: The standard Android way to
 capitalize CANCEL is "Cancel" (tip: use @android:string/cancel instead)
 [ButtonCase]
-
     &lt;string name="giveup2"&gt;"CANCEL"&lt;/string&gt;
                            --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`res/layout/buttonbar.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" &gt;
+
+    &lt;!-- Hardcoded strings, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Hardcoded strings, right order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- @android:string resources, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/cancel" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- @android:string resources, right order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/cancel" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/ok" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- @string/ok/cancel resources, right order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- @string/ok/cancel resources, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Random name resources, right order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/giveup" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resume" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Random name resources, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resume" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/giveup" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Random name resources with varying case, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resume2" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/giveup2" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Resources with only one of OK and Cancel, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/abort" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Resources with only one of OK and Cancel, wrong order --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" &gt;
+
+        &lt;Button
+            android:layout_width="wrap_content" android:background="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:text="@string/send" /&gt;
+
+        &lt;Button
+            android:layout_width="wrap_content" android:background="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goback" /&gt;
+
+&lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/values/buttonbar-values.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers

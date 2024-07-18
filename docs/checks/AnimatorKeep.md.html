@@ -45,126 +45,44 @@ encounters, such as a missing property, wrong argument types, etc.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/main/java/test/pkg/AnimatorTest.java:55:Warning: This method is
-accessed from an ObjectAnimator so it should be annotated with @Keep to
-ensure that it is not discarded or renamed in release builds
-[AnimatorKeep]
-
+src/main/java/AnimationExample.java:14:Warning: This method is accessed
+from an ObjectAnimator so it should be annotated with @Keep to ensure
+that it is not discarded or renamed in release builds [AnimatorKeep]
     public void setProp1(int x) {
                 ---------------
-
-
-src/main/java/test/pkg/AnimatorTest.java:58:Warning: This method is
-accessed from an ObjectAnimator so it should be annotated with @Keep to
-ensure that it is not discarded or renamed in release builds
-[AnimatorKeep]
-
-    private void setProp2(float x) {
-                 -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`src/main/java/test/pkg/AnimatorTest.java`:
+`src/main/java/AnimationExample.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-package test.pkg;
-
-
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import androidx.annotation.Keep;
-import android.view.View;
-import android.widget.Button;
-import android.animation.FloatEvaluator;
-@SuppressWarnings("unused")
-public class AnimatorTest {
 
-    public void testObjectAnimator(Button button) {
+public class AnimationExample {
+    public void startAnimations() {
         Object myObject = new MyObject();
         ObjectAnimator animator1 = ObjectAnimator.ofInt(myObject, "prop1", 0, 1, 2, 5);
-        animator1.setDuration(10);
         animator1.start();
 
-
-        // Incorrect type (float parameter) warning
-        ObjectAnimator.ofInt(myObject, "prop2", 0, 1, 2, 5).start();
-
-        // Missing method warning
-        ObjectAnimator.ofInt(myObject, "unknown", 0, 1, 2, 5).start();
-
-        // Static method warning
-        ObjectAnimator.ofInt(myObject, "prop3", 0, 1, 2, 5).start();
-
-        // OK: Already marked @Keep
-        ObjectAnimator.ofInt(myObject, "prop4", 0, 1, 2, 5).start();
-
-        // OK: multi int
-        ObjectAnimator.ofMultiInt(myObject, "prop4", new int[0][]).start();
-
-        // OK: multi int
-        ObjectAnimator.ofMultiFloat(myObject, "prop5", new float[0][]).start();
-
-        // View stuff
-        ObjectAnimator.ofFloat(button, "alpha", 1, 5); // TODO: Warn about better method?, e.g. button.animate().alpha(...)
-        ObjectAnimator.ofArgb(button, "alpha2", 1, 5); // Missing
-    }
-
-    public void testPropertyHolder() {
-        Object myObject = new MyObject();
-
-        PropertyValuesHolder p1 = PropertyValuesHolder.ofInt("prop1", 50);
-        PropertyValuesHolder p2 = PropertyValuesHolder.ofFloat("prop2", 100f);
-        ObjectAnimator.ofPropertyValuesHolder(myObject, p1, p2).start();
-        ObjectAnimator.ofPropertyValuesHolder(myObject,
-                PropertyValuesHolder.ofInt("prop1", 50),
-                PropertyValuesHolder.ofFloat("prop2", 100f)).start();
+        ObjectAnimator animator2 = ObjectAnimator.ofInt(myObject, "prop2", 0, 1, 2, 5);
+        animator2.start();
     }
 
     private static class MyObject {
         public void setProp1(int x) {
+            // Implementation here
         }
 
         private void setProp2(float x) {
-        }
-
-        public static void setProp3(int x) {
-        }
-
-        @Keep
-        public void setProp4(int[] x) {
-        }
-
-        @Keep
-        public void setProp5(float[] x) {
-        }
-
-        @Keep
-        public void setProp4(int x) {
-        }
-
-        @Keep
-        public void setProp5(float x) {
+            // Implementation here
         }
     }
-
-    public void testEvaluators() {
-        Object myObject = new MyObject();
-        PropertyValuesHolder p1 = PropertyValuesHolder.ofObject("prop5", new FloatEvaluator());
-        ObjectAnimator.ofPropertyValuesHolder(myObject, p1);
-        ObjectAnimator.ofObject(myObject, "prop5", new FloatEvaluator(), 1f, 2f);
-    }
-
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ObjectAnimatorDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `ObjectAnimatorDetector.testBasic`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

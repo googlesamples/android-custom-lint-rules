@@ -80,40 +80,12 @@ Here is an example of lint warnings produced by this check:
 AndroidManifest.xml:5:Warning: Consider splitting data tag into multiple
 tags with individual attributes to avoid confusion
 [IntentFilterUniqueDataAttributes]
-
-    &lt;data android:scheme="https" android:host="example.com"/&gt;
-    ---------------------------------------------------------
-
-
+    &lt;data alt-android:scheme="https" alt-android:host="example.com"/&gt;
+    -----------------------------------------------------------------
 AndroidManifest.xml:6:Warning: Consider splitting data tag into multiple
 tags with individual attributes to avoid confusion
 [IntentFilterUniqueDataAttributes]
-
-    &lt;data android:scheme="http" android:host="example.org"/&gt;
-    --------------------------------------------------------
-
-
-AndroidManifest.xml:12:Warning: Consider splitting data tag into
-multiple tags with individual attributes to avoid confusion
-[IntentFilterUniqueDataAttributes]
-
-    &lt;data
-    ^
-
-
-AndroidManifest.xml:24:Warning: Consider splitting data tag into
-multiple tags with individual attributes to avoid confusion
-[IntentFilterUniqueDataAttributes]
-
-    &lt;data android:host="example.com" android:port="41" android:path="/sub"/&gt;
-    ------------------------------------------------------------------------
-
-
-AndroidManifest.xml:30:Warning: Consider splitting data tag into
-multiple tags with individual attributes to avoid confusion
-[IntentFilterUniqueDataAttributes]
-
-    &lt;data android:host="example.com" android:mimeType="image/jpeg"/&gt;
+    &lt;data alt-android:scheme="http" alt-android:host="example.org"/&gt;
     ----------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -121,53 +93,12 @@ Here is the source file referenced above:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+&lt;manifest xmlns:alt-android="http://schemas.android.com/apk/res/android"
     package="com.example.helloworld" &gt;
-    &lt;activity android:name="com.example.Activity"&gt;
+    &lt;activity alt-android:name="com.example.Activity"&gt;
         &lt;intent-filter&gt;
-            &lt;data android:scheme="https" android:host="example.com"/&gt;
-            &lt;data android:scheme="http" android:host="example.org"/&gt;
-        &lt;/intent-filter&gt;
-    &lt;/activity&gt;
-    &lt;receiver android:name="com.example.Receiver"&gt;
-        &lt;intent-filter&gt;
-            &lt;data android:scheme="https"/&gt;
-            &lt;data
-                android:host="example.com"
-                android:path="/path"
-                android:scheme="https"
-                /&gt;
-        &lt;/intent-filter&gt;
-    &lt;/receiver&gt;
-    &lt;service android:name="com.example.Service"&gt;
-        &lt;intent-filter&gt;
-            &lt;data android:scheme="https"/&gt;
-            &lt;!-- Don't warn on only host and port --&gt;
-            &lt;data android:host="example.com" android:port="40"/&gt;
-            &lt;data android:host="example.com" android:port="41" android:path="/sub"/&gt;
-        &lt;/intent-filter&gt;
-    &lt;/service&gt;
-    &lt;provider android:name="com.example.Provider"&gt;
-        &lt;intent-filter&gt;
-            &lt;data android:scheme="https"/&gt;
-            &lt;data android:host="example.com" android:mimeType="image/jpeg"/&gt;
-        &lt;/intent-filter&gt;
-    &lt;/provider&gt;
-    &lt;activity android:name="com.example.Activity2"&gt;
-        &lt;intent-filter&gt;
-            &lt;data android:scheme="https" android:host="example.com"/&gt;
-            &lt;!-- Don't warn on multiple attributes of only path variants--&gt;
-            &lt;data
-                android:pathPrefix="/prefix"
-                android:path="/path"
-                android:pathPattern="/pattern/*"
-                /&gt;
-        &lt;/intent-filter&gt;
-    &lt;/activity&gt;
-    &lt;activity android:name="com.example.Activity3"&gt;
-        &lt;intent-filter&gt;
-            &lt;!-- Don't warn on only 1 data tag --&gt;
-            &lt;data android:scheme="https" android:host="example.com"/&gt;
+            &lt;data alt-android:scheme="https" alt-android:host="example.com"/&gt;
+            &lt;data alt-android:scheme="http" alt-android:host="example.org"/&gt;
         &lt;/intent-filter&gt;
     &lt;/activity&gt;
 &lt;/manifest&gt;
@@ -176,11 +107,6 @@ Here is the source file referenced above:
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksValidDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `AppLinksValidDetector.testIntentFilterDataDeclaration`.
-To report a problem with this extracted sample, visit
-https://issuetracker.google.com/issues/new?component=192708.
 
 (##) Suppressing
 

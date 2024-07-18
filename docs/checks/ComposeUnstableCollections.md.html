@@ -53,11 +53,8 @@ class: @Immutable data class ACollection(val items: Collection<String>)
 See
 https://slackhq.github.io/compose-lints/rules/#avoid-using-unstable-collections
 for more information. [ComposeUnstableCollections]
-
 fun Something(a: Collection&lt;String&gt;) {}
                  ------------------
-
-
 src/test.kt:6:Warning: The Compose Compiler cannot infer the stability
 of a parameter if a List<String> is used in it, even if the item type is
 stable.
@@ -67,11 +64,8 @@ ImmutableList<String> or create an @Immutable wrapper for this class:
 See
 https://slackhq.github.io/compose-lints/rules/#avoid-using-unstable-collections
 for more information. [ComposeUnstableCollections]
-
 fun Something(a: List&lt;String&gt;) {}
                  ------------
-
-
 src/test.kt:8:Warning: The Compose Compiler cannot infer the stability
 of a parameter if a Set<String> is used in it, even if the item type is
 stable.
@@ -81,11 +75,8 @@ ImmutableSet<String> or create an @Immutable wrapper for this class:
 See
 https://slackhq.github.io/compose-lints/rules/#avoid-using-unstable-collections
 for more information. [ComposeUnstableCollections]
-
 fun Something(a: Set&lt;String&gt;) {}
                  -----------
-
-
 src/test.kt:10:Warning: The Compose Compiler cannot infer the stability
 of a parameter if a Map<String, Int> is used in it, even if the item
 type is stable.
@@ -95,7 +86,6 @@ class: @Immutable data class AMap(val items: Map<String, Int>)
 See
 https://slackhq.github.io/compose-lints/rules/#avoid-using-unstable-collections
 for more information. [ComposeUnstableCollections]
-
 fun Something(a: Map&lt;String, Int&gt;) {}
                  ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

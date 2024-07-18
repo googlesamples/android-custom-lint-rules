@@ -38,12 +38,40 @@ Here is an example of lint warnings produced by this check:
 res/layout/wrong1.xml:9:Error: This BottomAppBar must be wrapped in a
 CoordinatorLayout (android.support.design.widget.CoordinatorLayout)
 [BottomAppBar]
-
   &lt;android.support.design.bottomappbar.BottomAppBar
    ------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
+
+`res/layout/ok.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"&gt;
+
+  &lt;com.google.android.material.bottomappbar.BottomAppBar
+      android:id="@+id/bottom_app_bar"
+      style="@style/Widget.MaterialComponents.BottomAppBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      app:navigationIcon="@drawable/ic_menu_black_24dp"/&gt;
+
+  &lt;com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:tint="@android:color/white"
+      app:layout_anchor="@id/bottom_app_bar"
+      app:srcCompat="@drawable/ic_add_black_24dp"
+      tools:ignore="RtlHardcoded"/&gt;
+&lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/layout/wrong1.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -64,6 +92,19 @@ Here is the source file referenced above:
       app:navigationIcon="@drawable/ic_menu_black_24dp"/&gt;
 
 &lt;/LinearLayout&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/layout/wrong2.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+                &lt;com.google.android.material.bottomappbar.BottomAppBar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/bottom_app_bar"
+                    style="@style/Widget.MaterialComponents.BottomAppBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+app:navigationIcon="@drawable/ic_menu_black_24dp"/&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

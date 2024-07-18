@@ -48,60 +48,41 @@ Here is an example of lint warnings produced by this check:
 src/main/res/drawable/foo.xml:6:Warning: This attribute is not supported
 in images generated from this vector icon for API < 21; check generated
 icon to make sure it looks acceptable [VectorRaster]
-
     android:autoMirrored="true"
     --------------------
-
-
 src/main/res/drawable/foo.xml:7:Warning: Resource references will not
 work correctly in images generated for this vector icon for API < 21;
 check generated icon to make sure it looks acceptable [VectorRaster]
-
     android:tint="?attr/colorControlActivated"&gt;
                   ---------------------------
-
-
 src/main/res/drawable/foo.xml:9:Warning: This tag is not supported in
 images generated from this vector icon for API < 21; check generated
 icon to make sure it looks acceptable [VectorRaster]
-
     &lt;clip-path android:pathData="M10,10h40v30h-40z"/&gt;
     -------------------------------------------------
-
-
 src/main/res/drawable/foo.xml:19:Warning: Resource references will not
 work correctly in images generated for this vector icon for API < 21;
 check generated icon to make sure it looks acceptable [VectorRaster]
-
     android:strokeColor="@color/white"
                          ------------
-
-
 src/main/res/drawable/foo.xml:23:Warning: This attribute is not
 supported in images generated from this vector icon for API < 21; check
 generated icon to make sure it looks acceptable [VectorRaster]
-
     android:trimPathEnd="0"
     -------------------
-
-
 src/main/res/drawable/foo.xml:24:Warning: This attribute is not
 supported in images generated from this vector icon for API < 21; check
 generated icon to make sure it looks acceptable [VectorRaster]
-
     android:trimPathOffset="0"
     ----------------------
-
-
 src/main/res/drawable/foo.xml:25:Warning: This attribute is not
 supported in images generated from this vector icon for API < 21; check
 generated icon to make sure it looks acceptable [VectorRaster]
-
     android:trimPathStart="0" /&gt;
     ---------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/main/res/drawable/foo.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -133,6 +114,15 @@ Here is the source file referenced above:
     &lt;/group&gt;
 
 &lt;/vector&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.4.0-alpha2'
+    }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the

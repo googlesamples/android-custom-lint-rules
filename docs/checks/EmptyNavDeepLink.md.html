@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) NavDeepLink must define an uri, action, and/or mimetype to be valid.
+(#) NavDeepLink must define an uri, action, and/or mimetype to be valid
 
-!!! ERROR: NavDeepLink must define an uri, action, and/or mimetype to be valid.
+!!! ERROR: NavDeepLink must define an uri, action, and/or mimetype to be valid
    This is an error.
 
 Id
 :   `EmptyNavDeepLink`
 Summary
-:   NavDeepLink must define an uri, action, and/or mimetype to be valid.
+:   NavDeepLink must define an uri, action, and/or mimetype to be valid
 Severity
 :   Error
 Category
@@ -48,12 +48,11 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/com/example/test.kt:6:Error: Creation of empty NavDeepLink
 [EmptyNavDeepLink]
-
     navDeepLink { }
     -----------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/com/example/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -64,6 +63,13 @@ import androidx.navigation.navDeepLink
 fun createDeepLink() {
     navDeepLink { }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/androidx/navigation/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.navigation
+
+public fun navDeepLink(deepLinkBuilder: NavDeepLinkDslBuilder.() -> Unit): NavDeepLink {}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -80,9 +86,9 @@ https://issuetracker.google.com/issues/new?component=409828.
 This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
-* EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid. (this issue)
-* [EmptyNavDeepLink from androidx.navigation:navigation-compose:2.8.0-beta04](EmptyNavDeepLink.md.html)
-* [EmptyNavDeepLink from androidx.navigation:navigation-common:2.8.0-beta04](EmptyNavDeepLink-2.md.html)
+* EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid (this issue)
+* [EmptyNavDeepLink from androidx.navigation:navigation-compose:2.8.0-beta05](EmptyNavDeepLink.md.html)
+* [EmptyNavDeepLink from androidx.navigation:navigation-common:2.8.0-beta05](EmptyNavDeepLink-2.md.html)
 
 
 (##) Including
@@ -93,17 +99,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.8.0-beta04")
+implementation("androidx.navigation:navigation-compose:2.8.0-beta05")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.8.0-beta04'
+implementation 'androidx.navigation:navigation-compose:2.8.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation-compose)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.8.0-beta04"
+navigation-compose = "2.8.0-beta05"
 [libraries]
 navigation-compose = {
     module = "androidx.navigation:navigation-compose",
@@ -111,7 +117,7 @@ navigation-compose = {
 }
 ```
 
-2.8.0-beta04 is the version this documentation was generated from;
+2.8.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html).

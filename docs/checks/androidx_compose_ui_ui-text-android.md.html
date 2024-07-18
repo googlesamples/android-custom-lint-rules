@@ -17,13 +17,13 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.compose.ui:ui-text-android:1.7.0-beta04
+:   androidx.compose.ui:ui-text-android:1.7.0-beta05
 
 (##) Included Issues
 
-|Issue Id                                                          |Issue Description                                    |
-|------------------------------------------------------------------|-----------------------------------------------------|
-|[InvalidLanguageTagDelimiter](InvalidLanguageTagDelimiter.md.html)|Undercore (_) is an unsupported delimiter for subtags|
+|Issue Id                                                          |Issue Description                                       |
+|------------------------------------------------------------------|--------------------------------------------------------|
+|[InvalidLanguageTagDelimiter](InvalidLanguageTagDelimiter.md.html)|Underscore (`_`) is an unsupported delimiter for subtags|
 
 (##) Including
 
@@ -33,17 +33,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-text-android:1.7.0-beta04")
+implementation("androidx.compose.ui:ui-text-android:1.7.0-beta05")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-text-android:1.7.0-beta04'
+implementation 'androidx.compose.ui:ui-text-android:1.7.0-beta05'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui-text-android)
 
 # libs.versions.toml
 [versions]
-ui-text-android = "1.7.0-beta04"
+ui-text-android = "1.7.0-beta05"
 [libraries]
 ui-text-android = {
     module = "androidx.compose.ui:ui-text-android",
@@ -51,7 +51,7 @@ ui-text-android = {
 }
 ```
 
-1.7.0-beta04 is the version this documentation was generated from;
+1.7.0-beta05 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -64,6 +64,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|        1.7.0-beta05|2024/07/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        1.7.0-beta04|2024/06/26|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        1.7.0-beta03|2024/06/12|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        1.7.0-beta02|2024/05/29|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|

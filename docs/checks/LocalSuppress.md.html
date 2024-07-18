@@ -45,47 +45,31 @@ Here is an example of lint warnings produced by this check:
 src/test/pkg/WrongAnnotation.java:10:Error: The @SuppressLint annotation
 cannot be used on a local variable with the lint check 'NewApi': move
 out to the surrounding method [LocalSuppress]
-
     public static void foobar(View view, @SuppressLint("NewApi") int foo) { // $ Invalid: class-file check
                                          -----------------------
-
-
 src/test/pkg/WrongAnnotation.java:11:Error: The @SuppressLint annotation
 cannot be used on a local variable with the lint check 'NewApi': move
 out to the surrounding method [LocalSuppress]
-
     @SuppressLint("NewApi") // Invalid
     -----------------------
-
-
 src/test/pkg/WrongAnnotation.java:13:Error: The @SuppressLint annotation
 cannot be used on a local variable with the lint check 'NewApi': move
 out to the surrounding method [LocalSuppress]
-
     @SuppressLint({"SdCardPath", "NewApi"}) // Invalid: class-file based check on local variable
     ---------------------------------------
-
-
 src/test/pkg/WrongAnnotation.java:15:Error: The @SuppressLint annotation
 cannot be used on a local variable with the lint check 'NewApi': move
 out to the surrounding method [LocalSuppress]
-
     @android.annotation.SuppressLint({"SdCardPath", "NewApi"}) // Invalid (FQN)
     ----------------------------------------------------------
-
-
 src/test/pkg/WrongAnnotation.java:29:Error: The @SuppressLint annotation
 cannot be used on a local variable with the lint check 'NewApi': move
 out to the surrounding method [LocalSuppress]
-
     @SuppressLint("NewApi")
     -----------------------
-
-
 src/test/pkg/WrongAnnotation.java:34:Error: The @SuppressLint annotation
 cannot be used on a local variable with the lint check 'NewApi': move
 out to the surrounding method [LocalSuppress]
-
     @SuppressLint("NewApi") // Invalid
     -----------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

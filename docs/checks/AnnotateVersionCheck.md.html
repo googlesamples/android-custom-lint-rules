@@ -45,22 +45,15 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/test.kt:8:Warning: This method should be annotated with
 @ChecksSdkIntAtLeast(api=VERSION_CODES.N) [AnnotateVersionCheck]
-
 fun isNougat(): Boolean {
     --------
-
-
 src/test/pkg/test.kt:12:Warning: This method should be annotated with
 @ChecksSdkIntAtLeast(parameter=0) [AnnotateVersionCheck]
-
 fun isAtLeast(api: Int): Boolean {
     ---------
-
-
 src/test/pkg/test.kt:16:Warning: This method should be annotated with
 @ChecksSdkIntAtLeast(api=Build.VERSION_CODES.O, lambda=1)
 [AnnotateVersionCheck]
-
 inline fun &lt;T&gt; T.applyForOreoOrAbove(block: T.() -&gt; Unit): T {
                  -------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

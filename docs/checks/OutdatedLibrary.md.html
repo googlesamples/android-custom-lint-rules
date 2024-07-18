@@ -48,11 +48,8 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:5:Warning: log4j:log4j version 1.2.15 has been reported as
 outdated by its author [OutdatedLibrary]
-
     compile 'log4j:log4j:1.2.15' // Outdated NON_BLOCKING
             --------------------
-
-
 build.gradle:8:Error: [Prevents app release in Google Play Console]
 log4j:log4j version 1.2.12 has been reported as outdated by its author
 and will block publishing of your app to Play Console.
@@ -62,14 +59,10 @@ The library author recommends using versions:
 These versions have not been reviewed by Google Play. They could contain
 vulnerabilities or policy violations. Carefully evaluate any third-party
 SDKs before integrating them into your app. [OutdatedLibrary]
-
     compile 'log4j:log4j:1.2.12' // OUTDATED BLOCKING
             --------------------
-
-
 build.gradle:13:Warning: com.example.ads.third.party:example version
 7.2.0 has been reported as outdated by its author [OutdatedLibrary]
-
     compile 'com.example.ads.third.party:example:7.2.0' // Outdated + Critical + Policy (multiple issues), no severity
             -------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

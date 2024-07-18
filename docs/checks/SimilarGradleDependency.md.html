@@ -35,6 +35,45 @@ is fine, and there are cases where you deliberately want to stick with
 such approach. However, you may simply not be aware that this situation
 happens, and that is what this lint check helps find.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+../gradle/libs.versions.toml:6:Information: There are multiple
+dependencies joda-time:joda-time but with different version
+[SimilarGradleDependency]
+joda_library = { module = "joda-time:joda-time", version.ref = "jodaVersion"}
+                -------------------------------------------------------------
+../gradle/libs.versions.toml:7:Information: There are multiple
+dependencies joda-time:joda-time but with different version
+[SimilarGradleDependency]
+joda_library2 = { module = "joda-time:joda-time", version = "2.0"}
+                 -------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`../gradle/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+jodaVersion = "2.1"
+dagger="1.2.0"
+
+[libraries]
+joda_library = { module = "joda-time:joda-time", version.ref = "jodaVersion"}
+joda_library2 = { module = "joda-time:joda-time", version = "2.0"}
+dagger-lib = { group = "com.squareup.dagger", name ="dagger", version.ref = "dagger" }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `GradleDetector.testVersionCatalogWithSimilarLibraryDependencies`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

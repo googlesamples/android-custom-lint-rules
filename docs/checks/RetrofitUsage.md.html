@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) This is replaced by the caller.
+(#) This is replaced by the caller
 
-!!! ERROR: This is replaced by the caller.
+!!! ERROR: This is replaced by the caller
    This is an error.
 
 Id
 :   `RetrofitUsage`
 Summary
-:   This is replaced by the caller.
+:   This is replaced by the caller
 Severity
 :   Error
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/retrofit/RetrofitUsageDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/retrofit/RetrofitUsageDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/retrofit/RetrofitUsageDetectorTest.kt)
 Copyright Year
@@ -51,21 +51,14 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/Example.kt:11:Error: @FormUrlEncoded requires @PUT, @POST, or
 @PATCH. [RetrofitUsage]
-
   fun wrongMethod(): String
       -----------
-
-
 src/test/Example.kt:14:Error: @FormUrlEncoded but has no @Field(Map)
 parameters. [RetrofitUsage]
-
   @FormUrlEncoded
   ---------------
-
-
 src/test/Example.kt:18:Error: @Field(Map) param requires
 @FormUrlEncoded. [RetrofitUsage]
-
   fun missingAnnotation(@Field("hi") input: String): String
       -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

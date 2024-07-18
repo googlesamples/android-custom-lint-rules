@@ -40,14 +40,10 @@ Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 src/test/pkg/IntentTest.java:19:Warning: Calling setType after calling
 setData will clear the data: Call setDataAndType instead? [IntentReset]
-
     intent.setType(type); // ERROR 1.1
            -------------
-
-
 src/test/pkg/IntentTest.java:26:Warning: Calling setData after calling
 setType will clear the type: Call setDataAndType instead? [IntentReset]
-
     intent.setData(uri); // ERROR 2.1
            ------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

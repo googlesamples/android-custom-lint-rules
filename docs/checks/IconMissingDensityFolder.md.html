@@ -45,17 +45,23 @@ density usage, see https://developer.android.com/about/dashboards.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/drawable-hdpi/.svn:Warning: Missing density variation folders in
-res: drawable-xhdpi, drawable-xxhdpi [IconMissingDensityFolder]
-
-0 errors, 5 warnings
+res/drawable-nodpi/frame.xml:Warning: Missing density variation folders
+in res: drawable-hdpi, drawable-xhdpi, drawable-xxhdpi
+[IconMissingDensityFolder]
+0 errors, 3 warnings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`res/drawable-hdpi/.svn`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ linenumbers
-
+`res/drawable-nodpi/frame.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;selector xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;item  android:color="#ff000000"/&gt; &lt;!-- WRONG, SHOULD BE LAST --&gt;
+    &lt;item android:state_pressed="true"
+          android:color="#ffff0000"/&gt; &lt;!-- pressed --&gt;
+    &lt;item android:state_focused="true"
+          android:color="#ff0000ff"/&gt; &lt;!-- focused --&gt;
+&lt;/selector&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -63,7 +69,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `IconDetector.test`.
+found for this lint check, `IconDetector.testNoDpiMix`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

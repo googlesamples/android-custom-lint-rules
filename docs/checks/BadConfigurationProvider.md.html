@@ -44,6 +44,50 @@ An `android.app.Application` must implement
 `androidx.work.Configuration.Provider`
 for on-demand initialization.
 
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+com/example/App.kt:Error: Expected Application subtype to implement
+Configuration.Provider [BadConfigurationProvider]
+1 errors, 0 warnings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`com/example/App.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.app.Application
+
+class App: Application() {
+    override fun onCreate() {
+
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`com/example/CustomProvider.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import androidx.work.Configuration
+
+class Provider: Configuration.Provider {
+    override fun getWorkManagerConfiguration(): Configuration = TODO()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/BadConfigurationProviderTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `BadConfigurationProviderIssueDetector.testWithInvalidConfigurationProvider`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409906.
+
 (##) Including
 
 !!!

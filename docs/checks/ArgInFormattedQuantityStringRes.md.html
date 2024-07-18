@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Count value in formatted string resource.
+(#) Count value in formatted string resource
 
-!!! WARNING: Count value in formatted string resource.
+!!! WARNING: Count value in formatted string resource
    This is a warning.
 
 Id
 :   `ArgInFormattedQuantityStringRes`
 Summary
-:   Count value in formatted string resource.
+:   Count value in formatted string resource
 Severity
 :   Warning
 Category
@@ -34,7 +34,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/slack-lints/blob/main/slack-lint-checks/src/main/java/slack/lint/ArgInFormattedQuantityStringResDetector.kt)
+:   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/main/java/slack/lint/ArgInFormattedQuantityStringResDetector.kt)
 Tests
 :   [Source Code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/ArgInFormattedQuantityStringResDetectorTest.kt)
 Copyright Year
@@ -54,7 +54,6 @@ src/com/slack/lint/Foo.java:7:Warning: This may require a localized
 count modifier. If so, use LocalizationUtils.getFormattedCount().
 Consult #plz-localization if you are unsure.
 [ArgInFormattedQuantityStringRes]
-
     String s = res.getQuantityString(0, 3, 3, "asdf");
                                               ------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

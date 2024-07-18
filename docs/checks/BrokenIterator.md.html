@@ -61,48 +61,35 @@ src/test/pkg/LinkedHashmapTest.java:34:Warning:
 LinkedHashMap#spliterator was broken in API 24 and 25. Workaround: Use
 java.util.Spliterators.spliterator(c2a,
 c2a.spliterator().characteristics()) [BrokenIterator]
-
     Spliterator&lt;String&gt; keys2a = c2a.spliterator(); // Warn
                                  -----------------
-
-
 src/test/pkg/LinkedHashmapTest.java:35:Warning:
 LinkedHashMap#spliterator was broken in API 24 and 25. Workaround: Use
 java.util.Spliterators.spliterator(c2b,
 c2b.spliterator().characteristics()) [BrokenIterator]
-
     Spliterator&lt;String&gt; keys2b = c2b.spliterator(); // Warn
                                  -----------------
-
-
 src/test/pkg/LinkedHashmapTest.java:36:Warning:
 LinkedHashMap#spliterator was broken in API 24 and 25. Workaround: Use
 java.util.Spliterators.spliterator(c2c,
 c2c.spliterator().characteristics()) [BrokenIterator]
-
     Spliterator&lt;Entry&lt;String, String&gt;&gt; keys2c = c2c.spliterator(); // Warn
                                                 -----------------
-
-
 src/test/pkg/LinkedHashmapTest.java:39:Warning: LinkedHashMap#stream was
 broken in API 24 and 25. Workaround: Use
 java.util.stream.StreamSupport.stream(spliterator, false)
 [BrokenIterator]
-
     Stream&lt;String&gt; stream1 = c2a.stream(); // Warn
                              ------------
-
-
 src/test/pkg/LinkedHashmapTest.java:40:Warning:
 LinkedHashMap#spliterator was broken in API 24 and 25. Workaround: Use
 java.util.Spliterators.spliterator(c2a,
 c2a.spliterator().characteristics()) [BrokenIterator]
-
     StreamSupport.stream(c2a.spliterator(), false); // Warn
                          -----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `src/test/pkg/LinkedHashmapTest.java`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
@@ -149,6 +136,46 @@ public class LinkedHashmapTest {
 
         Spliterators.spliterator(c2a, c2a.spliterator().characteristics()); // OK
         StreamSupport.stream(keys2, false); // OK
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/LinkedHashmapTest.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.util.*
+import java.util.stream.StreamSupport
+
+class LinkedHashmapTest {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    fun test() {
+        val map1 = HashMap<String, String>()
+        val c1a = map1.keys
+        val c1b = map1.values
+        val c1c = map1.entries
+        val keys1a = c1a.spliterator()
+        val keys1b = c1b.spliterator()
+        val keys1c = c1c.spliterator() // OK (not a LinkedHashMap)
+        val keys1 = Spliterators.spliterator(c1a, c1a.spliterator().characteristics())// OK
+
+        val map2 = LinkedHashMap<String, String>()
+        val c2a = map2.keys
+        val c2b = map2.values
+        val c2c = map2.entries
+
+        val keys2a = c2a.spliterator() // Warn
+        val keys2b = c2b.spliterator() // Warn
+        val keys2c = c2c.spliterator() // Warn
+        val keys2 = Spliterators.spliterator(c2a, c2a.spliterator().characteristics())// OK
+
+        val stream1 = c2a.stream() // Warn
+        StreamSupport.stream(c2a.spliterator(), false) // Warn
+
+        Spliterators.spliterator(c2a, c2a.spliterator().characteristics()) // OK
+        StreamSupport.stream(keys2, false) // OK
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

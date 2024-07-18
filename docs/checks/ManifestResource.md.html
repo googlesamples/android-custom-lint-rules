@@ -43,28 +43,21 @@ Here is an example of lint warnings produced by this check:
 AndroidManifest.xml:6:Error: Resources referenced from the manifest
 cannot vary by configuration (except for version qualifiers, e.g. -v21).
 Found variation in mcc [ManifestResource]
-
     &lt;application android:fullBackupContent="@xml/backup"&gt;
                                             -----------
-
-
 AndroidManifest.xml:8:Error: Resources referenced from the manifest
 cannot vary by configuration (except for version qualifiers, e.g. -v21).
 Found variation in en-rUS [ManifestResource]
-
     android:process="@string/location_process"
                      ------------------------
-
-
 AndroidManifest.xml:9:Error: Resources referenced from the manifest
 cannot vary by configuration (except for version qualifiers, e.g. -v21).
 Found variation in watch-v20 [ManifestResource]
-
     android:enabled="@bool/enable_wearable_location_service"&gt;
                      --------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
 `AndroidManifest.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -80,6 +73,50 @@ Here is the source file referenced above:
         &lt;/service&gt;    &lt;/application&gt;
 
 &lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/values.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;string name="location_process"&gt;Location Process&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values/bools.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;bool name="enable_wearable_location_service"&gt;true&lt;/bool&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-en-rUS/values.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources&gt;
+    &lt;string name="location_process"&gt;Location Process (English)&lt;/string&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/values-watch/bools.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"&gt;
+    &lt;bool name="enable_wearable_location_service"&gt;false&lt;/bool&gt;
+&lt;/resources&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml/backup.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;full-backup-content&gt;
+     &lt;include domain="file" path="dd"/&gt;
+     &lt;exclude domain="file" path="dd/fo3o.txt"/&gt;
+     &lt;exclude domain="file" path="dd/ss/foo.txt"/&gt;
+&lt;/full-backup-content&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`res/xml-mcc/backup.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;full-backup-content&gt;
+     &lt;include domain="file" path="mcc"/&gt;
+&lt;/full-backup-content&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
