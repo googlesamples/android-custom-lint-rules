@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [google.android-security-lints](google_android-security-lints.md.html)
+:   [com.android.security.lint:lint](com_android_security_lint_lint.md.html)
 
 Affects
 :   Manifest files
@@ -82,14 +82,30 @@ https://github.com/google/android-security-lints/issues.
    to your project. This lint check is included in the lint documentation,
    but the Android team may or may not agree with its recommendations.
 
-!!! WARN
-   This library has not been published. Its documentation was
-   extracted by installing the project sources locally. Consult
-   the project's documentation on how to configure it with your
-   own projects: [](https://github.com/google/android-security-lints)
+```
+// build.gradle.kts
+lintChecks("com.android.security.lint:lint:1.0.1")
 
+// build.gradle
+lintChecks 'com.android.security.lint:lint:1.0.1'
 
-[Additional details about google.android-security-lints](google_android-security-lints.md.html).
+// build.gradle.kts with version catalogs:
+lintChecks(libs.com.android.security.lint.lint)
+
+# libs.versions.toml
+[versions]
+com-android-security-lint-lint = "1.0.1"
+[libraries]
+com-android-security-lint-lint = {
+    module = "com.android.security.lint:lint",
+    version.ref = "com-android-security-lint-lint"
+}
+```
+
+1.0.1 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about com.android.security.lint:lint](com_android_security_lint_lint.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

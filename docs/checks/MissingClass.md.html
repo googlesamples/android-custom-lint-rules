@@ -67,7 +67,10 @@ Here are the relevant source files:
 `src/test/pkg/MyView.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package test.pkg
-abstract class MyView : androic.view.View(null)
+
+abstract class MyView : I, androic.view.View(null)
+
+interface I
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/NotView.kt`:

@@ -7,24 +7,24 @@ Description
 License
 :   [The Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
 Vendor
-:   Android Open Source Project
+:   Jetpack Navigation Compose
 Identifier
-:   androidx.navigation.common
-Feedback
-:   https://issuetracker.google.com/issues/new?component=409828
+:   androidx.navigation.compose
 Min
 :   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.navigation:navigation-compose:2.8.0-beta05
+:   androidx.navigation:navigation-compose:2.8.0-rc01
 
 (##) Included Issues
 
-|Issue Id                                                      |Issue Description                                                                                                                                                                                                                |
-|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|[EmptyNavDeepLink](EmptyNavDeepLink.md.html)                  |NavDeepLink must define an uri, action, and/or mimetype to be valid                                                                                                                                                              |
-|[WrongStartDestinationType](WrongStartDestinationType.md.html)|If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
+|Issue Id                                                                          |Issue Description                                                                                                                                                                                                                |
+|----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|[ComposableDestinationInComposeScope](ComposableDestinationInComposeScope.md.html)|Building composable destination in compose scope                                                                                                                                                                                 |
+|[ComposableNavGraphInComposeScope](ComposableNavGraphInComposeScope.md.html)      |Building navigation graph in compose scope                                                                                                                                                                                       |
+|[UnrememberedGetBackStackEntry](UnrememberedGetBackStackEntry.md.html)            |Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key                                                                                                                                |
+|[WrongStartDestinationType](WrongStartDestinationType.md.html)                    |If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
 
 (##) Including
 
@@ -34,17 +34,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.8.0-beta05")
+implementation("androidx.navigation:navigation-compose:2.8.0-rc01")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.8.0-beta05'
+implementation 'androidx.navigation:navigation-compose:2.8.0-rc01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.navigation-compose)
+implementation(libs.navigation.compose)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.8.0-beta05"
+navigation-compose = "2.8.0-rc01"
 [libraries]
 navigation-compose = {
     module = "androidx.navigation:navigation-compose",
@@ -52,7 +52,7 @@ navigation-compose = {
 }
 ```
 
-2.8.0-beta05 is the version this documentation was generated from;
+2.8.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -62,6 +62,9 @@ there may be newer versions available.
 * 2.8.0-beta04: Adds EmptyNavDeepLink, WrongStartDestinationType.
   Removes ComposableDestinationInComposeScope,
   ComposableNavGraphInComposeScope, UnrememberedGetBackStackEntry.
+* 2.8.0-beta07: Adds ComposableDestinationInComposeScope,
+  ComposableNavGraphInComposeScope, UnrememberedGetBackStackEntry.
+  Removes EmptyNavDeepLink.
 
 (##) Version Compatibility
 
@@ -69,6 +72,9 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|          2.8.0-rc01|2024/08/21|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|        2.8.0-beta07|2024/08/07|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|        2.8.0-beta06|2024/07/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        2.8.0-beta05|2024/07/10|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        2.8.0-beta04|2024/06/26|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |        2.8.0-beta03|2024/06/12|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|

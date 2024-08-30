@@ -21,7 +21,7 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=413132
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
@@ -48,7 +48,7 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * RepeatOnLifecycleWrongUsage: Wrong usage of repeatOnLifecycle (this issue)
-* [RepeatOnLifecycleWrongUsage from androidx.lifecycle:lifecycle-runtime-android:2.8.3](RepeatOnLifecycleWrongUsage.md.html)
+* [RepeatOnLifecycleWrongUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01](RepeatOnLifecycleWrongUsage.md.html)
 * [RepeatOnLifecycleWrongUsage from androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01](RepeatOnLifecycleWrongUsage-2.md.html)
 
 
@@ -60,17 +60,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-runtime-android:2.8.3")
+implementation("androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-runtime-android:2.8.3'
+implementation 'androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.lifecycle-runtime-android)
+implementation(libs.lifecycle.runtime.android)
 
 # libs.versions.toml
 [versions]
-lifecycle-runtime-android = "2.8.3"
+lifecycle-runtime-android = "2.9.0-alpha01"
 [libraries]
 lifecycle-runtime-android = {
     module = "androidx.lifecycle:lifecycle-runtime-android",
@@ -78,7 +78,7 @@ lifecycle-runtime-android = {
 }
 ```
 
-2.8.3 is the version this documentation was generated from;
+2.9.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.lifecycle:lifecycle-runtime-android](androidx_lifecycle_lifecycle-runtime-android.md.html).

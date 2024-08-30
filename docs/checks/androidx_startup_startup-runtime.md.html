@@ -1,7 +1,7 @@
 (#) androidx.startup:startup-runtime
 
 Name
-:   Android App Startup Runtime
+:   Startup Runtime
 Description
 :   Android App Startup Runtime
 License
@@ -13,11 +13,11 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=823348
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
-:   Lint 7.3 and 7.4
+:   Lint 8.0 and 8.1
 Artifact
-:   androidx.startup:startup-runtime:1.2.0-alpha02
+:   androidx.startup:startup-runtime:1.2.0-beta01
 
 (##) Included Issues
 
@@ -34,17 +34,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.startup:startup-runtime:1.2.0-alpha02")
+implementation("androidx.startup:startup-runtime:1.2.0-beta01")
 
 // build.gradle
-implementation 'androidx.startup:startup-runtime:1.2.0-alpha02'
+implementation 'androidx.startup:startup-runtime:1.2.0-beta01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.startup-runtime)
+implementation(libs.startup.runtime)
 
 # libs.versions.toml
 [versions]
-startup-runtime = "1.2.0-alpha02"
+startup-runtime = "1.2.0-beta01"
 [libraries]
 startup-runtime = {
     module = "androidx.startup:startup-runtime",
@@ -52,7 +52,7 @@ startup-runtime = {
 }
 ```
 
-1.2.0-alpha02 is the version this documentation was generated from;
+1.2.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -66,6 +66,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|        1.2.0-beta01|2024/08/21|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.2.0-alpha02|2023/01/11|       2|         Yes|    7.3 and 7.4|       7.0|
 |       1.2.0-alpha01|2022/02/09|       2|         Yes|            7.1|       7.0|
 |               1.1.1|2022/02/09|       2|         Yes|            7.1|       7.0|

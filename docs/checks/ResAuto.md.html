@@ -46,46 +46,34 @@ package used during the build.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-res/layout/customview.xml:5:Error: In Gradle projects, always use
-http://schemas.android.com/apk/res-auto for custom attributes [ResAuto]
-    xmlns:foo="http://schemas.android.com/apk/res/foo"
-               --------------------------------------
+res/layout/namespace5.xml:3:Error: Suspicious namespace: Did you mean
+http://schemas.android.com/apk/res-auto? [ResAuto]
+    xmlns:app="http://schemas.android.com/apk/auto-res/"
+               ----------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`res/layout/customview.xml`:
+`res/layout/namespace5.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+&lt;androidx.gridlayout.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:other="http://schemas.foo.bar.com/other"
-    xmlns:foo="http://schemas.android.com/apk/res/foo"
-    android:id="@+id/newlinear"
+    xmlns:app="http://schemas.android.com/apk/auto-res/"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" &gt;
+    app:columnCount="1"
+    tools:context=".MainActivity" &gt;
 
-    &lt;foo.bar.Baz
+    &lt;Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button1"
-        foo:misc="Custom attribute"
-        tools:ignore="HardcodedText" &gt;
-    &lt;/foo.bar.Baz&gt;
+        app:layout_column="0"
+        app:layout_gravity="center"
+        app:layout_row="0"
+        android:text="Button" /&gt;
 
-    &lt;!-- Wrong namespace uri prefix: Don't warn --&gt;
-    &lt;foo.bar.Baz
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button1"
-        other:misc="Custom attribute"
-        tools:ignore="HardcodedText" &gt;
-    &lt;/foo.bar.Baz&gt;
-
-&lt;/LinearLayout&gt;
+&lt;/androidx.gridlayout.widget.GridLayout&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -93,7 +81,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `NamespaceDetector.testGradle`.
+found for this lint check, `NamespaceDetector.testWrongResAutoUrl`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

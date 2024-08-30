@@ -25,7 +25,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   [androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html)
+:   [androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html)
 
 Affects
 :   Kotlin and Java files
@@ -81,16 +81,6 @@ found for this lint check, `EmptyNavDeepLinkDetector.testErrors`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=409828.
 
-(##) Repackaged
-
-This lint check appears to have been packaged in other artifacts as
-well. Issue id's must be unique, so you cannot combine these libraries.
-Also defined in:
-* EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid (this issue)
-* [EmptyNavDeepLink from androidx.navigation:navigation-compose:2.8.0-beta05](EmptyNavDeepLink.md.html)
-* [EmptyNavDeepLink from androidx.navigation:navigation-common:2.8.0-beta05](EmptyNavDeepLink-2.md.html)
-
-
 (##) Including
 
 !!!
@@ -99,28 +89,28 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.8.0-beta05")
+implementation("androidx.navigation:navigation-common:2.8.0-rc01")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.8.0-beta05'
+implementation 'androidx.navigation:navigation-common:2.8.0-rc01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.navigation-compose)
+implementation(libs.navigation.common)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.8.0-beta05"
+navigation-common = "2.8.0-rc01"
 [libraries]
-navigation-compose = {
-    module = "androidx.navigation:navigation-compose",
-    version.ref = "navigation-compose"
+navigation-common = {
+    module = "androidx.navigation:navigation-common",
+    version.ref = "navigation-common"
 }
 ```
 
-2.8.0-beta05 is the version this documentation was generated from;
+2.8.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html).
+[Additional details about androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:

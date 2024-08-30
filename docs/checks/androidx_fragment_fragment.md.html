@@ -20,7 +20,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.fragment:fragment:1.8.1
+:   androidx.fragment:fragment:1.8.2
 
 (##) Included Issues
 
@@ -44,17 +44,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.fragment:fragment:1.8.1")
+implementation("androidx.fragment:fragment:1.8.2")
 
 // build.gradle
-implementation 'androidx.fragment:fragment:1.8.1'
+implementation 'androidx.fragment:fragment:1.8.2'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.fragment)
 
 # libs.versions.toml
 [versions]
-fragment = "1.8.1"
+fragment = "1.8.2"
 [libraries]
 fragment = {
     module = "androidx.fragment:fragment",
@@ -62,7 +62,7 @@ fragment = {
 }
 ```
 
-1.8.1 is the version this documentation was generated from;
+1.8.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -80,6 +80,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               1.8.2|2024/07/24|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.8.1|2024/06/26|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.8.0|2024/06/12|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.1|2024/05/14|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
@@ -113,6 +114,6 @@ There are multiple older versions available of this library:
 
 Compatibility Problems:
 
-[^1]: org.jetbrains.uast.kotlin.KotlinUClass: org.jetbrains.kotlin.psi.KtClassOrObject getKtClass() is not accessible  
+[^1]: org.jetbrains.uast.kotlin.KotlinUClass#getKtClass(): org.jetbrains.kotlin.psi.KtClassOrObject is not accessible  
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
