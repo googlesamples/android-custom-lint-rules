@@ -44,11 +44,12 @@ the latest version (or in particular, a version lower than your
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:5:Error: Version 5.2.08 should not be used; the app can not
-be published with this version. Use version 11.1.71 instead.
+build.gradle:26:Error: Project depends on
+com.google.android.support:wearable:1.2.0, so it must also depend (as a
+provided dependency) on com.google.android.wearable:wearable:1.2.0
 [GradleCompatible]
-    compile 'com.google.android.gms:play-services:5.2.08'
-            ---------------------------------------------
+    compile 'com.google.android.support:wearable:1.2.0'
+             -----------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -57,9 +58,33 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
 apply plugin: 'android'
 
-dependencies {
+android {
+    compileSdkVersion 34
+    buildToolsVersion "19.0.0"
 
-    compile 'com.google.android.gms:play-services:5.2.08'
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+    }
+
+    productFlavors {
+        free {
+        }
+        pro {
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:+'
+    freeCompile 'com.google.guava:guava:11.0.2'
+    compile 'com.android.support:appcompat-v7:13.0.0'
+    compile 'com.google.android.support:wearable:1.2.0'
+    compile 'com.android.support:multidex:1.0.0'
+
+    androidTestCompile 'com.android.support.test:runner:0.3'
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -68,7 +93,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testBadPlayServicesVersion`.
+found for this lint check, `GradleDetector.testBasic`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

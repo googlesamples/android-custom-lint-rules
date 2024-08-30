@@ -13,11 +13,11 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=460887
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.recyclerview:recyclerview:1.4.0-alpha01
+:   androidx.recyclerview:recyclerview:1.4.0-beta01
 
 (##) Included Issues
 
@@ -33,17 +33,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.recyclerview:recyclerview:1.4.0-alpha01")
+implementation("androidx.recyclerview:recyclerview:1.4.0-beta01")
 
 // build.gradle
-implementation 'androidx.recyclerview:recyclerview:1.4.0-alpha01'
+implementation 'androidx.recyclerview:recyclerview:1.4.0-beta01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.recyclerview)
 
 # libs.versions.toml
 [versions]
-recyclerview = "1.4.0-alpha01"
+recyclerview = "1.4.0-beta01"
 [libraries]
 recyclerview = {
     module = "androidx.recyclerview:recyclerview",
@@ -51,7 +51,7 @@ recyclerview = {
 }
 ```
 
-1.4.0-alpha01 is the version this documentation was generated from;
+1.4.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -64,6 +64,8 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|        1.4.0-beta01|2024/08/21|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.4.0-alpha02|2024/08/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.4.0-alpha01|2023/10/18|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.3.2|2023/10/18|       1|         Yes|    7.3 and 7.4|       7.0|
 |               1.3.1|2023/07/26|       1|         Yes|    7.3 and 7.4|       7.0|

@@ -82,17 +82,17 @@ https://issuetracker.google.com/issues/new?component=460964.
 
 ```
 // build.gradle.kts
-implementation("androidx.fragment:fragment-testing:1.8.1")
+implementation("androidx.fragment:fragment-testing:1.8.2")
 
 // build.gradle
-implementation 'androidx.fragment:fragment-testing:1.8.1'
+implementation 'androidx.fragment:fragment-testing:1.8.2'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.fragment-testing)
+implementation(libs.fragment.testing)
 
 # libs.versions.toml
 [versions]
-fragment-testing = "1.8.1"
+fragment-testing = "1.8.2"
 [libraries]
 fragment-testing = {
     module = "androidx.fragment:fragment-testing",
@@ -100,7 +100,7 @@ fragment-testing = {
 }
 ```
 
-1.8.1 is the version this documentation was generated from;
+1.8.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.fragment:fragment-testing](androidx_fragment_fragment-testing.md.html).

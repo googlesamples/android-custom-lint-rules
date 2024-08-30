@@ -3,7 +3,7 @@
 
 Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By vendor | [By severity](severity.md.html) | [By year](year.md.html) | [Libraries](libraries.md.html)
 
-* Built In (471)
+* Built In (475)
 
   - [AaptCrash: Potential AAPT crash](AaptCrash.md.html)
   - [AcceptsUserCertificates: Allowing User Certificates](AcceptsUserCertificates.md.html)
@@ -48,6 +48,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [ByteOrderMark: Byte order mark inside files](ByteOrderMark.md.html)
   - [CanvasSize: Wrong Canvas Size](CanvasSize.md.html)
   - [CheckResult: Ignoring results](CheckResult.md.html)
+  - [ChildInNonViewGroup: Only view groups can have children](ChildInNonViewGroup.md.html)
   - [ChromeOsAbiSupport: Missing ABI Support for ChromeOS](ChromeOsAbiSupport.md.html)
   - [ChromeOsOnConfigurationChanged: Poor performance with APIs inside `onConfigurationChanged()`](ChromeOsOnConfigurationChanged.md.html)
   - [ClickableViewAccessibility: Accessibility in Custom Views](ClickableViewAccessibility.md.html)
@@ -59,6 +60,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [ConvertToWebp: Convert to WebP](ConvertToWebp.md.html)
   - [CredManMissingDal: Missing Digital Asset Link for Credential Manager](CredManMissingDal.md.html)
   - [CredentialDependency: `credentials-play-services-auth` is Required](CredentialDependency.md.html)
+  - [CredentialManagerSignInWithGoogle: Misuse of Sign in with Google API](CredentialManagerSignInWithGoogle.md.html)
   - [CustomPermissionTypo: Permission appears to be a custom permission with a typo](CustomPermissionTypo.md.html)
   - [CustomSplashScreen: Application-defined Launch Screen](CustomSplashScreen.md.html)
   - [CustomViewStyleable: Mismatched Styleable/Custom View Name](CustomViewStyleable.md.html)
@@ -262,7 +264,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [NoHardKeywords: No Hard Kotlin Keywords](NoHardKeywords.md.html)
   - [NoOp: NoOp Code](NoOp.md.html)
   - [NonConstantResourceId: Checks use of resource IDs in places requiring constants](NonConstantResourceId.md.html)
-  - [NonResizeableActivity: Activity is set to be non resizeable](NonResizeableActivity.md.html)
+  - [NonResizeableActivity: Activity is set to be non-resizeable](NonResizeableActivity.md.html)
   - [NotConstructor: Not a Constructor](NotConstructor.md.html)
   - [NotInterpolated: Incorrect Interpolation](NotInterpolated.md.html)
   - [NotSibling: Invalid Constraints](NotSibling.md.html)
@@ -401,12 +403,14 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [UnknownIdInLayout: Reference to an id that is not in the current layout](UnknownIdInLayout.md.html)
   - [UnknownNullness: Unknown nullness](UnknownNullness.md.html)
   - [UnlocalizedSms: SMS phone number missing country code](UnlocalizedSms.md.html)
+  - [UnnecessaryRequiredFeature: Potentially unnecessary required feature](UnnecessaryRequiredFeature.md.html)
   - [UnprotectedSMSBroadcastReceiver: Unprotected SMS `BroadcastReceiver`](UnprotectedSMSBroadcastReceiver.md.html)
   - [UnsafeDynamicallyLoadedCode: `load` used to dynamically load code](UnsafeDynamicallyLoadedCode.md.html)
   - [UnsafeImplicitIntentLaunch: Implicit intent matches an internal non-exported component](UnsafeImplicitIntentLaunch.md.html)
   - [UnsafeIntentLaunch: Launched Unsafe Intent](UnsafeIntentLaunch.md.html)
   - [UnsafeNativeCodeLocation: Native code outside library directory](UnsafeNativeCodeLocation.md.html)
   - [UnsafeProtectedBroadcastReceiver: Unsafe Protected `BroadcastReceiver`](UnsafeProtectedBroadcastReceiver.md.html)
+  - [UnsanitizedFilenameFromContentProvider: Trusting ContentProvider filenames without any sanitization](UnsanitizedFilenameFromContentProvider.md.html)
   - [UnspecifiedImmutableFlag: Missing `PendingIntent` mutability flag](UnspecifiedImmutableFlag.md.html)
   - [UnspecifiedRegisterReceiverFlag: Missing `registerReceiver()` exported flag](UnspecifiedRegisterReceiverFlag.md.html)
   - [UnsupportedChromeOsCameraSystemFeature: Looking for Rear Camera only feature](UnsupportedChromeOsCameraSystemFeature.md.html)
@@ -532,7 +536,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
 
   - [FragmentGradleConfiguration: Include the fragment-testing-manifest library using the debugImplementation configuration](FragmentGradleConfiguration.md.html)
 
-* Android Open Source Project (androidx.lifecycle) (7)
+* Android Open Source Project (androidx.lifecycle) (8)
 
   - [NullSafeMutableLiveData: LiveData value assignment nullability mismatch](NullSafeMutableLiveData.md.html)
   - [NullSafeMutableLiveData: LiveData value assignment nullability mismatch](NullSafeMutableLiveData.md.html)
@@ -541,12 +545,11 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [TestLifecycleOwnerInCoroutine: Use the suspending function setCurrentState(), rather than directly accessing the currentState property](TestLifecycleOwnerInCoroutine.md.html)
   - [UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method](UnsafeLifecycleWhenUsage.md.html)
   - [UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method](UnsafeLifecycleWhenUsage.md.html)
+  - [ViewModelConstructorInComposable: Constructing a view model in a composable](ViewModelConstructorInComposable.md.html)
 
-* Android Open Source Project (androidx.navigation.common) (4)
+* Android Open Source Project (androidx.navigation.common) (2)
 
   - [EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid](EmptyNavDeepLink.md.html)
-  - [EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid](EmptyNavDeepLink.md.html)
-  - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType.md.html)
   - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType.md.html)
 
 * Android Open Source Project (androidx.navigation.runtime) (3)
@@ -699,6 +702,13 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
 * Jetpack Compose (androidx.compose.ui.text) (1)
 
   - [InvalidLanguageTagDelimiter: Underscore (`_`) is an unsupported delimiter for subtags](InvalidLanguageTagDelimiter.md.html)
+
+* Jetpack Navigation Compose (androidx.navigation.compose) (4)
+
+  - [ComposableDestinationInComposeScope: Building composable destination in compose scope](ComposableDestinationInComposeScope.md.html)
+  - [ComposableNavGraphInComposeScope: Building navigation graph in compose scope](ComposableNavGraphInComposeScope.md.html)
+  - [UnrememberedGetBackStackEntry: Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key](UnrememberedGetBackStackEntry.md.html)
+  - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType.md.html)
 
 * slack (com.slack.lint.compose:compose-lints) (21)
 

@@ -80,7 +80,7 @@ lintChecks("com.vanniktech:lint-rules-android:0.25.0")
 lintChecks 'com.vanniktech:lint-rules-android:0.25.0'
 
 // build.gradle.kts with version catalogs:
-lintChecks(libs.lint-rules-android)
+lintChecks(libs.lint.rules.android)
 
 # libs.versions.toml
 [versions]
@@ -134,7 +134,7 @@ There are multiple older versions available of this library:
 Compatibility Problems:
 
 [^1]: com.android.SdkConstants#CLASS_CONSTRAINT_LAYOUT is not available  
-[^2]: com.android.tools.lint.detector.api.LintUtils: java.lang.String computeResourcePrefix(com.android.builder.model.AndroidProject) is not available  
-[^3]: com.android.tools.lint.detector.api.LayoutDetector: com.android.tools.lint.detector.api.LintFix$Builder fix() is not available  
+[^2]: com.android.tools.lint.detector.api.Project#getGradleProjectModel(): com.android.builder.model.AndroidProject is not available  
+[^3]: com.android.tools.lint.detector.api.LayoutDetector#fix(): com.android.tools.lint.detector.api.LintFix$Builder is not available  
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
