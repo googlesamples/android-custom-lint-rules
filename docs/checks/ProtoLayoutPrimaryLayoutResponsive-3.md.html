@@ -46,6 +46,9 @@ This is will take care of all inner padding to ensure that content of
 labels and bottom
 chip doesn't go off the screen (especially with different locales).
 
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:
@@ -180,6 +183,10 @@ implementation(libs.protolayout)
 [versions]
 protolayout = "1.2.0"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 protolayout = {
     module = "androidx.wear.protolayout:protolayout",
     version.ref = "protolayout"

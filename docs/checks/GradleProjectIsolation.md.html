@@ -1,0 +1,145 @@
+<meta charset="utf-8">
+(#) Avoid using APIs that are not project isolation safe
+
+!!! ERROR: Avoid using APIs that are not project isolation safe
+   This is an error.
+
+Id
+:   `GradleProjectIsolation`
+Summary
+:   Avoid using APIs that are not project isolation safe
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Identifier
+:   androidx.lint:lint-gradle
+Feedback
+:   https://issuetracker.google.com/issues/new?component=1147525
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.lint:lint-gradle](androidx_lint_lint-gradle.md.html)
+
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lint/lint-gradle/src/main/java/androidx/lint/gradle/DiscouragedGradleMethodDetector.kt)
+Copyright Year
+:   2024
+
+Using APIs that reach out cross projects makes it not safe for Gradle
+project
+isolation.
+See https://docs.gradle.org/nightly/userguide/isolated_projects.html
+for
+more details.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.lint:lint-gradle:1.0.0-alpha02")
+
+// build.gradle
+implementation 'androidx.lint:lint-gradle:1.0.0-alpha02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.lint.gradle)
+
+# libs.versions.toml
+[versions]
+lint-gradle = "1.0.0-alpha02"
+[libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
+lint-gradle = {
+    module = "androidx.lint:lint-gradle",
+    version.ref = "lint-gradle"
+}
+```
+
+1.0.0-alpha02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.lint:lint-gradle](androidx_lint_lint-gradle.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("GradleProjectIsolation")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("GradleProjectIsolation")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection GradleProjectIsolation
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="GradleProjectIsolation" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'GradleProjectIsolation'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore GradleProjectIsolation ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

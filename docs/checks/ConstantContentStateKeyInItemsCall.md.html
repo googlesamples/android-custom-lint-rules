@@ -1,0 +1,315 @@
+<meta charset="utf-8">
+(#) Composables within an LazyList `items` call should have unique content state keys
+
+!!! ERROR: Composables within an LazyList `items` call should have unique content state keys
+   This is an error.
+
+Id
+:   `ConstantContentStateKeyInItemsCall`
+Summary
+:   Composables within an LazyList `items` call should have unique content state keys
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.animation
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/main/java/androidx/compose/animation/lint/SharedTransitionScopeDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/SharedTransitionScopeDetectorTest.kt)
+Copyright Year
+:   2024
+
+When using shared elements (`Modifier.sharedElement` or
+`Modifier.sharedBounds`) in a LazyList, each Composable within an
+`items` block should have its own unique key. Otherwise, only one item
+of the visible layout will be rendered, regardless if there's an ongoing
+shared element transition.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/test.kt:20:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    state = rememberSharedContentState("Foo"),
+            ---------------------------------
+src/foo/test.kt:27:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    sharedContentState = rememberSharedContentState("Foo" + "Bar"),
+                         -----------------------------------------
+src/foo/test.kt:34:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    state = rememberSharedContentState(0),
+            -----------------------------
+src/foo/test.kt:43:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    state = rememberSharedContentState("Foo"),
+            ---------------------------------
+src/foo/test.kt:50:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    sharedContentState = rememberSharedContentState("Foo" + "Bar"),
+                         -----------------------------------------
+src/foo/test.kt:57:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    state = rememberSharedContentState(0),
+            -----------------------------
+src/foo/test.kt:66:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    state = rememberSharedContentState("Foo"),
+            ---------------------------------
+src/foo/test.kt:73:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    sharedContentState = rememberSharedContentState("Foo" + "Bar"),
+                         -----------------------------------------
+src/foo/test.kt:80:Error: Each Composable within a LazyList items call
+should have unique content state keys. Make sure to either associate a
+unique key related to the item's data, or simply append the item's index
+to the key. [ConstantContentStateKeyInItemsCall]
+    state = rememberSharedContentState(0),
+            -----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import androidx.compose.animation.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+
+@Composable
+fun Test() {
+    SharedTransitionLayout {
+        AnimatedContent(
+            true,
+        ) { targetState ->
+            if (targetState) {
+                items(10) {
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState("Foo"),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState("Foo" + "Bar"),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState(0),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                }
+                items(List(10) { it }) {
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState("Foo"),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState("Foo" + "Bar"),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState(0),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                }
+                itemsIndexed(List(10) { it }) { _, _ ->
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState("Foo"),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState("Foo" + "Bar"),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                    MyLayoutComposable(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = rememberSharedContentState(0),
+                                animatedVisibilityScope = this@AnimatedContent
+                            )
+                    )
+                }
+            } else {
+                // Do Nothing
+            }
+        }
+    }
+}
+
+@Composable
+fun MyLayoutComposable(modifier: Modifier = Modifier) {
+    // Do Nothing
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/SharedTransitionScopeDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `SharedTransitionScopeDetector.constantLiteralInItemsCall_shouldWarn`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.animation:animation-android:1.8.0-alpha02")
+
+// build.gradle
+implementation 'androidx.compose.animation:animation-android:1.8.0-alpha02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.animation.android)
+
+# libs.versions.toml
+[versions]
+animation-android = "1.8.0-alpha02"
+[libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
+animation-android = {
+    module = "androidx.compose.animation:animation-android",
+    version.ref = "animation-android"
+}
+```
+
+1.8.0-alpha02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ConstantContentStateKeyInItemsCall")
+  fun method() {
+     SharedTransitionScope(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ConstantContentStateKeyInItemsCall")
+  void method() {
+     SharedTransitionScope(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ConstantContentStateKeyInItemsCall
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ConstantContentStateKeyInItemsCall" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ConstantContentStateKeyInItemsCall'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ConstantContentStateKeyInItemsCall ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

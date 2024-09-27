@@ -17,7 +17,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.compose.ui:ui-text-android:1.7.0-rc01
+:   androidx.compose.ui:ui-text-android:1.8.0-alpha02
 
 (##) Included Issues
 
@@ -33,30 +33,34 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-text-android:1.7.0-rc01")
+implementation("androidx.compose.ui:ui-text-android:1.8.0-alpha02")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-text-android:1.7.0-rc01'
+implementation 'androidx.compose.ui:ui-text-android:1.8.0-alpha02'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui.text.android)
 
 # libs.versions.toml
 [versions]
-ui-text-android = "1.7.0-rc01"
+ui-text-android = "1.8.0-alpha02"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 ui-text-android = {
     module = "androidx.compose.ui:ui-text-android",
     version.ref = "ui-text-android"
 }
 ```
 
-1.7.0-rc01 is the version this documentation was generated from;
+1.8.0-alpha02 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
 
-* 1.7.0-alpha06: First version includes InvalidLanguageTagDelimiter.
+* 1.7.0: First version includes InvalidLanguageTagDelimiter.
 
 (##) Version Compatibility
 
@@ -64,16 +68,10 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|          1.7.0-rc01|2024/08/21|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta07|2024/08/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta06|2024/07/24|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta05|2024/07/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta04|2024/06/26|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta03|2024/06/12|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta02|2024/05/29|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta01|2024/05/14|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha08|2024/05/01|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha07|2024/04/17|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha06|2024/04/03|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha02|2024/09/18|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha01|2024/09/04|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.2|2024/09/18|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.1|2024/09/10|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.0|2024/09/04|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,273 @@
+<meta charset="utf-8">
+(#) `contentKey` lambda in AnimatedContent should always use the provided `T` parameter
+
+!!! ERROR: `contentKey` lambda in AnimatedContent should always use the provided `T` parameter
+   This is an error.
+
+Id
+:   `UnusedTargetStateInContentKeyLambda`
+Summary
+:   `contentKey` lambda in AnimatedContent should always use the provided `T` parameter
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.animation
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/main/java/androidx/compose/animation/lint/AnimatedContentDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/AnimatedContentDetectorTest.kt)
+Copyright Year
+:   2023
+
+In `AnimatedContent`, the `contentKey` lambda may be used when the
+`targetState` is expected to mutate frequently but not all mutations are
+desired to be considered a target state change. So `contentKey` is
+expected to always use the given `targetState` parameter to calculate
+its result.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/foo/test.kt:13:Error: Target state parameter it is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { if (foo) { /**/ } else { /**/ } }
+                 -----------------------------------
+src/foo/test.kt:17:Error: Target state parameter it is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { if (foo) { /**/ } else { /**/ } },
+                 -----------------------------------
+src/foo/test.kt:22:Error: Target state parameter param is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { param -&gt; if (foo) { /**/ } else { /**/ } }
+                   -----
+src/foo/test.kt:26:Error: Target state parameter param is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { param -&gt; if (foo) { /**/ } else { /**/ } },
+                   -----
+src/foo/test.kt:31:Error: Target state parameter _ is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { _ -&gt; if (foo) { /**/ } else { /**/ } }
+                   -
+src/foo/test.kt:35:Error: Target state parameter _ is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { _ -&gt; if (foo) { /**/ } else { /**/ } },
+                   -
+src/foo/test.kt:39:Error: Target state parameter it is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { if (foo) { /**/ } else { /**/ } }
+                 -----------------------------------
+src/foo/test.kt:42:Error: Target state parameter it is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { if (foo) { /**/ } else { /**/ } },
+                 -----------------------------------
+src/foo/test.kt:46:Error: Target state parameter param is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { param -&gt; if (foo) { /**/ } else { /**/ } }
+                   -----
+src/foo/test.kt:49:Error: Target state parameter param is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { param -&gt; if (foo) { /**/ } else { /**/ } },
+                   -----
+src/foo/test.kt:53:Error: Target state parameter _ is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { _ -&gt; if (foo) { /**/ } else { /**/ } }
+                   -
+src/foo/test.kt:56:Error: Target state parameter _ is not used
+[UnusedTargetStateInContentKeyLambda]
+    contentKey = { _ -&gt; if (foo) { /**/ } else { /**/ } },
+                   -
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package foo
+
+import androidx.compose.animation.*
+import androidx.compose.runtime.*
+
+val foo = false
+
+@Composable
+fun Test() {
+    AnimatedContent(
+        foo,
+        contentKey = { if (foo) { /**/ } else { /**/ } }
+    ) { if (foo) { /**/ } else { /**/ } }
+    AnimatedContent(
+        foo,
+        contentKey = { if (foo) { /**/ } else { /**/ } },
+        content = { if (foo) { /**/ } else { /**/ } }
+    )
+    AnimatedContent(
+        foo,
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } }
+    ) { param -> if (foo) { /**/ } else { /**/ } }
+    AnimatedContent(
+        foo,
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } },
+        content = { param -> if (foo) { /**/ } else { /**/ } }
+    )
+    AnimatedContent(
+        foo,
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } }
+    ) { _ -> if (foo) { /**/ } else { /**/ } }
+    AnimatedContent(
+        foo,
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } },
+        content = { _ -> if (foo) { /**/ } else { /**/ } }
+    )
+    Transition(foo).AnimatedContent(
+        contentKey = { if (foo) { /**/ } else { /**/ } }
+    ) { if (foo) { /**/ } else { /**/ } }
+    Transition(foo).AnimatedContent(
+        contentKey = { if (foo) { /**/ } else { /**/ } },
+        content = { if (foo) { /**/ } else { /**/ } }
+    )
+    Transition(foo).AnimatedContent(
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } }
+    ) { param -> if (foo) { /**/ } else { /**/ } }
+    Transition(foo).AnimatedContent(
+        contentKey = { param -> if (foo) { /**/ } else { /**/ } },
+        content = { param -> if (foo) { /**/ } else { /**/ } }
+    )
+    Transition(foo).AnimatedContent(
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } }
+    ) { _ -> if (foo) { /**/ } else { /**/ } }
+    Transition(foo).AnimatedContent(
+        contentKey = { _ -> if (foo) { /**/ } else { /**/ } },
+        content = { _ -> if (foo) { /**/ } else { /**/ } }
+    )
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/AnimatedContentDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AnimatedContentDetector.unreferencedParameters`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.animation:animation-android:1.8.0-alpha02")
+
+// build.gradle
+implementation 'androidx.compose.animation:animation-android:1.8.0-alpha02'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.animation.android)
+
+# libs.versions.toml
+[versions]
+animation-android = "1.8.0-alpha02"
+[libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
+animation-android = {
+    module = "androidx.compose.animation:animation-android",
+    version.ref = "animation-android"
+}
+```
+
+1.8.0-alpha02 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UnusedTargetStateInContentKeyLambda")
+  fun method() {
+     AnimatedContent(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnusedTargetStateInContentKeyLambda")
+  void method() {
+     AnimatedContent(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnusedTargetStateInContentKeyLambda
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UnusedTargetStateInContentKeyLambda" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UnusedTargetStateInContentKeyLambda'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UnusedTargetStateInContentKeyLambda ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

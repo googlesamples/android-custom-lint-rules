@@ -3,7 +3,7 @@
 
 Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By vendor | [By severity](severity.md.html) | [By year](year.md.html) | [Libraries](libraries.md.html)
 
-* Built In (475)
+* Built In (477)
 
   - [AaptCrash: Potential AAPT crash](AaptCrash.md.html)
   - [AcceptsUserCertificates: Allowing User Certificates](AcceptsUserCertificates.md.html)
@@ -60,6 +60,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [ConvertToWebp: Convert to WebP](ConvertToWebp.md.html)
   - [CredManMissingDal: Missing Digital Asset Link for Credential Manager](CredManMissingDal.md.html)
   - [CredentialDependency: `credentials-play-services-auth` is Required](CredentialDependency.md.html)
+  - [CredentialManagerMisuse: Misuse of Credential Manager API](CredentialManagerMisuse.md.html)
   - [CredentialManagerSignInWithGoogle: Misuse of Sign in with Google API](CredentialManagerSignInWithGoogle.md.html)
   - [CustomPermissionTypo: Permission appears to be a custom permission with a typo](CustomPermissionTypo.md.html)
   - [CustomSplashScreen: Application-defined Launch Screen](CustomSplashScreen.md.html)
@@ -294,6 +295,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [PinSetExpiry: Validate `<pin-set>` expiration attribute](PinSetExpiry.md.html)
   - [PlaySdkIndexGenericIssues: Library has issues in SDK Index](PlaySdkIndexGenericIssues.md.html)
   - [PlaySdkIndexNonCompliant: Library has policy issues in SDK Index](PlaySdkIndexNonCompliant.md.html)
+  - [PlaySdkIndexVulnerability: Library has vulnerability issues in SDK Index](PlaySdkIndexVulnerability.md.html)
   - [PluralsCandidate: Potential Plurals](PluralsCandidate.md.html)
   - [PrivateApi: Using Private APIs](PrivateApi.md.html)
   - [PrivateResource: Using private resources](PrivateResource.md.html)
@@ -547,6 +549,15 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method](UnsafeLifecycleWhenUsage.md.html)
   - [ViewModelConstructorInComposable: Constructing a view model in a composable](ViewModelConstructorInComposable.md.html)
 
+* Android Open Source Project (androidx.lint:lint-gradle) (6)
+
+  - [EagerGradleConfiguration: Avoid using eager task APIs](EagerGradleConfiguration.md.html)
+  - [GradleProjectIsolation: Avoid using APIs that are not project isolation safe](GradleProjectIsolation.md.html)
+  - [InternalAgpApiUsage: Avoid using internal Android Gradle Plugin APIs](InternalAgpApiUsage.md.html)
+  - [InternalGradleApiUsage: Avoid using internal Gradle APIs](InternalGradleApiUsage.md.html)
+  - [WithPluginClasspathUsage: Flags usage of GradleRunner#withPluginClasspath](WithPluginClasspathUsage.md.html)
+  - [WithTypeWithoutConfigureEach: Flags usage of withType with a closure instead of configureEach](WithTypeWithoutConfigureEach.md.html)
+
 * Android Open Source Project (androidx.navigation.common) (2)
 
   - [EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid](EmptyNavDeepLink.md.html)
@@ -632,10 +643,13 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [LaunchDuringComposition: Calls to `launch` should happen inside of a SideEffect and not during composition](LaunchDuringComposition.md.html)
   - [NoCollectCallFound: You must call collect on the given progress flow when using PredictiveBackHandler](NoCollectCallFound.md.html)
 
-* Jetpack Compose (androidx.compose.animation) (2)
+* Jetpack Compose (androidx.compose.animation) (5)
 
+  - [ConstantContentStateKeyInItemsCall: Composables within an LazyList `items` call should have unique content state keys](ConstantContentStateKeyInItemsCall.md.html)
   - [UnusedContentLambdaTargetStateParameter: AnimatedContent calls should use the provided `T` parameter in the content lambda](UnusedContentLambdaTargetStateParameter.md.html)
   - [UnusedCrossfadeTargetStateParameter: Crossfade calls should use the provided `T` parameter in the content lambda](UnusedCrossfadeTargetStateParameter.md.html)
+  - [UnusedSharedTransitionModifierParameter: SharedTransitionScope calls should use the provided Modifier parameter](UnusedSharedTransitionModifierParameter.md.html)
+  - [UnusedTargetStateInContentKeyLambda: `contentKey` lambda in AnimatedContent should always use the provided `T` parameter](UnusedTargetStateInContentKeyLambda.md.html)
 
 * Jetpack Compose (androidx.compose.animation.core) (3)
 

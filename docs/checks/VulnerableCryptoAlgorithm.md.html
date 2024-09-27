@@ -44,6 +44,9 @@ Using weak or broken cryptographic hash functions may allow an attacker
 to reasonably determine the original input or produce multiple inputs
 with the same hash value.
 
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:
@@ -101,6 +104,10 @@ lintChecks(libs.com.android.security.lint.lint)
 [versions]
 com-android-security-lint-lint = "1.0.1"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 com-android-security-lint-lint = {
     module = "com.android.security.lint:lint",
     version.ref = "com-android-security-lint-lint"

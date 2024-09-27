@@ -79,6 +79,10 @@ implementation(libs.protolayout.expression)
 [versions]
 protolayout-expression = "1.2.0"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 protolayout-expression = {
     module = "androidx.wear.protolayout:protolayout-expression",
     version.ref = "protolayout-expression"

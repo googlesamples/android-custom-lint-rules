@@ -18,7 +18,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha14
+:   androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01
 
 (##) Included Issues
 
@@ -36,25 +36,29 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha14")
+implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
 
 // build.gradle
-implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha14'
+implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.constraintlayout.compose)
 
 # libs.versions.toml
 [versions]
-constraintlayout-compose = "1.1.0-alpha14"
+constraintlayout-compose = "1.1.0-beta01"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 constraintlayout-compose = {
     module = "androidx.constraintlayout:constraintlayout-compose",
     version.ref = "constraintlayout-compose"
 }
 ```
 
-1.1.0-alpha14 is the version this documentation was generated from;
+1.1.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -69,6 +73,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|        1.1.0-beta01|2024/09/04|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.1.0-alpha14|2024/08/07|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.1.0-alpha13|2023/10/04|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.1.0-alpha12|2023/08/09|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|

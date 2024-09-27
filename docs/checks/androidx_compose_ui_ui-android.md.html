@@ -18,7 +18,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.compose.ui:ui-android:1.7.0-rc01
+:   androidx.compose.ui:ui-android:1.8.0-alpha02
 
 (##) Included Issues
 
@@ -43,25 +43,29 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-android:1.7.0-rc01")
+implementation("androidx.compose.ui:ui-android:1.8.0-alpha02")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-android:1.7.0-rc01'
+implementation 'androidx.compose.ui:ui-android:1.8.0-alpha02'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui.android)
 
 # libs.versions.toml
 [versions]
-ui-android = "1.7.0-rc01"
+ui-android = "1.8.0-alpha02"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 ui-android = {
     module = "androidx.compose.ui:ui-android",
     version.ref = "ui-android"
 }
 ```
 
-1.7.0-rc01 is the version this documentation was generated from;
+1.8.0-alpha02 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -74,7 +78,7 @@ there may be newer versions available.
   SuspiciousCompositionLocalModifierRead,
   UnnecessaryComposedModifier.
 * 1.6.0: Removes ComposableModifierFactory.
-* 1.7.0-alpha02: Adds SuspiciousModifierThen.
+* 1.7.0: Adds SuspiciousModifierThen.
 
 (##) Version Compatibility
 
@@ -82,22 +86,11 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|          1.7.0-rc01|2024/08/21|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta07|2024/08/07|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta06|2024/07/24|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta05|2024/07/10|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta04|2024/06/26|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta03|2024/06/12|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta02|2024/05/29|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        1.7.0-beta01|2024/05/14|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha08|2024/05/01|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha07|2024/04/17|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha06|2024/04/03|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha05|2024/03/20|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha04|2024/03/06|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha03|2024/02/21|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha02|2024/02/07|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.7.0-alpha01|2024/01/24|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha02|2024/09/18|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha01|2024/09/04|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.2|2024/09/18|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.1|2024/09/10|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.0|2024/09/04|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
 |               1.6.8|2024/06/12|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.6.7|2024/05/01|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.6.6|2024/04/17|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
@@ -112,5 +105,9 @@ There are multiple older versions available of this library:
 |               1.5.2|2023/09/27|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.1|2023/09/06|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.0|2023/08/09|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
+
+Compatibility Problems:
+
+[^1]: org.jetbrains.kotlin.analysis.api.resolution.KaCompoundAccess#getOperationPartiallyAppliedSymbol(): org.jetbrains.kotlin.analysis.api.resolution.KaPartiallyAppliedSymbol is not available  
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

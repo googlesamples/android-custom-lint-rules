@@ -15,7 +15,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.navigation:navigation-compose:2.8.0-rc01
+:   androidx.navigation:navigation-compose:2.8.1
 
 (##) Included Issues
 
@@ -34,37 +34,36 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.8.0-rc01")
+implementation("androidx.navigation:navigation-compose:2.8.1")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.8.0-rc01'
+implementation 'androidx.navigation:navigation-compose:2.8.1'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation.compose)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.8.0-rc01"
+navigation-compose = "2.8.1"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 navigation-compose = {
     module = "androidx.navigation:navigation-compose",
     version.ref = "navigation-compose"
 }
 ```
 
-2.8.0-rc01 is the version this documentation was generated from;
+2.8.1 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
 
 * 2.4.0: First version includes ComposableDestinationInComposeScope,
   ComposableNavGraphInComposeScope, UnrememberedGetBackStackEntry.
-* 2.8.0-beta04: Adds EmptyNavDeepLink, WrongStartDestinationType.
-  Removes ComposableDestinationInComposeScope,
-  ComposableNavGraphInComposeScope, UnrememberedGetBackStackEntry.
-* 2.8.0-beta07: Adds ComposableDestinationInComposeScope,
-  ComposableNavGraphInComposeScope, UnrememberedGetBackStackEntry.
-  Removes EmptyNavDeepLink.
+* 2.8.0: Adds WrongStartDestinationType.
 
 (##) Version Compatibility
 
@@ -72,22 +71,8 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|          2.8.0-rc01|2024/08/21|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta07|2024/08/07|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta06|2024/07/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta05|2024/07/10|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta04|2024/06/26|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta03|2024/06/12|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta02|2024/05/29|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|        2.8.0-beta01|2024/05/14|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha08|2024/05/01|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha07|2024/04/17|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha06|2024/04/03|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha05|2024/03/20|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha04|2024/03/06|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha03|2024/02/21|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha02|2024/02/07|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       2.8.0-alpha01|2024/01/24|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.1|2024/09/18|       4|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.0|2024/09/04|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.7.7|2024/02/07|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.7.6|2023/12/13|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.7.5|2023/11/01|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
@@ -104,5 +89,9 @@ There are multiple older versions available of this library:
 |               2.4.2|2022/04/06|       3|         Yes|            7.1|       7.0|
 |               2.4.1|2022/02/09|       3|         Yes|            7.1|       7.0|
 |               2.4.0|2022/01/26|       3|         Yes|            7.1|       7.0|
+
+Compatibility Problems:
+
+[^1]: com.android.tools.lint.checks.infrastructure.LintDetectorTest#kotlin(java.lang.String): com.android.tools.lint.checks.infrastructure.TestFile is not available  
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

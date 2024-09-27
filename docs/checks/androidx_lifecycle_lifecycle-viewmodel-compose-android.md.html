@@ -17,7 +17,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha01
+:   androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha03
 
 (##) Included Issues
 
@@ -33,26 +33,44 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha01")
+implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha03")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha01'
+implementation 'androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lifecycle.viewmodel.compose.android)
 
 # libs.versions.toml
 [versions]
-lifecycle-viewmodel-compose-android = "2.9.0-alpha01"
+lifecycle-viewmodel-compose-android = "2.9.0-alpha03"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 lifecycle-viewmodel-compose-android = {
     module = "androidx.lifecycle:lifecycle-viewmodel-compose-android",
     version.ref = "lifecycle-viewmodel-compose-android"
 }
 ```
 
-2.9.0-alpha01 is the version this documentation was generated from;
+2.9.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
+(##) Changes
+
+* 2.9.0-alpha01: First version includes
+  ViewModelConstructorInComposable.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       2.9.0-alpha03|2024/09/18|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.9.0-alpha02|2024/09/04|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.9.0-alpha01|2024/08/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

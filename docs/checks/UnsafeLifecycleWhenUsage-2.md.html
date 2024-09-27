@@ -57,7 +57,7 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method (this issue)
-* [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01](UnsafeLifecycleWhenUsage.md.html)
+* [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha03](UnsafeLifecycleWhenUsage.md.html)
 * [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01](UnsafeLifecycleWhenUsage-2.md.html)
 
 
@@ -81,6 +81,10 @@ implementation(libs.lifecycle.runtime.ktx)
 [versions]
 lifecycle-runtime-ktx = "2.8.0-alpha01"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 lifecycle-runtime-ktx = {
     module = "androidx.lifecycle:lifecycle-runtime-ktx",
     version.ref = "lifecycle-runtime-ktx"

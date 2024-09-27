@@ -87,25 +87,29 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.material3:material3-android:1.3.0-rc01")
+implementation("androidx.compose.material3:material3-android:1.3.0")
 
 // build.gradle
-implementation 'androidx.compose.material3:material3-android:1.3.0-rc01'
+implementation 'androidx.compose.material3:material3-android:1.3.0'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.material3.android)
 
 # libs.versions.toml
 [versions]
-material3-android = "1.3.0-rc01"
+material3-android = "1.3.0"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 material3-android = {
     module = "androidx.compose.material3:material3-android",
     version.ref = "material3-android"
 }
 ```
 
-1.3.0-rc01 is the version this documentation was generated from;
+1.3.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.material3:material3-android](androidx_compose_material3_material3-android.md.html).

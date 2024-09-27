@@ -45,6 +45,9 @@ permitted to participate in Moshi serialization is if they are a sealed
 subtype of a Moshi sealed class and annotated with `@TypeLabel` or
 `@DefaultObject` accordingly.
 
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:
@@ -97,6 +100,10 @@ lintChecks(libs.slack.lint.checks)
 [versions]
 slack-lint-checks = "0.7.4"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 slack-lint-checks = {
     module = "com.slack.lint:slack-lint-checks",
     version.ref = "slack-lint-checks"
