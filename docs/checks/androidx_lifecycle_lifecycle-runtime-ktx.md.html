@@ -46,6 +46,10 @@ implementation(libs.lifecycle.runtime.ktx)
 [versions]
 lifecycle-runtime-ktx = "2.8.0-alpha01"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 lifecycle-runtime-ktx = {
     module = "androidx.lifecycle:lifecycle-runtime-ktx",
     version.ref = "lifecycle-runtime-ktx"

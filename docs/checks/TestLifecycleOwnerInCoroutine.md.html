@@ -99,25 +99,29 @@ https://issuetracker.google.com/issues/new?component=413132.
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-runtime-testing:2.9.0-alpha01")
+implementation("androidx.lifecycle:lifecycle-runtime-testing:2.9.0-alpha03")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-runtime-testing:2.9.0-alpha01'
+implementation 'androidx.lifecycle:lifecycle-runtime-testing:2.9.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lifecycle.runtime.testing)
 
 # libs.versions.toml
 [versions]
-lifecycle-runtime-testing = "2.9.0-alpha01"
+lifecycle-runtime-testing = "2.9.0-alpha03"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 lifecycle-runtime-testing = {
     module = "androidx.lifecycle:lifecycle-runtime-testing",
     version.ref = "lifecycle-runtime-testing"
 }
 ```
 
-2.9.0-alpha01 is the version this documentation was generated from;
+2.9.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.lifecycle:lifecycle-runtime-testing](androidx_lifecycle_lifecycle-runtime-testing.md.html).

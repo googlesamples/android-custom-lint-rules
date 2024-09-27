@@ -21,7 +21,7 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
@@ -41,6 +41,9 @@ Copyright Year
 Creating a Color with a hex value requires a 32 bit value (such as
 0xFF000000), with 8 bits being used per channel (ARGB). Not passing a
 full 32 bit value will result in channels being undefined / incorrect.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
 
 (##) Example
 
@@ -90,25 +93,29 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-graphics-android:1.7.0-rc01")
+implementation("androidx.compose.ui:ui-graphics-android:1.8.0-alpha02")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-graphics-android:1.7.0-rc01'
+implementation 'androidx.compose.ui:ui-graphics-android:1.8.0-alpha02'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui.graphics.android)
 
 # libs.versions.toml
 [versions]
-ui-graphics-android = "1.7.0-rc01"
+ui-graphics-android = "1.8.0-alpha02"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 ui-graphics-android = {
     module = "androidx.compose.ui:ui-graphics-android",
     version.ref = "ui-graphics-android"
 }
 ```
 
-1.7.0-rc01 is the version this documentation was generated from;
+1.8.0-alpha02 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.ui:ui-graphics-android](androidx_compose_ui_ui-graphics-android.md.html).

@@ -21,7 +21,7 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=741505
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
@@ -111,25 +111,29 @@ https://issuetracker.google.com/issues/new?component=741505.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-test-manifest:1.7.0-rc01")
+implementation("androidx.compose.ui:ui-test-manifest:1.8.0-alpha02")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-test-manifest:1.7.0-rc01'
+implementation 'androidx.compose.ui:ui-test-manifest:1.8.0-alpha02'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui.test.manifest)
 
 # libs.versions.toml
 [versions]
-ui-test-manifest = "1.7.0-rc01"
+ui-test-manifest = "1.8.0-alpha02"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 ui-test-manifest = {
     module = "androidx.compose.ui:ui-test-manifest",
     version.ref = "ui-test-manifest"
 }
 ```
 
-1.7.0-rc01 is the version this documentation was generated from;
+1.8.0-alpha02 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.ui:ui-test-manifest](androidx_compose_ui_ui-test-manifest.md.html).

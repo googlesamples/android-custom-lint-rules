@@ -125,6 +125,10 @@ lintChecks(libs.compose.lint.checks)
 [versions]
 compose-lint-checks = "1.3.1"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 compose-lint-checks = {
     module = "com.slack.lint.compose:compose-lint-checks",
     version.ref = "compose-lint-checks"

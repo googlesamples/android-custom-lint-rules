@@ -21,7 +21,7 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 7.0
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
@@ -101,25 +101,29 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.foundation:foundation-android:1.7.0-rc01")
+implementation("androidx.compose.foundation:foundation-android:1.8.0-alpha02")
 
 // build.gradle
-implementation 'androidx.compose.foundation:foundation-android:1.7.0-rc01'
+implementation 'androidx.compose.foundation:foundation-android:1.8.0-alpha02'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.foundation.android)
 
 # libs.versions.toml
 [versions]
-foundation-android = "1.7.0-rc01"
+foundation-android = "1.8.0-alpha02"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 foundation-android = {
     module = "androidx.compose.foundation:foundation-android",
     version.ref = "foundation-android"
 }
 ```
 
-1.7.0-rc01 is the version this documentation was generated from;
+1.8.0-alpha02 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.compose.foundation:foundation-android](androidx_compose_foundation_foundation-android.md.html).

@@ -65,6 +65,18 @@ build.gradle:13:Warning: com.example.ads.third.party:example version
 7.2.0 has been reported as outdated by its author [OutdatedLibrary]
     compile 'com.example.ads.third.party:example:7.2.0' // Outdated + Critical + Policy (multiple issues), no severity
             -------------------------------------------
+build.gradle:27:Warning: com.example.issues:issues-on-latest version
+1.8.0 has been reported as outdated by its author.
+The library author recommends using versions:
+  - 1.9.0 or higher [OutdatedLibrary]
+    compile 'com.example.issues:issues-on-latest:1.8.0' // Outdated blocking
+            -------------------------------------------
+build.gradle:28:Warning: com.example.issues:latest-is-preview version
+1.0.0 has been reported as outdated by its author.
+The library author recommends using versions:
+  - 1.1.0 or higher [OutdatedLibrary]
+    compile 'com.example.issues:latest-is-preview:1.0.0' // Outdated non-blocking
+            --------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -94,6 +106,11 @@ dependencies {
     compile 'com.example.ads.third.party:example:7.1.7' // Policy (multiple types), non-blocking
     compile 'com.example.ads.third.party:example:7.1.8' // Policy (multiple types), blocking
     compile 'com.example.ads.third.party:example:7.1.9' // Policy (multiple types), no severity
+    compile 'com.example.ads.third.party:example:7.1.10' // Vulnerability (UNSAFE_HOSTNAME_VERIFIER, non-blocking)
+    compile 'com.example.ads.third.party:example:7.1.11' // Vulnerability multiple (UNSAFE_SSL_ERROR_HANDLER, ZIP_PATH_TRAVERSAL, UNSAFE_WEBVIEW_OAUTH, blocking)
+    compile 'com.example.ads.third.party:example:7.1.12' // Vulnerability multiple (non-blocking)
+    compile 'com.example.issues:issues-on-latest:1.8.0' // Outdated blocking
+    compile 'com.example.issues:latest-is-preview:1.0.0' // Outdated non-blocking
 
     compile 'log4j:log4j:latest.release' // OK
     compile 'log4j:log4j' // OK

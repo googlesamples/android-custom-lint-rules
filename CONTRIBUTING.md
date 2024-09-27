@@ -1,5 +1,13 @@
 # How to become a contributor and submit your own code
 
+## Documentation
+
+Note the all the documentation under docs/ is only a mirror;
+the original documentation is maintained in the Android
+source code repository:
+
+https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/docs/
+
 ## Contributor License Agreements
 
 We'd love to accept your sample apps and patches! Before we can take them, we

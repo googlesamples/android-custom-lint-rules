@@ -39,6 +39,9 @@ benefit that you can easily see all of your colors in one file. One
 benefit is an easier addition to Dark Theme for instance. This check
 will run on layouts as well as xml drawables.
 
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:
@@ -87,6 +90,10 @@ lintChecks(libs.lint.rules.android)
 [versions]
 lint-rules-android = "0.25.0"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 lint-rules-android = {
     module = "com.vanniktech:lint-rules-android",
     version.ref = "lint-rules-android"

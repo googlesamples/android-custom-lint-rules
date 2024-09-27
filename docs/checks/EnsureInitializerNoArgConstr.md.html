@@ -82,25 +82,29 @@ https://issuetracker.google.com/issues/new?component=823348.
 
 ```
 // build.gradle.kts
-implementation("androidx.startup:startup-runtime:1.2.0-beta01")
+implementation("androidx.startup:startup-runtime:1.2.0")
 
 // build.gradle
-implementation 'androidx.startup:startup-runtime:1.2.0-beta01'
+implementation 'androidx.startup:startup-runtime:1.2.0'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.startup.runtime)
 
 # libs.versions.toml
 [versions]
-startup-runtime = "1.2.0-beta01"
+startup-runtime = "1.2.0"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 startup-runtime = {
     module = "androidx.startup:startup-runtime",
     version.ref = "startup-runtime"
 }
 ```
 
-1.2.0-beta01 is the version this documentation was generated from;
+1.2.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.startup:startup-runtime](androidx_startup_startup-runtime.md.html).

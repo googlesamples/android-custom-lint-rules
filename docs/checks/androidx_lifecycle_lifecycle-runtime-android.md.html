@@ -17,7 +17,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01
+:   androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha03
 
 (##) Included Issues
 
@@ -34,25 +34,29 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01")
+implementation("androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha03")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha01'
+implementation 'androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lifecycle.runtime.android)
 
 # libs.versions.toml
 [versions]
-lifecycle-runtime-android = "2.9.0-alpha01"
+lifecycle-runtime-android = "2.9.0-alpha03"
 [libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
 lifecycle-runtime-android = {
     module = "androidx.lifecycle:lifecycle-runtime-android",
     version.ref = "lifecycle-runtime-android"
 }
 ```
 
-2.9.0-alpha01 is the version this documentation was generated from;
+2.9.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -66,7 +70,11 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       2.9.0-alpha03|2024/09/18|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.9.0-alpha02|2024/09/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       2.9.0-alpha01|2024/08/07|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.6|2024/09/18|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.5|2024/09/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.8.4|2024/07/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.8.3|2024/07/01|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.8.2|2024/06/12|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
