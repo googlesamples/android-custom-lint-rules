@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Application has disabled safe browsing for all WebView objects
+(#) Trusting ContentProvider filenames without any sanitization
 
-!!! WARNING: Application has disabled safe browsing for all WebView objects
+!!! WARNING: Trusting ContentProvider filenames without any sanitization
    This is a warning.
 
 Id
-:   `DisabledAllSafeBrowsing`
+:   `UnsanitizedFilenameFromContentProvider`
 Summary
-:   Application has disabled safe browsing for all WebView objects
+:   Trusting ContentProvider filenames without any sanitization
 Severity
 :   Warning
 Category
@@ -28,57 +28,78 @@ Artifact
 :   [com.android.security.lint:lint](com_android_security_lint_lint.md.html)
 
 Affects
-:   Manifest files
+:   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
 See
-:   https://goo.gle/DisabledAllSafeBrowsing
+:   https://goo.gle/UnsanitizedFilenameFromContentProvider
 Implementation
-:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/SafeBrowsingDetector.kt)
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/UnsafeFilenameDetector.kt)
 Tests
-:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/SafeBrowsingDetectorTest.kt)
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/UnsafeFilenameDetectorTest.kt)
 Copyright Year
 :   2024
 
-Safe Browsing is a service to help applications check URLs against a
-known list of unsafe web resources. We recommend keeping Safe Browsing
-enabled at all times and designing your app around any constraints this
-causes.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
+When communicating between applications with files, the server app can
+provide the client app with a maliciously constructed filename. The
+client app should never trust this filename and should either sanitize
+it or completely discard it.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:3:Warning: Safe Browsing should be kept enabled at
-all times, as it aims to keep users from unsafe URLs
-[DisabledAllSafeBrowsing]
-    &lt;meta-data android:name='android.webkit.WebView.EnableSafeBrowsing' android:value='false'/&gt;
-    -------------------------------------------------------------------------------------------
+src/TestClass.java:10:Warning: Using fileName is unsafe as it is a
+filename obtained directly from a ContentProvider. You should sanitize
+it before using it for creating a File.
+[UnsanitizedFilenameFromContentProvider]
+    File fileObject = new File("./", fileName);
+                                     --------
+src/TestClass.kt:10:Warning: Using fileName is unsafe as it is a
+filename obtained directly from a ContentProvider. You should sanitize
+it before using it for creating a File.
+[UnsanitizedFilenameFromContentProvider]
+    val fileObject = File("./", fileName)
+                                --------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`AndroidManifest.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;manifest xmlns:android='http://schemas.android.com/apk/res/android' package='test.pkg'&gt;
-&lt;application android:debuggable='false'&gt;
-    &lt;meta-data android:name='android.webkit.WebView.EnableSafeBrowsing' android:value='false'/&gt;
-    &lt;activity android:name='com.example.MainActivity'&gt;&lt;/activity&gt;
-&lt;/application&gt;
-&lt;/manifest&gt;
+`src/TestClass.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+import android.database.Cursor;
+import android.provider.OpenableColumns;
+import java.io.File;
+
+class TestClass {
+  private void trustProvidedFilename_shouldWarn(Cursor cursor) {
+    int id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+    String fileName = cursor.getString(id);
+
+    File fileObject = new File("./", fileName);
+  }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/TestClass.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import android.database.Cursor
+import android.provider.OpenableColumns
+import java.io.File
+
+class TestClass {
+  private fun trustProvidedFilename_shouldWarn(cursor: Cursor) {
+    val id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+    val fileName = cursor.getString(id)
+
+    val fileObject = File("./", fileName)
+  }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/SafeBrowsingDetectorTest.kt)
+[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/UnsafeFilenameDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
-
-The above example was automatically extracted from the first unit test
-found for this lint check, `SafeBrowsingDetector.testWhenSafeBrowsingDisabledInManifest_showsWarning`.
-To report a problem with this extracted sample, visit
-https://github.com/google/android-security-lints/issues.
 
 (##) Including
 
@@ -119,20 +140,32 @@ there may be newer versions available.
 
 You can suppress false positives using one of the following mechanisms:
 
-* Adding the suppression attribute
-  `tools:ignore="DisabledAllSafeBrowsing"` on the problematic XML
-  element (or one of its enclosing elements). You may also need to add
-  the following namespace declaration on the root element in the XML
-  file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
+* Using a suppression annotation like this on the enclosing
+  element:
 
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;meta-data tools:ignore="DisabledAllSafeBrowsing" .../&gt;
-    ...
-  &lt;/manifest&gt;
+  ```kt
+  // Kotlin
+  @Suppress("UnsanitizedFilenameFromContentProvider")
+  fun method() {
+     getColumnIndex(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UnsanitizedFilenameFromContentProvider")
+  void method() {
+     getColumnIndex(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UnsanitizedFilenameFromContentProvider
+  problematicStatement()
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off
@@ -141,7 +174,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="DisabledAllSafeBrowsing" severity="ignore" /&gt;
+      &lt;issue id="UnsanitizedFilenameFromContentProvider" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -154,7 +187,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'DisabledAllSafeBrowsing'
+      disable 'UnsanitizedFilenameFromContentProvider'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -162,7 +195,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore DisabledAllSafeBrowsing ...`
+  $ lint --ignore UnsanitizedFilenameFromContentProvider ...`
   ```
 
 * Last, but not least, using baselines, as discussed

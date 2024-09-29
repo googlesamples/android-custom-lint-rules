@@ -32,7 +32,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
-:   http://goo.gle/DefaultCleartextTraffic
+:   https://goo.gle/DefaultCleartextTraffic
 Implementation
 :   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/MissingNetworkSecurityConfigDetector.kt)
 Tests
@@ -85,17 +85,17 @@ https://github.com/google/android-security-lints/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.android.security.lint:lint:1.0.1")
+lintChecks("com.android.security.lint:lint:1.0.2")
 
 // build.gradle
-lintChecks 'com.android.security.lint:lint:1.0.1'
+lintChecks 'com.android.security.lint:lint:1.0.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.com.android.security.lint.lint)
 
 # libs.versions.toml
 [versions]
-com-android-security-lint-lint = "1.0.1"
+com-android-security-lint-lint = "1.0.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -107,7 +107,7 @@ com-android-security-lint-lint = {
 }
 ```
 
-1.0.1 is the version this documentation was generated from;
+1.0.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.android.security.lint:lint](com_android_security_lint_lint.md.html).

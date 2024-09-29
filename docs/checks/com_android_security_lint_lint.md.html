@@ -13,27 +13,30 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   com.android.security.lint:lint:1.0.1
+:   com.android.security.lint:lint:1.0.2
 
 (##) Included Issues
 
-|Issue Id                                                                      |Issue Description                                                                |
-|------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-|[VulnerableCryptoAlgorithm](VulnerableCryptoAlgorithm.md.html)                |Application uses vulnerable cryptography algorithms                              |
-|[UnsafeCryptoAlgorithmUsage](UnsafeCryptoAlgorithmUsage.md.html)              |Application uses unsafe cipher modes or paddings with cryptographic algorithms   |
-|[MissingAutoVerifyAttribute](MissingAutoVerifyAttribute.md.html)              |Application has custom scheme intent filters with missing `autoVerify` attributes|
-|[InsecureDnsSdkLevel](InsecureDnsSdkLevel.md.html)                            |Application vulnerable to DNS spoofing attacks                                   |
-|[StrandhoggVulnerable](StrandhoggVulnerable.md.html)                          |Application vulnerable to Strandhogg attacks                                     |
-|[TapjackingVulnerable](TapjackingVulnerable.md.html)                          |Application's UI is vulnerable to tapjacking attacks                             |
-|[DefaultCleartextTraffic](DefaultCleartextTraffic.md.html)                    |Application by default permits cleartext traffic                                 |
-|[DefaultTrustedUserCerts](DefaultTrustedUserCerts.md.html)                    |Application by default trusts user-added CA certificates                         |
-|[UnintendedExposedUrl](UnintendedExposedUrl.md.html)                          |Application may have a debugging or development URL publicly exposed             |
-|[UnintendedPrivateIpAddress](UnintendedPrivateIpAddress.md.html)              |Application may have a private IP address publicly exposed                       |
-|[ExposedRootPath](ExposedRootPath.md.html)                                    |Application specifies the device root directory                                  |
-|[SensitiveExternalPath](SensitiveExternalPath.md.html)                        |Application may expose sensitive info like PII by storing it in external storage |
-|[WeakPrng](WeakPrng.md.html)                                                  |Application uses non-cryptographically secure pseudorandom number generators     |
-|[DisabledAllSafeBrowsing](DisabledAllSafeBrowsing.md.html)                    |Application has disabled safe browsing for all WebView objects                   |
-|[InsecurePermissionProtectionLevel](InsecurePermissionProtectionLevel.md.html)|Custom permission created with a normal `protectionLevel`                        |
+|Issue Id                                                                                  |Issue Description                                                                |
+|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+|[VulnerableCryptoAlgorithm](VulnerableCryptoAlgorithm.md.html)                            |Application uses vulnerable cryptography algorithms                              |
+|[UnsafeCryptoAlgorithmUsage](UnsafeCryptoAlgorithmUsage.md.html)                          |Application uses unsafe cipher modes or paddings with cryptographic algorithms   |
+|[MissingAutoVerifyAttribute](MissingAutoVerifyAttribute.md.html)                          |Application has custom scheme intent filters with missing `autoVerify` attributes|
+|[InsecureDnsSdkLevel](InsecureDnsSdkLevel.md.html)                                        |Application vulnerable to DNS spoofing attacks                                   |
+|[StrandhoggVulnerable](StrandhoggVulnerable.md.html)                                      |Application vulnerable to Strandhogg attacks                                     |
+|[TapjackingVulnerable](TapjackingVulnerable.md.html)                                      |Application's UI is vulnerable to tapjacking attacks                             |
+|[DefaultCleartextTraffic](DefaultCleartextTraffic.md.html)                                |Application by default permits cleartext traffic                                 |
+|[DefaultTrustedUserCerts](DefaultTrustedUserCerts.md.html)                                |Application by default trusts user-added CA certificates                         |
+|[UnintendedExposedUrl](UnintendedExposedUrl.md.html)                                      |Application may have a debugging or development URL publicly exposed             |
+|[UnintendedPrivateIpAddress](UnintendedPrivateIpAddress.md.html)                          |Application may have a private IP address publicly exposed                       |
+|[ExposedRootPath](ExposedRootPath.md.html)                                                |Application specifies the device root directory                                  |
+|[SensitiveExternalPath](SensitiveExternalPath.md.html)                                    |Application may expose sensitive info like PII by storing it in external storage |
+|[WeakPrng](WeakPrng.md.html)                                                              |Application uses non-cryptographically secure pseudorandom number generators     |
+|[DisabledAllSafeBrowsing](DisabledAllSafeBrowsing.md.html)                                |Application has disabled safe browsing for all WebView objects                   |
+|[InsecurePermissionProtectionLevel](InsecurePermissionProtectionLevel.md.html)            |Custom permission created with a normal `protectionLevel`                        |
+|[UnsanitizedFilenameFromContentProvider](UnsanitizedFilenameFromContentProvider-2.md.html)|Trusting ContentProvider filenames without any sanitization                      |
+|[InsecureStickyBroadcastsMethod](InsecureStickyBroadcastsMethod.md.html)                  |Usage of insecure sticky broadcasts                                              |
+|[InsecureStickyBroadcastsPermission](InsecureStickyBroadcastsPermission.md.html)          |Usage of insecure sticky broadcasts                                              |
 
 (##) Including
 
@@ -44,17 +47,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.android.security.lint:lint:1.0.1")
+lintChecks("com.android.security.lint:lint:1.0.2")
 
 // build.gradle
-lintChecks 'com.android.security.lint:lint:1.0.1'
+lintChecks 'com.android.security.lint:lint:1.0.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.com.android.security.lint.lint)
 
 # libs.versions.toml
 [versions]
-com-android-security-lint-lint = "1.0.1"
+com-android-security-lint-lint = "1.0.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -66,7 +69,7 @@ com-android-security-lint-lint = {
 }
 ```
 
-1.0.1 is the version this documentation was generated from;
+1.0.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -78,6 +81,9 @@ there may be newer versions available.
   StrandhoggVulnerable, TapjackingVulnerable, UnintendedExposedUrl,
   UnintendedPrivateIpAddress, UnsafeCryptoAlgorithmUsage,
   VulnerableCryptoAlgorithm, WeakPrng.
+* 1.0.2: Adds InsecureStickyBroadcastsMethod,
+  InsecureStickyBroadcastsPermission,
+  UnsanitizedFilenameFromContentProvider.
 
 (##) Version Compatibility
 
@@ -85,6 +91,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               1.0.2|          |      18|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.0.1|          |      15|         Yes|    8.0 and 8.1|8.0 and 8.1|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
