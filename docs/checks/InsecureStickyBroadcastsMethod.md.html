@@ -1,19 +1,19 @@
 <meta charset="utf-8">
-(#) Application has disabled safe browsing for all WebView objects
+(#) Usage of insecure sticky broadcasts
 
-!!! WARNING: Application has disabled safe browsing for all WebView objects
+!!! WARNING: Usage of insecure sticky broadcasts
    This is a warning.
 
 Id
-:   `DisabledAllSafeBrowsing`
+:   `InsecureStickyBroadcastsMethod`
 Summary
-:   Application has disabled safe browsing for all WebView objects
+:   Usage of insecure sticky broadcasts
 Severity
 :   Warning
 Category
 :   Security
 Platform
-:   Android
+:   Any
 Vendor
 :   Google - Android 3P Vulnerability Research
 Contact
@@ -28,55 +28,60 @@ Artifact
 :   [com.android.security.lint:lint](com_android_security_lint_lint.md.html)
 
 Affects
-:   Manifest files
+:   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
 See
-:   https://goo.gle/DisabledAllSafeBrowsing
+:   https://goo.gle/InsecureStickyBroadcastsMethod
 Implementation
-:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/SafeBrowsingDetector.kt)
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/StickyBroadcastsDetector.kt)
 Tests
-:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/SafeBrowsingDetectorTest.kt)
+:   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/StickyBroadcastsDetectorTest.kt)
 Copyright Year
 :   2024
 
-Safe Browsing is a service to help applications check URLs against a
-known list of unsafe web resources. We recommend keeping Safe Browsing
-enabled at all times and designing your app around any constraints this
-causes.
-
-!!! Tip
-   This lint check has an associated quickfix available in the IDE.
+Sticky broadcasts can be accessed, sent, or modified by anyone,
+resulting in potential security issues. For this reason, it was
+deprecated in API level 21 and other mechanisms such as databases or
+non-sticky broadcasts should be used instead.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:3:Warning: Safe Browsing should be kept enabled at
-all times, as it aims to keep users from unsafe URLs
-[DisabledAllSafeBrowsing]
-    &lt;meta-data android:name='android.webkit.WebView.EnableSafeBrowsing' android:value='false'/&gt;
-    -------------------------------------------------------------------------------------------
+src/fake/pkg/MainActivity.java:12:Warning: Sticky broadcasts can be
+accessed, sent or modified by anyone. Use non-sticky broadcasts instead.
+[InsecureStickyBroadcastsMethod]
+    sendStickyOrderedBroadcast();
+    ----------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
-`AndroidManifest.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;manifest xmlns:android='http://schemas.android.com/apk/res/android' package='test.pkg'&gt;
-&lt;application android:debuggable='false'&gt;
-    &lt;meta-data android:name='android.webkit.WebView.EnableSafeBrowsing' android:value='false'/&gt;
-    &lt;activity android:name='com.example.MainActivity'&gt;&lt;/activity&gt;
-&lt;/application&gt;
-&lt;/manifest&gt;
+`src/fake/pkg/MainActivity.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+package fake.pkg;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+@Suppress("DEPRECATION")
+public class MainActivity extends Activity {
+
+    @Override
+     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sendStickyOrderedBroadcast();
+        }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/SafeBrowsingDetectorTest.kt)
+[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/StickyBroadcastsDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `SafeBrowsingDetector.testWhenSafeBrowsingDisabledInManifest_showsWarning`.
+found for this lint check, `StickyBroadcastsDetector.stickyBroadcastMethodCall_showsWarning`.
 To report a problem with this extracted sample, visit
 https://github.com/google/android-security-lints/issues.
 
@@ -119,20 +124,32 @@ there may be newer versions available.
 
 You can suppress false positives using one of the following mechanisms:
 
-* Adding the suppression attribute
-  `tools:ignore="DisabledAllSafeBrowsing"` on the problematic XML
-  element (or one of its enclosing elements). You may also need to add
-  the following namespace declaration on the root element in the XML
-  file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
+* Using a suppression annotation like this on the enclosing
+  element:
 
-  ```xml
-  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
-      ...
-      &lt;meta-data tools:ignore="DisabledAllSafeBrowsing" .../&gt;
-    ...
-  &lt;/manifest&gt;
+  ```kt
+  // Kotlin
+  @Suppress("InsecureStickyBroadcastsMethod")
+  fun method() {
+     sendStickyOrderedBroadcast(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("InsecureStickyBroadcastsMethod")
+  void method() {
+     sendStickyOrderedBroadcast(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection InsecureStickyBroadcastsMethod
+  problematicStatement()
   ```
 
 * Using a special `lint.xml` file in the source tree which turns off
@@ -141,7 +158,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="DisabledAllSafeBrowsing" severity="ignore" /&gt;
+      &lt;issue id="InsecureStickyBroadcastsMethod" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -154,7 +171,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'DisabledAllSafeBrowsing'
+      disable 'InsecureStickyBroadcastsMethod'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -162,7 +179,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore DisabledAllSafeBrowsing ...`
+  $ lint --ignore InsecureStickyBroadcastsMethod ...`
   ```
 
 * Last, but not least, using baselines, as discussed
