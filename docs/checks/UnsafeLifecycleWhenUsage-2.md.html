@@ -38,17 +38,17 @@ Tests
 Copyright Year
 :   2019
 
-If the `Lifecycle` is destroyed within the block of                    
+If the `Lifecycle` is destroyed within the block of
 `Lifecycle.whenStarted` or any similar `Lifecycle.when` method is
 suspended,                     the block will be cancelled, which will
 also cancel any child coroutine                     launched inside the
-block. As as a result, If you have a try finally block                  
-  in your code, the finally might run after the Lifecycle moves outside 
+block. As as a result, If you have a try finally block
+  in your code, the finally might run after the Lifecycle moves outside
                    the desired state. It is recommended to check the
 `Lifecycle.isAtLeast`                     before accessing UI in finally
 block. Similarly,                     if you have a catch statement that
 might catch `CancellationException`,                     you should
-check the `Lifecycle.isAtLeast` before accessing the UI. See            
+check the `Lifecycle.isAtLeast` before accessing the UI. See
         documentation of `Lifecycle.whenStateAtLeast` for more details.
 
 (##) Repackaged
@@ -57,7 +57,7 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method (this issue)
-* [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha03](UnsafeLifecycleWhenUsage.md.html)
+* [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha07](UnsafeLifecycleWhenUsage.md.html)
 * [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01](UnsafeLifecycleWhenUsage-2.md.html)
 
 

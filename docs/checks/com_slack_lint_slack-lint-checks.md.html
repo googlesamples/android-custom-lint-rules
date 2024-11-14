@@ -15,11 +15,11 @@ Contact
 Feedback
 :   https://github.com/slackhq/slack-lints
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
-:   com.slack.lint:slack-lint-checks:0.7.4
+:   com.slack.lint:slack-lint-checks:0.8.2
 
 (##) Included Issues
 
@@ -116,6 +116,9 @@ Artifact
 |[ParcelizeFunctionProperty](ParcelizeFunctionProperty.md.html)                        |Function type properties are not parcelable                                                              |
 |[ExceptionMessage](ExceptionMessage.md.html)                                          |Please provide a string for the `lazyMessage` parameter                                                  |
 |[MustUseNamedParams](MustUseNamedParams.md.html)                                      |Calls to @MustUseNamedParams-annotated methods must name all parameters                                  |
+|[AvoidUsingNotNullOperator](AvoidUsingNotNullOperator.md.html)                        |Avoid using the !! operator in Kotlin                                                                    |
+|[DoNotCallViewToString](DoNotCallViewToString.md.html)                                |Do not use `View.toString()`                                                                             |
+|[InflationInItemDecoration](InflationInItemDecoration.md.html)                        |Avoid inflating a view to display text                                                                   |
 
 (##) Including
 
@@ -126,17 +129,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.4")
+lintChecks("com.slack.lint:slack-lint-checks:0.8.2")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.4'
+lintChecks 'com.slack.lint:slack-lint-checks:0.8.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack.lint.checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.4"
+slack-lint-checks = "0.8.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -148,7 +151,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.4 is the version this documentation was generated from;
+0.8.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -218,6 +221,8 @@ there may be newer versions available.
   InjectWithScopeRequiredLoggedInUserProvider,
   InjectWithTypeMustImplementAnvilInjectable.
 * 0.7.2: Adds DoNotMockAnything.
+* 0.8.1: Adds AvoidUsingNotNullOperator, DoNotCallViewToString,
+  InflationInItemDecoration.
 
 (##) Version Compatibility
 
@@ -225,6 +230,9 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               0.8.2|2024/10/14|      94|         Yes|           8.7+|      8.7+|
+|               0.8.1|2024/10/03|      94|         Yes|           8.7+|      8.7+|
+|               0.8.0|2024/10/02|      91|         Yes|           8.7+|      8.7+|
 |               0.7.4|2024/05/21|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.7.3|2024/05/03|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               0.7.2|2024/05/02|      91|         Yes|    8.0 and 8.1|8.0 and 8.1|

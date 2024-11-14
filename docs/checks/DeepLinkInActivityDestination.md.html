@@ -38,11 +38,11 @@ Tests
 Copyright Year
 :   2022
 
-Attaching a <deeplink> to an <activity> destination will never give     
+Attaching a <deeplink> to an <activity> destination will never give
            the right behavior when using an implicit deep link on
 another app's task                 (where the system back should
 immediately take the user back to the app that                 triggered
-the deep link). Instead, attach the deep link directly to               
+the deep link). Instead, attach the deep link directly to
  the second activity (either by manually writing the appropriate
 <intent-filter>                 or by adding the <deeplink> to the start
 destination of a nav host in that second                 activity).
@@ -101,17 +101,17 @@ https://issuetracker.google.com/issues/new?component=409828.
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-runtime:2.8.1")
+implementation("androidx.navigation:navigation-runtime:2.9.0-alpha03")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-runtime:2.8.1'
+implementation 'androidx.navigation:navigation-runtime:2.9.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation.runtime)
 
 # libs.versions.toml
 [versions]
-navigation-runtime = "2.8.1"
+navigation-runtime = "2.9.0-alpha03"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -123,7 +123,7 @@ navigation-runtime = {
 }
 ```
 
-2.8.1 is the version this documentation was generated from;
+2.9.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.navigation:navigation-runtime](androidx_navigation_navigation-runtime.md.html).

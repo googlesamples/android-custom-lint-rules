@@ -38,12 +38,12 @@ Tests
 Copyright Year
 :   2019
 
-When observing a LiveData object from a fragment's onCreateView,        
-        onViewCreated, onActivityCreated, or onViewStateRestored method 
+When observing a LiveData object from a fragment's onCreateView,
+        onViewCreated, onActivityCreated, or onViewStateRestored method
                getViewLifecycleOwner() should be used as the
 LifecycleOwner rather than the                 Fragment instance. The
-Fragment lifecycle can result in the Fragment being                
-active longer than its view. This can lead to unexpected behavior from  
+Fragment lifecycle can result in the Fragment being
+active longer than its view. This can lead to unexpected behavior from
               LiveData objects being observed longer than the Fragment's
 view is active.
 
@@ -55,17 +55,17 @@ view is active.
 
 ```
 // build.gradle.kts
-implementation("androidx.fragment:fragment:1.8.3")
+implementation("androidx.fragment:fragment:1.8.5")
 
 // build.gradle
-implementation 'androidx.fragment:fragment:1.8.3'
+implementation 'androidx.fragment:fragment:1.8.5'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.fragment)
 
 # libs.versions.toml
 [versions]
-fragment = "1.8.3"
+fragment = "1.8.5"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -77,7 +77,7 @@ fragment = {
 }
 ```
 
-1.8.3 is the version this documentation was generated from;
+1.8.5 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.fragment:fragment](androidx_fragment_fragment.md.html).

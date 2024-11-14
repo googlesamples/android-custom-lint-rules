@@ -141,8 +141,8 @@ This issue id has also been used by other, unrelated lint checks. Issue
 id's must be unique, so you cannot combine these libraries. Also defined
 in:
 * WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class. (this issue)
-* [WrongStartDestinationType from androidx.navigation:navigation-compose:2.8.1](WrongStartDestinationType.md.html)
-* [WrongStartDestinationType from androidx.navigation:navigation-runtime:2.8.1](WrongStartDestinationType-2.md.html)
+* [WrongStartDestinationType from androidx.navigation:navigation-compose:2.9.0-alpha03](WrongStartDestinationType.md.html)
+* [WrongStartDestinationType from androidx.navigation:navigation-runtime:2.9.0-alpha03](WrongStartDestinationType-2.md.html)
 
 
 (##) Including
@@ -153,17 +153,17 @@ in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-common:2.8.1")
+implementation("androidx.navigation:navigation-common:2.9.0-alpha03")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-common:2.8.1'
+implementation 'androidx.navigation:navigation-common:2.9.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation.common)
 
 # libs.versions.toml
 [versions]
-navigation-common = "2.8.1"
+navigation-common = "2.9.0-alpha03"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -175,7 +175,7 @@ navigation-common = {
 }
 ```
 
-2.8.1 is the version this documentation was generated from;
+2.9.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html).

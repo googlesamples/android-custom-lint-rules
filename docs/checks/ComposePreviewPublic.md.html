@@ -21,9 +21,9 @@ Identifier
 Feedback
 :   https://github.com/slackhq/compose-lints/issues
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html)
 
@@ -104,17 +104,17 @@ for the unit tests for this check to see additional scenarios.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.4.2")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.4.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose.lint.checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.3.1"
+compose-lint-checks = "1.4.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -126,7 +126,7 @@ compose-lint-checks = {
 }
 ```
 
-1.3.1 is the version this documentation was generated from;
+1.4.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).

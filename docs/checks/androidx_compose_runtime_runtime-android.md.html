@@ -18,7 +18,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.compose.runtime:runtime-android:1.8.0-alpha02
+:   androidx.compose.runtime:runtime-android:1.8.0-alpha06
 
 (##) Included Issues
 
@@ -47,17 +47,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime-android:1.8.0-alpha02")
+implementation("androidx.compose.runtime:runtime-android:1.8.0-alpha06")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime-android:1.8.0-alpha02'
+implementation 'androidx.compose.runtime:runtime-android:1.8.0-alpha06'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.runtime.android)
 
 # libs.versions.toml
 [versions]
-runtime-android = "1.8.0-alpha02"
+runtime-android = "1.8.0-alpha06"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -69,8 +69,12 @@ runtime-android = {
 }
 ```
 
-1.8.0-alpha02 is the version this documentation was generated from;
+1.8.0-alpha06 is the version this documentation was generated from;
 there may be newer versions available.
+
+NOTE: These lint checks are **also** made available separate from the main library.
+You can also use `androidx.compose.runtime:runtime-lint:1.8.0-alpha06`.
+
 
 (##) Changes
 
@@ -88,8 +92,15 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.8.0-alpha06|2024/11/13|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha05|2024/10/30|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha04|2024/10/16|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.8.0-alpha03|2024/10/02|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.8.0-alpha02|2024/09/18|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       1.8.0-alpha01|2024/09/04|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.5|2024/10/30|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.4|2024/10/16|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.3|2024/10/02|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.2|2024/09/18|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.1|2024/09/10|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.0|2024/09/04|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|

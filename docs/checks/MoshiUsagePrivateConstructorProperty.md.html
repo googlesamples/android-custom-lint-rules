@@ -23,9 +23,9 @@ Contact
 Feedback
 :   https://github.com/slackhq/slack-lints
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html)
 
@@ -86,17 +86,17 @@ https://github.com/slackhq/slack-lints.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.7.4")
+lintChecks("com.slack.lint:slack-lint-checks:0.8.2")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.7.4'
+lintChecks 'com.slack.lint:slack-lint-checks:0.8.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack.lint.checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.7.4"
+slack-lint-checks = "0.8.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -108,7 +108,7 @@ slack-lint-checks = {
 }
 ```
 
-0.7.4 is the version this documentation was generated from;
+0.8.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint:slack-lint-checks](com_slack_lint_slack-lint-checks.md.html).

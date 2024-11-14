@@ -13,11 +13,11 @@ Identifier
 Feedback
 :   https://github.com/slackhq/compose-lints/issues
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
-:   com.slack.lint.compose:compose-lint-checks:1.3.1
+:   com.slack.lint.compose:compose-lint-checks:1.4.2
 
 (##) Included Issues
 
@@ -28,7 +28,6 @@ Artifact
 |[ComposeCompositionLocalUsage](ComposeCompositionLocalUsage.md.html)                |CompositionLocals are discouraged                           |
 |[ComposeCompositionLocalGetter](ComposeCompositionLocalGetter.md.html)              |CompositionLocals should not use getters                    |
 |[ComposeContentEmitterReturningValues](ComposeContentEmitterReturningValues.md.html)|Composable functions should emit XOR return                 |
-|[ComposeComposableModifier](ComposeComposableModifier.md.html)                      |Don't use @Composable builder functions for modifiers       |
 |[ComposeModifierMissing](ComposeModifierMissing.md.html)                            |Missing modifier parameter                                  |
 |[ComposeModifierReused](ComposeModifierReused.md.html)                              |Modifiers should only be used once                          |
 |[ComposeModifierWithoutDefault](ComposeModifierWithoutDefault.md.html)              |Missing Modifier default value                              |
@@ -39,6 +38,7 @@ Artifact
 |[ComposePreviewNaming](ComposePreviewNaming.md.html)                                |Preview annotations require certain suffixes                |
 |[ComposePreviewPublic](ComposePreviewPublic.md.html)                                |Preview composables should be private                       |
 |[ComposeRememberMissing](ComposeRememberMissing.md.html)                            |State values should be remembered                           |
+|[SlotReused](SlotReused.md.html)                                                    |Slots should be invoked in at most one place                |
 |[ComposeUnstableCollections](ComposeUnstableCollections.md.html)                    |Immutable collections should ideally be used in Composables |
 |[ComposeViewModelForwarding](ComposeViewModelForwarding.md.html)                    |Don't forward ViewModels through composables                |
 |[ComposeViewModelInjection](ComposeViewModelInjection.md.html)                      |Implicit dependencies of composables should be made explicit|
@@ -54,17 +54,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.4.2")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.4.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose.lint.checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.3.1"
+compose-lint-checks = "1.4.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -76,7 +76,7 @@ compose-lint-checks = {
 }
 ```
 
-1.3.1 is the version this documentation was generated from;
+1.4.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -93,6 +93,7 @@ there may be newer versions available.
 * 1.1.0: Adds ComposeM2Api.
 * 1.3.0: Adds ComposeCompositionLocalGetter, ComposeModifierComposed,
   ComposeUnstableReceiver.
+* 1.4.0: Adds SlotReused. Removes ComposeComposableModifier.
 
 (##) Version Compatibility
 
@@ -100,6 +101,9 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               1.4.2|2024/10/22|      21|         Yes|           8.7+|      8.7+|
+|               1.4.1|2024/10/02|      21|         Yes|           8.7+|      8.7+|
+|               1.4.0|2024/10/02|      21|         Yes|           8.7+|      8.7+|
 |               1.3.1|2024/01/25|      21|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.3.0|2024/01/25|      21|         Yes|     8.2 to 8.6|8.2 to 8.6|
 |               1.2.0|2023/04/19|      18|         Yes|    8.0 and 8.1|8.0 and 8.1|
