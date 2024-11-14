@@ -13,19 +13,19 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=1112273
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
-:   androidx.wear.protolayout:protolayout:1.2.0
+:   androidx.wear.protolayout:protolayout:1.3.0-alpha04
 
 (##) Included Issues
 
-|Issue Id                                                                                  |Issue Description                                                                                                                                   |
-|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-|[ProtoLayoutMinSchema](ProtoLayoutMinSchema-3.md.html)                                    |ProtoLayout feature is not guaranteed to be available on the target device API                                                                      |
-|[ProtoLayoutPrimaryLayoutResponsive](ProtoLayoutPrimaryLayoutResponsive-3.md.html)        |ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales   |
-|[ProtoLayoutEdgeContentLayoutResponsive](ProtoLayoutEdgeContentLayoutResponsive-3.md.html)|ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales|
+|Issue Id                                                                                |Issue Description                                                                                                                                   |
+|----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+|[ProtoLayoutMinSchema](ProtoLayoutMinSchema.md.html)                                    |ProtoLayout feature is not guaranteed to be available on the target device API                                                                      |
+|[ProtoLayoutPrimaryLayoutResponsive](ProtoLayoutPrimaryLayoutResponsive.md.html)        |ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales   |
+|[ProtoLayoutEdgeContentLayoutResponsive](ProtoLayoutEdgeContentLayoutResponsive.md.html)|ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales|
 
 (##) Including
 
@@ -35,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.wear.protolayout:protolayout:1.2.0")
+implementation("androidx.wear.protolayout:protolayout:1.3.0-alpha04")
 
 // build.gradle
-implementation 'androidx.wear.protolayout:protolayout:1.2.0'
+implementation 'androidx.wear.protolayout:protolayout:1.3.0-alpha04'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.protolayout)
 
 # libs.versions.toml
 [versions]
-protolayout = "1.2.0"
+protolayout = "1.3.0-alpha04"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -57,8 +57,15 @@ protolayout = {
 }
 ```
 
-1.2.0 is the version this documentation was generated from;
+1.3.0-alpha04 is the version this documentation was generated from;
 there may be newer versions available.
+
+NOTE: These lint checks are **also** made available separate from the main library.
+Use one of the following artifacts:
+* `androidx.wear.protolayout:protolayout-expression:1.3.0-alpha04`
+* `androidx.wear.protolayout:protolayout-material3:1.3.0-alpha04`
+* `androidx.wear.protolayout:protolayout-material:1.3.0-alpha04`
+
 
 (##) Changes
 
@@ -72,6 +79,11 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.3.0-alpha04|2024/11/13|       3|         Yes|           8.7+|      8.7+|
+|       1.3.0-alpha03|2024/10/30|       3|         Yes|           8.7+|      8.7+|
+|       1.3.0-alpha02|2024/10/16|       3|         Yes|           8.7+|      8.7+|
+|       1.3.0-alpha01|2024/10/02|       3|         Yes|           8.7+|      8.7+|
+|               1.2.1|2024/10/16|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.2.0|2024/08/07|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.1.0|2024/02/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|
 

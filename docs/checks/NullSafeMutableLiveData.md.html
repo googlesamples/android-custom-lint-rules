@@ -40,15 +40,15 @@ Tests
 Copyright Year
 :   2019
 
-This check ensures that LiveData values are not null when explicitly    
+This check ensures that LiveData values are not null when explicitly
             declared as non-nullable.
 
                 Kotlin interoperability does not support enforcing
 explicit null-safety when using                 generic Java type
-parameters. Since LiveData is a Java class its value can always         
+parameters. Since LiveData is a Java class its value can always
        be null even when its type is explicitly declared as
 non-nullable. This can lead                 to runtime exceptions from
-reading a null LiveData value that is assumed to be                
+reading a null LiveData value that is assumed to be
 non-nullable.
 
 !!! Tip
@@ -60,7 +60,7 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * NullSafeMutableLiveData: LiveData value assignment nullability mismatch (this issue)
-* [NullSafeMutableLiveData from androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha03](NullSafeMutableLiveData.md.html)
+* [NullSafeMutableLiveData from androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha07](NullSafeMutableLiveData.md.html)
 * [NullSafeMutableLiveData from androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.0-alpha01](NullSafeMutableLiveData-2.md.html)
 
 
@@ -72,17 +72,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha03")
+implementation("androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha07")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha03'
+implementation 'androidx.lifecycle:lifecycle-livedata-core:2.9.0-alpha07'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lifecycle.livedata.core)
 
 # libs.versions.toml
 [versions]
-lifecycle-livedata-core = "2.9.0-alpha03"
+lifecycle-livedata-core = "2.9.0-alpha07"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -94,7 +94,7 @@ lifecycle-livedata-core = {
 }
 ```
 
-2.9.0-alpha03 is the version this documentation was generated from;
+2.9.0-alpha07 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.lifecycle:lifecycle-livedata-core](androidx_lifecycle_lifecycle-livedata-core.md.html).

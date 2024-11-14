@@ -5,7 +5,7 @@
    This is a warning.
 
 Id
-:   `UnsanitizedFilenameFromContentProvider`
+:   `UnsanitizedContentProviderFilename`
 Summary
 :   Trusting ContentProvider filenames without any sanitization
 Severity
@@ -32,7 +32,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
-:   https://goo.gle/UnsanitizedFilenameFromContentProvider
+:   https://goo.gle/UnsanitizedContentProviderFilename
 Implementation
 :   [Source Code](https://github.com/google/android-security-lints/tree/main/checks/src/main/java/com/example/lint/checks/UnsafeFilenameDetector.kt)
 Tests
@@ -45,62 +45,6 @@ provide the client app with a maliciously constructed filename. The
 client app should never trust this filename and should either sanitize
 it or completely discard it.
 
-(##) Example
-
-Here is an example of lint warnings produced by this check:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/TestClass.java:10:Warning: Using fileName is unsafe as it is a
-filename obtained directly from a ContentProvider. You should sanitize
-it before using it for creating a File.
-[UnsanitizedFilenameFromContentProvider]
-    File fileObject = new File("./", fileName);
-                                     --------
-src/TestClass.kt:10:Warning: Using fileName is unsafe as it is a
-filename obtained directly from a ContentProvider. You should sanitize
-it before using it for creating a File.
-[UnsanitizedFilenameFromContentProvider]
-    val fileObject = File("./", fileName)
-                                --------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Here are the relevant source files:
-
-`src/TestClass.java`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
-import android.database.Cursor;
-import android.provider.OpenableColumns;
-import java.io.File;
-
-class TestClass {
-  private void trustProvidedFilename_shouldWarn(Cursor cursor) {
-    int id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-    String fileName = cursor.getString(id);
-
-    File fileObject = new File("./", fileName);
-  }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-`src/TestClass.kt`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
-import android.database.Cursor
-import android.provider.OpenableColumns
-import java.io.File
-
-class TestClass {
-  private fun trustProvidedFilename_shouldWarn(cursor: Cursor) {
-    val id = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-    val fileName = cursor.getString(id)
-
-    val fileObject = File("./", fileName)
-  }
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can also visit the
-[source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/UnsafeFilenameDetectorTest.kt)
-for the unit tests for this check to see additional scenarios.
-
 (##) Including
 
 !!!
@@ -110,17 +54,17 @@ for the unit tests for this check to see additional scenarios.
 
 ```
 // build.gradle.kts
-lintChecks("com.android.security.lint:lint:1.0.2")
+lintChecks("com.android.security.lint:lint:1.0.3")
 
 // build.gradle
-lintChecks 'com.android.security.lint:lint:1.0.2'
+lintChecks 'com.android.security.lint:lint:1.0.3'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.com.android.security.lint.lint)
 
 # libs.versions.toml
 [versions]
-com-android-security-lint-lint = "1.0.2"
+com-android-security-lint-lint = "1.0.3"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -132,7 +76,7 @@ com-android-security-lint-lint = {
 }
 ```
 
-1.0.2 is the version this documentation was generated from;
+1.0.3 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.android.security.lint:lint](com_android_security_lint_lint.md.html).
@@ -145,7 +89,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```kt
   // Kotlin
-  @Suppress("UnsanitizedFilenameFromContentProvider")
+  @Suppress("UnsanitizedContentProviderFilename")
   fun method() {
      getColumnIndex(...)
   }
@@ -155,7 +99,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```java
   // Java
-  @SuppressWarnings("UnsanitizedFilenameFromContentProvider")
+  @SuppressWarnings("UnsanitizedContentProviderFilename")
   void method() {
      getColumnIndex(...);
   }
@@ -164,7 +108,7 @@ You can suppress false positives using one of the following mechanisms:
 * Using a suppression comment like this on the line above:
 
   ```kt
-  //noinspection UnsanitizedFilenameFromContentProvider
+  //noinspection UnsanitizedContentProviderFilename
   problematicStatement()
   ```
 
@@ -174,7 +118,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="UnsanitizedFilenameFromContentProvider" severity="ignore" /&gt;
+      &lt;issue id="UnsanitizedContentProviderFilename" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -187,7 +131,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'UnsanitizedFilenameFromContentProvider'
+      disable 'UnsanitizedContentProviderFilename'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -195,7 +139,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore UnsanitizedFilenameFromContentProvider ...`
+  $ lint --ignore UnsanitizedContentProviderFilename ...`
   ```
 
 * Last, but not least, using baselines, as discussed

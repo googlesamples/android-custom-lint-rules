@@ -3,7 +3,7 @@
 
 Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By vendor | [By severity](severity.md.html) | [By year](year.md.html) | [Libraries](libraries.md.html)
 
-* Built In (477)
+* Built In (480)
 
   - [AaptCrash: Potential AAPT crash](AaptCrash.md.html)
   - [AcceptsUserCertificates: Allowing User Certificates](AcceptsUserCertificates.md.html)
@@ -26,7 +26,9 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [AppCompatMethod: Using Wrong AppCompat Method](AppCompatMethod.md.html)
   - [AppCompatResource: Menu namespace](AppCompatResource.md.html)
   - [AppIndexingService: App Indexing Background Services](AppIndexingService.md.html)
+  - [AppLinkSplitToWebAndCustom: Android App links should only use http(s) schemes](AppLinkSplitToWebAndCustom.md.html)
   - [AppLinkUrlError: URI invalid](AppLinkUrlError.md.html)
+  - [AppLinkWarning: App Link warning](AppLinkWarning.md.html)
   - [AppLinksAutoVerify: App Links Auto Verification Failure](AppLinksAutoVerify.md.html)
   - [ApplySharedPref: Use `apply()` on `SharedPreferences`](ApplySharedPref.md.html)
   - [AssertionSideEffect: Assertions with Side Effects](AssertionSideEffect.md.html)
@@ -478,6 +480,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [WrongFolder: Resource file in the wrong `res` folder](WrongFolder.md.html)
   - [WrongManifestParent: Wrong manifest parent](WrongManifestParent.md.html)
   - [WrongRegion: Suspicious Language/Region Combination](WrongRegion.md.html)
+  - [WrongSdkInt: Mismatched SDK_INT or SDK_INT_FULL](WrongSdkInt.md.html)
   - [WrongThread: Wrong Thread](WrongThread.md.html)
   - [WrongThreadInterprocedural: Wrong Thread (Interprocedural)](WrongThreadInterprocedural.md.html)
   - [WrongViewCast: Mismatched view type](WrongViewCast.md.html)
@@ -536,17 +539,17 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
 
 * Android Open Source Project (androidx.fragment.testing.manifest) (1)
 
-  - [FragmentGradleConfiguration: Include the fragment-testing-manifest library using the debugImplementation configuration](FragmentGradleConfiguration.md.html)
+  - [FragmentGradleConfiguration: Include the fragment-testing-manifest library using the debugImplementation configuration](FragmentGradleConfiguration-2.md.html)
 
 * Android Open Source Project (androidx.lifecycle) (8)
 
   - [NullSafeMutableLiveData: LiveData value assignment nullability mismatch](NullSafeMutableLiveData.md.html)
-  - [NullSafeMutableLiveData: LiveData value assignment nullability mismatch](NullSafeMutableLiveData.md.html)
+  - [NullSafeMutableLiveData: LiveData value assignment nullability mismatch](NullSafeMutableLiveData-2.md.html)
   - [RepeatOnLifecycleWrongUsage: Wrong usage of repeatOnLifecycle](RepeatOnLifecycleWrongUsage.md.html)
-  - [RepeatOnLifecycleWrongUsage: Wrong usage of repeatOnLifecycle](RepeatOnLifecycleWrongUsage.md.html)
+  - [RepeatOnLifecycleWrongUsage: Wrong usage of repeatOnLifecycle](RepeatOnLifecycleWrongUsage-2.md.html)
   - [TestLifecycleOwnerInCoroutine: Use the suspending function setCurrentState(), rather than directly accessing the currentState property](TestLifecycleOwnerInCoroutine.md.html)
   - [UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method](UnsafeLifecycleWhenUsage.md.html)
-  - [UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method](UnsafeLifecycleWhenUsage.md.html)
+  - [UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method](UnsafeLifecycleWhenUsage-2.md.html)
   - [ViewModelConstructorInComposable: Constructing a view model in a composable](ViewModelConstructorInComposable.md.html)
 
 * Android Open Source Project (androidx.lint:lint-gradle) (6)
@@ -558,16 +561,20 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [WithPluginClasspathUsage: Flags usage of GradleRunner#withPluginClasspath](WithPluginClasspathUsage.md.html)
   - [WithTypeWithoutConfigureEach: Flags usage of withType with a closure instead of configureEach](WithTypeWithoutConfigureEach.md.html)
 
-* Android Open Source Project (androidx.navigation.common) (2)
+* Android Open Source Project (androidx.navigation.common) (4)
 
   - [EmptyNavDeepLink: NavDeepLink must define an uri, action, and/or mimetype to be valid](EmptyNavDeepLink.md.html)
-  - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType.md.html)
+  - [MissingKeepAnnotation: In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep](MissingKeepAnnotation-3.md.html)
+  - [MissingSerializableAnnotation: Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable](MissingSerializableAnnotation-3.md.html)
+  - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType-3.md.html)
 
-* Android Open Source Project (androidx.navigation.runtime) (3)
+* Android Open Source Project (androidx.navigation.runtime) (5)
 
   - [DeepLinkInActivityDestination: A <deeplink> should not be attached to an <activity> destination](DeepLinkInActivityDestination.md.html)
+  - [MissingKeepAnnotation: In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep](MissingKeepAnnotation-2.md.html)
+  - [MissingSerializableAnnotation: Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable](MissingSerializableAnnotation-2.md.html)
   - [WrongNavigateRouteType: Navigation route should be an object literal or a destination class instance with arguments](WrongNavigateRouteType.md.html)
-  - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType.md.html)
+  - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType-2.md.html)
 
 * Android Open Source Project (androidx.recyclerview) (1)
 
@@ -578,16 +585,10 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [EnsureInitializerMetadata: Every Initializer needs to be accompanied by a corresponding <meta-data> entry in the AndroidManifest.xml file](EnsureInitializerMetadata.md.html)
   - [EnsureInitializerNoArgConstr: Missing Initializer no-arg constructor](EnsureInitializerNoArgConstr.md.html)
 
-* Android Open Source Project (androidx.wear.protolayout) (9)
+* Android Open Source Project (androidx.wear.protolayout) (3)
 
   - [ProtoLayoutEdgeContentLayoutResponsive: ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales](ProtoLayoutEdgeContentLayoutResponsive.md.html)
-  - [ProtoLayoutEdgeContentLayoutResponsive: ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales](ProtoLayoutEdgeContentLayoutResponsive.md.html)
-  - [ProtoLayoutEdgeContentLayoutResponsive: ProtoLayout Material EdgeContentLayout should be used with responsivebehaviour to ensure the best behaviour across different screen sizes andlocales](ProtoLayoutEdgeContentLayoutResponsive.md.html)
   - [ProtoLayoutMinSchema: ProtoLayout feature is not guaranteed to be available on the target device API](ProtoLayoutMinSchema.md.html)
-  - [ProtoLayoutMinSchema: ProtoLayout feature is not guaranteed to be available on the target device API](ProtoLayoutMinSchema.md.html)
-  - [ProtoLayoutMinSchema: ProtoLayout feature is not guaranteed to be available on the target device API](ProtoLayoutMinSchema.md.html)
-  - [ProtoLayoutPrimaryLayoutResponsive: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales](ProtoLayoutPrimaryLayoutResponsive.md.html)
-  - [ProtoLayoutPrimaryLayoutResponsive: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales](ProtoLayoutPrimaryLayoutResponsive.md.html)
   - [ProtoLayoutPrimaryLayoutResponsive: ProtoLayout Material PrimaryLayout should be used with responsive behaviourto ensure the best behaviour across different screen sizes and locales](ProtoLayoutPrimaryLayoutResponsive.md.html)
 
 * Android Open Source Project (androidx.work) (9)
@@ -626,7 +627,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [UnintendedExposedUrl: Application may have a debugging or development URL publicly exposed](UnintendedExposedUrl.md.html)
   - [UnintendedPrivateIpAddress: Application may have a private IP address publicly exposed](UnintendedPrivateIpAddress.md.html)
   - [UnsafeCryptoAlgorithmUsage: Application uses unsafe cipher modes or paddings with cryptographic algorithms](UnsafeCryptoAlgorithmUsage.md.html)
-  - [UnsanitizedFilenameFromContentProvider: Trusting ContentProvider filenames without any sanitization](UnsanitizedFilenameFromContentProvider.md.html)
+  - [UnsanitizedContentProviderFilename: Trusting ContentProvider filenames without any sanitization](UnsanitizedContentProviderFilename.md.html)
   - [VulnerableCryptoAlgorithm: Application uses vulnerable cryptography algorithms](VulnerableCryptoAlgorithm.md.html)
   - [WeakPrng: Application uses non-cryptographically secure pseudorandom number generators](WeakPrng.md.html)
 
@@ -641,8 +642,9 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [TimberExceptionLogging: Exception Logging](TimberExceptionLogging.md.html)
   - [TimberTagLength: Too Long Log Tags](TimberTagLength.md.html)
 
-* Jetpack Activity Compose (androidx.activity.compose) (2)
+* Jetpack Activity Compose (androidx.activity.compose) (3)
 
+  - [ContextCastToActivity: LocalContext should not be cast to Activity, use LocalActivity instead](ContextCastToActivity.md.html)
   - [LaunchDuringComposition: Calls to `launch` should happen inside of a SideEffect and not during composition](LaunchDuringComposition.md.html)
   - [NoCollectCallFound: You must call collect on the given progress flow when using PredictiveBackHandler](NoCollectCallFound.md.html)
 
@@ -720,16 +722,17 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
 
   - [InvalidLanguageTagDelimiter: Underscore (`_`) is an unsupported delimiter for subtags](InvalidLanguageTagDelimiter.md.html)
 
-* Jetpack Navigation Compose (androidx.navigation.compose) (4)
+* Jetpack Navigation Compose (androidx.navigation.compose) (6)
 
   - [ComposableDestinationInComposeScope: Building composable destination in compose scope](ComposableDestinationInComposeScope.md.html)
   - [ComposableNavGraphInComposeScope: Building navigation graph in compose scope](ComposableNavGraphInComposeScope.md.html)
+  - [MissingKeepAnnotation: In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep](MissingKeepAnnotation.md.html)
+  - [MissingSerializableAnnotation: Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable](MissingSerializableAnnotation.md.html)
   - [UnrememberedGetBackStackEntry: Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key](UnrememberedGetBackStackEntry.md.html)
   - [WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.](WrongStartDestinationType.md.html)
 
 * slack (com.slack.lint.compose:compose-lints) (21)
 
-  - [ComposeComposableModifier: Don't use @Composable builder functions for modifiers](ComposeComposableModifier.md.html)
   - [ComposeCompositionLocalGetter: CompositionLocals should not use getters](ComposeCompositionLocalGetter.md.html)
   - [ComposeCompositionLocalUsage: CompositionLocals are discouraged](ComposeCompositionLocalUsage.md.html)
   - [ComposeContentEmitterReturningValues: Composable functions should emit XOR return](ComposeContentEmitterReturningValues.md.html)
@@ -750,10 +753,12 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [ComposeUnstableReceiver: Unstable receivers will always be recomposed](ComposeUnstableReceiver.md.html)
   - [ComposeViewModelForwarding: Don't forward ViewModels through composables](ComposeViewModelForwarding.md.html)
   - [ComposeViewModelInjection: Implicit dependencies of composables should be made explicit](ComposeViewModelInjection.md.html)
+  - [SlotReused: Slots should be invoked in at most one place](SlotReused.md.html)
 
-* slack (slack-lint) (91)
+* slack (slack-lint) (94)
 
   - [ArgInFormattedQuantityStringRes: Count value in formatted string resource](ArgInFormattedQuantityStringRes.md.html)
+  - [AvoidUsingNotNullOperator: Avoid using the !! operator in Kotlin](AvoidUsingNotNullOperator.md.html)
   - [BindingReceiverParameter: @Binds/@Provides functions cannot be extensions](BindingReceiverParameter.md.html)
   - [BindingReturnType: @Binds/@Provides must have a return type](BindingReturnType.md.html)
   - [BindsMustBeAbstract: @Binds functions must be abstract](BindsMustBeAbstract.md.html)
@@ -765,6 +770,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [DeprecatedCall: This class or method is deprecated; consider using an alternative](DeprecatedCall.md.html)
   - [DeprecatedSqlUsage: Use SqlDelight](DeprecatedSqlUsage.md.html)
   - [DoNotCallProviders: Dagger provider methods should not be called directly by user code](DoNotCallProviders.md.html)
+  - [DoNotCallViewToString: Do not use `View.toString()`](DoNotCallViewToString.md.html)
   - [DoNotExposeEitherNetInRepositories: Repository APIs should not expose EitherNet types directly](DoNotExposeEitherNetInRepositories.md.html)
   - [DoNotMock: <Never used>](DoNotMock.md.html)
   - [DoNotMockAnything: Do not add new mocks](DoNotMockAnything.md.html)
@@ -783,6 +789,7 @@ Order: [Alphabetical](index.md.html) | [By category](categories.md.html) | By ve
   - [GuavaPreconditionsUsedInKotlin: Kotlin precondition checks should use the Kotlin standard library checks](GuavaPreconditionsUsedInKotlin.md.html)
   - [InclusiveNaming: Use inclusive naming](InclusiveNaming.md.html)
   - [InclusiveNaming: Use inclusive naming](InclusiveNaming.md.html)
+  - [InflationInItemDecoration: Avoid inflating a view to display text](InflationInItemDecoration.md.html)
   - [InjectInJava: Only Kotlin classes should be injected in order for Anvil to work](InjectInJava.md.html)
   - [JavaOnlyDetector: Using @JavaOnly elements in Kotlin code](JavaOnlyDetector.md.html)
   - [KotlinPairNotCreated: Use Kotlin's kotlin.Pair instead of other Pair types from other libraries like AndroidX and Slack commons](KotlinPairNotCreated.md.html)

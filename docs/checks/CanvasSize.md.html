@@ -166,14 +166,14 @@ public abstract class MyDrawable extends Drawable {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`src/test/pkg/MyDrawable.kt`:
+`src/test/pkg/MyDrawableKotlin.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package test.pkg
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 
-abstract class MyDrawable : Drawable() {
+abstract class MyDrawableKotlin : Drawable() {
     override fun draw(canvas: Canvas) {
         val width1 = bounds.width() // OK
         val width2 = canvas.width // WARN

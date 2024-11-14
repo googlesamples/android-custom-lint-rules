@@ -17,14 +17,16 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.navigation:navigation-common:2.8.1
+:   androidx.navigation:navigation-common:2.9.0-alpha03
 
 (##) Included Issues
 
-|Issue Id                                                        |Issue Description                                                                                                                                                                                                                |
-|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|[EmptyNavDeepLink](EmptyNavDeepLink.md.html)                    |NavDeepLink must define an uri, action, and/or mimetype to be valid                                                                                                                                                              |
-|[WrongStartDestinationType](WrongStartDestinationType-3.md.html)|If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
+|Issue Id                                                                |Issue Description                                                                                                                                                                                                                |
+|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|[EmptyNavDeepLink](EmptyNavDeepLink.md.html)                            |NavDeepLink must define an uri, action, and/or mimetype to be valid                                                                                                                                                              |
+|[WrongStartDestinationType](WrongStartDestinationType-3.md.html)        |If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
+|[MissingSerializableAnnotation](MissingSerializableAnnotation-3.md.html)|Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable                                                                                                                                             |
+|[MissingKeepAnnotation](MissingKeepAnnotation-3.md.html)                |In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep                                                                                                       |
 
 (##) Including
 
@@ -34,17 +36,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-common:2.8.1")
+implementation("androidx.navigation:navigation-common:2.9.0-alpha03")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-common:2.8.1'
+implementation 'androidx.navigation:navigation-common:2.9.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation.common)
 
 # libs.versions.toml
 [versions]
-navigation-common = "2.8.1"
+navigation-common = "2.9.0-alpha03"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -56,13 +58,14 @@ navigation-common = {
 }
 ```
 
-2.8.1 is the version this documentation was generated from;
+2.9.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
 
 * 2.6.0: First version includes EmptyNavDeepLink.
 * 2.8.0: Adds WrongStartDestinationType.
+* 2.8.3: Adds MissingKeepAnnotation, MissingSerializableAnnotation.
 
 (##) Version Compatibility
 
@@ -70,6 +73,12 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       2.9.0-alpha03|2024/11/13|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.9.0-alpha02|2024/10/30|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       2.9.0-alpha01|2024/10/16|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.4|2024/11/13|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.3|2024/10/16|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               2.8.2|2024/10/02|       2|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
 |               2.8.1|2024/09/18|       2|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
 |               2.8.0|2024/09/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               2.7.7|2024/02/07|       1|         Yes|    8.0 and 8.1|8.0 and 8.1|

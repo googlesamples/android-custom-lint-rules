@@ -17,7 +17,7 @@ Min
 Compiled
 :   Lint 8.0 and 8.1
 Artifact
-:   androidx.activity:activity-compose:1.10.0-alpha02
+:   androidx.activity:activity-compose:1.10.0-beta01
 
 (##) Included Issues
 
@@ -25,6 +25,7 @@ Artifact
 |----------------------------------------------------------|---------------------------------------------------------------------------------|
 |[LaunchDuringComposition](LaunchDuringComposition.md.html)|Calls to `launch` should happen inside of a SideEffect and not during composition|
 |[NoCollectCallFound](NoCollectCallFound.md.html)          |You must call collect on the given progress flow when using PredictiveBackHandler|
+|[ContextCastToActivity](ContextCastToActivity.md.html)    |LocalContext should not be cast to Activity, use LocalActivity instead           |
 
 (##) Including
 
@@ -34,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.activity:activity-compose:1.10.0-alpha02")
+implementation("androidx.activity:activity-compose:1.10.0-beta01")
 
 // build.gradle
-implementation 'androidx.activity:activity-compose:1.10.0-alpha02'
+implementation 'androidx.activity:activity-compose:1.10.0-beta01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.activity.compose)
 
 # libs.versions.toml
 [versions]
-activity-compose = "1.10.0-alpha02"
+activity-compose = "1.10.0-beta01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -56,13 +57,14 @@ activity-compose = {
 }
 ```
 
-1.10.0-alpha02 is the version this documentation was generated from;
+1.10.0-beta01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
 
 * 1.4.0: First version includes LaunchDuringComposition.
 * 1.8.0: Adds NoCollectCallFound.
+* 1.10.0-alpha03: Adds ContextCastToActivity.
 
 (##) Version Compatibility
 
@@ -70,8 +72,11 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.10.0-beta01|2024/11/13|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|      1.10.0-alpha03|2024/10/30|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |      1.10.0-alpha02|2024/09/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |      1.10.0-alpha01|2024/06/26|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.9.3|2024/10/16|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.9.2|2024/09/04|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.9.1|2024/07/24|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.9.0|2024/04/17|       2|         Yes|    8.0 and 8.1|8.0 and 8.1|

@@ -1,0 +1,225 @@
+<meta charset="utf-8">
+(#) App Link warning
+
+!!! WARNING: App Link warning
+   This is a warning.
+
+Id
+:   `AppLinkWarning`
+Summary
+:   App Link warning
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Manifest files
+Editing
+:   This check runs on the fly in the IDE editor
+See
+:   https://developer.android.com/training/app-links
+See
+:   https://g.co/AppIndexing/AndroidStudio
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppLinksValidDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksValidDetectorTest.kt)
+Copyright Year
+:   2017
+
+From Android 12, intent filters that use the HTTP and HTTPS schemes will
+no longer               bring the user to your app when the user clicks
+a link, unless the intent filter is               an Android App Link.
+Such intent filters must include certain elements, and at least
+     one Android App Link for each domain must have
+`android:autoVerify="true"` to verify               ownership of the
+domain. We recommend adding `android:autoVerify="true"` to any intent
+           filter that is intended to be an App Link, in case the other
+App Links are modified.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+AndroidManifest.xml:6:Warning: This intent filter has the format of an
+Android App Link but is missing the autoVerify attribute; add
+android:autoVerify="true" to ensure your domain will be validated and
+enable App Link-related Lint warnings. If you do not want clicked URLs
+to bring the user to your app, remove the
+android.intent.category.BROWSABLE category, or set
+android:autoVerify="false" to make it clear this is not intended to be
+an Android App Link. [AppLinkWarning]
+    &lt;intent-filter&gt; &lt;!-- We expect a warning here --&gt;
+     -------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`AndroidManifest.xml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.helloworld" &gt;
+
+    &lt;application&gt;
+        &lt;activity android:name=".FullscreenActivity"&gt;
+            &lt;intent-filter&gt; &lt;!-- We expect a warning here --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:scheme="http" /&gt;
+                &lt;data android:scheme="https" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter&gt; &lt;!-- Missing VIEW --&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:scheme="http" /&gt;
+                &lt;data android:scheme="https" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter&gt; &lt;!-- Missing DEFAULT --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:scheme="http" /&gt;
+                &lt;data android:scheme="https" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter&gt; &lt;!-- Missing BROWSABLE --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+
+                &lt;data android:scheme="http" /&gt;
+                &lt;data android:scheme="https" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter&gt; &lt;!-- Has custom scheme, missing http --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:scheme="other" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter&gt; &lt;!-- Has no scheme --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter&gt; &lt;!-- Missing host --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:scheme="http" /&gt;
+                &lt;data android:scheme="https" /&gt;
+            &lt;/intent-filter&gt;
+
+            &lt;intent-filter android:autoVerify="false"&gt; &lt;!-- We would usually expect a warning here, but it has autoVerify="false" --&gt;
+                &lt;action android:name="android.intent.action.VIEW" /&gt;
+                &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+                &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+
+                &lt;data android:scheme="http" /&gt;
+                &lt;data android:scheme="https" /&gt;
+
+                &lt;data android:host="example.com" /&gt;
+                &lt;data android:pathPrefix="/gizmos" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksValidDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `AppLinksValidDetector.testAddAutoVerifySuggestion`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Adding the suppression attribute `tools:ignore="AppLinkWarning"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
+
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;manifest xmlns:tools="http://schemas.android.com/tools"&gt;
+      ...
+      &lt;activity tools:ignore="AppLinkWarning" .../&gt;
+    ...
+  &lt;/manifest&gt;
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="AppLinkWarning" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'AppLinkWarning'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore AppLinkWarning ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

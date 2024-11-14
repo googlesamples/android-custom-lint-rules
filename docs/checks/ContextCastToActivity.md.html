@@ -1,0 +1,190 @@
+<meta charset="utf-8">
+(#) LocalContext should not be cast to Activity, use LocalActivity instead
+
+!!! ERROR: LocalContext should not be cast to Activity, use LocalActivity instead
+   This is an error.
+
+Id
+:   `ContextCastToActivity`
+Summary
+:   LocalContext should not be cast to Activity, use LocalActivity instead
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Activity Compose
+Identifier
+:   androidx.activity.compose
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.0 and 8.1
+Artifact
+:   [androidx.activity:activity-compose](androidx_activity_activity-compose.md.html)
+
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/main/java/androidx/activity/compose/lint/LocalContextCastIssueDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/test/java/androidx/activity/compose/lint/LocalContextCastIssueDetectorTest.kt)
+Copyright Year
+:   2024
+
+Casting Context to Activity is an error as Contexts are not always
+Activities. Use LocalActivity instead.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/com/example/MyActivity.kt:11:Error: LocalContext should not be cast
+to Activity, use LocalActivity instead [ContextCastToActivity]
+    val activity: Activity = LocalContext.current as Activity
+                             --------------------------------
+src/com/example/MyActivity.kt:12:Error: LocalContext should not be cast
+to Activity, use LocalActivity instead [ContextCastToActivity]
+    val activity2 = LocalContext.current as? Activity
+                    ---------------------------------
+src/com/example/MyActivity.kt:13:Error: LocalContext should not be cast
+to Activity, use LocalActivity instead [ContextCastToActivity]
+    val activity3 = LocalContext.current as? MyActivity
+                    -----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/com/example/MyActivity.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example
+
+import android.app.Activity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+
+class MyActivity: Activity()
+
+@Composable
+fun Test() {
+    val activity: Activity = LocalContext.current as Activity
+    val activity2 = LocalContext.current as? Activity
+    val activity3 = LocalContext.current as? MyActivity
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/test/java/androidx/activity/compose/lint/LocalContextCastIssueDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `LocalContextCastIssueDetector.errors`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.activity:activity-compose:1.10.0-beta01")
+
+// build.gradle
+implementation 'androidx.activity:activity-compose:1.10.0-beta01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.activity.compose)
+
+# libs.versions.toml
+[versions]
+activity-compose = "1.10.0-beta01"
+[libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
+activity-compose = {
+    module = "androidx.activity:activity-compose",
+    version.ref = "activity-compose"
+}
+```
+
+1.10.0-beta01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.activity:activity-compose](androidx_activity_activity-compose.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("ContextCastToActivity")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("ContextCastToActivity")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection ContextCastToActivity
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="ContextCastToActivity" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'ContextCastToActivity'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore ContextCastToActivity ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

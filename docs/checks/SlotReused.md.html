@@ -1,13 +1,13 @@
 <meta charset="utf-8">
-(#) Don't use @Composable builder functions for modifiers
+(#) Slots should be invoked in at most one place
 
-!!! ERROR: Don't use @Composable builder functions for modifiers
+!!! ERROR: Slots should be invoked in at most one place
    This is an error.
 
 Id
-:   `ComposeComposableModifier`
+:   `SlotReused`
 Summary
-:   Don't use @Composable builder functions for modifiers
+:   Slots should be invoked in at most one place
 Severity
 :   Error
 Category
@@ -21,9 +21,9 @@ Identifier
 Feedback
 :   https://github.com/slackhq/compose-lints/issues
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html)
 
@@ -32,39 +32,42 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/main/java/slack/lint/compose/ModifierComposableDetector.kt)
+:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/main/java/slack/lint/compose/SlotReusedDetector.kt)
 Tests
-:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/ModifierComposableDetectorTest.kt)
+:   [Source Code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/SlotReusedDetectorTest.kt)
 Copyright Year
-:   2023
+:   2024
 
-Using @Composable builder functions for modifiers is not recommended, as
-they cause unnecessary recompositions.You should use the Modifier.Node
-API instead, as it limits recomposition to just the modifier instance,
-rather than the whole function tree.See
-https://slackhq.github.io/compose-lints/rules/#avoid-modifier-extension-factory-functions
+Slots should be invoked in at most once place to meet lifecycle
+expectations. Slots should not be invoked in multiple places in source
+code, where the invoking location changes based on some condition. This
+will preserve the slot's internal state when the invoking location
+changes. See
+https://slackhq.github.io/compose-lints/rules/#do-not-invoke-slots-in-more-than-once-place
 for more information.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test.kt:4:Error: Using @Composable builder functions for modifiers
-is not recommended, as they cause unnecessary recompositions.You should
-use the Modifier.Node API instead, as it limits recomposition to just
-the modifier instance, rather than the whole function tree.See
-https://slackhq.github.io/compose-lints/rules/#avoid-modifier-extension-factory-functions
-for more information. [ComposeComposableModifier]
-@Composable
-^
-src/test.kt:6:Error: Using @Composable builder functions for modifiers
-is not recommended, as they cause unnecessary recompositions.You should
-use the Modifier.Node API instead, as it limits recomposition to just
-the modifier instance, rather than the whole function tree.See
-https://slackhq.github.io/compose-lints/rules/#avoid-modifier-extension-factory-functions
-for more information. [ComposeComposableModifier]
-@Composable
-^
+src/test.kt:7:Error: Slots should be invoked in at most once place to
+meet lifecycle expectations. Slots should not be invoked in multiple
+places in source code, where the invoking location changes based on some
+condition. This will preserve the slot's internal state when the
+invoking location changes. See
+https://slackhq.github.io/compose-lints/rules/#do-not-invoke-slots-in-more-than-once-place
+for more information. [SlotReused]
+  slot: @Composable () -&gt; Unit,
+  ----------------------------
+src/test.kt:18:Error: Slots should be invoked in at most once place to
+meet lifecycle expectations. Slots should not be invoked in multiple
+places in source code, where the invoking location changes based on some
+condition. This will preserve the slot's internal state when the
+invoking location changes. See
+https://slackhq.github.io/compose-lints/rules/#do-not-invoke-slots-in-more-than-once-place
+for more information. [SlotReused]
+  slot: @Composable () -&gt; Unit,
+  ----------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -75,17 +78,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Modifier.something1(): Modifier { }
+fun Something(
+  modifier: Modifier = Modifier,
+  slot: @Composable () -> Unit,
+) {
+  Row(modifier) {
+    slot()
+    slot()
+  }
+}
+
 @Composable
-fun Modifier.something2() = somethingElse()
+fun SomethingElse(
+  modifier: Modifier = Modifier,
+  slot: @Composable () -> Unit,
+) {
+  Column(modifier) {
+    slot()
+    Box {
+      slot()
+    }
+  }
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/ModifierComposableDetectorTest.kt)
+[source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/SlotReusedDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `ModifierComposableDetector.errors when a composable Modifier extension is detected`.
+found for this lint check, `SlotReusedDetector.errors when the slot parameter of a Composable is used more than once at the same time`.
 To report a problem with this extracted sample, visit
 https://github.com/slackhq/compose-lints/issues.
 
@@ -98,17 +120,17 @@ https://github.com/slackhq/compose-lints/issues.
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+lintChecks("com.slack.lint.compose:compose-lint-checks:1.4.2")
 
 // build.gradle
-lintChecks 'com.slack.lint.compose:compose-lint-checks:1.3.1'
+lintChecks 'com.slack.lint.compose:compose-lint-checks:1.4.2'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.compose.lint.checks)
 
 # libs.versions.toml
 [versions]
-compose-lint-checks = "1.3.1"
+compose-lint-checks = "1.4.2"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -120,7 +142,7 @@ compose-lint-checks = {
 }
 ```
 
-1.3.1 is the version this documentation was generated from;
+1.4.2 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about com.slack.lint.compose:compose-lint-checks](com_slack_lint_compose_compose-lint-checks.md.html).
@@ -133,7 +155,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```kt
   // Kotlin
-  @Suppress("ComposeComposableModifier")
+  @Suppress("SlotReused")
   fun method() {
      problematicStatement()
   }
@@ -143,7 +165,7 @@ You can suppress false positives using one of the following mechanisms:
 
   ```java
   // Java
-  @SuppressWarnings("ComposeComposableModifier")
+  @SuppressWarnings("SlotReused")
   void method() {
      problematicStatement();
   }
@@ -152,7 +174,7 @@ You can suppress false positives using one of the following mechanisms:
 * Using a suppression comment like this on the line above:
 
   ```kt
-  //noinspection ComposeComposableModifier
+  //noinspection SlotReused
   problematicStatement()
   ```
 
@@ -162,7 +184,7 @@ You can suppress false positives using one of the following mechanisms:
   ```xml
   &lt;?xml version="1.0" encoding="UTF-8"?&gt;
   &lt;lint&gt;
-      &lt;issue id="ComposeComposableModifier" severity="ignore" /&gt;
+      &lt;issue id="SlotReused" severity="ignore" /&gt;
   &lt;/lint&gt;
   ```
   Instead of `ignore` you can also change the severity here, for
@@ -175,7 +197,7 @@ You can suppress false positives using one of the following mechanisms:
   example, you can use something like
   ```gradle
   lintOptions {
-      disable 'ComposeComposableModifier'
+      disable 'SlotReused'
   }
   ```
   In Android projects this should be nested inside an `android { }`
@@ -183,7 +205,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore ComposeComposableModifier ...`
+  $ lint --ignore SlotReused ...`
   ```
 
 * Last, but not least, using baselines, as discussed

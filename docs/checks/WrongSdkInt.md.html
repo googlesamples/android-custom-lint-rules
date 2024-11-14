@@ -1,0 +1,162 @@
+<meta charset="utf-8">
+(#) Mismatched SDK_INT or SDK_INT_FULL
+
+!!! ERROR: Mismatched SDK_INT or SDK_INT_FULL
+   This is an error.
+
+Id
+:   `WrongSdkInt`
+Summary
+:   Mismatched SDK_INT or SDK_INT_FULL
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/ApiDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)
+Copyright Year
+:   2012
+
+The `SDK_INT` constant can be used to check what the current API level
+is. The `SDK_INT_FULL` constant also contains this information, but it
+also carries additional information about minor versions between major
+releases, and cannot be compared directly with the normal API levels.
+
+You should typically compare `SDK_INT` with the constants in
+`Build.VERSION_CODES`, and `SDK_INT_FULL` with the constants in
+`Build.VERSION_CODES_FULL`. This lint check flags suspicious
+combinations of these comparisons.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/test.kt:13:Error: The API level
+(Build.VERSION_CODES_FULL.VANILLA_ICE_CREAM_0) appears to be a plain SDK
+int, so it should be compared with SDK_INT, not SDK_INT, or you should
+switch the API level to a full SDK constant [WrongSdkInt]
+    if (SDK_INT &gt; Build.VERSION_CODES_FULL.VANILLA_ICE_CREAM_0) { // ERROR 1
+        ------------------------------------------------------
+src/test/pkg/test.kt:15:Error: The API level
+(Build.VERSION_CODES.VANILLA_ICE_CREAM) appears to be a full SDK int
+(encoding major and minor versions), so it should be compared with
+SDK_INT_FULL, not SDK_INT [WrongSdkInt]
+    if (SDK_INT_FULL &gt; Build.VERSION_CODES.VANILLA_ICE_CREAM) { // ERROR 2
+        ----------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test/pkg/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package test.pkg
+
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION.SDK_INT_FULL
+import android.os.Build.VERSION_CODES_FULL
+import android.os.Build
+
+fun testInvalidComparisons() {
+    if (SDK_INT_FULL > Build.VERSION_CODES_FULL.VANILLA_ICE_CREAM_0) { // OK 1
+    }
+    if (SDK_INT_FULL > Build.VERSION_CODES_FULL.VANILLA_ICE_CREAM_0) { // OK 2
+    }
+    if (SDK_INT > Build.VERSION_CODES_FULL.VANILLA_ICE_CREAM_0) { // ERROR 1
+    }
+    if (SDK_INT_FULL > Build.VERSION_CODES.VANILLA_ICE_CREAM) { // ERROR 2
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUR_DEVELOPMENT) { // OK 3
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ApiDetector.testInvalidComparisons`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=192708.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("WrongSdkInt")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("WrongSdkInt")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WrongSdkInt
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WrongSdkInt" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WrongSdkInt'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WrongSdkInt ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

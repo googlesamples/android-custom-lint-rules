@@ -61,23 +61,23 @@ package test.pkg;
 
 import android.view.View;
 
-import test.pkg.myapplication.R;
+import test.pkg.R;
 
 public class ImplicitCastTest2 extends MyActivityStub {
     public void test() {
         checkNotNull1(findViewById(R.id.textView)).setAlpha(0.5f); // WARN
-        checkNotNull2(findViewById(R.id.textView)).setAlpha(0.5f); // OK
-        checkNotNull3(findViewById(R.id.textView)).setAlpha(0.5f); // OK
-        checkNotNull1(findViewById(R.id.textView)); // OK
-        checkNotNull2(findViewById(R.id.textView)); // OK
-        checkNotNull3(findViewById(R.id.textView)); // OK
-        checkNotNull1((View)findViewById(R.id.textView)); // OK
-        checkNotNull2((View)findViewById(R.id.textView)); // OK
-        checkNotNull3((View)findViewById(R.id.textView)); // OK
-        View view1 = checkNotNull1(findViewById(R.id.textView)); // OK
-        View view2 = checkNotNull2(findViewById(R.id.textView)); // OK
-        View view3 = checkNotNull3(findViewById(R.id.textView)); // OK
-        findViewById(R.id.textView); // OK
+        checkNotNull2(findViewById(R.id.textView)).setAlpha(0.5f); // OK 1
+        checkNotNull3(findViewById(R.id.textView)).setAlpha(0.5f); // OK 2
+        checkNotNull1(findViewById(R.id.textView)); // OK 3
+        checkNotNull2(findViewById(R.id.textView)); // OK 4
+        checkNotNull3(findViewById(R.id.textView)); // OK 5
+        checkNotNull1((View)findViewById(R.id.textView)); // OK 6
+        checkNotNull2((View)findViewById(R.id.textView)); // OK 7
+        checkNotNull3((View)findViewById(R.id.textView)); // OK 8
+        View view1 = checkNotNull1(findViewById(R.id.textView)); // OK 9
+        View view2 = checkNotNull2(findViewById(R.id.textView)); // OK 10
+        View view3 = checkNotNull3(findViewById(R.id.textView)); // OK 11
+        findViewById(R.id.textView); // OK 12
     }
 
     public static <T> T checkNotNull1(T reference) {

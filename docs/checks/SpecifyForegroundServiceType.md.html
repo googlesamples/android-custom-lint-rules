@@ -25,7 +25,7 @@ Feedback
 Min
 :   Lint 8.0 and 8.1
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [androidx.work:work-runtime](androidx_work_work-runtime.md.html)
 
@@ -88,17 +88,17 @@ https://issuetracker.google.com/issues/new?component=409906.
 
 ```
 // build.gradle.kts
-implementation("androidx.work:work-runtime:2.10.0-alpha04")
+implementation("androidx.work:work-runtime:2.10.0")
 
 // build.gradle
-implementation 'androidx.work:work-runtime:2.10.0-alpha04'
+implementation 'androidx.work:work-runtime:2.10.0'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.work.runtime)
 
 # libs.versions.toml
 [versions]
-work-runtime = "2.10.0-alpha04"
+work-runtime = "2.10.0"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -110,7 +110,7 @@ work-runtime = {
 }
 ```
 
-2.10.0-alpha04 is the version this documentation was generated from;
+2.10.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.work:work-runtime](androidx_work_work-runtime.md.html).

@@ -23,7 +23,7 @@ Feedback
 Min
 :   Lint 8.0 and 8.1
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html)
 
@@ -115,17 +115,17 @@ https://issuetracker.google.com/issues/new?component=612128.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.animation:animation-android:1.8.0-alpha02")
+implementation("androidx.compose.animation:animation-android:1.8.0-alpha06")
 
 // build.gradle
-implementation 'androidx.compose.animation:animation-android:1.8.0-alpha02'
+implementation 'androidx.compose.animation:animation-android:1.8.0-alpha06'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.animation.android)
 
 # libs.versions.toml
 [versions]
-animation-android = "1.8.0-alpha02"
+animation-android = "1.8.0-alpha06"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -137,8 +137,12 @@ animation-android = {
 }
 ```
 
-1.8.0-alpha02 is the version this documentation was generated from;
+1.8.0-alpha06 is the version this documentation was generated from;
 there may be newer versions available.
+
+NOTE: These lint checks are **also** made available separate from the main library.
+You can also use `androidx.compose.animation:animation-lint:1.8.0-alpha06`.
+
 
 [Additional details about androidx.compose.animation:animation-android](androidx_compose_animation_animation-android.md.html).
 (##) Suppressing

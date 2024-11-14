@@ -21,9 +21,9 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=323867&template=1023345
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [androidx.constraintlayout:constraintlayout-compose](androidx_constraintlayout_constraintlayout-compose.md.html)
 
@@ -51,17 +51,17 @@ avoid that, prefer using `Dimension.percent(1f)`
 
 ```
 // build.gradle.kts
-implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
+implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
 
 // build.gradle
-implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01'
+implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.0'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.constraintlayout.compose)
 
 # libs.versions.toml
 [versions]
-constraintlayout-compose = "1.1.0-beta01"
+constraintlayout-compose = "1.1.0"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -73,7 +73,7 @@ constraintlayout-compose = {
 }
 ```
 
-1.1.0-beta01 is the version this documentation was generated from;
+1.1.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.constraintlayout:constraintlayout-compose](androidx_constraintlayout_constraintlayout-compose.md.html).

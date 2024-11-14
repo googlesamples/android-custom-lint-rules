@@ -38,11 +38,11 @@ Tests
 Copyright Year
 :   2019
 
-When doing a FragmentTransaction that includes both attach()            
+When doing a FragmentTransaction that includes both attach()
     and detach() operations being committed on the same fragment
 instance, it is a                 no-op. The reason for this is that the
 FragmentManager optimizes all operations                 within a single
-transaction so the attach() and detach() cancel each other out          
+transaction so the attach() and detach() cancel each other out
       and neither is actually executed. To get the desired behavior, you
 should separate                 the attach() and detach() calls into
 separate FragmentTransactions.
@@ -55,17 +55,17 @@ separate FragmentTransactions.
 
 ```
 // build.gradle.kts
-implementation("androidx.fragment:fragment:1.8.3")
+implementation("androidx.fragment:fragment:1.8.5")
 
 // build.gradle
-implementation 'androidx.fragment:fragment:1.8.3'
+implementation 'androidx.fragment:fragment:1.8.5'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.fragment)
 
 # libs.versions.toml
 [versions]
-fragment = "1.8.3"
+fragment = "1.8.5"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -77,7 +77,7 @@ fragment = {
 }
 ```
 
-1.8.3 is the version this documentation was generated from;
+1.8.5 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.fragment:fragment](androidx_fragment_fragment.md.html).

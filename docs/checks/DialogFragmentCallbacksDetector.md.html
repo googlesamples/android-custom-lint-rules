@@ -38,11 +38,11 @@ Tests
 Copyright Year
 :   2021
 
-When using a `DialogFragment`, the `setOnCancelListener` and            
+When using a `DialogFragment`, the `setOnCancelListener` and
     `setOnDismissListener` callback functions within the
 `onCreateDialog` function                  __must not be used__ because
 the `DialogFragment` owns these callbacks.                  Instead the
-respective `onCancel` and `onDismiss` functions can be used to          
+respective `onCancel` and `onDismiss` functions can be used to
        achieve the desired effect.
 
 (##) Example
@@ -93,17 +93,17 @@ https://issuetracker.google.com/issues/new?component=460964.
 
 ```
 // build.gradle.kts
-implementation("androidx.fragment:fragment:1.8.3")
+implementation("androidx.fragment:fragment:1.8.5")
 
 // build.gradle
-implementation 'androidx.fragment:fragment:1.8.3'
+implementation 'androidx.fragment:fragment:1.8.5'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.fragment)
 
 # libs.versions.toml
 [versions]
-fragment = "1.8.3"
+fragment = "1.8.5"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -115,7 +115,7 @@ fragment = {
 }
 ```
 
-1.8.3 is the version this documentation was generated from;
+1.8.5 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.fragment:fragment](androidx_fragment_fragment.md.html).
