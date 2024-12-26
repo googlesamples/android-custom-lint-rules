@@ -257,10 +257,10 @@ In this case, it's highly likely that your unit test will reference
 `RecyclerView`. But how does lint know what `RecyclerView` is? If it
 doesn't, type resolve won't work, and as a result the detector won't.
 
-You could make your test ”depend“ on the `RecyclerView`. This is
+You could make your test “depend” on the `RecyclerView`. This is
 possible, using the `LibraryReferenceTestFile`, but is not recommended.
 
-Instead, the recommended approach is to just use ”stubs“; create
+Instead, the recommended approach is to just use “stubs”; create
 skeleton classes which represent only the **signatures** of the
 library, and in particular, only the subset that your lint check cares
 about.
@@ -416,7 +416,7 @@ fun testVulnerableCordovaVersionInClasses() {
     ).run().expect(
 ```
 
-Here, ”base64gzip“ means that the file is gzipped and then base64
+Here, “base64gzip” means that the file is gzipped and then base64
 encoded.
 
 If you want to compute the base64gzip string for a given file, a simple
@@ -462,8 +462,8 @@ One common question we hear is
 > from my unit test, my detector is never called! Why?
 
 This is almost always because the test sources are referring to some
-library or dependency which isn't on the class path. See the ”Library
-Dependencies and Stubs“ section above, as well as the [frequently asked
+library or dependency which isn't on the class path. See the “Library
+Dependencies and Stubs” section above, as well as the [frequently asked
 questions](faq.md.html).
 
 ## Language Level

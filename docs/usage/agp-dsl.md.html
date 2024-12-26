@@ -126,7 +126,7 @@ android {
 `textReport` *true or false*
 : Whether lint should generate a text report. If you don't specify a
   location using `textOutput`, lint will default to
-  `lint-results-`*$variant*`.txt` in $module`/build/reports/, such as
+  `lint-results-`*$variant*`.txt` in $module`/build/reports/`, such as
   `app/build/reports/lint-results-debug.txt`.
 
 `textOutput` file or `'stdout'` or `'stderr'`
@@ -140,7 +140,7 @@ android {
 `xmlReport` *true or false*
 : Whether lint should generate an XML report. If you don't specify a
   location using `xmlOutput`, lint will default to
-  `lint-results-`*$variant*`.xml` in $module`/build/reports/, such as
+  `lint-results-`*$variant*`.xml` in $module`/build/reports/`, such as
   `app/build/reports/lint-results-debug.xml`.
 
 `xmlOutput file("$buildDir/reports/lint-report.xml")`
@@ -153,7 +153,7 @@ android {
 : Whether lint should generate an HTML report, with issue explanations,
   code snippets, etc. If you don't specify a location using
   `htmlOutput`, lint will default to `lint-results-`*$variant*`.html`
-  in $module`/build/reports/, such as
+  in $module`/build/reports/`, such as
   `app/build/reports/lint-results-debug.html`.
 
 `htmlOutput` file
@@ -169,7 +169,7 @@ android {
   [SARIF](https://docs.oasis-open.org/sarif/sarif/v2.0/sarif-v2.0.html)
   report for use by for example GitHub. If you don't specify a location
   using `sarifOutput`, lint will default to
-  `lint-results-`*$variant*`.sarif` in $module`/build/reports/, such as
+  `lint-results-`*$variant*`.sarif` in $module`/build/reports/`, such as
   `app/build/reports/lint-results-debug.sarif`.
 
 `sarifOutput` file

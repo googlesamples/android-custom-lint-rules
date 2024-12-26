@@ -69,6 +69,7 @@ You can suppress false positives using one of the following mechanisms:
        ...>
      <string name="something" ... tools:ignore="$id">Something</string>
      ...
+  ```
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look
@@ -98,7 +99,7 @@ You can suppress false positives using one of the following mechanisms:
 
 * For manual invocations of `lint`, using the `--ignore` flag:
   ```
-  $ lint --ignore MissingClass ...`
+  $ lint --ignore MissingClass ...
   ```
 
 * Last, but not least, using baselines, as discussed

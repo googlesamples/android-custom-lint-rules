@@ -5,7 +5,7 @@
 ## Introduction
 
 When your detector reports an incident, it can also provide one or more
-"quick fixes“, which are actions the users can invoke in the IDE (or,
+“quick fixes”, which are actions the users can invoke in the IDE (or,
 for safe fixes, in batch mode) to address the reported incident.
 
 For example, if the lint check reports an unused resource, a quick fix
@@ -47,12 +47,12 @@ analysis](partial-analysis.md.html).
 
 ## Creating a LintFix
 
-Lint fixes use a ”fluent API“; you first construct a `LintFix`, and on
+Lint fixes use a “fluent API”; you first construct a `LintFix`, and on
 that method you call various available type methods, which will then
 further direct you to the allowed options.
 
 For example, to create a lint fix to set an XML attribute of a given
-name to ”true“, use something like this:
+name to “true”, use something like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 LintFix fix = fix().set(null, "singleLine", "true").build()
@@ -68,10 +68,10 @@ the `fix()` object:
 * `name`: Sets the description of the lint fix. This should be brief;
   it's in the quickfix popup shown to the user.
 
-* `sharedName`: This sets the ”shared“ or ”family“ name: all fixes in
+* `sharedName`: This sets the “shared” or “family” name: all fixes in
   the file will with the same name can be applied in a single
-  invocation by the user. For example, if you register 500 ”Remove
-  unused import“ quickfixes in a file, you don't want to force the user
+  invocation by the user. For example, if you register 500 “Remove
+  unused import” quickfixes in a file, you don't want to force the user
   to have to invoke each and every one. By setting the shared name, the
   user will be offered to **Fix All *$family name* problems in the
   current file**, which they can then perform to have all 500
@@ -93,7 +93,7 @@ the `fix()` object:
   beginning? At the end?
 
   Therefore, lint has the `autoFix` property you can set on a quickfix.
-  This indicates that this fix is ”safe“ and can be performed in batch
+  This indicates that this fix is “safe” and can be performed in batch
   mode. When the `lintFix` target runs, it will only apply fixes marked
   safe in this way.
 
@@ -103,7 +103,7 @@ The current set of available quick fix types are:
 
 * `fix().replace`: String replacements. This is the most general
   mechanism, and allows you to perform arbitrary edits to the source
-  code. In addition to the obvious ”replace old string with new“, the
+  code. In addition to the obvious “replace old string with new”, the
   old string can use a different location range than the incident
   range, you can match with regular expressions (and perform
   replacements on a specific group within the regular expression), and
@@ -161,11 +161,11 @@ The current set of available quick fix types are:
 
 !!! Tip
    If you use the `todo()` quickfix, it's a good idea to special case
-   your lint check to deliberately not accept ”TODO“ as a valid value.
+   your lint check to deliberately not accept “TODO” as a valid value.
    For example, for lint's accessibility check which makes sure you set
    a content description, it will complain both when you haven't set
    the content description attribute, **and** if the text is set to
-   ”TODO“. That way, if the user applies the quickfix, which creates
+   “TODO”. That way, if the user applies the quickfix, which creates
    the attribute in the right place and moves the focus to the right
    place, the editor is still showing a warning that the content
    description should be set.
@@ -173,10 +173,10 @@ The current set of available quick fix types are:
 * `fix().unset`: Remove XML attribute. This is a special case of add
   attribute.
 
-* `fix().url`: Show URL. In some cases, you can't ”fix“ or do anything
+* `fix().url`: Show URL. In some cases, you can't “fix” or do anything
   local to address the problem, but you really want to direct the
   user's attention to additional documentation. In that case, you can
-  attach a ”show this URL“ quick fix to the incident which will open
+  attach a “show this URL” quick fix to the incident which will open
   the browser with the given URL when invoked. For example, in a
   complicated deprecation where you want users to migrate from one
   approach to a completely different one that you cannot automate, you
@@ -207,10 +207,10 @@ But let's say that it *did* take a list of quick fixes.
 
 Both scenarios have their uses, so lint makes this explicit:
 
-- `fix().composite`: create a ”composite“ fix, which composes the fix
+- `fix().composite`: create a “composite” fix, which composes the fix
   out of multiple individual fixes, or
 
-- `fix().alternatives`: create an ”alternatives“ fix, which holds a
+- `fix().alternatives`: create an “alternatives” fix, which holds a
   number of individual fixes, which lint will present as separate
   options to the user.
 
@@ -229,8 +229,8 @@ val fix = fix().name("Replace with singleLine=\"true\"")
 And here's an example of how to create an alternatives fix, which are
 offered to the user as separate options; this is from our earlier
 example of the accessibility check which requires you to set a content
-description, which can be set either on the ”text“ attribute or the
-"contentDescription” attribute:
+description, which can be set either on the “text” attribute or the
+“contentDescription” attribute:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 val fix = fix().alternatives(

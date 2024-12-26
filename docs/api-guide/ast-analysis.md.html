@@ -27,7 +27,7 @@ source code. Consider the following very simple Java program:
 package test.pkg;
 
 public class MyTest {
-   String s = "hello";
+     String s = "hello";
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -52,7 +52,7 @@ Here's the corresponding Kotlin program:
 package test.pkg
 
 class MyTest {
-   val s: String = "hello"
+    val s: String = "hello"
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -181,8 +181,8 @@ For example, for the following Kotlin code:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 import java.util.Date
 fun test() {
-   val warn1 = Date()
-   val ok = Date(0L)
+    val warn1 = Date()
+    val ok = Date(0L)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -314,11 +314,11 @@ to create classes named “Companion” that aren't companion objects:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 class Test {
-  companion object MyName { // Companion object not named "Companion"!
-  }
+    companion object MyName { // Companion object not named "Companion"!
+    }
 
-  object Companion { // Named "Companion" but not a companion object!
-  }
+    object Companion { // Named "Companion" but not a companion object!
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -329,7 +329,7 @@ The right way to do this is using Kotlin PSI, via the
 // Skip companion objects
 val source = node.sourcePsi
 if (source is KtObjectDeclaration && source.isCompanion()) {
-   return
+    return
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -348,7 +348,7 @@ reference, and dealing with Kotlin types.
 
 Lint doesn't actually give you access to everything you need if you want
 to try to look up types in Kotlin PSI; you need something called the
-"binding context”, which is not exposed anywhere! And this omission is
+“binding context”, which is not exposed anywhere! And this omission is
 deliberate, because this is an implementation detail of the old
 compiler. The future is K2; a complete rewrite of the compiler front
 end, which is no longer using the old binding context. And as part of
@@ -402,27 +402,39 @@ names of methods that don't return:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (nextStatement is UCallExpression) {
- val methodName = nextStatement.methodName
- if (methodName == "fail" || methodName == "error" || methodName == "TODO") {
-   return true
-}
+    val methodName = nextStatement.methodName
+    if (methodName == "fail" || methodName == "error" || methodName == "TODO") {
+        return true
+    }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 However, with the Kotlin analysis API, this is easy:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
-/**
-* Returns true if this [call] node calls a method known to never
-* return, such as Kotlin's standard library method "error".
-*/
 fun callNeverReturns(call: UCallExpression): Boolean {
- val sourcePsi = call.sourcePsi as? KtCallExpression ?: return false
- analyze(sourcePsi) {
-   val callInfo = sourcePsi.resolveCall() ?: return false
-   val returnType = callInfo.singleFunctionCallOrNull()?.symbol?.returnType
-   if (returnType != null && returnType.isNothing) {
-     return true
-   }
+    val sourcePsi = call.sourcePsi as? KtCallExpression ?: return false
+    analyze(sourcePsi) {
+        val callInfo = sourcePsi.resolveToCall() ?: return false
+        val returnType = callInfo.singleFunctionCallOrNull()?.symbol?.returnType
+        return returnType != null && returnType.isNothingType
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+/**
+ * Returns true if this [call] node calls a method known to never
+ * return, such as Kotlin's standard library method "error".
+ */
+fun callNeverReturns(call: UCallExpression): Boolean {
+    val sourcePsi = call.sourcePsi as? KtCallExpression ?: return false
+    analyze(sourcePsi) {
+        val callInfo = sourcePsi.resolveCall() ?: return false
+        val returnType = callInfo.singleFunctionCallOrNull()?.symbol?.returnType
+        return returnType != null && returnType.isNothing
+    }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -441,17 +453,17 @@ Here, we have a `KtCallExpression`, and inside the `analyze` block we
 can call `resolveCall()` on it to reach the called method's symbol.
 
 Similarly, on a `KtDeclaration` (such as a named function or property) I
-can call `getSymbol()` to get the symbol for that method or property, to
+can call `.symbol` to get the symbol for that method or property, to
 for example look up parameter information. And on a `KtExpression` (such
-as an if statement) I can call `getKtType()` to get the Kotlin type.
+as an if statement) I can call `.expressionType` to get the Kotlin type.
 
-`KtSymbol` and `KtType` are the basic primitives we're working with in
+`KaSymbol` and `KaType` are the basic primitives we're working with in
 the Kotlin Analysis API. There are a number of subclasses of symbol,
-such as `KtFileSymbol`, `KtFunctionSymbol`, `KtClassOrObjectSymbol`, and
+such as `KaFileSymbol`, `KaFunctionSymbol`, `KaClassSymbol`, and
 so on.
 
 In the new implementation of `callNeverReturns`, we resolve the call,
-look up the corresponding function, which of course is a `KtSymbol`
+look up the corresponding function, which of course is a `KaSymbol`
 itself, and from that we get the return type, and then we can just check
 if it's the `Nothing` type.
 
@@ -492,6 +504,12 @@ resolving a *reference* to a class, using the Kotlin analysis API is
 better; it will work for both source and compiled:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+symbol is KaClassSymbol && symbol.classKind == KaClassKind.COMPANION_OBJECT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 symbol is KtClassOrObjectSymbol && symbol.classKind == KtClassKind.COMPANION_OBJECT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -514,10 +532,10 @@ it up, and as it turns out, here's how:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 analyze(expression) {
- val reference = expression.getTargetLabel()?.mainReference
-     ?: expression.instanceReference.mainReference
- val psi = reference.resolveToSymbol()?.psi
- …
+    val reference = expression.getTargetLabel()?.mainReference
+        ?: expression.instanceReference.mainReference
+    val psi = reference.resolveToSymbol()?.psi
+    …
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -536,11 +554,43 @@ Outside of tests, you can also set the `-Dlint.use.fir.uast=true` system propert
 Note that at some point this flag may go away since we'll be switching
 over to K2 completely.
 
+## API Compatibility
+
+Versions of lint before 8.7.0-alpha04 used an older version of the
+analysis API. If your lint check is building against these older
+versions, you need to use the older names and APIs, such as
+`KtSymbol` and `KtType` instead of `KaSymbol` and `KaType`.
+
+The analysis API isn't stable, and changed significantly between
+these versions. The hope/plan is for the API to be stable soon, such
+that you can start using the analysis API in lint checks and have it
+work with future versions of lint.
+
+For now, lint uses a special bytecode rewriter on the fly to try to
+automatically migrate compiled lint checks using the older API, but
+this doesn't handle all corner cases, so the best path forward is to
+use the new APIs. In the below recipes, we're temporarily showing both
+the new and the old versions.
+
 ## Recipes
 
 Here are various other Kotlin Analysis scenarios and potential solutions:
 
 ### Resolve a function call
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val call: KtCallExpression
+…
+analyze(call) {
+    val callInfo = call.resolveToCall() ?: return null
+    val symbol: KaFunctionSymbol? = callInfo.singleFunctionCallOrNull()?.symbol
+        ?: callInfo.singleConstructorCallOrNull()?.symbol
+        ?: callInfo.singleCallOrNull<KaAnnotationCall>()?.symbol
+    …
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 val call: KtCallExpression
@@ -563,20 +613,49 @@ Also use `resolveCall`, though it's not really a call:
 val expression: KtNameReferenceExpression
 …
 analyze(expression) {
-   val symbol: KtVariableLikeSymbol = expression.resolveCall()?.singleVariableAccessCall()?.symbol
+    val symbol: KaVariableSymbol? = expression.resolveToCall()?.singleVariableAccessCall()?.symbol
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val expression: KtNameReferenceExpression
+…
+analyze(expression) {
+    val symbol: KtVariableLikeSymbol = expression.resolveCall()?.singleVariableAccessCall()?.symbol
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Get the containing class of a symbol
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val containingSymbol = symbol.containingSymbol
+if (containingSymbol is KaNamedClassSymbol) {
+    …
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 val containingSymbol = symbol.getContainingSymbol()
 if (containingSymbol is KtNamedClassOrObjectSymbol) {
-  …
+    …
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Get the fully qualified name of a class
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val containing = declarationSymbol.containingSymbol
+if (containing is KaClassSymbol) {
+    val fqn = containing.classId?.asSingleFqName()
+    …
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 val containing = declarationSymbol.getContainingSymbol()
@@ -589,12 +668,30 @@ if (containing is KtClassOrObjectSymbol) {
 ### Look up the deprecation status of a symbol
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (symbol is KaDeclarationSymbol) {
+    symbol.deprecationStatus?.let { … }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (symbol is KtDeclarationSymbol) {
-  symbol.deprecationStatus?.let { … }
+    symbol.deprecationStatus?.let { … }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Look up visibility
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (symbol is KaDeclarationSymbol) {
+    if (!isPublicApi(symbol)) {
+        …
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (symbol is KtSymbolWithVisibility) {
@@ -608,6 +705,14 @@ if (symbol is KtSymbolWithVisibility) {
 ### Get the KtType of a class symbol
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (symbol is KaNamedClassSymbol) {
+    val type = symbol.defaultType
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 containingSymbol.buildSelfClassType()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -617,18 +722,44 @@ Example: is this `KtParameter` pointing to an interface?
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 analyze(ktParameter) {
+    val parameterSymbol = ktParameter.symbol
+    val returnType = parameterSymbol.returnType
+    val typeSymbol = returnType.expandedSymbol
+    if (typeSymbol is KaClassSymbol) {
+        val classKind = typeSymbol.classKind
+        if (classKind == KaClassKind.INTERFACE) {
+            …
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+analyze(ktParameter) {
     val parameterSymbol = ktParameter.getParameterSymbol()
     val returnType = parameterSymbol.returnType
     val typeSymbol = returnType.expandedClassSymbol
     if (typeSymbol is KtClassOrObjectSymbol) {
     val classKind = typeSymbol.classKind
     if (classKind == KtClassKind.INTERFACE) {
-       …
+        …
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### See if two types refer to the same raw class (erasure):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (type1 is KaClassType && type2 is KaClassType &&
+    type1.classId == type2.classId
+) {
+    …
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (type1 is KtNonErrorClassType && type2 is KtNonErrorClassType &&
@@ -640,11 +771,31 @@ if (type1 is KtNonErrorClassType && type2 is KtNonErrorClassType &&
 ### For an extension method, get the receiver type:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+if (declarationSymbol is KaNamedFunctionSymbol) {
+    val declarationReceiverType = declarationSymbol.receiverParameter?.type
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (declarationSymbol is KtFunctionSymbol) {
-  val declarationReceiverType = declarationSymbol.receiverParameter?.type
+    val declarationReceiverType = declarationSymbol.receiverParameter?.type
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Get the PsiFile containing a symbol declaration
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
+val file = symbol.containingFile
+if (file != null) {
+    val psi = file.psi
+    if (psi is PsiFile) {
+        …
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Older APIs (pre-8.7.0-alpha04):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 val file = symbol.getContainingFileSymbol()

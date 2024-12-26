@@ -17,7 +17,7 @@ Android Lint was named in honor of this tool, and with the Android
 prefix to make it really clear that this is a static analysis tool
 intended for analysis of Android code, provided by the Android Open
 Source Project -- and to disambiguate it from the many other tools with
-"lint“ in their names.
+“lint” in their names.
 
 However, since then, Android Lint has broadened its support and is no
 longer intended only for Android code. In fact, within Google, it is
@@ -35,7 +35,7 @@ Lint's APIs are not stable, and a large part of Lint's API surface is
 not under our control (such as UAST and PSI). Therefore, custom lint
 checks may need to be updated periodically to keep working.
 
-However, ”some APIs are more stable than others“. In particular, the
+However, “some APIs are more stable than others”. In particular, the
 detector API (described below) is much less likely to change than the
 client API (which is not intended for lint check authors but for tools
 integrating lint to run within, such as IDEs and build systems).
@@ -121,11 +121,11 @@ Lint will search your source code for problems. There are many types of
 problems, and each one is called an `Issue`, which has associated
 metadata like a unique id, a category, an explanation, and so on.
 
-Each instance that it finds is called an ”incident“.
+Each instance that it finds is called an “incident”.
 
 The actual responsibility of searching for and reporting incidents is
 handled by detectors -- subclasses of `Detector`. Your lint check will
-extend `Detector`, and when it has found a problem, it will ”report“
+extend `Detector`, and when it has found a problem, it will “report”
 the incident to lint.
 
 A `Detector` can analyze more than one `Issue`. For example, the
@@ -134,7 +134,7 @@ built-in `StringFormatDetector` analyzes formatting strings passed to
 multiple unrelated issues -- invalid formatting strings, formatting
 strings which should probably use the plurals API instead, mismatched
 types, and so on. The detector could simply have a single issue called
-"StringFormatProblems” and report everything as a StringFormatProblem,
+“StringFormatProblems” and report everything as a StringFormatProblem,
 but that's not a good idea. Each of these individual types of String
 format problems should have their own explanation, their own category,
 their own severity, and most importantly should be individually
@@ -368,7 +368,7 @@ since that can cover a lot of potential problems with declarations
 across a number of languages and technologies.
 
 Next, we have the **`briefDescription`**. You can think of this as a
-"category report header“; this is a static description for all
+“category report header”; this is a static description for all
 incidents of this type, so it cannot include any specifics. This string
 is used for example as a header in HTML reports for all incidents of
 this type, and in the IDE, if you open the Inspections UI, the various
@@ -376,7 +376,7 @@ issues are listed there using the brief descriptions.
 
 The **`explanation`** is a multi line, ideally multi-paragraph
 explanation of what the problem is. In some cases, the problem is self
-evident, as in the case of ”Unused declaration“, but in many cases, the
+evident, as in the case of “Unused declaration”, but in many cases, the
 issue is more subtle and might require additional explanation,
 particularly for what the developer should **do** to address the
 problem. The explanation is included both in HTML reports and in the
@@ -391,7 +391,7 @@ However, we do need to add line continuations -- those are the trailing
 \'s at the end of the lines.
 
 Note also that we have a Markdown-like simple syntax, described in the
-"TextFormat” section below. You can use asterisks for italics or double
+“TextFormat” section below. You can use asterisks for italics or double
 asterisks for bold, you can use apostrophes for code font, and so on.
 In terminal output this doesn't make a difference, but the IDE,
 explanations, incident error messages, etc, are all formatted using
@@ -408,11 +408,11 @@ The **`severity`** property is very important. An issue can be either a
 warning or an error. These are treated differently in the IDE (where
 errors are red underlines and warnings are yellow highlights), and in
 the build system (where errors can optionally break the build and
-warnings do not). There are some other severities too; ”fatal“ is like
+warnings do not). There are some other severities too; “fatal” is like
 error except these checks are designated important enough (and have
 very few false positives) such that we run them during release builds,
 even if the user hasn't explicitly run a lint target. There's also
-"informational” severity, which is only used in one or two places, and
+“informational” severity, which is only used in one or two places, and
 finally the “ignore” severity. This is never the severity you register
 for an issue, but it's part of the severities a developer can configure
 for a particular issue, thereby turning off that particular check.
@@ -492,7 +492,7 @@ can always create your own, such as for example
 When a lint issue requires multiple scopes, that means lint will
 **only** run this detector if **all** the scopes are available in the
 running tool. When lint runs a full batch run (such as a Gradle lint
-target or a full “Inspect Code“ in the IDE), all scopes are available.
+target or a full “Inspect Code” in the IDE), all scopes are available.
 
 However, when lint runs on the fly in the editor, it only has access to
 the current file; it won't re-analyze *all* files in the project for
@@ -509,7 +509,7 @@ Often, a lint check looks at multiple source file types to work
 correctly in all cases, but it can still identify *some* problems given
 individual source files. In this case, the `Implementation` constructor
 (which takes a vararg of scope sets) can be handed additional sets of
-scopes, called ”analysis scopes“. If the current lint client's scope
+scopes, called “analysis scopes”. If the current lint client's scope
 matches or is a subset of any of the analysis scopes, then the check
 will run after all.
 
@@ -681,7 +681,7 @@ analyzed (`beforeCheckFile` and `afterCheckFile`), as well as before and
 after analysis of all the modules (`beforeCheckRootProject` and
 `afterCheckRootProject`).
 
-This is for example how the ”unused resources“ check works: we store
+This is for example how the “unused resources” check works: we store
 all the resource declarations and resource references we find in the
 project as we process each file, and then in the
 `afterCheckRootProject` method we analyze the resource graph and
@@ -727,7 +727,7 @@ that depend on them.
    If you need to access something from later in the iteration order,
    and it's not practical to store all the current data and instead
    handle it when the later data is encountered, note that lint has
-   support for ”multi-pass analysis“: it can run multiple times over
+   support for “multi-pass analysis”: it can run multiple times over
    the data. The way you invoke this is via
    `context.driver.requestRepeat(this, …)`. This is actually how the
    unused resource analysis works. Note however that this repeat is
@@ -820,9 +820,9 @@ context.report(Incident(ISSUE, context.getLocation(element),
 ### UAST
 
 To analyze Kotlin and Java code, lint offers an abstract syntax tree,
-or ”AST“, for the code.
+or “AST”, for the code.
 
-This AST is called ”UAST“, for ”Universal Abstract Syntax Tree“, which
+This AST is called “UAST”, for “Universal Abstract Syntax Tree”, which
 represents multiple languages in the same way, hiding the language
 specific details like whether there is a semicolon at the end of the
 statements or whether the way an annotation class is declared is as
@@ -833,7 +833,7 @@ across all languages supported by UAST. And this is
 very useful; most lint checks are doing something API or data-flow
 specific, not something language specific. If however you do need to
 implement something very language specific, see the next section,
-"PSI”.
+“PSI”.
 
 In UAST, each element is called a **`UElement`**, and there are a
 number of subclasses -- `UFile` for the compilation unit, `UClass` for
@@ -880,7 +880,7 @@ an initializer setting the initial value to `hello`.
    (unless of course the Kotlin property specifies a private setter).
    If you’ve written code in Kotlin and have tried to access that
    Kotlin code from a Java file you will see the same thing -- the
-   “Java view” of Kotlin. The next section, “PSI“, will discuss how to
+   “Java view” of Kotlin. The next section, “PSI”, will discuss how to
    do more language specific analysis.
 
 ### UAST Example
@@ -955,7 +955,7 @@ private fun getLongValue(
 To write your detector's analysis, you need to know what the AST for
 your code of interest looks like. Instead of trying to figure it out by
 examining the elements under a debugger, a simple way to find out is to
-”pretty print“ it, using the `UElement` extension method
+“pretty print” it, using the `UElement` extension method
 **`asRecursiveLogString`**.
 
 For example, given the following unit test:
@@ -984,14 +984,14 @@ UFile (package = test.pkg)
 ```
 
 (This also illustrates the earlier point about UAST representing the
-Java view of the code; here the read-only public Kotlin property ”s“ is
+Java view of the code; here the read-only public Kotlin property “s” is
 represented by both a private field `s` and a public getter method,
 `getS()`.)
 
 ### Resolving
 
 When you have a method call, or a field reference, you may want to take
-a look at the called method or field. This is called ”resolving“, and
+a look at the called method or field. This is called “resolving”, and
 UAST supports it directly; on a `UCallExpression` for example, call
 `.resolve()`, which returns a `PsiMethod`, which is like a `UMethod`,
 but may not represent a method we have source for (which for example
@@ -1004,7 +1004,7 @@ PSI element to try to convert it to UAST if source is available.
    referenced method, field, or class is actually present. If it is
    not, resolve will return null, and various lint callbacks will not
    be invoked. This is a common source of questions for lint checks
-   ”not working“; it frequently comes up in lint unit tests where a
+   “not working”; it frequently comes up in lint unit tests where a
    test file will reference some API that isn't actually included in
    the class path. The recommended approach for this is to declare
    local stubs. See the [unit testing](unit-testing.md.html) chapter
@@ -1054,7 +1054,7 @@ example an interest in method calls to `compareTo`, it will invoke your
 callback for the binary operator scenario shown above as well, passing
 you a call which has the right value arguments, method name, and so on.
 
-The way this works is that lint can create a ”wrapper“ class which
+The way this works is that lint can create a “wrapper” class which
 presents the underlying `UBinaryExpression` (or
 `UArrayAccessExpression` and so on) as a `UCallExpression`. In the case
 of a binary operator, the value parameter list will be the left and
@@ -1078,7 +1078,7 @@ resolve on its own.
 
 ### PSI
 
-PSI is short for ”Program Structure Interface“, and is IntelliJ's AST
+PSI is short for “Program Structure Interface”, and is IntelliJ's AST
 abstraction used for all language modeling in the IDE.
 
 Note that there is a **different** PSI representation for each
@@ -1087,7 +1087,7 @@ involved. This means that writing a lint check using PSI would involve
 writing a lot of logic twice; once for Java, and once for Kotlin. (And
 the Kotlin PSI is a bit trickier to work with.)
 
-That's what UAST is for: there's a ”bridge“ from the Java PSI to UAST
+That's what UAST is for: there's a “bridge” from the Java PSI to UAST
 and there's a bridge from the Kotlin PSI to UAST, and your lint check
 just analyzes UAST.
 
@@ -1112,7 +1112,7 @@ through in part of the UAST API surface. For example,
    instead of `uastParent`), so be sure to configure it for your
    project.
 
-When you are dealing with ”signatures“ -- looking at classes and
+When you are dealing with “signatures” -- looking at classes and
 class inheritance, methods, parameters and so on -- using PSI is
 fine -- and unavoidable since UAST does not represent bytecode
 (though in the future it potentially could, via a decompiler)

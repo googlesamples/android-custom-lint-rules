@@ -5,6 +5,27 @@ authors: new features, API and behavior changes, and so on. For
 information about user visible changes to lint, see the User
 Guide.
 
+**8.8**
+
+* For the string-replacement quickfix, you can now specify
+  regex flags (such as Pattern.DOT_ALL) to change the pattern
+  matching behavior.
+
+**8.7**
+
+* The unit testing support now checks to make sure that you
+  don't have duplicate class names across Java and Kotlin
+  (which can lead to subtle and confusing errors.)
+* The `build.gradle.kts` unit testing support (`TestFiles.kts()`)
+  now performs the same mocking of the builder model that the
+  corresponding Groovy Gradle support (`Testfiles.gradle()`)
+  performs. Among other things, this means that the other
+  source files (`java()`, `kotlin()`, etc) must be located in
+  source sets, e.g. `src/main/res/` and `/src/main/java/`
+  rather than just `res/` and `src/`. This happens automatically
+  if you don't manually specify a target path in the test file
+  declaration.
+
 **8.6**
 
 * UAST repeats @JvmOverloaded methods in the AST. Lint now looks for
@@ -230,7 +251,7 @@ Guide.
   It also offers better control for handling scopes -- providing all
   relevant annotations in the hierarchy at the same time such that a
   lint check for example can easily determine whether an outer
-  annotation like `@Immutable` is canceled by a closer @Mutable`
+  annotation like `@Immutable` is canceled by a closer `@Mutable`
   annotation.
 
   There are some new annotation usage type enum constants which let
