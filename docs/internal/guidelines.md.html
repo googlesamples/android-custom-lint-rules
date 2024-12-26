@@ -41,10 +41,10 @@ including Lint. This makes debugging tricky. To disable this behavior,
 start the IDE with
 ```
 -Didea.ProcessCanceledException=disabled
-````
+```
 
 Alternatively, you can use the internal action
-"Disable ProcessCanceledException". Note, to use internal actions
+“Disable ProcessCanceledException”. Note, to use internal actions
 you must first go to `Help > Edit Custom Properties` and add
 ```
 idea.is.internal=true
@@ -154,13 +154,13 @@ For simple discouraged APIs, we have several approaches:
 # Informational Checks
 
 Lint checks should pinpoint a problem. They are not intended to only be
-educational or to just "bring awareness" around recent changes to an API.
+educational or to just “bring awareness” around recent changes to an API.
 Especially if the lint check cannot check whether the guidance applies, for
 example because it depends on policy approval which is not available for
 inspection in the code.
 
 A check which unconditionally flags code in order to educate users is often
-considered by users to be "spammy". We've had some checks like that in the
+considered by users to be “spammy”. We've had some checks like that in the
 past, and they were not popular, and the issue id soon ended up in default
 ignore rules for lint. For an example, see [this StackOverflow
 thread](https://stackoverflow.com/questions/34173545/missing-support-for-fireb

@@ -4,19 +4,58 @@ This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
+**8.9**
+
+* New built-in lint checks:
+
+  Issue ID                    | Summary
+  ----------------------------|-------------------------------------------
+  `NioDesugaring`             | Unsupported `java.nio` operations
+  `PrivacySandboxBlockedCall` | Call is blocked in the Privacy Sandbox
+  `UseRequiresApi`            | Use `@RequiresApi` instead of `@TargetApi`
+  `WrongSdkInt`               | Mismatched SDK_INT or SDK_INT_FULL
+
+* The `ImplicitSamInstance` check is now turned on by default, and covers
+  a broader set of scenarios.
+
+**8.8**
+
+* New built-in lint checks:
+
+  Issue ID                                 | Summary
+  -----------------------------------------|------------------------------------------------------------
+  `AppLinkSplitToWebAndCustom`             | Android App links should only use http(s) schemes
+  `AppLinkWarning`                         | App Link warning
+  `CredentialManagerMisuse`                | Misuse of Credential Manager API
+  `PlaySdkIndexVulnerability`              | Library has vulnerability issues in SDK Index
+  `UnsanitizedFilenameFromContentProvider` | Trusting ContentProvider filenames without any sanitization
+
+**8.7**
+
+* New built-in lint checks:
+
+  Issue ID                            | Summary
+  ------------------------------------|--------------------------------------------------
+  `ChildInNonViewGroup`               | Only view groups can have children
+  `CredManMissingDal`                 | Missing Digital Asset Link for Credential Manager
+  `CredentialManagerSignInWithGoogle` | Misuse of Sign in with Google API
+  `UnnecessaryRequiredFeature`        | Potentially unnecessary required feature
+
 **8.6**
 
 * New built-in lint checks:
 
-  Issue ID                               | Summary
-  ---------------------------------------|------------------------------------------------
-  `AccessibilityFocus`                   | Forcing accessibility focus
-  `AccessibilityScrollActions`           | Incomplete Scroll Action support
-  `AccessibilityWindowStateChangedEvent` | Use of accessibility window state change events
-  `CredentialDependency`                 | `credentials-play-services-auth` is Required
-  `PictureInPictureIssue`                | Picture In Picture best practices not followed
-  `SimilarGradleDependency`              | Multiple Versions Gradle Dependency
-  `UnclosedTrace`                        | Incorrect trace section usage
+  Issue ID                                | Summary
+  ----------------------------------------|------------------------------------------------
+  `AccessibilityFocus`                    | Forcing accessibility focus
+  `AccessibilityScrollActions`            | Incomplete Scroll Action support
+  `AccessibilityWindowStateChangedEvent`  | Use of accessibility window state change events
+  `CredentialDependency`                  | `credentials-play-services-auth` is Required
+  `PictureInPictureIssue`                 | Picture In Picture best practices not followed
+  `SimilarGradleDependency`               | Multiple Versions Gradle Dependency
+  `UnclosedTrace`                         | Incorrect trace section usage
+  `UnnecessaryRequiredFeature`            | Potentially unnecessary required feature
+  `UnsanitizedFilenameFromContentProvider`| Trusting ContentProvider filenames without any sanitization
 
 **8.4**
 

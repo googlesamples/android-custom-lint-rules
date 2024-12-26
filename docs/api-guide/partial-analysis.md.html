@@ -497,7 +497,7 @@ The most complicated example of this is lint's built-in
 [UnusedResourceDetector](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnusedResourceDetector.java), which locates unused resources. This “requires”
 global analysis, since we want to include all resources in the entire
 project. We also cannot just store lists of “resources declared” and
-"resources referenced“ since we really want to treat this as a graph.
+“resources referenced” since we really want to treat this as a graph.
 For example if `@layout/main` is including `@drawable/icon`, then a
 naive approach would see the icon as referenced (by main) and therefore
 mark it as not unused. But what we want is that if the icon is **only**

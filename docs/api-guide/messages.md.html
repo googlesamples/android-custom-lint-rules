@@ -69,7 +69,7 @@ match them in order, which often would match the wrong import.
 
 When referring to Android behaviors introduced in new API levels, use the
 phrase “In Android 12 and higher”, instead of variations like “Android S” or
-"API 31“.
+“API 31”.
 
 ## Keep Messages Stable
 
@@ -87,27 +87,27 @@ matcher will handle:
 
 * Adding a suffix
 * Adding a suffix which also changes the final punctuation; e.g. changing
-  ”Hello.“ to ”Hello, world!“ is compatible.
+  “Hello.” to “Hello, world!” is compatible.
 * Adding a prefix
 
 ## Plurals
 
 Avoid trying to make sentences gramatically correct and flexible by
-using constructs like ”(s)“ to quantity strings. In other words,
+using constructs like “(s)” to quantity strings. In other words,
 instead of for example saying
 
-    *”register your receiver(s) in the manifest“*
+    *“register your receiver(s) in the manifest”*
 
 just use the plural form,
 
-    *”register your receivers in the manifest“*
+    *“register your receivers in the manifest”*
 
 ## Examples
 
 Here are some examples from lint's built-in checks. Note that these are not
 chosen as great examples of clear error messages; most of these were written
 by engineers without review from a tech writer. But for better or worse they
-reflect the ”tone“ of the built-in lint checks today. (These were derived from
+reflect the “tone” of the built-in lint checks today. (These were derived from
 lint's unit test suite, which explains silly symbols like `test.pkg` in the
 error messages.)
 
@@ -140,8 +140,8 @@ to help cross reference the messages with the corresponding lint check.
 * [BlockedPrivateApi] Reflective access to NETWORK_TYPES is forbidden when targeting API 28 and above
 * [BottomAppBar] This \`BottomAppBar\` must be wrapped in a \`CoordinatorLayout\` (\`android.support.design.widget.CoordinatorLayout\`)
 * [BrokenIterator] \`Vector#listIterator\` was broken in API 24 and 25; it can return \`hasNext()=false\` before the last element. Consider switching to \`ArrayList\` with synchronization if you need it.
-* [ButtonCase] @android:string/yes actually returns ”OK“, not ”Yes“; use @android:string/ok instead or create a local string resource for Yes
-* [ButtonOrder] OK button should be on the right (was ”OK | Cancel“, should be ”Cancel | OK“)
+* [ButtonCase] @android:string/yes actually returns “OK”, not “Yes”; use @android:string/ok instead or create a local string resource for Yes
+* [ButtonOrder] OK button should be on the right (was “OK | Cancel”, should be “Cancel | OK”)
 * [ButtonStyle] Buttons in button bars should be borderless; use \`style="?android:attr/buttonBarButtonStyle"\` (and \`?android:attr/buttonBarStyle\` on the parent)
 * [ByteOrderMark] Found byte-order-mark in the middle of a file
 * [CanvasSize] Calling \`Canvas.getWidth()\` is usually wrong; you should be calling \`getWidth()\` instead
