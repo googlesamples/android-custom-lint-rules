@@ -8,8 +8,6 @@ Id
 :   `ImplicitSamInstance`
 Summary
 :   Implicit SAM Instances
-Note
-:   **This issue is disabled by default**; use `--enable ImplicitSamInstance`
 Severity
 :   Warning
 Category
@@ -20,22 +18,28 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   3.4.0 (April 2019)
 Affects
 :   Kotlin and Java files
 Editing
 :   This check runs on the fly in the IDE editor
+See
+:   https://kotlinlang.org/docs/fun-interfaces.html#sam-conversions
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/SamDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SamDetectorTest.kt)
-Copyright Year
-:   2018
 
-Kotlin's support for SAM (single accessor method) interfaces lets you
+Kotlin's support for SAM (single abstract method) interfaces lets you
 pass a lambda to the interface. This will create a new instance on the
 fly even though there is no explicit constructor call. If you pass one
 of these lambdas or method references into a method which (for example)
 stores or compares the object identity, unexpected results may happen.
+
+In particular, passing a lambda variable in as a listener, and then
+later attempting to remove the listener will not work because a
+different instance is passed in.
 
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
@@ -44,31 +48,31 @@ stores or compares the object identity, unexpected results may happen.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/test.kt:17:Warning: Implicit new MyInterface instance being
+src/test/pkg/test.kt:21:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-    handler.stash(lambda, list) // WARN
-                  ------
-src/test/pkg/test.kt:18:Warning: Implicit new MyInterface instance being
+    handler.delete(lambda) // ERROR 1
+                   ------
+src/test/pkg/test.kt:22:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-    handler.store(lambda) // WARN
-                  ------
-src/test/pkg/test.kt:19:Warning: Implicit new MyInterface instance being
-passed to method which ends up checking instance equality; this can lead
-to subtle bugs [ImplicitSamInstance]
-    handler.compareIdentity1(lambda) // WARN
+    handler.compareIdentity1(lambda) // ERROR 2
                              ------
-src/test/pkg/test.kt:20:Warning: Implicit new MyInterface instance being
+src/test/pkg/test.kt:23:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-    handler.compareIdentity2(lambda) // WARN
+    handler.compareIdentity2(lambda) // ERROR 3
                              ------
-src/test/pkg/test.kt:27:Warning: Implicit new MyInterface instance being
+src/test/pkg/test.kt:31:Warning: Implicit new MyInterface instance being
 passed to method which ends up checking instance equality; this can lead
 to subtle bugs [ImplicitSamInstance]
-    handler.stash(lambda2, list) // WARN
-                  -------
+    handler.delete(lambda2) // ERROR 4
+                   -------
+src/test/pkg/test.kt:35:Warning: Implicit new MyInterface instance being
+passed to method which ends up checking instance equality; this can lead
+to subtle bugs [ImplicitSamInstance]
+    handler.delete(lambda3) // ERROR 5
+                   -------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
@@ -85,23 +89,31 @@ fun test(handler: MyHandler, list: List<MyInterface>) {
     handler.stash(MyInterface { println("hello") }, list) // OK
     handler.stash({ println("hello") }, list) // OK
     handler.store({ println("hello") }) // OK
+    handler.delete({ println("hello") }) // OK
+    handler.delete(MyInterface { println("hello") }) // OK
     handler.compareIdentity1({ println("hello") }) // OK
     handler.compareIdentity2({ println("hello") }) // OK
     handler.compareEquals1({ println("hello") }) // OK
     handler.compareEquals2({ println("hello") }) // OK
 
     val lambda = { println("hello") }
-    handler.stash(lambda, list) // WARN
-    handler.store(lambda) // WARN
-    handler.compareIdentity1(lambda) // WARN
-    handler.compareIdentity2(lambda) // WARN
+    handler.stash(lambda, list) // OK
+    handler.store(lambda) // OK
+    handler.delete(lambda) // ERROR 1
+    handler.compareIdentity1(lambda) // ERROR 2
+    handler.compareIdentity2(lambda) // ERROR 3
     handler.compareEquals1(lambda) // OK
     handler.compareEquals2(lambda) // OK
 
     @Suppress("CanBeVal", "JoinDeclarationAndAssignment")
     var lambda2: () -> Unit
     lambda2 = { println("hello") }
-    handler.stash(lambda2, list) // WARN
+    handler.stash(lambda2, list) // OK
+    handler.delete(lambda2) // ERROR 4
+
+    val lambda3: () -> Unit = { println("hello") }
+    handler.stash(lambda3, list) // OK
+    handler.delete(lambda3) // ERROR 5
 
     handler.act({ println("hello") }) // OK
     handler.act(::callback) // OK
@@ -160,6 +172,13 @@ public class MyHandler {
     }
 
     private MyInterface last;
+
+    private void removeActor(MyInterface actor) {
+    }
+
+    public fun delete(MyInterface actor) {
+        remove(actor);
+    }
 
     public void compareIdentity1(MyInterface actor) {
         if (actor == last) {

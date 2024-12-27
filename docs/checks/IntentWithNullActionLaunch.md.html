@@ -18,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.2.0 (November 2023)
 Affects
 :   Kotlin and Java files and manifest files
 Editing
@@ -26,8 +28,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IntentWillNullActionDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IntentWillNullActionDetectorTest.kt)
-Copyright Year
-:   2023
 
 Intents that have no action and do not specify a component are a
 potential security risk, and using them will result in a crash in an

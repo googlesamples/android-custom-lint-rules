@@ -7,11 +7,11 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=1147525
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
-:   androidx.lint:lint-gradle:1.0.0-alpha02
+:   androidx.lint:lint-gradle:1.0.0-alpha03
 
 (##) Included Issues
 
@@ -19,6 +19,7 @@ Artifact
 |--------------------------------------------------------------------|---------------------------------------------------------------|
 |[EagerGradleConfiguration](EagerGradleConfiguration.md.html)        |Avoid using eager task APIs                                    |
 |[GradleProjectIsolation](GradleProjectIsolation.md.html)            |Avoid using APIs that are not project isolation safe           |
+|[FilePropertyDetector](FilePropertyDetector.md.html)                |Avoid using Property<File>                                     |
 |[InternalGradleApiUsage](InternalGradleApiUsage.md.html)            |Avoid using internal Gradle APIs                               |
 |[InternalAgpApiUsage](InternalAgpApiUsage.md.html)                  |Avoid using internal Android Gradle Plugin APIs                |
 |[WithPluginClasspathUsage](WithPluginClasspathUsage.md.html)        |Flags usage of GradleRunner#withPluginClasspath                |
@@ -32,17 +33,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.lint:lint-gradle:1.0.0-alpha02")
+implementation("androidx.lint:lint-gradle:1.0.0-alpha03")
 
 // build.gradle
-implementation 'androidx.lint:lint-gradle:1.0.0-alpha02'
+implementation 'androidx.lint:lint-gradle:1.0.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lint.gradle)
 
 # libs.versions.toml
 [versions]
-lint-gradle = "1.0.0-alpha02"
+lint-gradle = "1.0.0-alpha03"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -54,8 +55,23 @@ lint-gradle = {
 }
 ```
 
-1.0.0-alpha02 is the version this documentation was generated from;
+1.0.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
+(##) Changes
+
+* 1.0.0-alpha02: First version includes EagerGradleConfiguration,
+  GradleProjectIsolation, InternalAgpApiUsage, InternalGradleApiUsage,
+  WithPluginClasspathUsage, WithTypeWithoutConfigureEach.
+* 1.0.0-alpha03: Adds FilePropertyDetector.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.0.0-alpha03|          |       7|         Yes|           8.7+|      8.7+|
+|       1.0.0-alpha02|          |       6|         Yes|    8.0 and 8.1|8.0 and 8.1|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

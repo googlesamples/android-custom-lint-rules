@@ -6,8 +6,6 @@
 
 Id
 :   `NotConstructor`
-Alias
-:   MethodNameSameAsClassName
 Summary
 :   Not a Constructor
 Severity
@@ -20,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   7.2.0 (May 2022)
 Affects
 :   Kotlin and Java files
 Editing
@@ -28,8 +28,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WrongConstructorDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WrongConstructorDetectorTest.kt)
-Copyright Year
-:   2021
 
 This check catches methods that look like they were intended to be
 constructors, but aren't.

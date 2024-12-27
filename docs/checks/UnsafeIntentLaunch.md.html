@@ -18,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.1.0 (July 2023)
 Affects
 :   Kotlin and Java files and manifest files
 Editing
@@ -26,8 +28,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UnsafeIntentLaunchDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UnsafeIntentLaunchDetectorTest.kt)
-Copyright Year
-:   2022
 
 Intent that potentially could come from an untrusted source should not
 be launched from an unprotected component without first being sanitized.

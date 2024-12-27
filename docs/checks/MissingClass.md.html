@@ -6,8 +6,6 @@
 
 Id
 :   `MissingClass`
-Previously
-:   MissingRegistered
 Summary
 :   Missing registered class
 Severity
@@ -20,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   4.0.0 (May 2020)
 Affects
 :   Manifest files and resource files
 Editing
@@ -30,8 +30,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/MissingClassDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/MissingClassDetectorTest.kt)
-Copyright Year
-:   2012
 
 If a class is referenced in the manifest or in a layout file, it must
 also exist in the project (or in one of the libraries included by the

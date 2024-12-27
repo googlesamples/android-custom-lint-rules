@@ -6,8 +6,6 @@
 
 Id
 :   `SuspiciousIndentation`
-Alias
-:   SuspiciousIndentAfterControlStatement
 Summary
 :   Suspicious indentation
 Severity
@@ -20,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   7.3.0 (September 2022)
 Affects
 :   Kotlin and Java files
 Editing
@@ -28,8 +28,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/IndentationDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/IndentationDetectorTest.kt)
-Copyright Year
-:   2021
 
 This check looks for cases where the indentation suggests a grouping
 that isn't actually there in the code. A common example of this would be
