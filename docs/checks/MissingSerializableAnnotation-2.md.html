@@ -23,10 +23,11 @@ Feedback
 Min
 :   Lint 8.0 and 8.1
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [androidx.navigation:navigation-runtime](androidx_navigation_navigation-runtime.md.html)
-
+Since
+:   2.8.3
 Affects
 :   Kotlin and Java files
 Editing
@@ -46,8 +47,8 @@ This issue id has also been used by other, unrelated lint checks. Issue
 id's must be unique, so you cannot combine these libraries. Also defined
 in:
 * MissingSerializableAnnotation: Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable (this issue)
-* [MissingSerializableAnnotation from androidx.navigation:navigation-compose:2.9.0-alpha03](MissingSerializableAnnotation.md.html)
-* [MissingSerializableAnnotation from androidx.navigation:navigation-common:2.9.0-alpha03](MissingSerializableAnnotation-3.md.html)
+* [MissingSerializableAnnotation from androidx.navigation:navigation-compose:2.9.0-alpha04](MissingSerializableAnnotation.md.html)
+* [MissingSerializableAnnotation from androidx.navigation:navigation-common:2.9.0-alpha04](MissingSerializableAnnotation-3.md.html)
 
 
 (##) Including
@@ -58,17 +59,17 @@ in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-runtime:2.9.0-alpha03")
+implementation("androidx.navigation:navigation-runtime:2.9.0-alpha04")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-runtime:2.9.0-alpha03'
+implementation 'androidx.navigation:navigation-runtime:2.9.0-alpha04'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation.runtime)
 
 # libs.versions.toml
 [versions]
-navigation-runtime = "2.9.0-alpha03"
+navigation-runtime = "2.9.0-alpha04"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -80,7 +81,7 @@ navigation-runtime = {
 }
 ```
 
-2.9.0-alpha03 is the version this documentation was generated from;
+2.9.0-alpha04 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.navigation:navigation-runtime](androidx_navigation_navigation-runtime.md.html).

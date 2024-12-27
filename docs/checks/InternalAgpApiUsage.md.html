@@ -21,12 +21,13 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=1147525
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [androidx.lint:lint-gradle](androidx_lint_lint-gradle.md.html)
-
+Since
+:   1.0.0-alpha02
 Affects
 :   Kotlin and Java files
 Editing
@@ -78,17 +79,17 @@ https://issuetracker.google.com/issues/new?component=1147525.
 
 ```
 // build.gradle.kts
-implementation("androidx.lint:lint-gradle:1.0.0-alpha02")
+implementation("androidx.lint:lint-gradle:1.0.0-alpha03")
 
 // build.gradle
-implementation 'androidx.lint:lint-gradle:1.0.0-alpha02'
+implementation 'androidx.lint:lint-gradle:1.0.0-alpha03'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lint.gradle)
 
 # libs.versions.toml
 [versions]
-lint-gradle = "1.0.0-alpha02"
+lint-gradle = "1.0.0-alpha03"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -100,7 +101,7 @@ lint-gradle = {
 }
 ```
 
-1.0.0-alpha02 is the version this documentation was generated from;
+1.0.0-alpha03 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.lint:lint-gradle](androidx_lint_lint-gradle.md.html).

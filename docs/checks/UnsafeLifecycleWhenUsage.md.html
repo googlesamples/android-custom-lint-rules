@@ -26,7 +26,8 @@ Compiled
 :   Lint 8.7+
 Artifact
 :   [androidx.lifecycle:lifecycle-runtime-android](androidx_lifecycle_lifecycle-runtime-android.md.html)
-
+Since
+:   2.2.0
 Affects
 :   Kotlin and Java files
 Editing
@@ -57,7 +58,7 @@ This lint check appears to have been packaged in other artifacts as
 well. Issue id's must be unique, so you cannot combine these libraries.
 Also defined in:
 * UnsafeLifecycleWhenUsage: Unsafe UI operation in finally/catch of Lifecycle.whenStarted of similar method (this issue)
-* [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha07](UnsafeLifecycleWhenUsage.md.html)
+* [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha08](UnsafeLifecycleWhenUsage.md.html)
 * [UnsafeLifecycleWhenUsage from androidx.lifecycle:lifecycle-runtime-ktx:2.8.0-alpha01](UnsafeLifecycleWhenUsage-2.md.html)
 
 
@@ -69,17 +70,17 @@ Also defined in:
 
 ```
 // build.gradle.kts
-implementation("androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha07")
+implementation("androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha08")
 
 // build.gradle
-implementation 'androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha07'
+implementation 'androidx.lifecycle:lifecycle-runtime-android:2.9.0-alpha08'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lifecycle.runtime.android)
 
 # libs.versions.toml
 [versions]
-lifecycle-runtime-android = "2.9.0-alpha07"
+lifecycle-runtime-android = "2.9.0-alpha08"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -91,7 +92,7 @@ lifecycle-runtime-android = {
 }
 ```
 
-2.9.0-alpha07 is the version this documentation was generated from;
+2.9.0-alpha08 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.lifecycle:lifecycle-runtime-android](androidx_lifecycle_lifecycle-runtime-android.md.html).

@@ -18,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   3.4.0 (April 2019)
 Affects
 :   Kotlin and Java files
 Editing
@@ -26,8 +28,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/StorageDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StorageDetectorTest.kt)
-Copyright Year
-:   2018
 
 When you need to allocate disk space for large files, consider using the
 new `allocateBytes(FileDescriptor, long)` API, which will automatically

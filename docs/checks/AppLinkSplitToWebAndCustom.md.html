@@ -18,6 +18,8 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.8.0-alpha08 (October 2024)
 Affects
 :   Manifest files
 Editing
@@ -28,8 +30,6 @@ Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/AppLinksValidDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AppLinksValidDetectorTest.kt)
-Copyright Year
-:   2017
 
 In order for Android App Links to open in your app, Android must perform
 domain verification. However, Android only sends domain verification
@@ -48,7 +48,7 @@ Here is an example of lint warnings produced by this check:
 AndroidManifest.xml:7:Error: Split your http(s) and custom schemes into
 separate intent filters [AppLinkSplitToWebAndCustom]
     &lt;intent-filter android:autoVerify="true" android:order="-1" android:priority="-1"&gt;
-    ^
+     -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
@@ -71,7 +71,7 @@ Here are the relevant source files:
                 &lt;/uri-relative-filter-group&gt;
                 &lt;data android:scheme="http" /&gt;
                 &lt;data android:scheme="custom" /&gt;
-                &lt;data android:host="library.com" /&gt;
+                &lt;data android:host="example.com" /&gt;
                 &lt;data android:path="@string/path" /&gt;
                 &lt;data android:path="/&lt;&amp;&apos;'" /&gt;
                 &lt;data android:path='/single"quote' /&gt;
