@@ -297,6 +297,17 @@ lint().files().run().expectFixDiffs(
 )
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+## Verifying Quickfixes
+
+Lint's test support will also attempt to verify that your quickfixes
+still produces a valid Kotlin, Java or XML source file. It does this
+by parsing these files after testing the quickfixes using
+`expectFixDiffs()`. It will only complain if the fixed source file didn't
+already have parsing errors *before* applying the fix.
+
+You can control this behavior using the `.verifyFixedFileSyntax()` method
+on the `lint()` task.
+
 ## Emitting quick fix XML to apply on CI
 
 Note that the `lint` has an option (`--describe-suggestions`) to emit

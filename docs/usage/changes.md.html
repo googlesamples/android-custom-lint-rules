@@ -4,6 +4,16 @@ This chapter lists recent changes to lint that affect users of lint.
 For information about internal improvements and API changes affecting
 lint check authors, see the API Guide.
 
+**8.10**
+
+* New built-in lint checks:
+
+  Issue ID                    | Summary
+  ----------------------------|-------------------------------------------
+  `Aligned16KB`               | Native library dependency not 16 KB aligned
+  `TrimLambda`                | Unnecessary lambda with `trim()`
+  `UnnecessaryArrayInit`      | Unnecessary array initialization
+
 **8.9**
 
 * New built-in lint checks:
@@ -14,6 +24,7 @@ lint check authors, see the API Guide.
   `PrivacySandboxBlockedCall` | Call is blocked in the Privacy Sandbox
   `UseRequiresApi`            | Use `@RequiresApi` instead of `@TargetApi`
   `WrongSdkInt`               | Mismatched SDK_INT or SDK_INT_FULL
+  `UseKtx`                    | Use KTX extension function
 
 * The `ImplicitSamInstance` check is now turned on by default, and covers
   a broader set of scenarios.
