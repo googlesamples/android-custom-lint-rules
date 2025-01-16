@@ -1,0 +1,138 @@
+<meta charset="utf-8">
+(#) Native library dependency not 16 KB aligned
+
+!!! WARNING: Native library dependency not 16 KB aligned
+   This is a warning.
+
+Id
+:   `Aligned16KB`
+Summary
+:   Native library dependency not 16 KB aligned
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Gradle build files and TOML files
+Editing
+:   This check can *not* run live in the IDE editor
+See
+:   https://developer.android.com/guide/practices/page-sizes
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PageAlignmentDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PageAlignmentDetectorTest.kt)
+Copyright Year
+:   2025
+
+Historically, Android has aligned memory using 4 KB memory page sizes,
+which optimized system memory performance for the average amount of
+total memory that Android devices have typically had.
+
+To support devices that only support 16 KB aligned libraries in the
+future, the Google Play Store will soon require all apps to be compiled
+with 16 KB aligned libraries.
+
+An app compiled with 4 KB aligned libraries will not work correctly on
+these devices. To ensure compatibility with these devices and to
+future-proof your app, the Play Store will require native libraries to
+be aligned to 16 KB boundaries.
+
+If your app uses any NDK libraries, either directly or indirectly
+through an SDK, you'll need to rebuild your app to meet this new
+requirement. This means ensuring that all native libraries within your
+app, including those from any dependencies, are built with 16 KB page
+alignment.
+
+This lint check helps identify potential issues by inspecting all
+transitive libraries your app depends on. If any nested native libraries
+are found to be aligned only to 4 KB, you'll need to take action.
+
+If lint flags a library, try updating to a newer version that supports
+16 KB alignment. If no updated version is available, reach out to the
+library vendor for assistance.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle:2:Warning: The native library
+arm64-v8a/libtensorflowlite_jni.so (from
+org.tensorflow:tensorflow-lite:2.16.1) is not 16 KB aligned
+[Aligned16KB]
+    implementation("org.tensorflow:tensorflow-lite:2.16.1")
+                   ---------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant test files:
+
+`build.gradle`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
+dependencies {
+    implementation("org.tensorflow:tensorflow-lite:2.16.1")
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+[build/intermediates/exploded-aar/org.tensorflow/tensorflow-lite/2.16.1/jni/arm64-v8a/libtensorflowlite_jni.so](examples/arm64-v8a/libtensorflowlite_jni.so)
+
+[build/intermediates/exploded-aar/org.tensorflow/tensorflow-lite/2.16.1/jni/x86_64/libtensorflowlite_jni.so](examples/x86_64/libtensorflowlite_jni.so)
+
+[build/intermediates/exploded-aar/org.tensorflow/tensorflow-lite/2.16.1/jni/armeabi-v7a/libtensorflowlite_jni.so](examples/armeabi-v7a/libtensorflowlite_jni.so)
+
+[build/intermediates/exploded-aar/org.tensorflow/tensorflow-lite/2.16.1/jni/x86/libtensorflowlite_jni.so](examples/x86/libtensorflowlite_jni.so)
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PageAlignmentDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection Aligned16KB
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="Aligned16KB" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'Aligned16KB'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore Aligned16KB ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

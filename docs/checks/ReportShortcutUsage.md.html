@@ -2,14 +2,14 @@
 (#) Report shortcut usage
 
 !!! Tip: Report shortcut usage
-   Advice from this check is just a tip.
+   Advice from this check is just a hint; it's "weak" warning.
 
 Id
 :   `ReportShortcutUsage`
 Summary
 :   Report shortcut usage
 Severity
-:   Information
+:   Hint
 Category
 :   Usability
 Platform
@@ -38,9 +38,9 @@ shortcuts.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/TestDocumentationExample.java:16:Information: Calling this
-method indicates use of dynamic shortcuts, but there are no calls to
-methods that track shortcut usage, such as pushDynamicShortcut or
+src/test/pkg/TestDocumentationExample.java:16:Hint: Calling this method
+indicates use of dynamic shortcuts, but there are no calls to methods
+that track shortcut usage, such as pushDynamicShortcut or
 reportShortcutUsed. Calling these methods is recommended, as they track
 shortcut usage and allow launchers to adjust which shortcuts appear
 based on activation history. Please see

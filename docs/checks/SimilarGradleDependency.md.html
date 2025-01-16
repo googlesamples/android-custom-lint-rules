@@ -2,14 +2,14 @@
 (#) Multiple Versions Gradle Dependency
 
 !!! Tip: Multiple Versions Gradle Dependency
-   Advice from this check is just a tip.
+   Advice from this check is just a hint; it's "weak" warning.
 
 Id
 :   `SimilarGradleDependency`
 Summary
 :   Multiple Versions Gradle Dependency
 Severity
-:   Information
+:   Hint
 Category
 :   Correctness
 Platform
@@ -39,13 +39,13 @@ happens, and that is what this lint check helps find.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-../gradle/libs.versions.toml:6:Information: There are multiple
-dependencies joda-time:joda-time but with different version
+../gradle/libs.versions.toml:6:Hint: There are multiple dependencies
+joda-time:joda-time but with different version
 [SimilarGradleDependency]
 joda_library = { module = "joda-time:joda-time", version.ref = "jodaVersion"}
                 -------------------------------------------------------------
-../gradle/libs.versions.toml:7:Information: There are multiple
-dependencies joda-time:joda-time but with different version
+../gradle/libs.versions.toml:7:Hint: There are multiple dependencies
+joda-time:joda-time but with different version
 [SimilarGradleDependency]
 joda_library2 = { module = "joda-time:joda-time", version = "2.0"}
                  -------------------------------------------------

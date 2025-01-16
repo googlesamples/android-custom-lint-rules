@@ -1,0 +1,165 @@
+<meta charset="utf-8">
+(#) Unnecessary lambda with `trim()`
+
+!!! Tip: Unnecessary lambda with `trim()`
+   Advice from this check is just a hint; it's "weak" warning.
+
+Id
+:   `TrimLambda`
+Summary
+:   Unnecessary lambda with `trim()`
+Severity
+:   Hint
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/TrimDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TrimDetectorTest.kt)
+Copyright Year
+:   2025
+
+The Kotlin standard library `trim()` call takes an optional lambda to
+specify which characters are considered whitespace.
+
+When converting Java code to Kotlin code, the converter will convert
+calls for Java's `s.trim()` into `s.trim() { it <= ' ' }`. This
+preserves the exact semantics of the Java code, but is likely not what
+you want: the default in Kotlin uses a better definition of what
+constitutes a whitespace character (`Char::isWhitespace`) and also
+results in less bytecode at the call-site.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test.kt:3:Hint: The lambda argument ({ it <= ' ' }) is unnecessary
+[TrimLambda]
+    s.trim() { it &lt;= ' ' } // HINT 1
+             -------------
+src/test.kt:4:Hint: The lambda argument ({ it <= ' ' }) is unnecessary
+[TrimLambda]
+    s.trim { it &lt;= ' ' } // HINT 2
+           -------------
+src/test.kt:5:Hint: The lambda argument ({ it <= ' ' }) is unnecessary
+[TrimLambda]
+    s.trim({ it &lt;= ' ' }) // HINT 3
+           -------------
+src/test.kt:6:Hint: The lambda argument ({it<=' '}) is unnecessary
+[TrimLambda]
+    s.trim() {it&lt;=' '} // HINT 4
+             ---------
+src/test.kt:7:Hint: The lambda argument ({ c -> c <= ' ' }) is
+unnecessary [TrimLambda]
+    s.trim() { c -&gt; c &lt;= ' ' } // HINT 5
+             -----------------
+src/test.kt:8:Hint: The lambda argument ({ it.isWhitespace() }) is
+unnecessary [TrimLambda]
+    s.trim() { it.isWhitespace() } // HINT 6
+             ---------------------
+src/test.kt:10:Hint: The lambda argument ({ it <= ' ' }) is unnecessary
+[TrimLambda]
+    val to = s.trim { it &lt;= ' ' }.substring(2)
+                    -------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+fun test(s: String) {
+    s.trim() // OK
+    s.trim() { it <= ' ' } // HINT 1
+    s.trim { it <= ' ' } // HINT 2
+    s.trim({ it <= ' ' }) // HINT 3
+    s.trim() {it<=' '} // HINT 4
+    s.trim() { c -> c <= ' ' } // HINT 5
+    s.trim() { it.isWhitespace() } // HINT 6
+    s.trim() { it <= ' ' || c == '.' } // OK
+    val to = s.trim { it <= ' ' }.substring(2)
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TrimDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("TrimLambda")
+  fun method() {
+     trim(...)
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("TrimLambda")
+  void method() {
+     trim(...);
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection TrimLambda
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="TrimLambda" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'TrimLambda'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore TrimLambda ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
