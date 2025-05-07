@@ -15,15 +15,17 @@ Category
 Platform
 :   Any
 Vendor
-:   Jetpack Navigation Compose
+:   Android Open Source Project
 Identifier
-:   androidx.navigation.compose
+:   androidx.navigation.common
+Feedback
+:   https://issuetracker.google.com/issues/new?component=409828
 Min
 :   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.7+
 Artifact
-:   [androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html)
+:   [androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html)
 Since
 :   2.8.0
 Affects
@@ -31,9 +33,9 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-common-lint/src/main/java/androidx/navigation/common/lint/WrongStartDestinationTypeDetector.kt)
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/main/java/androidx/navigation/runtime/lint/WrongStartDestinationTypeDetector.kt)
 Tests
-:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-common-lint/src/test/java/androidx/navigation/common/lint/WrongStartDestinationTypeDetectorTest.kt)
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/test/java/androidx/navigation/runtime/lint/WrongStartDestinationTypeDetectorTest.kt)
 Copyright Year
 :   2024
 
@@ -46,62 +48,110 @@ arguments.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/com/example/test.kt:8:Error: StartDestination should not be a simple
+src/com/example/test.kt:9:Error: StartDestination should not be a simple
 class name reference.
 Did you mean to call its constructor TestClass(...)?
 If the class TestClass does not contain arguments,
 you can also pass in its KClass reference TestClass::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = TestClass)
-                                                     ---------
-src/com/example/test.kt:9:Error: StartDestination should not be a simple
-class name reference.
+    navController.createGraph(startDestination = TestClass) {}
+                                                 ---------
+src/com/example/test.kt:10:Error: StartDestination should not be a
+simple class name reference.
 Did you mean to call its constructor TestClassWithArg(...)?
 If the class TestClassWithArg does not contain arguments,
 you can also pass in its KClass reference TestClassWithArg::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = TestClassWithArg)
-                                                     ----------------
-src/com/example/test.kt:10:Error: StartDestination should not be a
+    navController.createGraph(startDestination = TestClassWithArg) {}
+                                                 ----------------
+src/com/example/test.kt:11:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor InnerClass(...)?
 If the class InnerClass does not contain arguments,
 you can also pass in its KClass reference InnerClass::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = Outer.InnerClass)
-                                                     ----------------
-src/com/example/test.kt:11:Error: StartDestination should not be a
+    navController.createGraph(startDestination = Outer.InnerClass) {}
+                                                 ----------------
+src/com/example/test.kt:12:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor InterfaceChildClass(...)?
 If the class InterfaceChildClass does not contain arguments,
 you can also pass in its KClass reference InterfaceChildClass::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = InterfaceChildClass)
-                                                     -------------------
-src/com/example/test.kt:12:Error: StartDestination should not be a
+    navController.createGraph(startDestination = InterfaceChildClass) {}
+                                                 -------------------
+src/com/example/test.kt:13:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor AbstractChildClass(...)?
 If the class AbstractChildClass does not contain arguments,
 you can also pass in its KClass reference AbstractChildClass::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = AbstractChildClass)
-                                                     ------------------
-src/com/example/test.kt:13:Error: StartDestination should not be a
+    navController.createGraph(startDestination = AbstractChildClass) {}
+                                                 ------------------
+src/com/example/test.kt:14:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor TestInterface(...)?
 If the class TestInterface does not contain arguments,
 you can also pass in its KClass reference TestInterface::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = TestInterface)
-                                                     -------------
-src/com/example/test.kt:14:Error: StartDestination should not be a
+    navController.createGraph(startDestination = TestInterface)
+                                                 -------------
+src/com/example/test.kt:15:Error: StartDestination should not be a
 simple class name reference.
 Did you mean to call its constructor TestAbstract(...)?
 If the class TestAbstract does not contain arguments,
 you can also pass in its KClass reference TestAbstract::class
 [WrongStartDestinationType]
-    builder.navigation&lt;TestGraph&gt;(startDestination = TestAbstract)
-                                                     ------------
+    navController.createGraph(startDestination = TestAbstract)
+                                                 ------------
+src/com/example/test.kt:17:Error: StartDestination should not be a
+simple class name reference.
+Did you mean to call its constructor Companion(...)?
+If the class Companion does not contain arguments,
+you can also pass in its KClass reference Companion::class
+[WrongStartDestinationType]
+    navController.createGraph(startDestination = TestClassComp)
+                                                 -------------
+src/com/example/test.kt:18:Error: StartDestination should not be a
+simple class name reference.
+Did you mean to call its constructor Companion(...)?
+If the class Companion does not contain arguments,
+you can also pass in its KClass reference Companion::class
+[WrongStartDestinationType]
+    navController.createGraph(startDestination = TestClassWithArgComp)
+                                                 --------------------
+src/com/example/test.kt:19:Error: StartDestination should not be a
+simple class name reference.
+Did you mean to call its constructor Companion(...)?
+If the class Companion does not contain arguments,
+you can also pass in its KClass reference Companion::class
+[WrongStartDestinationType]
+    navController.createGraph(startDestination = OuterComp.InnerClassComp)
+                                                 ------------------------
+src/com/example/test.kt:20:Error: StartDestination should not be a
+simple class name reference.
+Did you mean to call its constructor Companion(...)?
+If the class Companion does not contain arguments,
+you can also pass in its KClass reference Companion::class
+[WrongStartDestinationType]
+    navController.createGraph(startDestination = InterfaceChildClassComp)
+                                                 -----------------------
+src/com/example/test.kt:21:Error: StartDestination should not be a
+simple class name reference.
+Did you mean to call its constructor Companion(...)?
+If the class Companion does not contain arguments,
+you can also pass in its KClass reference Companion::class
+[WrongStartDestinationType]
+    navController.createGraph(startDestination = AbstractChildClassComp)
+                                                 ----------------------
+src/com/example/test.kt:22:Error: StartDestination should not be a
+simple class name reference.
+Did you mean to call its constructor Companion(...)?
+If the class Companion does not contain arguments,
+you can also pass in its KClass reference Companion::class
+[WrongStartDestinationType]
+    navController.createGraph(startDestination = TestAbstractComp)
+                                                 ----------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
@@ -110,29 +160,37 @@ Here is the source file referenced above:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 package com.example
 
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.createGraph
+import androidx.test.*
 
 fun createGraph() {
-    val provider = NavigatorProvider()
-    val builder = NavGraphBuilder(provider, TestGraph, null)
-    builder.navigation<TestGraph>(startDestination = TestClass)
-    builder.navigation<TestGraph>(startDestination = TestClassWithArg)
-    builder.navigation<TestGraph>(startDestination = Outer.InnerClass)
-    builder.navigation<TestGraph>(startDestination = InterfaceChildClass)
-    builder.navigation<TestGraph>(startDestination = AbstractChildClass)
-    builder.navigation<TestGraph>(startDestination = TestInterface)
-    builder.navigation<TestGraph>(startDestination = TestAbstract)
+    val navController = NavController()
+    navController.createGraph(startDestination = TestClass) {}
+    navController.createGraph(startDestination = TestClassWithArg) {}
+    navController.createGraph(startDestination = Outer.InnerClass) {}
+    navController.createGraph(startDestination = InterfaceChildClass) {}
+    navController.createGraph(startDestination = AbstractChildClass) {}
+    navController.createGraph(startDestination = TestInterface)
+    navController.createGraph(startDestination = TestAbstract)
+    //classes with companion object to simulate marked with @Serializable
+    navController.createGraph(startDestination = TestClassComp)
+    navController.createGraph(startDestination = TestClassWithArgComp)
+    navController.createGraph(startDestination = OuterComp.InnerClassComp)
+    navController.createGraph(startDestination = InterfaceChildClassComp)
+    navController.createGraph(startDestination = AbstractChildClassComp)
+    navController.createGraph(startDestination = TestAbstractComp)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
-[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-common-lint/src/test/java/androidx/navigation/common/lint/WrongStartDestinationTypeDetectorTest.kt)
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/test/java/androidx/navigation/runtime/lint/WrongStartDestinationTypeDetectorTest.kt)
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `WrongStartDestinationTypeDetector.testNavGraphBuilder_classHasError`.
-To report a problem with this extracted sample, contact
-Jetpack Navigation Compose.
+found for this lint check, `WrongStartDestinationTypeDetector.testNavController_classHasError`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=409828.
 
 (##) Conflicts
 
@@ -140,8 +198,8 @@ This issue id has also been used by other, unrelated lint checks. Issue
 id's must be unique, so you cannot combine these libraries. Also defined
 in:
 * WrongStartDestinationType: If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class. (this issue)
-* [WrongStartDestinationType from androidx.navigation:navigation-runtime:2.9.0-alpha04](WrongStartDestinationType-2.md.html)
-* [WrongStartDestinationType from androidx.navigation:navigation-common:2.9.0-alpha04](WrongStartDestinationType-3.md.html)
+* [WrongStartDestinationType from androidx.navigation:navigation-compose:2.9.0-rc01](WrongStartDestinationType-2.md.html)
+* [WrongStartDestinationType from androidx.navigation:navigation-runtime:2.9.0-rc01](WrongStartDestinationType-3.md.html)
 
 
 (##) Including
@@ -152,32 +210,32 @@ in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.9.0-alpha04")
+implementation("androidx.navigation:navigation-common:2.9.0-rc01")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.9.0-alpha04'
+implementation 'androidx.navigation:navigation-common:2.9.0-rc01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.navigation.compose)
+implementation(libs.navigation.common)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.9.0-alpha04"
+navigation-common = "2.9.0-rc01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
 # line (see https://github.com/toml-lang/toml/issues/516) so adjust
 # when pasting into libs.versions.toml:
-navigation-compose = {
-    module = "androidx.navigation:navigation-compose",
-    version.ref = "navigation-compose"
+navigation-common = {
+    module = "androidx.navigation:navigation-common",
+    version.ref = "navigation-common"
 }
 ```
 
-2.9.0-alpha04 is the version this documentation was generated from;
+2.9.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html).
+[Additional details about androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
@@ -189,7 +247,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("WrongStartDestinationType")
   fun method() {
-     NavHost(...)
+     navigation(...)
   }
   ```
 
@@ -199,7 +257,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("WrongStartDestinationType")
   void method() {
-     NavHost(...);
+     navigation(...);
   }
   ```
 

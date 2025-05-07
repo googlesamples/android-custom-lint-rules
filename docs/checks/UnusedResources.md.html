@@ -47,6 +47,29 @@ lint.unused-resources.exclude-tests =true.
 !!! Tip
    This lint check has an associated quickfix available in the IDE.
 
+(##) Options
+
+You can configure this lint checks using the following options:
+
+(###) skip-libraries
+
+Whether the unused resource check should skip reporting unused resources in libraries.
+Many libraries will declare resources that are part of the library surface; other modules depending on the library will also reference the resources. To avoid reporting all these resources as unused (in the context of a library), the unused resource check normally skips reporting unused resources in libraries. Instead, run the unused resource check on the consuming app module (along with `checkDependencies=true`).
+
+However, there are cases where you want to check that all the resources declared in a library are used; in that case, you can disable the skip option.
+
+Default is true.
+
+Example `lint.xml`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
+&lt;lint&gt;
+    &lt;issue id="UnusedResources"&gt;
+        &lt;option name="skip-libraries" value="true" /&gt;
+    &lt;/issue&gt;
+&lt;/lint&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 (##) Example
 
 Here is an example of lint warnings produced by this check:

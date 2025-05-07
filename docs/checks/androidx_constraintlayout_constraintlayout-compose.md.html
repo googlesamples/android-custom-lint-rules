@@ -18,7 +18,7 @@ Min
 Compiled
 :   Lint 8.7+
 Artifact
-:   androidx.constraintlayout:constraintlayout-compose:1.1.0
+:   androidx.constraintlayout:constraintlayout-compose:1.1.1
 
 (##) Included Issues
 
@@ -36,17 +36,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0")
+implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
 
 // build.gradle
-implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.0'
+implementation 'androidx.constraintlayout:constraintlayout-compose:1.1.1'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.constraintlayout.compose)
 
 # libs.versions.toml
 [versions]
-constraintlayout-compose = "1.1.0"
+constraintlayout-compose = "1.1.1"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -58,8 +58,21 @@ constraintlayout-compose = {
 }
 ```
 
-1.1.0 is the version this documentation was generated from;
+1.1.1 is the version this documentation was generated from;
 there may be newer versions available.
 
+(##) Changes
+
+* 1.1.0: First version includes IncorrectChainMarginsUsage,
+  IncorrectMatchParentUsage, IncorrectReferencesDeclaration.
+
+(##) Version Compatibility
+
+There are multiple older versions available of this library:
+
+| Version            | Date     | Issues | Compatible | Compiled      | Requires |
+|-------------------:|----------|-------:|------------|--------------:|---------:|
+|               1.1.1|2025/02/26|       3|         Yes|           8.7+|      8.7+|
+|               1.1.0|2024/10/30|       3|         Yes|           8.7+|      8.7+|
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

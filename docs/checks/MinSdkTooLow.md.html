@@ -23,7 +23,7 @@ Feedback
 Since
 :   3.0.0 (October 2017)
 Affects
-:   Gradle build files
+:   Gradle build files and TOML files
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
@@ -42,36 +42,53 @@ devices.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-build.gradle:8:Warning: The value of minSdkVersion is too low. It can be
-incremented without noticeably reducing the number of supported devices.
-[MinSdkTooLow]
-    minSdkVersion 7
-    ---------------
-build.gradle:9:Warning: The value of minSdkVersion is too low. It can be
-incremented without noticeably reducing the number of supported devices.
-[MinSdkTooLow]
-    minSdk 7
-    --------
+build.gradle.kts:5:Warning: The value of minSdkVersion (15) is too low.
+It can be incremented without noticeably reducing the number of
+supported devices. [MinSdkTooLow]
+    minSdk = libs.versions.keys.msv.get().toInt() // ERROR 14
+    ---------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`build.gradle`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
-apply plugin: 'com.android.application'
-
+`build.gradle.kts`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.0"
-
+    compileSdk = libs.versions.compile.sdk.version.get().toInt() // ERROR 12
+    compileSdk = libs.versions.keys.csv.get().toInt() // ERROR 13
     defaultConfig {
-        minSdkVersion 7
-        minSdk 7
-        targetSdkVersion 19
-        versionCode 1
-        versionName "1.0"
+        minSdk = libs.versions.keys.msv.get().toInt() // ERROR 14
+        targetSdk = libs.versions.keys.tsv.get().toInt() // ERROR 15
     }
 }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`../gradle/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+compile_sdk_version = "34" # ERROR 1
+min_sdk_version = "15"     # ERROR 2
+target_sdk_version = "34"  # ERROR 3
+
+compileSdkVersion = "34"   # ERROR 4
+minSdkVersion = "15"       # ERROR 5
+targetSdkVersion = "34"    # ERROR 6
+
+compileSdk = "34"          # ERROR 7
+minSdk = "15"              # ERROR 8
+targetSdk = "34"           # ERROR 9
+
+# https://github.com/Kotlin/multiplatform-library-template/blob/main/gradle/libs.versions.toml
+android-minSdk = "15"      # ERROR 10
+android-compileSdk = "34"  # ERROR 11
+
+# Unusual keys, referenced via KTS
+keys-csv = "34"            # ERROR 12
+keys-msv = "15"            # ERROR 13
+keys-tsv = "34"            # ERROR 14
+
+javaCompileSdk = "17"      # OK 1
+other-compileSdk = "15"    # OK 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -79,7 +96,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testMinSdkVersion`.
+found for this lint check, `GradleDetector.testCompileSdkViaVersionCatalog`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 

@@ -1,0 +1,111 @@
+<meta charset="utf-8">
+(#) Missing default uncaught exception handler delegation
+
+!!! WARNING: Missing default uncaught exception handler delegation
+   This is a warning.
+
+Id
+:   `DefaultUncaughtExceptionDelegation`
+Summary
+:   Missing default uncaught exception handler delegation
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Android
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.11.0-alpha07 (April 2025)
+Affects
+:   Kotlin and Java files
+Editing
+:   This check can *not* run live in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UncaughtExceptionHandlerDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UncaughtExceptionHandlerDetectorTest.kt)
+
+A default uncaught exception handler should usually call the existing
+(previously set) default uncaught exception handler. This is especially
+true on Android, which uses a default uncaught exception handler to
+handle crashes. This lint check reports calls to
+`setDefaultUncaughtExceptionHandler` unless we can also see a call to
+`getDefaultUncaughtExceptionHandler` (to get the existing handler) in
+the same module. Make sure you also call
+`existingHandler.uncaughtException(thread, throwable)` from your new
+handler.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/com/example/app/test.kt:7:Warning: Must call
+getDefaultUncaughtExceptionHandler() to get the existing handler, and
+call existingHandler.uncaughtException(thread, throwable) from your new
+handler [DefaultUncaughtExceptionDelegation]
+    setDefaultUncaughtExceptionHandler { thread, throwable -&gt;
+    ^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/com/example/app/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package com.example.app
+
+import android.util.Log
+import java.lang.Thread.setDefaultUncaughtExceptionHandler
+
+fun foo() {
+    setDefaultUncaughtExceptionHandler { thread, throwable ->
+        Log.e("foo", "Uncaught exception")
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UncaughtExceptionHandlerDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="DefaultUncaughtExceptionDelegation" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'DefaultUncaughtExceptionDelegation'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore DefaultUncaughtExceptionDelegation ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

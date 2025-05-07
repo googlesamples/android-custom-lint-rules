@@ -21,7 +21,7 @@ Feedback
 Since
 :   8.2.0 (November 2023)
 Affects
-:   Gradle build files and manifest files
+:   Gradle build files, TOML files and manifest files
 Editing
 :   This check runs on the fly in the IDE editor
 See
@@ -55,40 +55,54 @@ https://developer.android.com/distribute/best-practices/develop/target-sdk.html.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-AndroidManifest.xml:6:Warning: Not targeting the latest versions of
+build.gradle.kts:6:Warning: Not targeting the latest versions of
 Android; compatibility modes apply. Consider testing and updating this
 version. Consult the android.os.Build.VERSION_CODES javadoc for details.
 [OldTargetApi]
-    &lt;uses-sdk android:minSdkVersion="10" android:targetSdkVersion="33" /&gt;
-                                         -----------------------------
+    targetSdk = libs.versions.keys.tsv.get().toInt() // ERROR 15
+    ------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is the source file referenced above:
+Here are the relevant source files:
 
-`AndroidManifest.xml`:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
-&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="test.bytecode"
-    android:versionCode="1"
-    android:versionName="1.0" &gt;
+`build.gradle.kts`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+android {
+    compileSdk = libs.versions.compile.sdk.version.get().toInt() // ERROR 12
+    compileSdk = libs.versions.keys.csv.get().toInt() // ERROR 13
+    defaultConfig {
+        minSdk = libs.versions.keys.msv.get().toInt() // ERROR 14
+        targetSdk = libs.versions.keys.tsv.get().toInt() // ERROR 15
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    &lt;uses-sdk android:minSdkVersion="10" android:targetSdkVersion="33" /&gt;
+`../gradle/libs.versions.toml`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~toml linenumbers
+[versions]
+compile_sdk_version = "34" # ERROR 1
+min_sdk_version = "15"     # ERROR 2
+target_sdk_version = "34"  # ERROR 3
 
-    &lt;application
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" &gt;
-        &lt;activity
-            android:name=".BytecodeTestsActivity"
-            android:label="@string/app_name" &gt;
-            &lt;intent-filter&gt;
-                &lt;action android:name="android.intent.action.MAIN" /&gt;
+compileSdkVersion = "34"   # ERROR 4
+minSdkVersion = "15"       # ERROR 5
+targetSdkVersion = "34"    # ERROR 6
 
-                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
-            &lt;/intent-filter&gt;
-        &lt;/activity&gt;
-    &lt;/application&gt;
+compileSdk = "34"          # ERROR 7
+minSdk = "15"              # ERROR 8
+targetSdk = "34"           # ERROR 9
 
-&lt;/manifest&gt;
+# https://github.com/Kotlin/multiplatform-library-template/blob/main/gradle/libs.versions.toml
+android-minSdk = "15"      # ERROR 10
+android-compileSdk = "34"  # ERROR 11
+
+# Unusual keys, referenced via KTS
+keys-csv = "34"            # ERROR 12
+keys-msv = "15"            # ERROR 13
+keys-tsv = "34"            # ERROR 14
+
+javaCompileSdk = "17"      # OK 1
+other-compileSdk = "15"    # OK 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
@@ -96,7 +110,7 @@ You can also visit the
 for the unit tests for this check to see additional scenarios.
 
 The above example was automatically extracted from the first unit test
-found for this lint check, `GradleDetector.testNotTheNewestTargetSdk`.
+found for this lint check, `GradleDetector.testCompileSdkViaVersionCatalog`.
 To report a problem with this extracted sample, visit
 https://issuetracker.google.com/issues/new?component=192708.
 
@@ -104,18 +118,18 @@ https://issuetracker.google.com/issues/new?component=192708.
 
 You can suppress false positives using one of the following mechanisms:
 
-* Adding the suppression attribute `tools:ignore="OldTargetApi"` on
-  the problematic XML element (or one of its enclosing elements). You
-  may also need to add the following namespace declaration on the root
-  element in the XML file if it's not already there:
-  `xmlns:tools="http://schemas.android.com/tools"`.
-
 * Using a suppression comment like this on the line above:
 
   ```kt
   //noinspection OldTargetApi
   problematicStatement()
   ```
+
+* Adding the suppression attribute `tools:ignore="OldTargetApi"` on
+  the problematic XML element (or one of its enclosing elements). You
+  may also need to add the following namespace declaration on the root
+  element in the XML file if it's not already there:
+  `xmlns:tools="http://schemas.android.com/tools"`.
 
 * Using a special `lint.xml` file in the source tree which turns off
   the check in that folder and any sub folder. A simple file might look

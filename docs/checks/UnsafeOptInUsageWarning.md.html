@@ -21,9 +21,9 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=459778
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
 :   [androidx.annotation:annotation-experimental](androidx_annotation_annotation-experimental.md.html)
 Since
@@ -71,17 +71,17 @@ as a comma-delimited list of opted-in annotations:
 
 ```
 // build.gradle.kts
-implementation("androidx.annotation:annotation-experimental:1.5.0-alpha01")
+implementation("androidx.annotation:annotation-experimental:1.5.0-rc01")
 
 // build.gradle
-implementation 'androidx.annotation:annotation-experimental:1.5.0-alpha01'
+implementation 'androidx.annotation:annotation-experimental:1.5.0-rc01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.annotation.experimental)
 
 # libs.versions.toml
 [versions]
-annotation-experimental = "1.5.0-alpha01"
+annotation-experimental = "1.5.0-rc01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -93,7 +93,7 @@ annotation-experimental = {
 }
 ```
 
-1.5.0-alpha01 is the version this documentation was generated from;
+1.5.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
 [Additional details about androidx.annotation:annotation-experimental](androidx_annotation_annotation-experimental.md.html).

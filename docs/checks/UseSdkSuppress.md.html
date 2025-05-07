@@ -42,7 +42,7 @@ intended for newer versions.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/java/test/pkg/UnitTestKotlin.kt:4:Error: Don't use @RequiresApi
+src/test/java/test/pkg/UnitTestKotlin.kt:5:Error: Don't use @RequiresApi
 from tests; use @SdkSuppress on UnitTestKotlin instead [UseSdkSuppress]
 @RequiresApi(29) // ERROR: don't use in tests, use @SdkSuppress instead
 ----------------
@@ -54,10 +54,13 @@ Here are the relevant source files:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 import android.widget.GridLayout
 import androidx.annotation.RequiresApi
+import org.junit.Test
 
 @RequiresApi(29) // ERROR: don't use in tests, use @SdkSuppress instead
 class UnitTestKotlin {
     private val field1 = GridLayout(null) // OK via @RequiresApiSuppress
+    @Test
+    fun thisIsATest() = Unit
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -65,7 +68,7 @@ class UnitTestKotlin {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
 android {
     lintOptions {
-        checkTestSources true
+        checkTestSources = true
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

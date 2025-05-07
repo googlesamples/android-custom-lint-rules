@@ -15,20 +15,18 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
 :   Lint 8.7+
 Artifact
-:   androidx.compose.foundation:foundation-android:1.8.0-alpha07
+:   androidx.compose.foundation:foundation-android:1.9.0-alpha01
 
 (##) Included Issues
 
-|Issue Id                                                                                  |Issue Description                                                                         |
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-|[FrequentlyChangedStateReadInComposition](FrequentlyChangedStateReadInComposition.md.html)|Frequently changing state should not  be directly read in composable function             |
-|[UnrememberedMutableInteractionSource](UnrememberedMutableInteractionSource.md.html)      |Creating a MutableInteractionSource during composition without using `remember`           |
-|[UseOfNonLambdaOffsetOverload](UseOfNonLambdaOffsetOverload.md.html)                      |Modifier.offset{ } is preferred over Modifier.offset() for `State` backed arguments       |
-|[UnusedBoxWithConstraintsScope](UnusedBoxWithConstraintsScope.md.html)                    |BoxWithConstraints content should use the constraints provided via BoxWithConstraintsScope|
+|Issue Id                                                              |Issue Description                                                                         |
+|----------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+|[UseOfNonLambdaOffsetOverload](UseOfNonLambdaOffsetOverload.md.html)  |Modifier.offset{ } is preferred over Modifier.offset() for `State` backed arguments       |
+|[UnusedBoxWithConstraintsScope](UnusedBoxWithConstraintsScope.md.html)|BoxWithConstraints content should use the constraints provided via BoxWithConstraintsScope|
 
 (##) Including
 
@@ -38,17 +36,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.foundation:foundation-android:1.8.0-alpha07")
+implementation("androidx.compose.foundation:foundation-android:1.9.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.foundation:foundation-android:1.8.0-alpha07'
+implementation 'androidx.compose.foundation:foundation-android:1.9.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.foundation.android)
 
 # libs.versions.toml
 [versions]
-foundation-android = "1.8.0-alpha07"
+foundation-android = "1.9.0-alpha01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -60,11 +58,11 @@ foundation-android = {
 }
 ```
 
-1.8.0-alpha07 is the version this documentation was generated from;
+1.9.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 NOTE: These lint checks are **also** made available separate from the main library.
-You can also use `androidx.compose.foundation:foundation-lint:1.8.0-alpha07`.
+You can also use `androidx.compose.foundation:foundation-lint:1.9.0-alpha01`.
 
 
 (##) Changes
@@ -73,6 +71,8 @@ You can also use `androidx.compose.foundation:foundation-lint:1.8.0-alpha07`.
   UseOfNonLambdaOffsetOverload.
 * 1.6.0: Adds UnrememberedMutableInteractionSource,
   UnusedBoxWithConstraintsScope.
+* 1.9.0-alpha01: Removes FrequentlyChangedStateReadInComposition,
+  UnrememberedMutableInteractionSource.
 
 (##) Version Compatibility
 
@@ -80,13 +80,10 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|       1.8.0-alpha07|2024/12/11|       4|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha06|2024/11/13|       4|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha05|2024/10/30|       4|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha04|2024/10/16|       4|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha03|2024/10/02|       4|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha02|2024/09/18|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha01|2024/09/04|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.9.0-alpha01|2025/04/23|       2|         Yes|           8.7+|      8.7+|
+|               1.8.0|2025/04/23|       4|         Yes|           8.7+|8.0 and 8.1|
+|               1.7.8|2025/02/12|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.7|2025/01/29|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.6|2024/12/11|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.5|2024/10/30|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.4|2024/10/16|       4|         Yes|    8.0 and 8.1|8.0 and 8.1|

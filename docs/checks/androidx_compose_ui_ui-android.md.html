@@ -14,17 +14,20 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
-:   androidx.compose.ui:ui-android:1.8.0-alpha07
+:   androidx.compose.ui:ui-android:1.9.0-alpha01
 
 (##) Included Issues
 
 |Issue Id                                                                                |Issue Description                                                                                                                                |
 |----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 |[UnnecessaryComposedModifier](UnnecessaryComposedModifier.md.html)                      |Modifier.composed should only be used for modifiers that invoke @Composable functions                                                            |
+|[LocalContextConfigurationRead](LocalContextConfigurationRead.md.html)                  |Reading Configuration using LocalContext.current.resources.configuration                                                                         |
+|[LocalContextResourcesRead](LocalContextResourcesRead.md.html)                          |Reading Resources using LocalContext.current.resources                                                                                           |
+|[ConfigurationScreenWidthHeight](ConfigurationScreenWidthHeight.md.html)                |Using Configuration.screenWidthDp/screenHeightDp instead of LocalWindowInfo.current.containerSize                                                |
 |[ModifierFactoryExtensionFunction](ModifierFactoryExtensionFunction.md.html)            |Modifier factory functions should be extensions on Modifier                                                                                      |
 |[ModifierFactoryReturnType](ModifierFactoryReturnType.md.html)                          |Modifier factory functions should return Modifier                                                                                                |
 |[ModifierFactoryUnreferencedReceiver](ModifierFactoryUnreferencedReceiver.md.html)      |Modifier factory functions must use the receiver Modifier instance                                                                               |
@@ -43,17 +46,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-android:1.8.0-alpha07")
+implementation("androidx.compose.ui:ui-android:1.9.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-android:1.8.0-alpha07'
+implementation 'androidx.compose.ui:ui-android:1.9.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui.android)
 
 # libs.versions.toml
 [versions]
-ui-android = "1.8.0-alpha07"
+ui-android = "1.9.0-alpha01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -65,11 +68,11 @@ ui-android = {
 }
 ```
 
-1.8.0-alpha07 is the version this documentation was generated from;
+1.9.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 NOTE: These lint checks are **also** made available separate from the main library.
-You can also use `androidx.compose.ui:ui-lint:1.8.0-alpha07`.
+You can also use `androidx.compose.ui:ui-lint:1.9.0-alpha01`.
 
 
 (##) Changes
@@ -83,6 +86,9 @@ You can also use `androidx.compose.ui:ui-lint:1.8.0-alpha07`.
   UnnecessaryComposedModifier.
 * 1.6.0: Removes ComposableModifierFactory.
 * 1.7.0: Adds SuspiciousModifierThen.
+* 1.8.0: Adds ConfigurationScreenWidthHeight,
+  LocalContextConfigurationRead.
+* 1.9.0-alpha01: Adds LocalContextResourcesRead.
 
 (##) Version Compatibility
 
@@ -90,20 +96,17 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|       1.8.0-alpha07|2024/12/11|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha06|2024/11/13|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha05|2024/10/30|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha04|2024/10/16|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha03|2024/10/02|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha02|2024/09/18|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha01|2024/09/04|      10|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.6|2024/12/11|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.5|2024/10/30|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.4|2024/10/16|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.3|2024/10/02|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.2|2024/09/18|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.1|2024/09/10|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.0|2024/09/04|      10|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
+|       1.9.0-alpha01|2025/04/23|      13|         Yes|           8.7+|      8.7+|
+|               1.8.0|2025/04/23|      12|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.8|2025/02/12|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.7|2025/01/29|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.6|2024/12/11|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.5|2024/10/30|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.4|2024/10/16|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.3|2024/10/02|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.2|2024/09/18|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.1|2024/09/10|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.0|2024/09/04|      10|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
 |               1.6.8|2024/06/12|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.6.7|2024/05/01|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.6.6|2024/04/17|       9|         Yes|    8.0 and 8.1|8.0 and 8.1|
@@ -121,6 +124,7 @@ There are multiple older versions available of this library:
 
 Compatibility Problems:
 
-[^1]: org.jetbrains.kotlin.analysis.api.resolution.KaCompoundAccess#getOperationPartiallyAppliedSymbol(): org.jetbrains.kotlin.analysis.api.resolution.KaPartiallyAppliedSymbol is not available  
+[^1]: org.jetbrains.kotlin.analysis.api.calls.KaCallKt#getCalls(org.jetbrains.kotlin.analysis.api.resolution.KaCallInfo): java.util.List is not available  
+[^2]: org.jetbrains.kotlin.analysis.api.KaSession#resolveCall(org.jetbrains.kotlin.psi.KtElement): org.jetbrains.kotlin.analysis.api.resolution.KaCallInfo is not available  
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

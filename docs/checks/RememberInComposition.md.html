@@ -1,0 +1,535 @@
+<meta charset="utf-8">
+(#) Calling a @RememberInComposition annotated declaration inside composition without using `remember`
+
+!!! ERROR: Calling a @RememberInComposition annotated declaration inside composition without using `remember`
+   This is an error.
+
+Id
+:   `RememberInComposition`
+Summary
+:   Calling a @RememberInComposition annotated declaration inside composition without using `remember`
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Jetpack Compose
+Identifier
+:   androidx.compose.runtime
+Feedback
+:   https://issuetracker.google.com/issues/new?component=612128
+Min
+:   Lint 8.7+
+Compiled
+:   Lint 8.7+
+Artifact
+:   [androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html)
+Since
+:   1.9.0-alpha01
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/main/java/androidx/compose/runtime/lint/RememberInCompositionDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/RememberInCompositionDetectorTest.kt)
+Copyright Year
+:   2025
+
+APIs annotated with @RememberInComposition must not be called inside
+composition. This can lead to correctness issues and / or performance
+issues. Instead, use `remember` to cache the value across compositions,
+or hoist this call outside of composition.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/compose/runtime/foo/{.kt:8:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:9:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:10:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:11:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:12:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:14:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:15:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:19:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:20:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:21:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:22:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:23:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:25:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:26:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:30:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:31:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:32:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:33:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:34:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:36:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:37:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:46:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:47:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:48:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:49:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:50:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:52:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:53:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:56:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:57:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:58:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:59:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:60:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:62:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:63:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:69:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:70:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:71:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:72:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:73:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:75:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:76:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:80:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    test()
+    ----
+src/androidx/compose/runtime/foo/{.kt:81:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:82:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:83:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    bar.calculateValue()
+        --------------
+src/androidx/compose/runtime/foo/{.kt:84:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:86:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    barImpl.calculateValue()
+            --------------
+src/androidx/compose/runtime/foo/{.kt:87:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+src/androidx/compose/runtime/foo/{.kt:94:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val foo = Foo()
+              ---
+src/androidx/compose/runtime/foo/{.kt:95:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val fooValue = foo.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:96:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barValue = bar.value
+                       -----
+src/androidx/compose/runtime/foo/{.kt:98:Error: Calling a
+@RememberInComposition annotated declaration inside composition without
+using remember [RememberInComposition]
+    val barImplValue = barImpl.value
+                               -----
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/compose/runtime/foo/{.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.compose.runtime.foo
+
+import androidx.compose.runtime.*
+
+@Composable
+fun Test(bar: Bar) {
+    test()
+    val foo = Foo()
+    val fooValue = foo.value
+    bar.calculateValue()
+    val barValue = bar.value
+    val barImpl = BarImpl()
+    barImpl.calculateValue()
+    val barImplValue = barImpl.value
+}
+
+val lambda = @Composable { bar: Bar ->
+    test()
+    val foo = Foo()
+    val fooValue = foo.value
+    bar.calculateValue()
+    val barValue = bar.value
+    val barImpl = BarImpl()
+    barImpl.calculateValue()
+    val barImplValue = barImpl.value
+}
+
+val lambda2: @Composable (bar: Bar) -> Unit = { bar ->
+    test()
+    val foo = Foo()
+    val fooValue = foo.value
+    bar.calculateValue()
+    val barValue = bar.value
+    val barImpl = BarImpl()
+    barImpl.calculateValue()
+    val barImplValue = barImpl.value
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2(bar: Bar) {
+    LambdaParameter(content = {
+        test()
+        val foo = Foo()
+        val fooValue = foo.value
+        bar.calculateValue()
+        val barValue = bar.value
+        val barImpl = BarImpl()
+        barImpl.calculateValue()
+        val barImplValue = barImpl.value
+    })
+    LambdaParameter {
+        test()
+        val foo = Foo()
+        val fooValue = foo.value
+        bar.calculateValue()
+        val barValue = bar.value
+        val barImpl = BarImpl()
+        barImpl.calculateValue()
+        val barImplValue = barImpl.value
+    }
+}
+
+fun test3(bar: Bar) {
+    val localLambda1 = @Composable {
+        test()
+        val foo = Foo()
+        val fooValue = foo.value
+        bar.calculateValue()
+        val barValue = bar.value
+        val barImpl = BarImpl()
+        barImpl.calculateValue()
+        val barImplValue = barImpl.value
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        test()
+        val foo = Foo()
+        val fooValue = foo.value
+        bar.calculateValue()
+        val barValue = bar.value
+        val barImpl = BarImpl()
+        barImpl.calculateValue()
+        val barImplValue = barImpl.value
+    }
+}
+
+@Composable
+fun Test4(bar: Bar) {
+    val localObject = object {
+        val foo = Foo()
+        val fooValue = foo.value
+        val barValue = bar.value
+        val barImpl = BarImpl()
+        val barImplValue = barImpl.value
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/RememberInCompositionDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `RememberInCompositionDetector.notRemembered`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=612128.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.compose.runtime:runtime-android:1.9.0-alpha01")
+
+// build.gradle
+implementation 'androidx.compose.runtime:runtime-android:1.9.0-alpha01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.runtime.android)
+
+# libs.versions.toml
+[versions]
+runtime-android = "1.9.0-alpha01"
+[libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
+runtime-android = {
+    module = "androidx.compose.runtime:runtime-android",
+    version.ref = "runtime-android"
+}
+```
+
+1.9.0-alpha01 is the version this documentation was generated from;
+there may be newer versions available.
+
+NOTE: These lint checks are **also** made available separate from the main library.
+You can also use `androidx.compose.runtime:runtime-lint:1.9.0-alpha01`.
+
+
+[Additional details about androidx.compose.runtime:runtime-android](androidx_compose_runtime_runtime-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("RememberInComposition")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("RememberInComposition")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection RememberInComposition
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="RememberInComposition" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'RememberInComposition'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore RememberInComposition ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

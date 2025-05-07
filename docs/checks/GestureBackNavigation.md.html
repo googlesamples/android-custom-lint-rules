@@ -25,30 +25,33 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 See
-:   https://developer.android.com/about/versions/13/features/predictive-back-gesture
+:   https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/GestureBackNavDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GestureBackNavDetectorTest.kt)
 
-Starting in Android 13 (API 33+), the handling of back events is moving
-to an ahead-of-time callback model. Use
-`OnBackInvokedDispatcher.registerOnBackInvokedCallback(...)` and
-`onBackInvokedCallback` or AndroidX's `OnBackPressedDispatcher` with an
-implemented `onBackPressedCallback` to handle back gestures and key
-presses.
+For apps targeting and running on Android 16+ (API 36+), predictive back
+animations are enabled by default. A back gesture does not trigger
+`{Activity,Dialog}.onBackPressed`, and does not dispatch
+`KeyEvent.KEYCODE_BACK`.
+
+Apps should migrate to AndroidX's backward compatible
+`OnBackPressedDispatcher`.
+
+This lint check does not consider per-activity opt-in/opt-out, so you
+may need to suppress or baseline reported incidents if migrating
+per-activity.
 
 (##) Example
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
-src/test/pkg/KeyEventKeyCodeBackTest.java:11:Warning: If intercepting
-back events, this should be handled through the registration of
-callbacks on the window level; Please see
-https://developer.android.com/about/versions/13/features/predictive-back-gesture
-[GestureBackNavigation]
-    if (KeyEvent.KEYCODE_BACK == keyCode) {
-        ---------------------
+src/test/pkg/KeyEventKeyCodeBackTest.java:17:Warning: onBackPressed is
+no longer called for back gestures; migrate to AndroidX's backward
+compatible OnBackPressedDispatcher [GestureBackNavigation]
+    public void onBackPressed() {
+                -------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
@@ -58,7 +61,7 @@ Here are the relevant source files:
 &lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="test.pkg"&gt;
 
-    &lt;uses-permission-sdk-33 android:name="foo.bar.BAZ" /&gt;
+    &lt;uses-sdk android:minSdkVersion="24" android:targetSdkVersion="35" /&gt;
 
     &lt;application
         android:icon="@drawable/ic_launcher"
@@ -66,7 +69,8 @@ Here are the relevant source files:
         android:enableOnBackInvokedCallback="true" &gt;
         &lt;activity
             android:name=".KeyEventKeyCodeBackTest"
-            android:label="@string/app_name" &gt;
+            android:label="@string/app_name"
+            android:exported="true" &gt;
             &lt;intent-filter&gt;
                 &lt;action android:name="android.intent.action.MAIN" /&gt;
 
@@ -74,7 +78,6 @@ Here are the relevant source files:
             &lt;/intent-filter&gt;
         &lt;/activity&gt;
     &lt;/application&gt;
-
 &lt;/manifest&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -93,6 +96,11 @@ public class KeyEventKeyCodeBackTest extends Activity {
         if (KeyEvent.KEYCODE_BACK == keyCode) {
           return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // handle back
     }
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
