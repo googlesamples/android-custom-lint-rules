@@ -1,0 +1,264 @@
+<meta charset="utf-8">
+(#) Avoid using UElement as PsiElement
+
+!!! WARNING: Avoid using UElement as PsiElement
+   This is a warning.
+
+Id
+:   `UElementAsPsi`
+Summary
+:   Avoid using UElement as PsiElement
+Severity
+:   Warning
+Category
+:   Lint Implementation Issues
+Platform
+:   JDK
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.10.0 (May 2025)
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/UElementAsPsiDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UElementAsPsiDetectorTest.kt)
+
+Avoid using UAST element as PSI element. If you need to utilize PSI
+APIs, retrieve the underlying `javaPsi` explicitly. If you need to
+analyze language-specific information, access `sourcePsi`.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/test/pkg/MyJavaLintDetector.java:37:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    method.getContainingClass(); // ERROR 1
+    ---------------------------
+src/test/pkg/MyJavaLintDetector.java:38:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    field.getContainingClass(); // ERROR 2
+    --------------------------
+src/test/pkg/MyJavaLintDetector.java:46:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    PsiElement parent = method.getParent(); // ERROR 3
+                        ------------------
+src/test/pkg/MyJavaLintDetector.java:48:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    PsiTreeUtil.getParentOfType(method, PsiClass.class); // ERROR 4
+                                ------
+src/test/pkg/MyKotlinLintDetector.kt:21:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    method.getContainingClass() // ERROR 5
+    ---------------------------
+src/test/pkg/MyKotlinLintDetector.kt:22:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    field.getContainingClass() // ERROR 6
+    --------------------------
+src/test/pkg/MyKotlinLintDetector.kt:32:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    val parent2 = method.parent // ERROR 7
+                  -------------
+src/test/pkg/MyKotlinLintDetector.kt:34:Warning: Do not use UElement as
+PsiElement [UElementAsPsi]
+    PsiTreeUtil.getParentOfType(method, PsiClass::class.java) // ERROR 8
+                                ------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/test/pkg/MyJavaLintDetector.java`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~java linenumbers
+/* Copyright (C) 2025 The Android Open Source Project */
+package test.pkg;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiCallExpression;
+import com.intellij.psi.PsiExpression;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.android.tools.lint.detector.api.Detector;
+import org.jetbrains.uast.UFile;
+import org.jetbrains.uast.UMethod;
+import org.jetbrains.uast.UField;
+import com.android.tools.lint.detector.api.Category;
+import com.android.tools.lint.detector.api.Detector;
+import com.android.tools.lint.detector.api.Implementation;
+import com.android.tools.lint.detector.api.Issue;
+import com.android.tools.lint.detector.api.JavaContext;
+import com.android.tools.lint.detector.api.Scope;
+import com.android.tools.lint.detector.api.Severity;
+import org.jetbrains.uast.UCallExpression;
+import java.util.EnumSet;
+
+@SuppressWarnings({"MethodMayBeStatic", "ClassNameDiffersFromFileName", "StatementWithEmptyBody", "deprecation"})
+public class MyJavaLintDetector extends Detector {
+    public static final Issue ISSUE =
+            Issue.create(
+                    "com.android.namespaced.lint.check.FooDetector",
+                    "Wrong use of <LinearLayout>",
+                    "As described in "
+                        + "https://code.google.com/p/android/issues/detail?id=65351 blah blah blah.",
+                    Category.A11Y,
+                    3,
+                    Severity.WARNING,
+                    new Implementation(MyJavaLintDetector.class, EnumSet.of(Scope.RESOURCE_FILE, Scope.JAVA_FILE)));
+
+    public void testGetContainingClass(UMethod method, UField field) {
+        method.getContainingClass(); // ERROR 1
+        field.getContainingClass(); // ERROR 2
+    }
+    public void testGetContainingClass(PsiMethod method, PsiField field) {
+        method.getContainingClass(); // OK
+        field.getContainingClass(); // OK
+    }
+    public void testParents(PsiField field, UMethod method) {
+        PsiElement parent = field.getParent(); // OK
+        PsiElement parent = method.getParent(); // ERROR 3
+        PsiTreeUtil.getParentOfType(field, PsiClass.class); // OK
+        PsiTreeUtil.getParentOfType(method, PsiClass.class); // ERROR 4
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/test/pkg/MyKotlinLintDetector.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+/* Copyright (C) 2025 The Android Open Source Project */
+package test.pkg
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiCallExpression
+import com.intellij.psi.PsiExpression
+import com.intellij.psi.PsiField
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiTreeUtil
+import com.android.tools.lint.detector.api.Category
+import com.android.tools.lint.detector.api.Detector
+import com.android.tools.lint.detector.api.Implementation
+import com.android.tools.lint.detector.api.Issue
+import com.android.tools.lint.detector.api.JavaContext
+import com.android.tools.lint.detector.api.Scope
+import com.android.tools.lint.detector.api.Severity
+import org.jetbrains.uast.UMethod
+import org.jetbrains.uast.UField
+
+class MyKotlinLintDetector : Detector() {
+    fun testGetContainingClass(method: UMethod, field: UField) {
+      method.getContainingClass() // ERROR 5
+      field.getContainingClass() // ERROR 6
+    }
+
+    fun testGetContainingClass(method: PsiMethod, field: PsiField) {
+      method.getContainingClass() // OK
+      field.getContainingClass() // OK
+    }
+
+    fun testParents(field: PsiField, method: UMethod) {
+        val parent1 = field.parent // OK
+        val parent2 = method.parent // ERROR 7
+        PsiTreeUtil.getParentOfType(field, PsiClass::class.java) // OK
+        PsiTreeUtil.getParentOfType(method, PsiClass::class.java) // ERROR 8
+    }
+
+    companion object {
+        private val IMPLEMENTATION =
+            Implementation(
+                MyKotlinLintDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+
+        val ISSUE =
+            Issue.create(
+                id = "badlyCapitalized id",
+                briefDescription = "checks MyLintDetector.",
+                explanation = """
+                    Some description here.
+                    Here's a call: foo.bar.baz(args).
+                    This line continuation is okay. \
+                    But this one is missing a space.\
+                    Okay?
+                    """.trimIndent(),
+                category = Category.INTEROPERABILITY_KOTLIN,
+                priority = 4,
+                severity = Severity.WARNING,
+                implementation = IMPLEMENTATION
+            )
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UElementAsPsiDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("UElementAsPsi")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("UElementAsPsi")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection UElementAsPsi
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="UElementAsPsi" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'UElementAsPsi'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore UElementAsPsi ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -8,8 +8,6 @@ Id
 :   `NewerVersionAvailable`
 Summary
 :   Newer Library Versions Available
-Note
-:   **This issue is disabled by default**; use `--enable NewerVersionAvailable`
 Severity
 :   Warning
 Category
@@ -47,6 +45,11 @@ which makes it more flexible but also **much** slower.
 
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+../gradle/libs.versions.toml:2:Warning: A newer version of
+com.google.guava:guava than 11.0.2 is available: 30.1-android
+[NewerVersionAvailable]
+guavaVersion = "11.0.2"
+               --------
 ../gradle/libs.versions.toml:12:Warning: A newer version of
 com.autonomousapps.dependency-analysis than 1.0.0 is available: 1.20.0
 [NewerVersionAvailable]

@@ -19,7 +19,7 @@ Min
 Compiled
 :   Lint 8.7+
 Artifact
-:   com.slack.lint:slack-lint-checks:0.8.2
+:   com.slack.lint:slack-lint-checks:0.9.0
 
 (##) Included Issues
 
@@ -115,10 +115,12 @@ Artifact
 |[DenyListedBlockingApi](DenyListedBlockingApi.md.html)                                |Deny-listed API                                                                                          |
 |[ParcelizeFunctionProperty](ParcelizeFunctionProperty.md.html)                        |Function type properties are not parcelable                                                              |
 |[ExceptionMessage](ExceptionMessage.md.html)                                          |Please provide a string for the `lazyMessage` parameter                                                  |
+|[TestParameterSiteTarget](TestParameterSiteTarget.md.html)                            |`TestParameter` annotation has the wrong site target                                                     |
 |[MustUseNamedParams](MustUseNamedParams.md.html)                                      |Calls to @MustUseNamedParams-annotated methods must name all parameters                                  |
 |[AvoidUsingNotNullOperator](AvoidUsingNotNullOperator.md.html)                        |Avoid using the !! operator in Kotlin                                                                    |
 |[DoNotCallViewToString](DoNotCallViewToString.md.html)                                |Do not use `View.toString()`                                                                             |
 |[InflationInItemDecoration](InflationInItemDecoration.md.html)                        |Avoid inflating a view to display text                                                                   |
+|[NullableConcurrentHashMap](NullableConcurrentHashMap.md.html)                        |ConcurrentHashMap should not use nullable types                                                          |
 
 (##) Including
 
@@ -129,17 +131,17 @@ Artifact
 
 ```
 // build.gradle.kts
-lintChecks("com.slack.lint:slack-lint-checks:0.8.2")
+lintChecks("com.slack.lint:slack-lint-checks:0.9.0")
 
 // build.gradle
-lintChecks 'com.slack.lint:slack-lint-checks:0.8.2'
+lintChecks 'com.slack.lint:slack-lint-checks:0.9.0'
 
 // build.gradle.kts with version catalogs:
 lintChecks(libs.slack.lint.checks)
 
 # libs.versions.toml
 [versions]
-slack-lint-checks = "0.8.2"
+slack-lint-checks = "0.9.0"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -151,7 +153,7 @@ slack-lint-checks = {
 }
 ```
 
-0.8.2 is the version this documentation was generated from;
+0.9.0 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -223,6 +225,7 @@ there may be newer versions available.
 * 0.7.2: Adds DoNotMockAnything.
 * 0.8.1: Adds AvoidUsingNotNullOperator, DoNotCallViewToString,
   InflationInItemDecoration.
+* 0.9.0: Adds NullableConcurrentHashMap, TestParameterSiteTarget.
 
 (##) Version Compatibility
 
@@ -230,6 +233,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|               0.9.0|2025/03/28|      96|         Yes|           8.7+|      8.7+|
 |               0.8.2|2024/10/14|      94|         Yes|           8.7+|      8.7+|
 |               0.8.1|2024/10/03|      94|         Yes|           8.7+|      8.7+|
 |               0.8.0|2024/10/02|      91|         Yes|           8.7+|      8.7+|

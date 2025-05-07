@@ -14,30 +14,32 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=612128
 Min
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Compiled
-:   Lint 8.0 and 8.1
+:   Lint 8.7+
 Artifact
-:   androidx.compose.runtime:runtime-android:1.8.0-alpha07
+:   androidx.compose.runtime:runtime-android:1.9.0-alpha01
 
 (##) Included Issues
 
-|Issue Id                                                                        |Issue Description                                                                           |
-|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
-|[AutoboxingStateValueProperty](AutoboxingStateValueProperty.md.html)            |State access causes value to be autoboxed                                                   |
-|[AutoboxingStateCreation](AutoboxingStateCreation.md.html)                      |`State<T>` will autobox values assigned to this state. Use a specialized state type instead.|
-|[CoroutineCreationDuringComposition](CoroutineCreationDuringComposition.md.html)|Calls to `async` or `launch` should happen inside a LaunchedEffect and not composition      |
-|[FlowOperatorInvokedInComposition](FlowOperatorInvokedInComposition.md.html)    |Flow operator functions should not be invoked within composition                            |
-|[ComposableLambdaParameterNaming](ComposableLambdaParameterNaming.md.html)      |Primary composable lambda parameter not named `content`                                     |
-|[ComposableLambdaParameterPosition](ComposableLambdaParameterPosition.md.html)  |Non-trailing primary composable lambda parameter                                            |
-|[ComposableNaming](ComposableNaming.md.html)                                    |Incorrect naming for @Composable functions                                                  |
-|[StateFlowValueCalledInComposition](StateFlowValueCalledInComposition.md.html)  |StateFlow.value should not be called within composition                                     |
-|[CompositionLocalNaming](CompositionLocalNaming.md.html)                        |CompositionLocal properties should be prefixed with `Local`                                 |
-|[MutableCollectionMutableState](MutableCollectionMutableState.md.html)          |Creating a MutableState object with a mutable collection type                               |
-|[ProduceStateDoesNotAssignValue](ProduceStateDoesNotAssignValue.md.html)        |produceState calls should assign `value` inside the producer lambda                         |
-|[RememberReturnType](RememberReturnType.md.html)                                |`remember` calls must not return `Unit`                                                     |
-|[OpaqueUnitKey](OpaqueUnitKey.md.html)                                          |Passing an expression which always returns `Unit` as a key argument                         |
-|[UnrememberedMutableState](UnrememberedMutableState.md.html)                    |Creating a state object during composition without using `remember`                         |
+|Issue Id                                                                        |Issue Description                                                                                 |
+|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+|[AutoboxingStateValueProperty](AutoboxingStateValueProperty.md.html)            |State access causes value to be autoboxed                                                         |
+|[AutoboxingStateCreation](AutoboxingStateCreation.md.html)                      |`State<T>` will autobox values assigned to this state. Use a specialized state type instead.      |
+|[CoroutineCreationDuringComposition](CoroutineCreationDuringComposition.md.html)|Calls to `async` or `launch` should happen inside a LaunchedEffect and not composition            |
+|[FlowOperatorInvokedInComposition](FlowOperatorInvokedInComposition.md.html)    |Flow operator functions should not be invoked within composition                                  |
+|[ComposableLambdaParameterNaming](ComposableLambdaParameterNaming.md.html)      |Primary composable lambda parameter not named `content`                                           |
+|[ComposableLambdaParameterPosition](ComposableLambdaParameterPosition.md.html)  |Non-trailing primary composable lambda parameter                                                  |
+|[ComposableNaming](ComposableNaming.md.html)                                    |Incorrect naming for @Composable functions                                                        |
+|[StateFlowValueCalledInComposition](StateFlowValueCalledInComposition.md.html)  |StateFlow.value should not be called within composition                                           |
+|[CompositionLocalNaming](CompositionLocalNaming.md.html)                        |CompositionLocal properties should be prefixed with `Local`                                       |
+|[FrequentlyChangingValue](FrequentlyChangingValue.md.html)                      |Reading a value annotated with @FrequentlyChangingValue inside composition                        |
+|[MutableCollectionMutableState](MutableCollectionMutableState.md.html)          |Creating a MutableState object with a mutable collection type                                     |
+|[ProduceStateDoesNotAssignValue](ProduceStateDoesNotAssignValue.md.html)        |produceState calls should assign `value` inside the producer lambda                               |
+|[RememberReturnType](RememberReturnType.md.html)                                |`remember` calls must not return `Unit`                                                           |
+|[RememberInComposition](RememberInComposition.md.html)                          |Calling a @RememberInComposition annotated declaration inside composition without using `remember`|
+|[OpaqueUnitKey](OpaqueUnitKey.md.html)                                          |Passing an expression which always returns `Unit` as a key argument                               |
+|[UnrememberedMutableState](UnrememberedMutableState.md.html)                    |Creating a state object during composition without using `remember`                               |
 
 (##) Including
 
@@ -47,17 +49,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.runtime:runtime-android:1.8.0-alpha07")
+implementation("androidx.compose.runtime:runtime-android:1.9.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.runtime:runtime-android:1.8.0-alpha07'
+implementation 'androidx.compose.runtime:runtime-android:1.9.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.runtime.android)
 
 # libs.versions.toml
 [versions]
-runtime-android = "1.8.0-alpha07"
+runtime-android = "1.9.0-alpha01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -69,11 +71,11 @@ runtime-android = {
 }
 ```
 
-1.8.0-alpha07 is the version this documentation was generated from;
+1.9.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 NOTE: These lint checks are **also** made available separate from the main library.
-You can also use `androidx.compose.runtime:runtime-lint:1.8.0-alpha07`.
+You can also use `androidx.compose.runtime:runtime-lint:1.9.0-alpha01`.
 
 
 (##) Changes
@@ -85,6 +87,7 @@ You can also use `androidx.compose.runtime:runtime-lint:1.8.0-alpha07`.
   FlowOperatorInvokedInComposition, MutableCollectionMutableState,
   OpaqueUnitKey, ProduceStateDoesNotAssignValue, RememberReturnType,
   StateFlowValueCalledInComposition, UnrememberedMutableState.
+* 1.9.0-alpha01: Adds FrequentlyChangingValue, RememberInComposition.
 
 (##) Version Compatibility
 
@@ -92,33 +95,35 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|       1.8.0-alpha07|2024/12/11|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha06|2024/11/13|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha05|2024/10/30|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha04|2024/10/16|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha03|2024/10/02|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha02|2024/09/18|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha01|2024/09/04|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.6|2024/12/11|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.5|2024/10/30|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.4|2024/10/16|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.3|2024/10/02|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.2|2024/09/18|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.1|2024/09/10|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.7.0|2024/09/04|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.8|2024/06/12|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.7|2024/05/01|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.6|2024/04/17|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.5|2024/04/03|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.4|2024/03/20|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.3|2024/03/06|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.2|2024/02/21|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.1|2024/02/07|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|               1.6.0|2024/01/24|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.9.0-alpha01|2025/04/23|      16|         Yes|           8.7+|      8.7+|
+|               1.8.0|2025/04/23|      14|      No[^1]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.8|2025/02/12|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.7|2025/01/29|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.6|2024/12/11|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.5|2024/10/30|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.4|2024/10/16|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.3|2024/10/02|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.2|2024/09/18|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.1|2024/09/10|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.0|2024/09/04|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.8|2024/06/12|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.7|2024/05/01|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.6|2024/04/17|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.5|2024/04/03|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.4|2024/03/20|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.3|2024/03/06|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.2|2024/02/21|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.1|2024/02/07|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
+|               1.6.0|2024/01/24|      14|      No[^2]|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.4|2023/10/18|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.3|2023/10/04|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.2|2023/09/27|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.1|2023/09/06|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.5.0|2023/08/09|      14|         Yes|    8.0 and 8.1|8.0 and 8.1|
+
+Compatibility Problems:
+
+[^1]: org.jetbrains.kotlin.analysis.api.calls.KaCallKt#singleFunctionCallOrNull(org.jetbrains.kotlin.analysis.api.resolution.KaCallInfo): org.jetbrains.kotlin.analysis.api.resolution.KaFunctionCall is not available  
+[^2]: org.jetbrains.kotlin.analysis.api.KaSession#resolveCall(org.jetbrains.kotlin.psi.KtElement): org.jetbrains.kotlin.analysis.api.resolution.KaCallInfo is not available  
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -15,7 +15,7 @@ Min
 Compiled
 :   Lint 8.7+
 Artifact
-:   androidx.navigation:navigation-compose:2.9.0-alpha04
+:   androidx.navigation:navigation-compose:2.9.0-rc01
 
 (##) Included Issues
 
@@ -24,9 +24,9 @@ Artifact
 |[ComposableDestinationInComposeScope](ComposableDestinationInComposeScope.md.html)|Building composable destination in compose scope                                                                                                                                                                                 |
 |[ComposableNavGraphInComposeScope](ComposableNavGraphInComposeScope.md.html)      |Building navigation graph in compose scope                                                                                                                                                                                       |
 |[UnrememberedGetBackStackEntry](UnrememberedGetBackStackEntry.md.html)            |Calling getBackStackEntry during composition without using `remember`with a NavBackStackEntry key                                                                                                                                |
-|[WrongStartDestinationType](WrongStartDestinationType.md.html)                    |If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
-|[MissingKeepAnnotation](MissingKeepAnnotation.md.html)                            |In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep                                                                                                       |
-|[MissingSerializableAnnotation](MissingSerializableAnnotation.md.html)            |Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable                                                                                                                                             |
+|[WrongStartDestinationType](WrongStartDestinationType-2.md.html)                  |If the startDestination points to a Class with arguments, the startDestination must be an instance of that class. If it points to a Class without arguments, startDestination can be a KClass literal, such as StartClass::class.|
+|[MissingKeepAnnotation](MissingKeepAnnotation-2.md.html)                          |In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep                                                                                                       |
+|[MissingSerializableAnnotation](MissingSerializableAnnotation-2.md.html)          |Type-safe NavDestinations must be annotated with @kotlinx.serialization.Serializable                                                                                                                                             |
 
 (##) Including
 
@@ -36,17 +36,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.9.0-alpha04")
+implementation("androidx.navigation:navigation-compose:2.9.0-rc01")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.9.0-alpha04'
+implementation 'androidx.navigation:navigation-compose:2.9.0-rc01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.navigation.compose)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.9.0-alpha04"
+navigation-compose = "2.9.0-rc01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -58,7 +58,7 @@ navigation-compose = {
 }
 ```
 
-2.9.0-alpha04 is the version this documentation was generated from;
+2.9.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -74,6 +74,11 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|          2.9.0-rc01|2025/04/23|       6|         Yes|           8.7+|8.0 and 8.1|
+|        2.9.0-beta01|2025/04/09|       6|         Yes|           8.7+|8.0 and 8.1|
+|       2.9.0-alpha09|2025/03/26|       6|         Yes|           8.7+|8.0 and 8.1|
+|       2.9.0-alpha08|2025/03/12|       6|         Yes|           8.7+|8.0 and 8.1|
+|       2.9.0-alpha07|2025/02/26|       6|         Yes|           8.7+|8.0 and 8.1|
 |       2.9.0-alpha04|2024/12/11|       6|         Yes|           8.7+|8.0 and 8.1|
 |       2.9.0-alpha03|2024/11/13|       6|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |       2.9.0-alpha02|2024/10/30|       6|         Yes|    8.0 and 8.1|8.0 and 8.1|

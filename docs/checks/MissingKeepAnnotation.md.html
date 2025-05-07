@@ -15,15 +15,17 @@ Category
 Platform
 :   Any
 Vendor
-:   Jetpack Navigation Compose
+:   Android Open Source Project
 Identifier
-:   androidx.navigation.compose
+:   androidx.navigation.common
+Feedback
+:   https://issuetracker.google.com/issues/new?component=409828
 Min
 :   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.7+
 Artifact
-:   [androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html)
+:   [androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html)
 Since
 :   2.8.3
 Affects
@@ -31,7 +33,7 @@ Affects
 Editing
 :   This check runs on the fly in the IDE editor
 Implementation
-:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-common-lint/src/main/java/androidx/navigation/common/lint/TypeSafeDestinationMissingAnnotationDetector.kt)
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/main/java/androidx/navigation/runtime/lint/TypeSafeDestinationMissingAnnotationDetector.kt)
 Copyright Year
 :   2024
 
@@ -44,8 +46,8 @@ This issue id has also been used by other, unrelated lint checks. Issue
 id's must be unique, so you cannot combine these libraries. Also defined
 in:
 * MissingKeepAnnotation: In minified builds, Enum classes used as type-safe Navigation arguments should be annotated with @androidx.annotation.Keep (this issue)
-* [MissingKeepAnnotation from androidx.navigation:navigation-runtime:2.9.0-alpha04](MissingKeepAnnotation-2.md.html)
-* [MissingKeepAnnotation from androidx.navigation:navigation-common:2.9.0-alpha04](MissingKeepAnnotation-3.md.html)
+* [MissingKeepAnnotation from androidx.navigation:navigation-compose:2.9.0-rc01](MissingKeepAnnotation-2.md.html)
+* [MissingKeepAnnotation from androidx.navigation:navigation-runtime:2.9.0-rc01](MissingKeepAnnotation-3.md.html)
 
 
 (##) Including
@@ -56,32 +58,32 @@ in:
 
 ```
 // build.gradle.kts
-implementation("androidx.navigation:navigation-compose:2.9.0-alpha04")
+implementation("androidx.navigation:navigation-common:2.9.0-rc01")
 
 // build.gradle
-implementation 'androidx.navigation:navigation-compose:2.9.0-alpha04'
+implementation 'androidx.navigation:navigation-common:2.9.0-rc01'
 
 // build.gradle.kts with version catalogs:
-implementation(libs.navigation.compose)
+implementation(libs.navigation.common)
 
 # libs.versions.toml
 [versions]
-navigation-compose = "2.9.0-alpha04"
+navigation-common = "2.9.0-rc01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
 # line (see https://github.com/toml-lang/toml/issues/516) so adjust
 # when pasting into libs.versions.toml:
-navigation-compose = {
-    module = "androidx.navigation:navigation-compose",
-    version.ref = "navigation-compose"
+navigation-common = {
+    module = "androidx.navigation:navigation-common",
+    version.ref = "navigation-common"
 }
 ```
 
-2.9.0-alpha04 is the version this documentation was generated from;
+2.9.0-rc01 is the version this documentation was generated from;
 there may be newer versions available.
 
-[Additional details about androidx.navigation:navigation-compose](androidx_navigation_navigation-compose.md.html).
+[Additional details about androidx.navigation:navigation-common](androidx_navigation_navigation-common.md.html).
 (##) Suppressing
 
 You can suppress false positives using one of the following mechanisms:
@@ -93,7 +95,7 @@ You can suppress false positives using one of the following mechanisms:
   // Kotlin
   @Suppress("MissingKeepAnnotation")
   fun method() {
-     composable(...)
+     navigation(...)
   }
   ```
 
@@ -103,7 +105,7 @@ You can suppress false positives using one of the following mechanisms:
   // Java
   @SuppressWarnings("MissingKeepAnnotation")
   void method() {
-     composable(...);
+     navigation(...);
   }
   ```
 

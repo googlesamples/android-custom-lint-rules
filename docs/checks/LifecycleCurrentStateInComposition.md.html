@@ -1,0 +1,249 @@
+<meta charset="utf-8">
+(#) Lifecycle.currentState should not be called within composition
+
+!!! ERROR: Lifecycle.currentState should not be called within composition
+   This is an error.
+
+Id
+:   `LifecycleCurrentStateInComposition`
+Summary
+:   Lifecycle.currentState should not be called within composition
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Identifier
+:   androidx.lifecycle
+Feedback
+:   https://issuetracker.google.com/issues/new?component=413132
+Min
+:   Lint 8.0 and 8.1
+Compiled
+:   Lint 8.7+
+Artifact
+:   [androidx.lifecycle:lifecycle-runtime-compose-android](androidx_lifecycle_lifecycle-runtime-compose-android.md.html)
+Since
+:   2.9.0-alpha10
+Affects
+:   Kotlin and Java files and test sources
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-runtime-compose-lint/src/main/java/androidx/lifecycle/runtime/compose/lint/ComposableLifecycleCurrentStateDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-runtime-compose-lint/src/test/java/androidx/lifecycle/runtime/compose/lint/ComposableLifecycleCurrentStateDetectorTest.kt)
+Copyright Year
+:   2025
+
+Calling Lifecycle.currentState within composition will not observe
+changes to the Lifecycle, so changes might not be reflected within the
+composition. Instead you should use lifecycle.currentStateAsState() to
+observe changes to the Lifecycle, and recompose when it changes.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/androidx/lifecycle/foo/test.kt:12:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+src/androidx/lifecycle/foo/test.kt:16:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+src/androidx/lifecycle/foo/test.kt:20:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+src/androidx/lifecycle/foo/test.kt:29:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+src/androidx/lifecycle/foo/test.kt:32:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+src/androidx/lifecycle/foo/test.kt:38:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+src/androidx/lifecycle/foo/test.kt:42:Error: Lifecycle.currentState
+should not be called within composition
+[LifecycleCurrentStateInComposition]
+    lifecycle.currentState
+              ------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`src/androidx/lifecycle/foo/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package androidx.lifecycle.foo
+
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.Lifecycle
+
+val lifecycle: Lifecycle = object : Lifecycle() {
+    override val currentState get() = Lifecycle.State.CREATED
+}
+
+@Composable
+fun Test() {
+    lifecycle.currentState
+}
+
+val lambda = @Composable {
+    lifecycle.currentState
+}
+
+val lambda2: @Composable () -> Unit = {
+    lifecycle.currentState
+}
+
+@Composable
+fun LambdaParameter(content: @Composable () -> Unit) {}
+
+@Composable
+fun Test2() {
+    LambdaParameter(content = {
+        lifecycle.currentState
+    })
+    LambdaParameter {
+        lifecycle.currentState
+    }
+}
+
+fun test3() {
+    val localLambda1 = @Composable {
+        lifecycle.currentState
+    }
+
+    val localLambda2: @Composable () -> Unit = {
+        lifecycle.currentState
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-runtime-compose-lint/src/test/java/androidx/lifecycle/runtime/compose/lint/ComposableLifecycleCurrentStateDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+The above example was automatically extracted from the first unit test
+found for this lint check, `ComposableLifecycleCurrentStateDetector.errors`.
+To report a problem with this extracted sample, visit
+https://issuetracker.google.com/issues/new?component=413132.
+
+(##) Including
+
+!!!
+   This is not a built-in check. To include it, add the below dependency
+   to your project.
+
+```
+// build.gradle.kts
+implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.9.0-rc01")
+
+// build.gradle
+implementation 'androidx.lifecycle:lifecycle-runtime-compose-android:2.9.0-rc01'
+
+// build.gradle.kts with version catalogs:
+implementation(libs.lifecycle.runtime.compose.android)
+
+# libs.versions.toml
+[versions]
+lifecycle-runtime-compose-android = "2.9.0-rc01"
+[libraries]
+# For clarity and text wrapping purposes the following declaration is
+# shown split up across lines, but in TOML it needs to be on a single
+# line (see https://github.com/toml-lang/toml/issues/516) so adjust
+# when pasting into libs.versions.toml:
+lifecycle-runtime-compose-android = {
+    module = "androidx.lifecycle:lifecycle-runtime-compose-android",
+    version.ref = "lifecycle-runtime-compose-android"
+}
+```
+
+2.9.0-rc01 is the version this documentation was generated from;
+there may be newer versions available.
+
+[Additional details about androidx.lifecycle:lifecycle-runtime-compose-android](androidx_lifecycle_lifecycle-runtime-compose-android.md.html).
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("LifecycleCurrentStateInComposition")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("LifecycleCurrentStateInComposition")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection LifecycleCurrentStateInComposition
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="LifecycleCurrentStateInComposition" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'LifecycleCurrentStateInComposition'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore LifecycleCurrentStateInComposition ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

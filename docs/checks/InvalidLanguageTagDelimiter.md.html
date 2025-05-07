@@ -21,7 +21,7 @@ Identifier
 Feedback
 :   https://issuetracker.google.com/issues/new?component=779818
 Min
-:   Lint 8.7+
+:   Lint 8.0 and 8.1
 Compiled
 :   Lint 8.7+
 Artifact
@@ -84,17 +84,17 @@ https://issuetracker.google.com/issues/new?component=779818.
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.ui:ui-text-android:1.8.0-alpha07")
+implementation("androidx.compose.ui:ui-text-android:1.9.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.ui:ui-text-android:1.8.0-alpha07'
+implementation 'androidx.compose.ui:ui-text-android:1.9.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.ui.text.android)
 
 # libs.versions.toml
 [versions]
-ui-text-android = "1.8.0-alpha07"
+ui-text-android = "1.9.0-alpha01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -106,11 +106,11 @@ ui-text-android = {
 }
 ```
 
-1.8.0-alpha07 is the version this documentation was generated from;
+1.9.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 NOTE: These lint checks are **also** made available separate from the main library.
-You can also use `androidx.compose.ui:ui-text-lint:1.8.0-alpha07`.
+You can also use `androidx.compose.ui:ui-text-lint:1.9.0-alpha01`.
 
 
 [Additional details about androidx.compose.ui:ui-text-android](androidx_compose_ui_ui-text-android.md.html).

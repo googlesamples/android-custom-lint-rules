@@ -18,14 +18,13 @@ Min
 Compiled
 :   Lint 8.7+
 Artifact
-:   androidx.compose.animation:animation-core-android:1.8.0-alpha07
+:   androidx.compose.animation:animation-core-android:1.9.0-alpha01
 
 (##) Included Issues
 
 |Issue Id                                                                            |Issue Description                                                                              |
 |------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 |[UnusedTransitionTargetStateParameter](UnusedTransitionTargetStateParameter.md.html)|Transition.animate* calls should use the provided targetState when defining values             |
-|[UnrememberedAnimatable](UnrememberedAnimatable.md.html)                            |Creating an Animatable during composition without using `remember`                             |
 |[ArcAnimationSpecTypeIssue](ArcAnimationSpecTypeIssue.md.html)                      |ArcAnimationSpec is designed for 2D values. Particularly, for positional values such as Offset.|
 
 (##) Including
@@ -36,17 +35,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.compose.animation:animation-core-android:1.8.0-alpha07")
+implementation("androidx.compose.animation:animation-core-android:1.9.0-alpha01")
 
 // build.gradle
-implementation 'androidx.compose.animation:animation-core-android:1.8.0-alpha07'
+implementation 'androidx.compose.animation:animation-core-android:1.9.0-alpha01'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.animation.core.android)
 
 # libs.versions.toml
 [versions]
-animation-core-android = "1.8.0-alpha07"
+animation-core-android = "1.9.0-alpha01"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -58,11 +57,11 @@ animation-core-android = {
 }
 ```
 
-1.8.0-alpha07 is the version this documentation was generated from;
+1.9.0-alpha01 is the version this documentation was generated from;
 there may be newer versions available.
 
 NOTE: These lint checks are **also** made available separate from the main library.
-You can also use `androidx.compose.animation:animation-core-lint:1.8.0-alpha07`.
+You can also use `androidx.compose.animation:animation-core-lint:1.9.0-alpha01`.
 
 
 (##) Changes
@@ -70,6 +69,7 @@ You can also use `androidx.compose.animation:animation-core-lint:1.8.0-alpha07`.
 * 1.5.0: First version includes UnrememberedAnimatable,
   UnusedTransitionTargetStateParameter.
 * 1.7.0: Adds ArcAnimationSpecTypeIssue.
+* 1.9.0-alpha01: Removes UnrememberedAnimatable.
 
 (##) Version Compatibility
 
@@ -77,13 +77,10 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
-|       1.8.0-alpha07|2024/12/11|       3|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha06|2024/11/13|       3|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha05|2024/10/30|       3|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha04|2024/10/16|       3|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha03|2024/10/02|       3|         Yes|           8.7+|8.0 and 8.1|
-|       1.8.0-alpha02|2024/09/18|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
-|       1.8.0-alpha01|2024/09/04|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|       1.9.0-alpha01|2025/04/23|       2|         Yes|           8.7+|8.0 and 8.1|
+|               1.8.0|2025/04/23|       3|         Yes|           8.7+|8.0 and 8.1|
+|               1.7.8|2025/02/12|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
+|               1.7.7|2025/01/29|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.6|2024/12/11|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.5|2024/10/30|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|
 |               1.7.4|2024/10/16|       3|         Yes|    8.0 and 8.1|8.0 and 8.1|

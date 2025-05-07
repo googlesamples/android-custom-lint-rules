@@ -1,0 +1,167 @@
+<meta charset="utf-8">
+(#) Wrong Gradle method invoked
+
+!!! ERROR: Wrong Gradle method invoked
+   This is an error.
+
+Id
+:   `WrongGradleMethod`
+Summary
+:   Wrong Gradle method invoked
+Severity
+:   Error
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.10.0 (May 2025)
+Affects
+:   Gradle build files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/WrongGradleMethodDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WrongGradleMethodDetectorTest.kt)
+
+This lint check looks for suspicious Gradle DSL calls.
+
+One common example is attempting to create product flavor or build type
+specific dependencies by placing the `dependencies` block inside a
+product flavor or build type.
+
+Another one is KTS specific. When migrating from Groovy to KTS, be extra
+careful with some calls into plugin DSL methods; in some cases, you
+might have to insert an explicit `import` statement, even if the code
+compiles without it; instead you are silently calling a generated
+method.
+
+For example, with the Firebase App Distribution plugin, you *cannot*
+just convert this `build.gradle` snippet:
+```groovy
+buildTypes {
+    release {
+        firebaseAppDistribution {
+            artifactType="APK"
+            releaseNotesFile="/path/to/releasenotes.txt"
+            testers="ali@example.com, bri@example.com, cal@example.com"
+        }
+    }
+}
+```
+to this KTS:
+```kotlin
+buildTypes {
+    getByName("release") {
+        firebaseAppDistribution {
+            artifactType = "APK"
+            releaseNotesFile = "/path/to/releasenotes.txt"
+            testers = "ali@example.com, bri@example.com, cal@example.com"
+        }
+    }
+}
+```
+You have to *also* add this import at the top of the file:
+```kotlin
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+```
+
+If you get this error on other DSL constructs inside build types or
+product flavors, check the plugin documentation.
+
+!!! Tip
+   This lint check has an associated quickfix available in the IDE.
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+build.gradle.kts:15:Error: This does not resolve to the right method;
+you need to explicitly add `import
+com.google.firebase.appdistribution.gradle.firebaseAppDistribution` to
+this file! [WrongGradleMethod]
+    firebaseAppDistribution {
+    -----------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here is the source file referenced above:
+
+`build.gradle.kts`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+plugins {
+    id("com.google.firebase.appdistribution")
+}
+android {
+    flavorDimensions += "version"
+    buildTypes {
+        getByName("debug") {
+        }
+        getByName("release") {
+        }
+    }
+    productFlavors {
+        create("demo") {
+            dimension = "version"
+            firebaseAppDistribution {
+                releaseNotes = "Release notes for demo version"
+                testers = "demo@example.com"
+            }
+        }
+    }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WrongGradleMethodDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection WrongGradleMethod
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="WrongGradleMethod" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'WrongGradleMethod'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore WrongGradleMethod ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

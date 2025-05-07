@@ -11,7 +11,7 @@ Min
 Compiled
 :   Lint 8.7+
 Artifact
-:   androidx.lint:lint-gradle:1.0.0-alpha03
+:   androidx.lint:lint-gradle:1.0.0-alpha04
 
 (##) Included Issues
 
@@ -19,6 +19,7 @@ Artifact
 |--------------------------------------------------------------------|---------------------------------------------------------------|
 |[EagerGradleConfiguration](EagerGradleConfiguration.md.html)        |Avoid using eager task APIs                                    |
 |[GradleProjectIsolation](GradleProjectIsolation.md.html)            |Avoid using APIs that are not project isolation safe           |
+|[GradleLikelyBug](GradleLikelyBug.md.html)                          |Use of this API is likely a bug                                |
 |[FilePropertyDetector](FilePropertyDetector.md.html)                |Avoid using Property<File>                                     |
 |[InternalGradleApiUsage](InternalGradleApiUsage.md.html)            |Avoid using internal Gradle APIs                               |
 |[InternalAgpApiUsage](InternalAgpApiUsage.md.html)                  |Avoid using internal Android Gradle Plugin APIs                |
@@ -33,17 +34,17 @@ Artifact
 
 ```
 // build.gradle.kts
-implementation("androidx.lint:lint-gradle:1.0.0-alpha03")
+implementation("androidx.lint:lint-gradle:1.0.0-alpha04")
 
 // build.gradle
-implementation 'androidx.lint:lint-gradle:1.0.0-alpha03'
+implementation 'androidx.lint:lint-gradle:1.0.0-alpha04'
 
 // build.gradle.kts with version catalogs:
 implementation(libs.lint.gradle)
 
 # libs.versions.toml
 [versions]
-lint-gradle = "1.0.0-alpha03"
+lint-gradle = "1.0.0-alpha04"
 [libraries]
 # For clarity and text wrapping purposes the following declaration is
 # shown split up across lines, but in TOML it needs to be on a single
@@ -55,7 +56,7 @@ lint-gradle = {
 }
 ```
 
-1.0.0-alpha03 is the version this documentation was generated from;
+1.0.0-alpha04 is the version this documentation was generated from;
 there may be newer versions available.
 
 (##) Changes
@@ -64,6 +65,7 @@ there may be newer versions available.
   GradleProjectIsolation, InternalAgpApiUsage, InternalGradleApiUsage,
   WithPluginClasspathUsage, WithTypeWithoutConfigureEach.
 * 1.0.0-alpha03: Adds FilePropertyDetector.
+* 1.0.0-alpha04: Adds GradleLikelyBug.
 
 (##) Version Compatibility
 
@@ -71,6 +73,7 @@ There are multiple older versions available of this library:
 
 | Version            | Date     | Issues | Compatible | Compiled      | Requires |
 |-------------------:|----------|-------:|------------|--------------:|---------:|
+|       1.0.0-alpha04|          |       8|         Yes|           8.7+|      8.7+|
 |       1.0.0-alpha03|          |       7|         Yes|           8.7+|      8.7+|
 |       1.0.0-alpha02|          |       6|         Yes|    8.0 and 8.1|8.0 and 8.1|
 

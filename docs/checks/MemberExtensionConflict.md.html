@@ -1,0 +1,175 @@
+<meta charset="utf-8">
+(#) Conflict applicable candidates of member and extension
+
+!!! WARNING: Conflict applicable candidates of member and extension
+   This is a warning.
+
+Id
+:   `MemberExtensionConflict`
+Summary
+:   Conflict applicable candidates of member and extension
+Note
+:   **This issue is disabled by default**; use `--enable MemberExtensionConflict`
+Severity
+:   Warning
+Category
+:   Correctness
+Platform
+:   Any
+Vendor
+:   Android Open Source Project
+Feedback
+:   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.11.0-alpha03 (March 2025)
+Affects
+:   Kotlin and Java files
+Editing
+:   This check runs on the fly in the IDE editor
+Implementation
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/MemberExtensionConflictDetector.kt)
+Tests
+:   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/MemberExtensionConflictDetectorTest.kt)
+
+When both member and extension declarations are applicable, the
+resolution takes the member. This also implies that, if an extension
+existed first, but then a member is added later, the same call-site may
+end up with different call resolutions depending on target environment.
+This results in a potential runtime exception if the generated binary
+(library or app) targets earlier environment (i.e., without the new
+member, but only extension). More concrete example is found at:
+https://issuetracker.google.com/issues/350432371
+
+(##) Example
+
+Here is an example of lint warnings produced by this check:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
+src/ListWrapper.kt:10:Warning: `magicCount` is defined both as a member
+in class `ListWrapper` and an extension in package `users.own`. The
+defined behavior for this is to use the member, but since the extension
+is explicitly imported into this file, there's a chance that this was
+not expected. (One common way this happens is for members to be added to
+a class after code was already written to use an extension).
+[MemberExtensionConflict]
+  val x = l.magicCount // WARNING 1
+            ----------
+src/ListWrapper.kt:11:Warning: `removeMiddle` is defined both as a
+member in class `ListWrapper` and an extension in package `users.own`.
+The defined behavior for this is to use the member, but since the
+extension is explicitly imported into this file, there's a chance that
+this was not expected. (One common way this happens is for members to be
+added to a class after code was already written to use an extension).
+[MemberExtensionConflict]
+  l.removeMiddle() // WARNING 2
+  ----------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are the relevant source files:
+
+`src/my/cool/lib/MyList.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package my.cool.lib
+interface MyList {
+  val magicCount: Int
+  fun removeMiddle()
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/users/own/test.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+package users.own
+
+import my.cool.lib.MyList
+
+val MyList.magicCount: Int
+  get() = 42
+
+fun MyList.removeMiddle() {}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`src/ListWrapper.kt`:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
+import my.cool.lib.MyList
+import users.own.magicCount
+import users.own.removeMiddle
+
+class ListWrapper(
+  private val base: MyList
+) : MyList by base
+
+fun test(l : ListWrapper) {
+  val x = l.magicCount // WARNING 1
+  l.removeMiddle() // WARNING 2
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also visit the
+[source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/MemberExtensionConflictDetectorTest.kt)
+for the unit tests for this check to see additional scenarios.
+
+(##) Suppressing
+
+You can suppress false positives using one of the following mechanisms:
+
+* Using a suppression annotation like this on the enclosing
+  element:
+
+  ```kt
+  // Kotlin
+  @Suppress("MemberExtensionConflict")
+  fun method() {
+     problematicStatement()
+  }
+  ```
+
+  or
+
+  ```java
+  // Java
+  @SuppressWarnings("MemberExtensionConflict")
+  void method() {
+     problematicStatement();
+  }
+  ```
+
+* Using a suppression comment like this on the line above:
+
+  ```kt
+  //noinspection MemberExtensionConflict
+  problematicStatement()
+  ```
+
+* Using a special `lint.xml` file in the source tree which turns off
+  the check in that folder and any sub folder. A simple file might look
+  like this:
+  ```xml
+  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;lint&gt;
+      &lt;issue id="MemberExtensionConflict" severity="ignore" /&gt;
+  &lt;/lint&gt;
+  ```
+  Instead of `ignore` you can also change the severity here, for
+  example from `error` to `warning`. You can find additional
+  documentation on how to filter issues by path, regular expression and
+  so on
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/lintxml.md.html).
+
+* In Gradle projects, using the DSL syntax to configure lint. For
+  example, you can use something like
+  ```gradle
+  lintOptions {
+      disable 'MemberExtensionConflict'
+  }
+  ```
+  In Android projects this should be nested inside an `android { }`
+  block.
+
+* For manual invocations of `lint`, using the `--ignore` flag:
+  ```
+  $ lint --ignore MemberExtensionConflict ...`
+  ```
+
+* Last, but not least, using baselines, as discussed
+  [here](https://googlesamples.github.io/android-custom-lint-rules/usage/baselines.md.html).
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

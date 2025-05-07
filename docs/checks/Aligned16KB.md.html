@@ -18,45 +18,42 @@ Vendor
 :   Android Open Source Project
 Feedback
 :   https://issuetracker.google.com/issues/new?component=192708
+Since
+:   8.10.0 (May 2025)
 Affects
 :   Gradle build files and TOML files
 Editing
-:   This check can *not* run live in the IDE editor
+:   This check runs on the fly in the IDE editor
 See
 :   https://developer.android.com/guide/practices/page-sizes
 Implementation
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-checks/src/main/java/com/android/tools/lint/checks/PageAlignmentDetector.kt)
 Tests
 :   [Source Code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PageAlignmentDetectorTest.kt)
-Copyright Year
-:   2025
 
-Historically, Android has aligned memory using 4 KB memory page sizes,
-which optimized system memory performance for the average amount of
-total memory that Android devices have typically had.
+Android has traditionally used 4 KB memory page sizes. However, to
+support future devices that only work with 16 KB aligned libraries apps
+containing native libraries need to be built with 16 KB alignment.
 
-To support devices that only support 16 KB aligned libraries in the
-future, the Google Play Store will soon require all apps to be compiled
-with 16 KB aligned libraries.
+Apps with 4 KB aligned native libraries may not work correctly on
+devices requiring 16 KB alignment. To ensure compatibility and
+future-proof your app, it is strongly recommended that your native
+libraries are aligned to 16 KB boundaries.
 
-An app compiled with 4 KB aligned libraries will not work correctly on
-these devices. To ensure compatibility with these devices and to
-future-proof your app, the Play Store will require native libraries to
-be aligned to 16 KB boundaries.
+If your app uses any NDK libraries, directly or indirectly through an
+SDK, you should rebuild your app to meet this recommendation. Make sure
+all native libraries within your application, including those from
+dependencies, are built with 16 KB page alignment.
 
-If your app uses any NDK libraries, either directly or indirectly
-through an SDK, you'll need to rebuild your app to meet this new
-requirement. This means ensuring that all native libraries within your
-app, including those from any dependencies, are built with 16 KB page
-alignment.
+This lint check looks at all native libraries that your app depends on.
+If any are found to be aligned to 4 KB instead of 16 KB, you will need
+to address this.
 
-This lint check helps identify potential issues by inspecting all
-transitive libraries your app depends on. If any nested native libraries
-are found to be aligned only to 4 KB, you'll need to take action.
-
-If lint flags a library, try updating to a newer version that supports
-16 KB alignment. If no updated version is available, reach out to the
-library vendor for assistance.
+When a library is flagged, first try to update to a newer version that
+supports 16 KB alignment. If an updated version is not available,
+contact the library vendor to ask about their plans for 16 KB support
+and request a compatible version. Updating your libraries proactively
+will help ensure your app works properly on a wider range of devices.
 
 (##) Example
 

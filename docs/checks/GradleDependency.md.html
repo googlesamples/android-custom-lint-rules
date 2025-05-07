@@ -45,7 +45,7 @@ is available, and that is what this lint check helps find.
 Here is an example of lint warnings produced by this check:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~text
 build.gradle:24:Warning: A newer version of com.google.guava:guava than
-11.0.2 is available: 21.0 [GradleDependency]
+11.0.2 is available: 17.0 [GradleDependency]
     freeCompile 'com.google.guava:guava:11.0.2'
                 -------------------------------
 build.gradle:25:Warning: A newer version of
@@ -76,7 +76,7 @@ Here is the source file referenced above:
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 36
     buildToolsVersion "19.0.0"
 
     defaultConfig {
