@@ -51,7 +51,7 @@ src/test/test.kt:8:Error: A hyphen (-), not an underscore (_) delimiter
 should be used in a language tag [InvalidLanguageTagDelimiter]
     bar(Locale("en_UK"))
                -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -65,7 +65,7 @@ fun bar(locale: Locale) {}
 fun foo() {
     bar(Locale("en_UK"))
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-text-lint/src/test/java/androidx/compose/ui/text/lint/LocaleInvalidLanguageTagDetectorTest.kt)

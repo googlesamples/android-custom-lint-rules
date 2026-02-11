@@ -56,7 +56,7 @@ src/test/pkg/test.kt:16:Warning: This method should be annotated with
 [AnnotateVersionCheck]
 inline fun &lt;T&gt; T.applyForOreoOrAbove(block: T.() -&gt; Unit): T {
                  -------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -83,7 +83,7 @@ inline fun <T> T.applyForOreoOrAbove(block: T.() -> Unit): T {
     }
     return this
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/SdkIntDetectorTest.kt)

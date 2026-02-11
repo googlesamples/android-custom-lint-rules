@@ -72,7 +72,7 @@ src/foo/test.kt:15:Error: Content padding parameter innerPadding is not
 used [UnusedMaterial3ScaffoldPaddingParameter]
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { innerPadding -&gt; /**/ }
                                                       ------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -93,7 +93,7 @@ fun Test() {
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { _ -> /**/ }
     Scaffold(Modifier, topBar = {}, bottomBar = {}) { innerPadding -> /**/ }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/material3/material3-lint/src/test/java/androidx/compose/material3/lint/ScaffoldPaddingDetectorTest.kt)

@@ -44,7 +44,7 @@ AndroidManifest.xml:2:Error: USE_EXACT_ALARM can only be used when
 targeting API level 33 or higher [ExactAlarm]
     &lt;uses-permission android:name="android.permission.USE_EXACT_ALARM" /&gt;
                                    ----------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -54,7 +54,7 @@ Here is the source file referenced above:
     &lt;uses-permission android:name="android.permission.USE_EXACT_ALARM" /&gt;
     &lt;uses-sdk android:targetSdkVersion="32" /&gt;
 &lt;/manifest&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AlarmDetectorTest.kt)

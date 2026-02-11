@@ -76,7 +76,7 @@ src/foo/test.kt:18:Error: Target state parameter _ is not used
 [UnusedTransitionTargetStateParameter]
     transition.animateFloat(targetValueByState = { _ -&gt; if (foo) 1f else 0f })
                                                    -
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -100,7 +100,7 @@ fun Test() {
     transition.animateFloat { _ -> if (foo) 1f else 0f }
     transition.animateFloat(targetValueByState = { _ -> if (foo) 1f else 0f })
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-core-lint/src/test/java/androidx/compose/animation/core/lint/TransitionDetectorTest.kt)

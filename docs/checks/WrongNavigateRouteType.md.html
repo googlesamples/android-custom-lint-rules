@@ -106,7 +106,7 @@ src/com/example/test.kt:21:Error: The route should be a destination
 class instance or destination object. [WrongNavigateRouteType]
     navController.navigate(route = Outer.InnerClass::class)
                                    -----------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -134,7 +134,7 @@ fun createGraph() {
     navController.navigate(route = Outer.InnerClass)
     navController.navigate(route = Outer.InnerClass::class)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/navigation/navigation-runtime-lint/src/test/java/androidx/navigation/runtime/lint/WrongNavigateRouteDetectorTest.kt)

@@ -63,7 +63,7 @@ https://slackhq.github.io/compose-lints/rules/#state-should-be-remembered-in-com
 for more information. [ComposeRememberMissing]
 fun MyComposable(something: State&lt;String&gt; = mutableStateOf("X")) {
                                             -------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -80,7 +80,7 @@ fun MyComposable() {
 @Composable
 fun MyComposable(something: State<String> = mutableStateOf("X")) {
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/RememberMissingDetectorTest.kt)

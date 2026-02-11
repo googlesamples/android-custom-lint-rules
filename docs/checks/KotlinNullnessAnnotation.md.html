@@ -58,7 +58,7 @@ declares it nullable, contradicting the annotation
 [KotlinNullnessAnnotation]
 fun testError(@NonNull number: Number?) { }
               --------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -79,7 +79,7 @@ fun testError(@Nullable string: String) { }
 // Here we have a nullable string which has been annotated with @NonNull,
 // which is totally misleading; the annotation is wrong.
 fun testError(@NonNull number: Number?) { }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/KotlinNullnessAnnotationDetectorTest.kt)

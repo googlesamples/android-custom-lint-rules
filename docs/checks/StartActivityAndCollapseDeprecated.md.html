@@ -43,7 +43,7 @@ deprecated. Use TileService#startActivityAndCollapse(PendingIntent)
 instead. [StartActivityAndCollapseDeprecated]
   tileService.startActivityAndCollapse(intent) // ERROR
                                        ------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -60,7 +60,7 @@ fun callAMethod(tileService: TileService, intent: Intent) {
 fun callAMethod(tileService: TileService, intent: PendingIntent) {
   tileService.startActivityAndCollapse(intent) // OK
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TileServiceActivityDetectorTest.kt)

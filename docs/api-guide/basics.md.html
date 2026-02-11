@@ -100,7 +100,7 @@ open fun report(
 ) {
     // ...
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As of 7.0, there is more Kotlin code in lint than remaining Java
 code:
@@ -315,7 +315,7 @@ class SdCardDetector : Detector(), SourceCodeScanner {
         )
     }
     ...
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are a number of things to note here.
 
@@ -546,7 +546,7 @@ class SampleIssueRegistry : IssueRegistry() {
         contact = "author@com.example.lint"
     )
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 On line 8, we're returning our issue. It's a list, so an
 `IssueRegistry` can provide multiple issues.
@@ -608,7 +608,7 @@ class MyDetector : Detector() {
            "I complain a lot")
    }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This will just complain in every single file. Obviously, no real lint
 detector does this; we want to do some analysis and **conditionally** report
@@ -789,7 +789,7 @@ class MyDetector : Detector(), XmlScanner {
         context.report(incident)
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The above is using the new `Incident` API from Lint 7.0 and on; in
 older versions you can use the following API, which still works in 7.0:
@@ -803,7 +803,7 @@ class MyDetector : Detector(), XmlScanner {
             "Use `<vector>` instead of `<bitmap>`")
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second (older) form may seem simpler, but the new API allows a lot
 more metadata to be attached to the report, such as an override
@@ -813,7 +813,7 @@ you could also have written the second form as
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
 context.report(Incident(ISSUE, context.getLocation(element),
     "Use `<vector>` instead of `<bitmap>`"))
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Analyzing Kotlin and Java Code
 
@@ -948,7 +948,7 @@ private fun getLongValue(
 
     return java.lang.Long.MAX_VALUE
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Looking up UAST
 

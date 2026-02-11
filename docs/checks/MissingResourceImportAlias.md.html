@@ -66,7 +66,7 @@ Example `lint.xml`:
         &lt;option name="import-aliases" value="some string" /&gt;
     &lt;/issue&gt;
 &lt;/lint&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (##) Example
 
@@ -76,7 +76,7 @@ src/lint/test/pkg/MyClass.kt:3:Error: Use an import alias for R classes
 from other modules [MissingResourceImportAlias]
 import slack.l10n.R
 -------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -87,7 +87,7 @@ package lint.test.pkg
 import slack.l10n.R
 
 class MyClass
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/resources/MissingResourceImportAliasDetectorTest.kt)

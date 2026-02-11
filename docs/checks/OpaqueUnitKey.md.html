@@ -64,7 +64,7 @@ src/test/test.kt:10:Warning: Implicitly passing Unit as argument to key1
 [OpaqueUnitKey]
     val x = remember(unitProperty) { listOf(1, 2, 3) }
                      ------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -80,7 +80,7 @@ val unitProperty = Unit
 fun Test() {
     val x = remember(unitProperty) { listOf(1, 2, 3) }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/OpaqueUnitKeyDetectorTest.kt)

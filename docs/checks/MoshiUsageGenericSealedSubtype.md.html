@@ -53,7 +53,7 @@ src/slack/model/BaseType.kt:11:Error: Sealed subtypes used with
 moshi-sealed cannot be generic. [MoshiUsageGenericSealedSubtype]
 data class Subtype&lt;T&gt;(val foo: T) : BaseType&lt;T&gt;()
                   ---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -75,7 +75,7 @@ data class Subtype<T>(val foo: T) : BaseType<T>()
 @TypeLabel(label = "two")
 @JsonClass(generateAdapter = true)
 data class SubtypeTwo(val foo: String) : BaseType<String>()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)

@@ -60,7 +60,7 @@ Example `lint.xml`:
         &lt;option name="allowed-composition-locals" value="some string" /&gt;
     &lt;/issue&gt;
 &lt;/lint&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (##) Example
 
@@ -76,7 +76,7 @@ use getters. Otherwise a new instance will be returned every call.
 [ComposeCompositionLocalGetter]
     val LocalPotato get() {
                     ---
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -86,7 +86,7 @@ val LocalBanana get() = compositionLocalOf { "Prune" }
 val LocalPotato get() {
   return compositionLocalOf { "Prune" }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/CompositionLocalUsageDetectorTest.kt)

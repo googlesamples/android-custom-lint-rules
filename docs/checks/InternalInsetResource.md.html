@@ -44,7 +44,7 @@ src/test/pkg/test.kt:6:Warning: Using internal inset dimension resource
 status_bar_height is not supported [InternalInsetResource]
     getIdentifier("status_bar_height", "dimen", "android")
     ------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -56,7 +56,7 @@ import android.content.res.Resources
 
 fun Resources.getStatusBarHeightIdentifier(): Int =
     getIdentifier("status_bar_height", "dimen", "android")
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InternalInsetResourceDetectorTest.kt)

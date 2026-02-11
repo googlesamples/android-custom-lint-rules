@@ -54,7 +54,7 @@ parameter should be the last parameter so it can be used as a trailing
 lambda [ComposableLambdaParameterPosition]
     fun Button(content: @Composable () -&gt; Unit, foo: Int) {
                -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -68,7 +68,7 @@ import androidx.compose.runtime.Composable
 fun Button(content: @Composable () -> Unit, foo: Int) {
 
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/ComposableLambdaParameterDetectorTest.kt)

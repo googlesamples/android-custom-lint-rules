@@ -54,7 +54,7 @@ consistently, with the following types resolved across layouts:
 android.view.SurfaceView, android.widget.TextView [ViewBindingType]
     &lt;EditText android:id="@+id/inconsistent" tools:viewBindingType="TextView" /&gt;
     ----------------------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -66,7 +66,7 @@ Here are the relevant source files:
     tools:keep="@layout/db"&gt;
     &lt;EditText android:id="@+id/test_view" tools:viewBindingType="TextView" /&gt;
 &lt;/layout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/layout/vb.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -78,7 +78,7 @@ Here are the relevant source files:
     &lt;include android:id="@+id/included" layout="@layout/included" tools:viewBindingType="TextView" /&gt;
     &lt;EditText android:id="@+id/inconsistent" tools:viewBindingType="TextView" /&gt;
 &lt;/LinearLayout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/layout-land/vb.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -88,7 +88,7 @@ Here are the relevant source files:
     tools:keep="@layout/vb"&gt;
     &lt;SurfaceView android:id="@+id/inconsistent" /&gt;
 &lt;/LinearLayout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ViewBindingTypeDetectorTest.kt)

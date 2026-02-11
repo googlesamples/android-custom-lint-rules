@@ -57,7 +57,7 @@ paddings with cryptographic algorithms is unsafe and vulnerable to
 attacks [UnsafeCryptoAlgorithmUsage]
     Cipher.getInstance(algo + "/" + mode + "/" + padding)
     -----------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -76,7 +76,7 @@ class TestBadCryptoDetector {
         Cipher.getInstance(algo + "/" + mode + "/" + padding)
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/BadCryptographyUsageDetectorTest.kt)

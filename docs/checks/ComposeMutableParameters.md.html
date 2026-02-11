@@ -86,7 +86,7 @@ https://slackhq.github.io/compose-lints/rules/#do-not-use-inherently-mutable-typ
 for more information. [ComposeMutableParameters]
 fun Something(a: MutableMap&lt;String, String&gt;) {}
                  --------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -103,7 +103,7 @@ fun Something(a: ArrayList<String>) {}
 fun Something(a: HashSet<String>) {}
 @Composable
 fun Something(a: MutableMap<String, String>) {}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/MutableParametersDetectorTest.kt)

@@ -71,7 +71,7 @@ read the value in one of the modifier's other callbacks.
 [SuspiciousCompositionLocalModifierRead]
     val readValue = currentValueOf(staticLocalInt)
                     ------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -98,7 +98,7 @@ class NodeUnderTest : Modifier.Node(), CompositionLocalConsumerModifierNode {
         val readValue = currentValueOf(staticLocalInt)
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/SuspiciousCompositionLocalModifierReadDetectorTest.kt)

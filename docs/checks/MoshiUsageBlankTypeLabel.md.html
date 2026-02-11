@@ -52,7 +52,7 @@ src/slack/model/BaseType.kt:5:Error: Moshi-sealed requires a type label
 specified after the 'sealed:' prefix. [MoshiUsageBlankTypeLabel]
 @JsonClass(generateAdapter = true, generator = "sealed:")
                                                 -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -64,7 +64,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true, generator = "sealed:")
 sealed class BaseType
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)

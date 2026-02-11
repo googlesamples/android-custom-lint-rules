@@ -54,7 +54,7 @@ src/slack/ImplementsExplicitly.kt:6:Error: Don't use Serializable.
 [SerializableUsage]
 class ImplementsExplicitly : RuntimeException, Serializable
       --------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -66,7 +66,7 @@ import java.io.Serializable
 import kotlin.RuntimeException
 
 class ImplementsExplicitly : RuntimeException, Serializable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/SerializableDetectorTest.kt)

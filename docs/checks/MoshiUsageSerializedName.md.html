@@ -72,7 +72,7 @@ src/slack/model/Example.kt:15:Error: Use Moshi's @Json rather than
 Gson's @SerializedName. [MoshiUsageSerializedName]
   @Json(name = "mixed_alts") @SerializedName("mixed_alts", alternate = ["foo"]) val mixedAlternates: String,
                              --------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -94,7 +94,7 @@ data class Example(
   @Json(name = "mixed_diff") @SerializedName("mixed_diff_2") val mixedDiff: String,
   @Json(name = "mixed_alts") @SerializedName("mixed_alts", alternate = ["foo"]) val mixedAlternates: String,
 )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)

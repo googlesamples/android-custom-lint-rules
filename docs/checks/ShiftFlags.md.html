@@ -56,7 +56,7 @@ src/test/pkg/IntDefTest.java:20:Warning: Consider declaring this
 constant using 1 << 4 instead [ShiftFlags]
     public static final int  FLAG12 = 0x10;
                                       ----
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -101,7 +101,7 @@ public class IntDefTest {
     @IntDef(flag = true, value={FLAG1,FLAG9,FLAG13}) private @interface Flags13 {}
     @IntDef(flag = true, value={FLAG1,FLAG9,FLAG14}) private @interface Flags14 {}
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)

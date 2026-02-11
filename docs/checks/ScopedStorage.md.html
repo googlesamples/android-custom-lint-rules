@@ -70,7 +70,7 @@ write access when targeting Android 10, unless you use
 requestLegacyExternalStorage [ScopedStorage]
     &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;&lt;!-- ERROR --&gt;
                                    -----------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -82,7 +82,7 @@ Here is the source file referenced above:
     &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/&gt;&lt;!-- ERROR --&gt;
     &lt;uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/&gt;&lt;!-- OK --&gt;
 &lt;/manifest&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ScopedStorageDetectorTest.kt)

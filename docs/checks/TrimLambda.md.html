@@ -74,7 +74,7 @@ src/test.kt:10:Hint: The lambda argument ({ it <= ' ' }) is unnecessary
 [TrimLambda]
     val to = s.trim { it &lt;= ' ' }.substring(2)
                     -------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -91,7 +91,7 @@ fun test(s: String) {
     s.trim() { it <= ' ' || c == '.' } // OK
     val to = s.trim { it <= ' ' }.substring(2)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TrimDetectorTest.kt)

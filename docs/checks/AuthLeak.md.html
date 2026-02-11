@@ -45,7 +45,7 @@ src/AuthDemo.java:2:Warning: Possible credential leak [AuthLeak]
 src/AuthDemo.java:4:Warning: Possible credential leak [AuthLeak]
   private static final String LEAK = "http://someuser:%restofmypass@example.com"; // WARN 2
                                       -----------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -57,7 +57,7 @@ public class AuthDemo {
   private static final String LEAK = "http://someuser:%restofmypass@example.com"; // WARN 2
   private static final String URL = "http://%-05s@example.com"; // OK 2
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringAuthLeakDetectorTest.kt)

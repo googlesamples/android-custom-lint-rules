@@ -91,7 +91,7 @@ src/test/test.kt:31:Warning: Creating a MutableState object with a
 mutable collection type [MutableCollectionMutableState]
     val collectionProperty = mutableStateOf(collectionParam)
                              --------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -128,7 +128,7 @@ fun test(
     val mapParameter = mutableStateOf(mapParam)
     val collectionProperty = mutableStateOf(collectionParam)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/MutableCollectionMutableStateDetectorTest.kt)

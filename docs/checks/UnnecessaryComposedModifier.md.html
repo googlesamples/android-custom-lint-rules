@@ -67,7 +67,7 @@ src/test/test.kt:22:Warning: Unnecessary use of Modifier.composed
 [UnnecessaryComposedModifier]
     fun Modifier.test4(): Modifier = composed({}, { this@test4})
                                      --------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -94,7 +94,7 @@ fun Modifier.test3(): Modifier = composed(factory = {
 })
 
 fun Modifier.test4(): Modifier = composed({}, { this@test4})
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/ComposedModifierDetectorTest.kt)

@@ -58,7 +58,7 @@ override fun visitAnnotationUsage(
     val location = context.getLocation(element)
     context.report(TEST_ISSUE, element, location, message)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All this simple detector does is flag any usage associated with the
 given annotation, including some information about the usage.
@@ -73,7 +73,7 @@ abstract class Book {
     @MyAnnotation fun close() = TODO()
 }
 operator fun Book.get(@MyAnnotation index: Int): Int = TODO()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ...and we then run the above detector on the following test case:
 
@@ -83,7 +83,7 @@ fun test(book: Book) {
     val firstWord = book[0]
     book.close()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 we get the following output:
 
@@ -97,7 +97,7 @@ src/book.kt:15: Error: METHOD_CALL_PARAMETER usage associated with @MyAnnotation
 src/book.kt:16: Error: METHOD_CALL usage associated with @MyAnnotation on METHOD
     book.close()
          -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the first case, the infix operator “in” will call `contains` under
 the hood, and here we've annotated the parameter, so lint visits the
@@ -150,7 +150,7 @@ to the API:
 open class Paperback : Book() {
     override fun close() { }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 then the detector will emit the following incident since the new method
 overrides another method that was annotated:
@@ -160,7 +160,7 @@ src/book.kt:14: Error: METHOD_OVERRIDE usage associated with @MyAnnotation on ME
     override fun close() { }
                  -----
 1 errors, 0 warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Overriding an annotated element is how the `@CallSuper` detector is
 implemented, which makes sure that any method which overrides a method
@@ -184,7 +184,7 @@ open class Paperback : Book() {
         }
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here, lint will flag the various exit points from the method
 associated with the annotation:
@@ -197,7 +197,7 @@ src/book.kt:20: Error: METHOD_RETURN usage associated with @MyAnnotation on METH
             return getDefaultCaption()
                    -------------------
 2 errors, 0 warnings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Note also that this would have worked if the annotation had been
 inherited from a super method instead of being explicitly set here.
@@ -231,7 +231,7 @@ override fun isApplicableAnnotationUsage(type: AnnotationUsageType): Boolean {
     return type != AnnotationUsageType.METHOD_OVERRIDE &&
             super.isApplicableAnnotationUsage(type)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !!! Tip
    Notice how we are also calling `super` here and combining the result
@@ -249,7 +249,7 @@ open fun isApplicableAnnotationUsage(type: AnnotationUsageType): Boolean {
     return type != AnnotationUsageType.BINARY &&
            type != AnnotationUsageType.EQUALITY
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 These usage types apply to cases where annotated elements are
 compared for equality or using other binary operators. Initially
@@ -277,7 +277,7 @@ src/test/pkg/HalfFloatTest.java:43: Error: Half-float type in expression widened
 src/test/pkg/HalfFloatTest.java:50: Error: Half-float type in expression widened to int [HalfFloat]
         Math.round(float1); // Error: should use Half.round
                    ------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Scopes
 
@@ -303,7 +303,7 @@ abstract class Stack<T> {
         abstract override fun pop(): String
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 And the following test case:
 
@@ -314,7 +314,7 @@ fun test(stack: Stack<String>, fileStack: Stack<String>) {
     fileStack.push("Hello")
     fileStack.pop()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here, `stack.push` call on line 2 resolves to the API method on line 7.
 That method is not annotated, but it's inside a class that is annotated
@@ -367,7 +367,7 @@ if (usageInfo.anyCloser { it.qualifiedName ==
     // outer @CheckReturnValue annotation we're analyzing here
     return
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !!! Tip
    You only have to worry about this when there are different
@@ -418,7 +418,7 @@ override fun inheritAnnotation(annotation: String): Boolean {
     // Require restriction annotations to be annotated everywhere
     return false
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (Note that the API passes in the fully qualified name of the annotation
 in question so you can control this behavior individually for each

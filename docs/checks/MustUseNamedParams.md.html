@@ -52,7 +52,7 @@ src/foo/TestFile.kt:16:Error: Calls to @MustUseNamedParams-annotated
 methods must name all parameters. [MustUseNamedParams]
     methodWithAnnotation("Zac")
     ---------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -80,7 +80,7 @@ class TestFile {
     methodWithoutAnnotation(name = "Sean2")
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MustUseNamedParamsDetectorTest.kt)

@@ -48,7 +48,7 @@ res/layout/negative_margins.xml:11:Warning: Margin values should not be
 negative [NegativeMargin]
     &lt;TextView android:layout_marginTop="-1dp"/&gt; &lt;!-- WARNING --&gt;
               -------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -71,7 +71,7 @@ Here is the source file referenced above:
     &lt;TextView android:layout_marginTop="-1dp" tools:ignore="NegativeMargin"/&gt; &lt;!-- SUPPRESSED --&gt;
 
 &lt;/GridLayout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/NegativeMarginDetectorTest.kt)

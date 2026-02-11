@@ -49,7 +49,7 @@ res/menu/ids.xml:2:Warning: Id is not in lowerCamelCaseFormat
 [WrongMenuIdFormat]
   &lt;item android:id="@+id/CamelCase"/&gt;
                     --------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -58,7 +58,7 @@ Here is the source file referenced above:
 &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
   &lt;item android:id="@+id/CamelCase"/&gt;
 &lt;/menu&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-android-lint/src/test/kotlin/com/vanniktech/lintrules/android/WrongMenuIdFormatDetectorTest.kt)

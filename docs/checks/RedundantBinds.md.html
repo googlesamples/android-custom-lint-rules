@@ -56,7 +56,7 @@ src/foo/MyQualifier.kt:14:Error: @Binds functions should return a
 different type [RedundantBinds]
   @Binds fun invalidBind(real: Long): Long
   ----------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -77,7 +77,7 @@ interface MyModule {
   @Binds fun invalidBind(real: Long): Long
   @Binds fun invalidBind(real: Long): Long
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DaggerIssuesDetectorTest.kt)

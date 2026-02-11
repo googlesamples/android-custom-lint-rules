@@ -59,7 +59,7 @@ Example `lint.xml`:
         &lt;option name="viewmodel-factories" value="some string" /&gt;
     &lt;/issue&gt;
 &lt;/lint&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (##) Example
 
@@ -89,7 +89,7 @@ See https://slackhq.github.io/compose-lints/rules/#viewmodels for more
 information. [ComposeViewModelInjection]
   val viewModel: MyVM = ()
   ------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -112,7 +112,7 @@ fun MyComposableNoParams() {
 fun MyComposableTrailingLambda(block: () -> Unit) {
   val viewModel: MyVM = ()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/ViewModelInjectionDetectorTest.kt)

@@ -74,7 +74,7 @@ src/test/pkg/DateFormatTest.kt:36:Warning: DateFormat character 'Y' in
 YY is the week-era-year; did you mean 'y'? [WeekBasedYear]
     val s7 = DateTimeFormatter.ofPattern("""dd-YY-MM""") // ERROR
                                                --
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -120,7 +120,7 @@ class DateFormatTest {
         val s7 = DateTimeFormatter.ofPattern("YYYY-WW-FF") // OK No days or months
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DateFormatDetectorTest.kt)

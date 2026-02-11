@@ -48,7 +48,7 @@ src/foo/Example.java:9:Warning: Inject this Scheduler instead of calling
 it directly [RxJava2SchedulersFactoryCall]
     return Schedulers.io();
                       --
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -65,7 +65,7 @@ class Example {
     return Schedulers.io();
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/vanniktech/lint-rules/tree/master/lint-rules-rxjava2-lint/src/test/kotlin/com/vanniktech/lintrules/rxjava2/RxJava2SchedulersFactoryCallDetectorTest.kt)

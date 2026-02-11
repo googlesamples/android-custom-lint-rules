@@ -69,7 +69,7 @@ src/test/pkg/LeakTest.java:30:Warning: Do not place Android context
 classes in static fields; this is a memory leak [StaticFieldLeak]
     private static Activity sAppContext1; // LEAK
             ------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -108,7 +108,7 @@ public class LeakTest {
     private static Context sAppContext2; // Probably app context leak
     private static Context applicationCtx; // Probably app context leak
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/LeakDetectorTest.kt)

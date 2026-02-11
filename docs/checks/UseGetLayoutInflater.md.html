@@ -54,7 +54,7 @@ LayoutInflater.from(requireContext()) detected. Consider using
 getLayoutInflater() instead [UseGetLayoutInflater]
     LayoutInflater li = LayoutInflater.from(requireContext());
                         -------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -81,7 +81,7 @@ public class TestFragment extends DialogFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/fragment/fragment-lint/src/test/java/androidx/fragment/lint/UseGetLayoutInflaterTest.kt)

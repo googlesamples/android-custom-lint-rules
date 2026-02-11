@@ -44,7 +44,7 @@ src/test/pkg/ServiceTest.kt:14:Error: The notification id cannot be 0
 [NotificationId0]
     service.startForeground(MY_ID, notification, 1) // ERROR 2: cannot be zero
                             -----
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -66,7 +66,7 @@ class ServiceTest {
         service.startForeground(MY_ID, notification, 1) // ERROR 2: cannot be zero
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/InvalidNotificationIdDetectorTest.kt)

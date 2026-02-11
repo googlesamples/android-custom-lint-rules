@@ -64,7 +64,7 @@ src/slack/model/Example.kt:11:Error: Name 'value2' is duplicated by
 member 'anotherValue2'. [MoshiUsageDuplicateJsonName]
   @Json(name = "value2") val anotherValue3: String
                              -------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -82,7 +82,7 @@ data class Example(
   @Json(name = "value2") val anotherValue2: String,
   @Json(name = "value2") val anotherValue3: String
 )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)

@@ -53,7 +53,7 @@ com/example/Test.kt:9:Error: Interval duration for
 [InvalidPeriodicWorkRequestInterval]
     val builder = PeriodicWorkRequest.Builder(TestWorker::class.java, 15L, TimeUnit.MILLISECONDS)
                   -------------------------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -64,7 +64,7 @@ package com.example
 import androidx.work.ListenableWorker
 
 class TestWorker: ListenableWorker()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `com/example/Test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -79,7 +79,7 @@ class Test {
         val builder = PeriodicWorkRequest.Builder(TestWorker::class.java, 15L, TimeUnit.MILLISECONDS)
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/work/work-lint/src/test/java/androidx/work/lint/InvalidPeriodicWorkRequestIntervalDetectorTest.kt)

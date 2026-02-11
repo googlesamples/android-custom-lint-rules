@@ -59,7 +59,7 @@ src/slack/model/Example.kt:9:Error: Constructors in Moshi classes cannot
 be private. [MoshiUsagePrivateConstructor]
 data class Example2 protected constructor(val value: String)
                     ---------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -74,7 +74,7 @@ data class Example private constructor(val value: String)
 
 @JsonClass(generateAdapter = true)
 data class Example2 protected constructor(val value: String)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)

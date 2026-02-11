@@ -56,7 +56,7 @@ res/xml/file_paths.xml:5:Warning: Do not use <root-path> as it provides
 arbitrary access to device files and folders [ExposedRootPath]
     &lt;root-path name="root" path="/"/&gt;
     ---------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -68,7 +68,7 @@ Here is the source file referenced above:
                        &lt;files-path name="my_docs" path="docs/"/&gt;
                        &lt;root-path name="root" path="/"/&gt;
                     &lt;/paths&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/MisconfiguredFileProviderDetectorTest.kt)

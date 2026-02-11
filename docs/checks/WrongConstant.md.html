@@ -48,7 +48,7 @@ src/DetailInfoTab.kt:28:Error: Must be one of: DetailInfoTabKt.CONST_1,
 DetailInfoTabKt.CONST_2, DetailInfoTabKt.CONST_3 [WrongConstant]
     test(UNRELATED) // ERROR - not part of the @DetailsInfoTab list
          ---------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -82,7 +82,7 @@ fun test() {
     test(CONST_1) // OK
     test(UNRELATED) // ERROR - not part of the @DetailsInfoTab list
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/TypedefDetectorTest.kt)

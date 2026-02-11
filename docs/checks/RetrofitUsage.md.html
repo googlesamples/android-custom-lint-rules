@@ -62,7 +62,7 @@ src/test/Example.kt:18:Error: @Field(Map) param requires
 @FormUrlEncoded. [RetrofitUsage]
   fun missingAnnotation(@Field("hi") input: String): String
       -----------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -91,7 +91,7 @@ interface Example {
   @POST("/")
   fun correct(@Field("hi") input: String): String
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/retrofit/RetrofitUsageDetectorTest.kt)

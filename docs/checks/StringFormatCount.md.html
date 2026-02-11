@@ -48,7 +48,7 @@ arguments in formatting string hello; found both 3 here and 2 in
 values/formatstrings.xml [StringFormatCount]
     &lt;string name="hello"&gt;%3$d: %1$s, %2$s?&lt;/string&gt;
     -----------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -57,14 +57,14 @@ Here are the relevant source files:
 &lt;resources&gt;
     &lt;string name="hello"&gt;Hello %1$s, %2$s?&lt;/string&gt;
 &lt;/resources&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/values-es/formatstrings.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
 &lt;resources&gt;
     &lt;string name="hello"&gt;%3$d: %1$s, %2$s?&lt;/string&gt;
 &lt;/resources&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StringFormatDetectorTest.java)

@@ -61,7 +61,7 @@ src/androidx/compose/runtime/lint/test/test.kt:8:Information: Prefer
 mutableStateOf instead of mutableStateOf [AutoboxingStateCreation]
     val state = mutableStateOf&lt;&gt;()
                 --------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -76,7 +76,7 @@ fun valueAssignment() {
     val state = mutableStateOf<>()
     state.value =
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/AutoboxingStateCreationDetectorTest.kt)

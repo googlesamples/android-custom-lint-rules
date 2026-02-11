@@ -39,7 +39,7 @@ Here is an example of lint warnings produced by this check:
 src/test.kt:9:Error: Expected resource of type string [ResourceType]
     setLabels(iconId) // bug: should have passed descId. Both are ints but of wrong type.
               ------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -55,7 +55,7 @@ fun setLabels(@StringRes titleId: Int) {
 fun setIcon(@DrawableRes iconId: Int, @StringRes descId: Int) {
     setLabels(iconId) // bug: should have passed descId. Both are ints but of wrong type.
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ResourceTypeDetectorTest.kt)

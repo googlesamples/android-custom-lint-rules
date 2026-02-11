@@ -64,7 +64,7 @@ throw a NoSuchAlgorithmException. To fix this you should stop specifying
 a provider and use the default implementation [DeprecatedProvider]
     Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider(BC_PROVIDER)); // Error
                                                ---------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -92,7 +92,7 @@ public class BCProviderTest {
         Cipher.getInstance("AES/CBC/PKCS7PADDING", Security.getProvider(BC_PROVIDER)); // Error
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/CipherGetInstanceDetectorTest.kt)

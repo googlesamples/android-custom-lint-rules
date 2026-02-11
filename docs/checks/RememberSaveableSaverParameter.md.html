@@ -84,7 +84,7 @@ src/test/Foo.kt:22:Error: Passing Saver instance to vararg inputs
 [RememberSaveableSaverParameter]
     val mutableStateFoo4 = rememberSaveable(fooSaver4) { mutableStateOf(Foo()) }
                                             ---------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -112,7 +112,7 @@ fun Test() {
     val foo4 = rememberSaveable(fooSaver4) { Foo() }
     val mutableStateFoo4 = rememberSaveable(fooSaver4) { mutableStateOf(Foo()) }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-saveable-lint/src/test/java/androidx/compose/runtime/saveable/lint/RememberSaveableDetectorTest.kt)

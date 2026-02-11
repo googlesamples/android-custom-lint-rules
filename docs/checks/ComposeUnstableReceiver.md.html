@@ -91,7 +91,7 @@ See https://slackhq.github.io/compose-lints/rules/#unstable-receivers
 for more information. [ComposeUnstableReceiver]
   @Composable override fun present(): String { return "hi" }
                            -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -121,7 +121,7 @@ interface Presenter<T> {
 class HomePresenter : Presenter<String> {
   @Composable override fun present(): String { return "hi" }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/UnstableReceiverDetectorTest.kt)

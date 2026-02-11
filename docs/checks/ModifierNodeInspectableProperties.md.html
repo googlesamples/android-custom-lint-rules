@@ -57,7 +57,7 @@ to customize this modifier's presentation in the layout inspector.
 [ModifierNodeInspectableProperties]
     class Element : ModifierNodeElement&lt;Modifier.Node&gt;() {
           -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -73,7 +73,7 @@ class Element : ModifierNodeElement<Modifier.Node>() {
     override fun create() = object : Modifier.Node() {}
     override fun update(node: Modifier.Node) = node
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/ModifierNodeInspectablePropertiesDetectorTest.kt)

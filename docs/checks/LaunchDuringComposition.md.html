@@ -76,7 +76,7 @@ src/com/example/test.kt:46:Error: Calls to launch should happen inside
 of a SideEffect and not during composition [LaunchDuringComposition]
     launcher.launch("test")
              ------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -129,7 +129,7 @@ fun test3() {
         launcher.launch("test")
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/test/java/androidx/activity/compose/lint/ActivityResultLaunchDetectorTest.kt)

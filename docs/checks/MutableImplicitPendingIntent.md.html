@@ -100,7 +100,7 @@ for a new PendingIntent either make it immutable or make the Intent
 within explicit [MutableImplicitPendingIntent]
     PendingIntent.getActivities(null, 0, listOf(Intent(), mIntent), PendingIntent.FLAG_MUTABLE)
     -------------------------------------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -122,7 +122,7 @@ public class PendingIntentJavaTest {
     PendingIntent.getActivities(null, 0, { new Intent(), mIntent }, PendingIntent.FLAG_MUTABLE);
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/PendingIntentKotlinTest.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -142,7 +142,7 @@ class PendingIntentKotlinTest {
     PendingIntent.getActivities(null, 0, listOf(Intent(), mIntent), PendingIntent.FLAG_MUTABLE)
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PendingIntentMutableImplicitDetectorTest.kt)

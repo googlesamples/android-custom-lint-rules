@@ -51,7 +51,7 @@ src/test.kt:8:Warning: File.extension does not include the leading dot;
 did you mean "webp" ? [FileEndsWithExt]
 fun isWebp(path: File) = path.extension.startsWith(".webp")
                                                    -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -68,7 +68,7 @@ fun isWebp(path: File) = path.extension.startsWith(".webp")
 
 fun File.isText() = path.endsWith(".txt") // OK
 fun File.isPng() = extension == "png" // OK
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/FileEndsWithDetectorTest.kt)

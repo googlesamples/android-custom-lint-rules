@@ -52,7 +52,7 @@ src/test/pkg/Annotation1.kt:19:Error: Do not use
 be allowed on any element types from Java [SupportAnnotationUsage]
 @java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 2
                       ------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -79,7 +79,7 @@ annotation class Annotation3()
 @java.lang.annotation.Target(ElementType.PARAMETER) // ERROR 2
 @Target(AnnotationTarget.VALUE_PARAMETER)
 annotation class Annotation4()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AnnotationDetectorTest.kt)

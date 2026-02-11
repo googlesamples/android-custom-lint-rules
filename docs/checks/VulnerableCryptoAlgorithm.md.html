@@ -57,7 +57,7 @@ cryptographic algorithms puts the original input at risk of discovery
 [VulnerableCryptoAlgorithm]
     Cipher.getInstance(algo);
     ------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -73,7 +73,7 @@ public class TestBadCryptoDetector {
         Cipher.getInstance(algo);
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/BadCryptographyUsageDetectorTest.kt)

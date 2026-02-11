@@ -52,7 +52,7 @@ res/layout/namespace.xml:3:Error: Attribute is missing the Android
 namespace prefix [MissingPrefix]
     &lt;Button style="@style/setupWizardOuterFrame" android.text="Button" android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content"/&gt;
                                                  ---------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -64,7 +64,7 @@ Here is the source file referenced above:
     &lt;ImageView android:style="@style/bogus" android:id="@+id/android_logo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/android_button" android:focusable="false" android:clickable="false" android:layout_weight="1.0" /&gt;
     &lt;LinearLayout other:orientation="horizontal"/&gt;
 &lt;/LinearLayout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/MissingPrefixDetectorTest.kt)

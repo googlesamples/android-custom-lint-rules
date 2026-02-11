@@ -69,7 +69,7 @@ src/test/TestModifier.kt:14:Error: Using Modifier.then with a Modifier
 factory function with an implicit receiver [SuspiciousModifierThen]
     fun Modifier.test4() = this.then(if (true) test() else TestModifier)
                                                ----
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -88,7 +88,7 @@ fun Modifier.test2() = this.then(test())
 fun Modifier.test3() = this.then(with(1) { test() })
 
 fun Modifier.test4() = this.then(if (true) test() else TestModifier)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/ui/ui-lint/src/test/java/androidx/compose/ui/lint/SuspiciousModifierThenDetectorTest.kt)

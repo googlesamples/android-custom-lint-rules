@@ -55,7 +55,7 @@ res/xml/file_paths.xml:5:Warning: Sensitive info like PII should not be
 stored or shared via <external-path> [SensitiveExternalPath]
     &lt;external-path name="external_path" path="sdcard/"/&gt;
     ----------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -67,7 +67,7 @@ Here is the source file referenced above:
                        &lt;files-path name="my_docs" path="docs/"/&gt;
                        &lt;external-path name="external_path" path="sdcard/"/&gt;
                     &lt;/paths&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/google/android-security-lints/tree/main/checks/src/test/java/com/example/lint/checks/MisconfiguredFileProviderDetectorTest.kt)

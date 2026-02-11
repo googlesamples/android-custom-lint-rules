@@ -60,7 +60,7 @@ inside of Coroutine, please use the suspending setCurrentState()
 function. [TestLifecycleOwnerInCoroutine]
     fun testSetCurrentStateInRunTestWithTimeOut() = runTest(timeout = 5000) {
                                                     -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -81,7 +81,7 @@ fun testSetCurrentStateInRunTestWithTimeOut() = runTest(timeout = 5000) {
     val owner = TestLifecycleOwner()
     owner.currentState = Lifecycle.State.RESUMED
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/lifecycle/lifecycle-runtime-testing-lint/src/test/java/androidx/lifecycle/runtime/testing/lint/TestLifecycleOwnerInCoroutineDetectorTest.kt)

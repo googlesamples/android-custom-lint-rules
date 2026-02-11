@@ -75,7 +75,7 @@ src/foo/test.kt:16:Error: Target state parameter _ is not used
 [UnusedCrossfadeTargetStateParameter]
     Crossfade(foo, content = { _ -&gt; if (foo) { /**/ } else { /**/ } })
                                -
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -97,7 +97,7 @@ fun Test() {
     Crossfade(foo) { _ -> if (foo) { /**/ } else { /**/ } }
     Crossfade(foo, content = { _ -> if (foo) { /**/ } else { /**/ } })
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/animation/animation-lint/src/test/java/androidx/compose/animation/lint/CrossfadeDetectorTest.kt)

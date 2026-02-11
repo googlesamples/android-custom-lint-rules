@@ -110,7 +110,7 @@ implementation. Consider using one of its corresponding UAST interfaces:
 UExpression, UAnnotated, UUnknownExpression [UastImplementation]
     return if (this !is UnknownKotlinExpression) this else null // ERROR 11
                         -----------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -211,7 +211,7 @@ class UastImplementationDetectorTestInput {
       return if (this !is UnknownKotlinExpression) this else null // ERROR 11
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/UastImplementationDetectorTest.kt)

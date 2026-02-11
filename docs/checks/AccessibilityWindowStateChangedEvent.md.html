@@ -75,7 +75,7 @@ ViewCompat.setAccessibilityPaneTitle, etc. to inform users of crucial
 changes to the UI. [AccessibilityWindowStateChangedEvent]
     if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                                               -------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -109,7 +109,7 @@ class MyView(context: Context) : View(context) {
     super.onPopulateAccessibilityEvent(event)
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/AccessibilityWindowStateChangedDetectorTest.kt)

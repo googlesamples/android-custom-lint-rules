@@ -56,7 +56,7 @@ src/test.kt:4:Error: ConcurrentHashMap should not use nullable key types
 [NullableConcurrentHashMap]
     val map2: java.util.concurrent.ConcurrentHashMap&lt;String?, Int&gt; = java.util.concurrent.ConcurrentHashMap()
                                                      -------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -66,7 +66,7 @@ fun test() {
     val map = java.util.concurrent.ConcurrentHashMap<String?, Int>()
     val map2: java.util.concurrent.ConcurrentHashMap<String?, Int> = java.util.concurrent.ConcurrentHashMap()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/NullableConcurrentHashMapDetectorTest.kt)

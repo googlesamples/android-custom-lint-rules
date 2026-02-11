@@ -57,7 +57,7 @@ src/test/pkg/WorkManagerTest.java:59:Warning: WorkContinuation cont4 not
 enqueued: did you forget to call enqueue()? [EnqueueWork]
     WorkContinuation cont4 = WorkContinuation.combine(workRequest6, cont2, cont3); // ERROR
                              ----------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -176,7 +176,7 @@ public abstract class WorkManagerTest {
     private void doSomeOtherStuff() {
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/WorkManagerDetectorTest.kt)

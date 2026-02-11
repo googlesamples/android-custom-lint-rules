@@ -86,7 +86,7 @@ declaration to your manifest when calling this method; see
 https://g.co/dev/packagevisibility for details [QueryPermissionsNeeded]
     Intent().resolveActivityInfo(pm, 0) // ERROR
              -------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -123,7 +123,7 @@ class MainActivity : Activity() {
     private fun getInstalledPackages() = Unit
     private fun resolveActivity() = Unit
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PackageVisibilityDetectorTest.kt)

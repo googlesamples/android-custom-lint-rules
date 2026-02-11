@@ -44,7 +44,7 @@ src/test/pkg/test.kt:5:Hint: This initialization lambda ({ 0 }) is
 unnecessary and is less efficient [UnnecessaryArrayInit]
     val startPoints = remember { IntArray(4) { 0 } }
                                              -----
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -56,7 +56,7 @@ fun testInit(size: Int, value: Int) {
     // Mutable Array to keep track of bound changes -- example from MotionLayout
     val startPoints = remember { IntArray(4) { 0 } }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ArrayInitDetectorTest.kt)

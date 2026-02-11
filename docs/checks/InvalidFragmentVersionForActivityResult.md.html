@@ -56,7 +56,7 @@ src/main/kotlin/com/example/test.kt:6:Error: Upgrade Fragment version to
 at least . [InvalidFragmentVersionForActivityResult]
 val launcher = ActivityResultCaller().registerForActivityResult(ActivityResultContract())
                --------------------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -65,7 +65,7 @@ Here are the relevant source files:
 dependencies {
     api("androidx.fragment:fragment:1.2.4")
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/main/kotlin/com/example/test.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -75,7 +75,7 @@ import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.contract.ActivityResultContract
 
 val launcher = ActivityResultCaller().registerForActivityResult(ActivityResultContract())
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-lint/src/test/java/androidx/activity/lint/ActivityResultFragmentVersionDetectorTest.kt)

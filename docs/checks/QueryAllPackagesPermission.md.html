@@ -47,7 +47,7 @@ https://g.co/dev/packagevisibility for details
 [QueryAllPackagesPermission]
     &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/&gt;&lt;!-- ERROR --&gt;
                      ----------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -60,7 +60,7 @@ Here are the relevant source files:
                     &lt;uses-permission android:name="android.permission.CAMERA"/&gt;&lt;!-- OK --&gt;
                     &lt;uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/&gt;&lt;!-- ERROR --&gt;
                 &lt;/manifest&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/test/pkg/MainActivity.kt`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin linenumbers
@@ -95,7 +95,7 @@ class MainActivity : Activity() {
     private fun getInstalledPackages() = Unit
     private fun resolveActivity() = Unit
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PackageVisibilityDetectorTest.kt)

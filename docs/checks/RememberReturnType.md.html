@@ -132,7 +132,7 @@ src/androidx/compose/runtime/foo/FooState.kt:88:Error: remember calls
 must not return Unit [RememberReturnType]
     val unit2 = remember(number1, number2, number3, flag, calculation = unitLambda)
                 --------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -226,7 +226,7 @@ fun Test(number1: Int, number2: Int, number3: Int, flag: Boolean) {
     remember(number1, number2, number3, flag, calculation = unitLambda)
     val unit2 = remember(number1, number2, number3, flag, calculation = unitLambda)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/RememberDetectorTest.kt)

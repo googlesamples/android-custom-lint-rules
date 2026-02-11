@@ -59,7 +59,7 @@ res/values/refs.xml:15:Error: Unexpected resource reference type;
 expected value of type @color/ [ReferenceType]
     &lt;item name="drawableAsColor" type="color"&gt;@drawable/my_drawable&lt;/item&gt;
                                               ---------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -81,7 +81,7 @@ Here is the source file referenced above:
     &lt;item name="colorAsDrawable" type="drawable"&gt;@color/my_color&lt;/item&gt;
     &lt;item name="drawableAsColor" type="color"&gt;@drawable/my_drawable&lt;/item&gt;
 &lt;/resources&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DuplicateResourceDetectorTest.java)

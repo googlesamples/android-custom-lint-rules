@@ -40,7 +40,7 @@ res/navigation/navigation.xml:5:Warning: Invalid start destination
 @id/includedId [InvalidNavigation]
     app:startDestination="@id/includedId"&gt;
                           --------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -53,7 +53,7 @@ Here are the relevant source files:
                              app:startDestination="@id/includedId"&gt;
                                &lt;include app:graph="@navigation/foo"/&gt;
                            &lt;/navigation&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `res/navigation/foo.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -65,7 +65,7 @@ Here are the relevant source files:
                              app:startDestination="@id/foo2"&gt;
                                &lt;fragment android:id="@+id/foo2"/&gt;
                            &lt;/navigation&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/StartDestinationDetectorTest.kt)

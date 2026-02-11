@@ -52,7 +52,7 @@ src/slack/model/Example1.kt:23:Error: Adapters targeted by @AdaptedBy
 must have @Keep. [MoshiUsageAdaptedByRequiresKeep]
 @AdaptedBy(CustomAdapterMissingKeep::class)
            -------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -89,7 +89,7 @@ abstract class CustomFactory : JsonAdapter.Factory
 abstract class CustomAdapter : JsonAdapter<String>()
 class NotAnAdapter
 abstract class CustomAdapterMissingKeep : JsonAdapter<String>()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/MoshiUsageDetectorTest.kt)

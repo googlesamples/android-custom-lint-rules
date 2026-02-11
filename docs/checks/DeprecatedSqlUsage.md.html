@@ -51,7 +51,7 @@ src/foo/SqlUsageTestFailure.java:7:Warning: All SQL querying should be
 performed using SqlDelight [DeprecatedSqlUsage]
     db.execSQL("DROP TABLE IF EXISTS foo");
     --------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -66,7 +66,7 @@ public static class SqlUsageTestFailure {
     db.execSQL("DROP TABLE IF EXISTS foo");
   }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/DeprecatedSqlUsageDetectorTest.kt)

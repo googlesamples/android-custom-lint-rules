@@ -58,7 +58,7 @@ src/test/pkg/test.kt:15:Error: The API level
 SDK_INT_FULL, not SDK_INT [WrongSdkInt]
     if (SDK_INT_FULL &gt; Build.VERSION_CODES.VANILLA_ICE_CREAM) { // ERROR 2
         ----------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -83,7 +83,7 @@ fun testInvalidComparisons() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUR_DEVELOPMENT) { // OK 3
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/ApiDetectorTest.java)

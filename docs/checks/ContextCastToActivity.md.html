@@ -58,7 +58,7 @@ src/com/example/MyActivity.kt:13:Error: LocalContext should not be cast
 to Activity, use LocalActivity instead [ContextCastToActivity]
     val activity3 = LocalContext.current as? MyActivity
                     -----------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -78,7 +78,7 @@ fun Test() {
     val activity2 = LocalContext.current as? Activity
     val activity3 = LocalContext.current as? MyActivity
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/activity/activity-compose-lint/src/test/java/androidx/activity/compose/lint/LocalContextCastIssueDetectorTest.kt)

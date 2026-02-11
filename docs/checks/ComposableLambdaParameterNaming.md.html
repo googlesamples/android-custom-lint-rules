@@ -55,7 +55,7 @@ src/androidx/compose/ui/foo/test.kt:7:Warning: Composable lambda
 parameter should be named content [ComposableLambdaParameterNaming]
     fun Button(foo: Int, text: @Composable () -&gt; Unit) {
                          ----
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -69,7 +69,7 @@ import androidx.compose.runtime.Composable
 fun Button(foo: Int, text: @Composable () -> Unit) {
 
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/compose/runtime/runtime-lint/src/test/java/androidx/compose/runtime/lint/ComposableLambdaParameterDetectorTest.kt)

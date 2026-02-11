@@ -98,7 +98,7 @@ fun isKotlin(language: Language?): Boolean { /* ... */ }
 
 /** Returns true if the given language is Java. */
 fun isJava(language: Language?): Boolean { /* ... */ }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you have a `UElement` and need a `PsiElement` for the above method,
 see the next question.
@@ -171,7 +171,7 @@ use `getClassType`.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
     abstract fun getClassType(psiClass: PsiClass?): PsiClassType?
     abstract fun getTypeClass(psiType: PsiType?): PsiClass?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### How do I look up hierarchy annotations for an element?
 
@@ -192,7 +192,7 @@ one of these two evaluator methods:
         owner: PsiModifierListOwner,
         inHierarchy: Boolean
     ): Array<PsiAnnotation>
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### How do I look up if a class is a subclass of another?
 
@@ -201,7 +201,7 @@ named class, use the following method in `JavaEvaluator`:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 fun isMemberInClass(member: PsiMember?, className: String): Boolean { }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To see if a method is a member in any *subclass* of a named class, use
 
@@ -212,7 +212,7 @@ To see if a method is a member in any *subclass* of a named class, use
         strict: Boolean = false
     ): Boolean { /* ... */ }
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here, use `strict = true` if you don't want to include members in the
 named class itself as a match.

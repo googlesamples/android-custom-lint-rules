@@ -46,7 +46,7 @@ build.gradle:3:Warning: Use the existing version catalog reference
 (libs.androidx.appCompat) instead [UseTomlInstead]
     implementation 'androidx.appcompat:appcompat:1.5.1'
                    ------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -59,7 +59,7 @@ androidxTest = "1.5.0"
 [libraries]
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTest" }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `build.gradle`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~groovy linenumbers
@@ -67,7 +67,7 @@ dependencies {
     implementation(libs.androidx.appCompat) // OK
     implementation 'androidx.appcompat:appcompat:1.5.1'
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/GradleDetectorTest.kt)

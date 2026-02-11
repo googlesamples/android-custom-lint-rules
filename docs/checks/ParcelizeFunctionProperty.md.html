@@ -92,7 +92,7 @@ usually a sign that you're modeling your data wrong.
 [ParcelizeFunctionProperty]
   val aliasedFunction: FunctionType,
                        ------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -119,7 +119,7 @@ class Example1(
   @IgnoredOnParcel
   val ignoredFunction: () -> Unit = {}, // This is allowed
 ) : Parcelable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/slack-lints/tree/main/slack-lint-checks/src/test/java/slack/lint/parcel/ParcelizeFunctionPropertyDetectorTest.kt)

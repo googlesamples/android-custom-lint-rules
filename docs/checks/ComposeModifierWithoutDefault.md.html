@@ -63,7 +63,7 @@ https://slackhq.github.io/compose-lints/rules/#modifiers-should-have-default-par
 for more information. [ComposeModifierWithoutDefault]
 fun Something(modifier: Modifier = Modifier, modifier2: Modifier) { }
                                              -------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -76,7 +76,7 @@ import androidx.compose.ui.Modifier
 fun Something(modifier: Modifier) { }
 @Composable
 fun Something(modifier: Modifier = Modifier, modifier2: Modifier) { }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/ModifierWithoutDefaultDetectorTest.kt)

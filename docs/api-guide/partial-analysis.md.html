@@ -240,7 +240,7 @@ For example, if you have the following unit test declaration:
        xml(
            "res/layout/linear.xml",
            "<LinearLayout ...>" + ...
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second `manifest()` call here on line 3 does all the heavy lifting:
 the fact that you're referencing `../app` means it will create another
@@ -285,7 +285,7 @@ In the past, you would typically report problems like this:
         context.getNameLocation(element),
         "Missing `contentDescription` attribute on image"
     )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 At some point, we added support for quickfixes, so the
 report method took an additional parameter, line 6:
@@ -298,7 +298,7 @@ report method took an additional parameter, line 6:
         "Missing `contentDescription` attribute on image",
         fix().set().todo(ANDROID_URI, ATTR_CONTENT_DESCRIPTION).build()
 )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that we need to attach various additional data (like constraints
 and maps), we don't really want to just add more parameters.
@@ -318,7 +318,7 @@ the `context.report` block like this:
         context.getNameLocation(element),
         "Missing `contentDescription` attribute on image"
     ))
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 and then reformatting the source code:
 
@@ -331,7 +331,7 @@ and then reformatting the source code:
             "Missing `contentDescription` attribute on image"
         )
 )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `Incident` has a number of overloaded constructors to make it easy to
 construct it from existing report calls.
@@ -345,7 +345,7 @@ following:
         .scope(node)
         .location(context.getLocation(node))
         .message("Do not hardcode \"/sdcard/\"").report()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 That are additional methods you can fall too, like `fix()`, and
 conveniently, `at()` which specifies not only the scope node but
@@ -357,7 +357,7 @@ such that the following is equivalent:
         .issue(ISSUE)
         .at(node)
         .message("Do not hardcode \"/sdcard/\"").report()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 So step one to partial analysis is to convert your code to report
 incidents instead of the passing in all the individual properties of an
@@ -400,7 +400,7 @@ Recording an incident with a constraint is easy; first construct the
         + "even for lossless conversion";
     Incident incident = new Incident(WEBP_ELIGIBLE, location, message);
     context.report(incident, minSdkAtLeast(18));
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, note that you can combine constraints; there are both “and”
 and “or” operators defined for the `Constraint` class, so the following
@@ -409,7 +409,7 @@ is valid:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
     val constraint = targetSdkAtLeast(23) and notLibraryProject()
     context.report(incident, constraint)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 That's all you have to do. Lint will record this provisional incident,
 and when it is performing reporting, it will evaluate these constraints
@@ -437,7 +437,7 @@ Here's an example:
             .put(KEY_OVERRIDES, overrides)
             .put(KEY_IMPLICIT, implicitlyExportedPreS)
     )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here, `map()` is a method defined by `Detector` to create a new
 `LintMap`, similar to how `fix()` constructs a new `LintFix`.
@@ -455,7 +455,7 @@ processing yourself. To do this, you need to override this method:
      * customizing the error message further.
      */
     open fun filterIncident(context: Context, incident: Incident, map: LintMap): Boolean { }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For example, for the above report call, the corresponding
 implementation of `filterIncident` looks like this:
@@ -466,7 +466,7 @@ implementation of `filterIncident` looks like this:
         if (map.getBoolean(KEY_IMPLICIT, false) == true && context.mainProject.targetSdk >= 31) return true
         return map.getBoolean(KEY_OVERRIDES, false) == false
     }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Note also that you are allowed to modify incidents here before
 reporting them. The most common reason scenario for this is changing
@@ -590,7 +590,7 @@ first looking up the module data map, by calling this method on the
      * yourself, via the various [LintDriver.isSuppressed] methods.
      */
     fun getPartialResults(issue: Issue): PartialResult { ... }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Then you put whatever data you want, such as the resource usage model
 encoded as a string.
@@ -611,7 +611,7 @@ them:
      * (via [Context.report]) to lint.
      */
     open fun checkPartialResults(context: Context, partialResults: PartialResult) { ... }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Optimizations
 
@@ -628,6 +628,6 @@ Do this by calling `isGlobalAnalysis()`:
    } else {
        // partial analysis code path
    }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -55,7 +55,7 @@ dependencies {
     compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
     testImplementation "com.android.tools.lint:lint-tests:$lintVersion"
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The second dependency is usually not necessary; you just need to depend
 on the Lint API. However, the built-in checks define a lot of
@@ -91,7 +91,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `$lintVersion` variable is defined on line 11. We don't technically
 need to define the `$gradlePluginVersion` here or add it to the classpath on line 19, but that's done so that we can add the `lint`
@@ -244,7 +244,7 @@ class SampleCodeDetector : Detector(), UastScanner {
         )
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `Issue` registration is pretty self-explanatory, and the details
 about issue registration are covered in the [basics](basics.md.html)
@@ -291,7 +291,7 @@ class SampleCodeDetector : Detector(), UastScanner {
         }
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This lint check is very simple; for Kotlin and Java files, it visits
 all the literal strings, and if the string contains the word “lint”,
@@ -344,7 +344,7 @@ class SampleCodeDetectorTest {
         )
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As you can see, writing a lint unit test is very simple, because
 lint ships with a dedicated testing library; this is what the

@@ -52,7 +52,7 @@ android.defaultConfig.vectorDrawables.useSupportLibrary = true in
 test_project-appbuild.gradle [VectorDrawableCompat]
     &lt;ImageView app:srcCompat="@drawable/foo" /&gt;
                -------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here are the relevant source files:
 
@@ -64,7 +64,7 @@ buildscript {
     }
 }
 android.defaultConfig.vectorDrawables.useSupportLibrary = false
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/main/res/drawable/foo.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -82,7 +82,7 @@ android.defaultConfig.vectorDrawables.useSupportLibrary = false
                         c5.207,-5.242,9,-7.97,9,-11.5
                         C25,11.432,23.043,9.5,20.5,9.5z" /&gt;
 &lt;/vector&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 `src/main/res/layout/main_activity.xml`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~xml linenumbers
@@ -91,7 +91,7 @@ android.defaultConfig.vectorDrawables.useSupportLibrary = false
     &lt;ImageView app:srcCompat="@drawable/foo" /&gt;
     &lt;ImageView app:srcCompat="@drawable/bitmap" /&gt;
 &lt;/RelativeLayout&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/VectorDrawableCompatDetectorTest.kt)

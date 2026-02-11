@@ -47,7 +47,7 @@ res/layout/layout1.xml:16:Error: < must be escaped (as &lt;) in
 attribute values [XmlEscapeNeeded]
     android:text="@{calc.a  &lt;  calc.b ? calc.textA : calc.textB}"/&gt;
                   ----------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -72,7 +72,7 @@ Here is the source file referenced above:
   &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
 &lt;/layout&gt;
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/DataBindingDetectorTest.kt)

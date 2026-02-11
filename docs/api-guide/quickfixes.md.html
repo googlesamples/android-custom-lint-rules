@@ -56,7 +56,7 @@ name to “true”, use something like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 LintFix fix = fix().set(null, "singleLine", "true").build()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here the `fix()` method is provided by the `Detector` super class, but
 that's just a utility method for `LintFix.fix()` (or in older versions,
@@ -187,7 +187,7 @@ val message = "Job scheduling with `GcmNetworkManager` is deprecated: Use Androi
 val fix = fix()
 .url("https://developer.android.com/topic/libraries/architecture/workmanager/migrating-gcm")
 .build()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Combining Fixes
 
@@ -224,7 +224,7 @@ val fix = fix().name("Replace with singleLine=\"true\"")
         fix().set(ANDROID_URI, "singleLine", "true").build(),
         fix().unset(namespace, oldAttributeName).build()
     )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 And here's an example of how to create an alternatives fix, which are
 offered to the user as separate options; this is from our earlier
@@ -237,7 +237,7 @@ val fix = fix().alternatives(
     fix().set().todo(ANDROID_URI, "text").build(),
     fix().set().todo(ANDROID_URI, "contentDescription")
     .build())
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Refactoring Java and Kotlin code
 
@@ -278,7 +278,7 @@ val fix = fix().name("Surround with desiredAssertionStatus() check")
     .with("if (javaClass.desiredAssertionStatus()) { \\k<1> }")
     .reformat(true)
     .build()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The replacement string's back reference above, on line 5, is \k<1>. If
 there were multiple regular expression groups in the replacement
@@ -295,7 +295,7 @@ lint().files().run().expectFixDiffs(
     +         if (javaClass.desiredAssertionStatus()) { assert(expensive()) } // WARN
     """
 )
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Verifying Quickfixes
 

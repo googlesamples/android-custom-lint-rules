@@ -62,7 +62,7 @@ Example `lint.xml`:
         &lt;option name="allowed-composition-locals" value="some string" /&gt;
     &lt;/issue&gt;
 &lt;/lint&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (##) Example
 
@@ -92,7 +92,7 @@ https://slackhq.github.io/compose-lints/rules/#compositionlocals for
 more information. [ComposeCompositionLocalUsage]
     private val LocalKiwi: String = compositionLocalOf { "Kiwi" }
     -------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -102,7 +102,7 @@ private val LocalApple = staticCompositionLocalOf<String> { "Apple" }
 internal val LocalPlum: String = staticCompositionLocalOf { "Plum" }
 val LocalPrune = compositionLocalOf { "Prune" }
 private val LocalKiwi: String = compositionLocalOf { "Kiwi" }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://github.com/slackhq/compose-lints/tree/main/compose-lint-checks/src/test/java/slack/lint/compose/CompositionLocalUsageDetectorTest.kt)

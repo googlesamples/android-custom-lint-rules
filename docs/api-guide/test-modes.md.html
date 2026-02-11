@@ -57,7 +57,7 @@ your detector class:
 override fun lint(): TestLintTask {
     return super.lint().testModes(TestMode.PARENTHESIZED)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now when you run your test, it will run *only* this test mode, so you
 can set breakpoints and start debugging through the scenario without
@@ -91,7 +91,7 @@ lint().files(...)
     .skipTestModes(TestMode.PARTIAL)
     .run()
     .expectClean()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Source-Modifying Test Modes
 
@@ -138,7 +138,7 @@ fun test(packageName: String, other: Any) {
     val rv = RemoteViews(packageName, R.layout.test)
     val ov = other as RemoteViews
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to
 
@@ -149,7 +149,7 @@ fun test(packageName: String, other: Any) {
     val rv = android.widget.RemoteViews(packageName, R.layout.test)
     val ov = other as android.widget.RemoteViews
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This makes sure that your detector handles not only the case where a
 symbol appears in its normal imported state, but also when it is fully
@@ -170,7 +170,7 @@ private fun checkEnumSet(node: UCallExpression) {
     if (receiver is USimpleNameReferenceExpression &&
         receiver.identifier == "EnumSet"
     ) {
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 which will work for code such as `EnumSet.of()` but not
 `java.util.EnumSet.of()`.
@@ -182,7 +182,7 @@ private fun checkEnumSet(node: UCallExpression) {
     val targetClass = node.resolve()?.containingClass?.qualifiedName
         ?: return
     if (targetClass == "java.util.EnumSet") {
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As with all the source transforming test modes, there are cases where
 it doesn't apply. For example, lint had a built-in check for camera
@@ -212,7 +212,7 @@ detector:
     // does not apply:
     return super.lint().skipTestModes(TestMode.FULLY_QUALIFIED);
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !!! Tip
    In Kotlin code, you may have code that checks to see if a node is a
@@ -240,7 +240,7 @@ fun test(packageName: String, other: Any) {
     val rv = RemoteViews(packageName, R.layout.test)
     val ov = other as RemoteViews
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to
 
@@ -251,7 +251,7 @@ fun test(packageName: String, other: Any) {
     val rv = IMPORT_ALIAS_1_REMOTEVIEWS(packageName, R.layout.test)
     val ov = other as IMPORT_ALIAS_1_REMOTEVIEWS
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Type Aliasing
 
@@ -279,7 +279,7 @@ fun test(packageName: String, other: Any) {
     val rv = RemoteViews(packageName, R.layout.test)
     val ov = other as RemoteViews
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to
 
@@ -293,7 +293,7 @@ fun test(packageName: TYPE_ALIAS_1, other: TYPE_ALIAS_2) {
 typealias TYPE_ALIAS_1 = String
 typealias TYPE_ALIAS_2 = Any
 typealias TYPE_ALIAS_3 = RemoteViews
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Parenthesis Mode
 
@@ -347,14 +347,14 @@ For example, this mode will convert the following code:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 (t as? String)?.plus("other")?.get(0)?.dec()?.inc()
 "foo".chars().allMatch { it.dec() > 0 }.toString()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 (((((t as? String))?.plus("other"))?.get(0))?.dec())?.inc()
 (("foo".chars()).allMatch { (it.dec() > 0) }).toString()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default the parenthesis mode limits itself to “likely” unnecessary
 parentheses; in particular, it won't put extra parenthesis around
@@ -383,13 +383,13 @@ For example, this mode will convert the following code:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 test("test", 5, true)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 test(n = 5, z = true, s = "test")
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Body Removal
 
@@ -399,13 +399,13 @@ In Kotlin, you can replace
 fun test(): List<String> {
     return if (true) listOf("hello") else emptyList()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 with
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 fun test(): List<String> = if (true) listOf("hello") else emptyList()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Note that these two ASTs do not look the same; we'll only have an
 `UReturnExpression` node in the first case. Therefore, you have to be
@@ -421,13 +421,13 @@ expressions -- converting
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (x < y) { test(x+1) } else test(x+2)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 to
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~kotlin
 if (x < y) test(x+1) else { test(x+2) }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (Here it has removed the braces around the if-then body since they are
 optional, and it has added braces around the if-else body since it did
@@ -478,7 +478,7 @@ updated to be prepared for whitespace characters:
 +                    .pattern("acquire\\s*\\(()\\s*\\)")
                      .with("10*60*1000L /*10 minutes*/")
                      .build();
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### CDATA Mode
 
@@ -490,7 +490,7 @@ instead of plain text. For example, instead of
 &lt;resources&gt;
     &lt;string name="app_name"&gt;Application Name&lt;/string&gt;
 &lt;/resources&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 you can equivalently use
 
@@ -499,7 +499,7 @@ you can equivalently use
 &lt;resources&gt;
     &lt;string name="app_name"&gt;&lt;![CDATA[Application Name]]&gt;&lt;/string&gt;
 &lt;/resources&gt;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (where you can place newlines and other unescaped text inside the bracketed span.)
 
@@ -536,7 +536,7 @@ When UAST comes across a method like this:
 fun test(parameter: Int = 0) {
     implementation()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 it will “inline” these two methods in the AST, such that we see the whole
 method body twice:
@@ -549,7 +549,7 @@ fun test() {
 fun test(parameter: Int) {
     implementation()
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If there were additional default parameters, there would be additional
 repetitions.
@@ -573,7 +573,7 @@ fun `test$default`(var0: Int, var1: Int, var2: Any?) {
 
     test(var0)
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Again, UAST will instead just repeat the method body. And this means
 lint detectors may trigger repeatedly on the same code. In most cases

@@ -42,7 +42,7 @@ src/test/pkg/WakelockActivity.java:12:Error: Tag name should not be
 empty to make wake lock problems easier to debug [InvalidWakeLockTag]
     mWakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
                 -------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -62,7 +62,7 @@ public class WakelockActivity extends Activity {
         mWakeLock = manager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/PowerManagerDetectorTest.java)

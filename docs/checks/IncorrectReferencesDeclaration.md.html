@@ -65,7 +65,7 @@ src/example/test.kt:20:Error: Arguments of createRefsFor (3) do not
 match assigned variables (2) [IncorrectReferencesDeclaration]
     val (box2, text2) = createRefsFor("box", "text", "image")
                         -------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -96,7 +96,7 @@ fun Test2() {
         val (box3, text3, image3) = createRefsFor(*ids)
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:/constraintlayout/constraintlayout-compose-lint/src/test/java/androidx/constraintlayout/compose/lint/ConstraintLayoutDslDetectorTest.kt)

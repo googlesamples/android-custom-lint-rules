@@ -81,7 +81,7 @@ appears to be part of the old K1 Kotlin compiler. Avoid using it if
 possible; K1 will be going away soon. [KotlincFE10]
     val effectiveVisibility = descriptor.visibility.effectiveVisibility(descriptor, false) // ERROR
                                          ----------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here is the source file referenced above:
 
@@ -143,7 +143,7 @@ class TestVisitor(val context: JavaContext) : UElementHandler() {
         private const val PACKAGE_PRIVATE = 2
     }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also visit the
 [source code](https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:lint/libs/lint-tests/src/test/java/com/android/tools/lint/checks/KotlincFE10DetectorTest.kt)
